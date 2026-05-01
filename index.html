@@ -5,455 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Dental Buddy Hub - رفيق عيادة الأسنان</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Tahoma', system-ui, sans-serif;
-        }
-
-        body {
-            background: #ecf9f0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* الحاويات */
-        .app-wrapper {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        /* شاشات auth */
-        .auth-container {
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background: #ecf9f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .app-wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
+        
+        /* شاشة الدخول */
+        .admin-login-box {
             background: white;
             border-radius: 48px;
-            max-width: 500px;
+            max-width: 400px;
             margin: 2rem auto;
-            padding: 2rem 1.8rem;
-            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-
-        .auth-container h2 {
-            color: #1f6e43;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group {
-            margin: 1rem 0;
-            text-align: right;
-        }
-
-        .input-group input, .input-group select {
+        .admin-login-box input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 12px;
+            margin: 15px 0;
             border-radius: 60px;
             border: 1px solid #cbdfd1;
             font-size: 1rem;
-            background: #fefefe;
-        }
-
-        .btn {
-            background: #2b9e5e;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-
-        .btn-outline-light {
-            background: transparent;
-            border: 1.5px solid #2b9e5e;
-            color: #1f6e43;
-        }
-
-        .switch-auth {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .switch-auth span {
-            color: #2b9e5e;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* التطبيق الرئيسي (بعد الدخول) */
-        .app-main {
-            background: #ffffff;
-            border-radius: 40px;
-            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            display: none;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #e0f3e8, #c8e6d9);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .logo h1 {
-            font-size: 1.6rem;
-            color: #1f6e43;
-        }
-
-        .user-info {
-            background: white;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            display: flex;
-            gap: 12px;
-            align-items: baseline;
-        }
-
-        .logout-btn {
-            background: none;
-            border: none;
-            color: #c5452f;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.25rem;
-            background: #f9fefb;
-            padding: 0.5rem 2rem 0 2rem;
-            border-bottom: 1px solid #cde5d4;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 0.7rem 1.6rem;
-            font-weight: 600;
-            color: #4a6a5e;
-            border-radius: 30px 30px 0 0;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #1f6e43;
-            border-bottom: 3px solid #2b9e5e;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 2rem;
-            animation: fade 0.2s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fade {
-            from { opacity: 0; transform: translateY(5px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
-        .card {
-            background: #ffffff;
-            border: 1px solid #e1f0e4;
-            border-radius: 28px;
-            padding: 1.5rem;
-            margin-bottom: 1.8rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px solid #def0e2;
-            padding-bottom: 0.7rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .btn-primary {
-            background: #2b9e5e;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
-            border: none;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px 5px;
-            border-bottom: 1px solid #eef3ec;
-            text-align: right;
-        }
-
-        .whatsapp-btn {
-            background: #25D366;
-            border: none;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 40px;
-            cursor: pointer;
-        }
-
-        .chat-area {
-            background: #f9fefb;
-            border-radius: 28px;
-            padding: 1rem;
-        }
-
-        .message-bubble {
-            background: #eef6f2;
-            border-radius: 20px;
-            padding: 10px 16px;
-            margin: 8px 0;
-        }
-
-        .user-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #deecdf;
-        }
-
-        .admin-badge {
-            background: #f4e9cd;
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-        }
-
-        footer {
-            background: #e9f3ec;
             text-align: center;
-            padding: 1rem;
-            font-size: 0.7rem;
         }
-
-        @media (max-width: 700px) {
-            .tabs { padding: 0 1rem; }
-            .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
-        }
+        .btn { background: #2b9e5e; border: none; padding: 12px; border-radius: 50px; color: white; font-weight: bold; width: 100%; cursor: pointer; }
+        
+        /* التطبيق الرئيسي */
+        .app-main { background: white; border-radius: 40px; overflow: hidden; display: none; }
+        .header { background: linear-gradient(135deg,#e0f3e8,#c8e6d9); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo h1 { color: #1f6e43; font-size: 1.6rem; }
+        .logout-btn { background: none; border: none; color: #c5452f; font-weight: bold; cursor: pointer; }
+        .tabs { display: flex; gap: 0.25rem; background: #f9fefb; padding: 0.5rem 2rem 0 2rem; border-bottom: 1px solid #cde5d4; flex-wrap: wrap; }
+        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; }
+        .tab-btn.active { background: white; color: #1f6e43; border-bottom: 3px solid #2b9e5e; }
+        .tab-content { display: none; padding: 2rem; animation: fade 0.2s; }
+        .tab-content.active { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1.8rem; }
+        .card-header { display: flex; justify-content: space-between; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; }
+        .btn-primary { background: #2b9e5e; padding: 0.5rem 1.2rem; border-radius: 40px; border: none; color: white; font-weight: 600; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 5px; border-bottom: 1px solid #eef3ec; text-align: right; }
+        .whatsapp-btn { background: #25D366; border: none; color: white; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
+        .chat-area { background: #f9fefb; border-radius: 28px; padding: 1rem; }
+        .message-bubble { background: #eef6f2; border-radius: 20px; padding: 10px 16px; margin: 8px 0; }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #deecdf; }
+        .admin-badge { background: #f4e9cd; padding: 2px 12px; border-radius: 30px; font-size: 0.75rem; }
+        footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; }
+        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; } }
     </style>
 </head>
 <body>
 <div class="app-wrapper">
-    <!-- شاشة المصادقة (تسجيل الدخول/تسجيل) -->
-    <div id="authScreen" class="auth-container">
-        <div style="text-align: center;">
-            <h2>🦷 Dental Buddy Hub</h2>
-            <p style="color:#1f6e43;">دخول الطلاب أو المدير</p>
-        </div>
-        <div id="loginForm">
-            <div class="input-group">
-                <select id="loginRole">
-                    <option value="student">طالب/طالبة</option>
-                    <option value="admin">مدير النظام</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-            </div>
-            <div class="input-group">
-                <input type="password" id="loginPassword" placeholder="كلمة المرور">
-            </div>
-            <button class="btn" id="doLoginBtn">دخول</button>
-            <div class="switch-auth">
-                ليس لديك حساب؟ <span id="showRegister">سجل الآن</span>
-            </div>
-        </div>
-        <div id="registerForm" style="display: none;">
-            <div class="input-group">
-                <input type="text" id="regName" placeholder="الاسم الكامل">
-            </div>
-            <div class="input-group">
-                <input type="email" id="regEmail" placeholder="البريد الجامعي">
-            </div>
-            <div class="input-group">
-                <input type="password" id="regPassword" placeholder="كلمة المرور">
-            </div>
-            <button class="btn" id="doRegisterBtn">تسجيل حساب جديد</button>
-            <div class="switch-auth">
-                لديك حساب؟ <span id="showLogin">تسجيل الدخول</span>
-            </div>
-        </div>
+    <!-- شاشة دخول المدير فقط بكلمة السر -->
+    <div id="adminLoginScreen" class="admin-login-box">
+        <h2>🦷 Dental Buddy Hub</h2>
+        <p style="margin-bottom: 1rem;">دخول المدير فقط</p>
+        <input type="password" id="adminPassword" placeholder="كلمة السر" autocomplete="off">
+        <button class="btn" id="adminLoginBtn">دخول</button>
     </div>
 
-    <!-- الواجهة الرئيسية للتطبيق (بعد الدخول) -->
+    <!-- التطبيق الرئيسي (بعد الدخول) -->
     <div id="appMain" class="app-main">
         <div class="header">
-            <div class="logo"><h1>🦷 Buddy Hub</h1><small>رفيق عيادة الأسنان</small></div>
-            <div class="user-info">
-                <span id="currentUserName"></span>
-                <span id="currentUserRoleBadge" class="admin-badge"></span>
-                <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
-            </div>
+            <div class="logo"><h1>🦷 Dental Buddy Hub</h1><small>رفيق عيادة الأسنان</small></div>
+            <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
         </div>
         <div class="tabs" id="tabsContainer"></div>
         <div id="tabContentsContainer"></div>
-        <footer>نظام اشتراك مدى الحياة 5$ | مساعد طوارئ ذكي محلي | لوحة إدارة كاملة</footer>
+        <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي</footer>
     </div>
 </div>
 
 <script>
-    // ------------------- بيانات وهمية محاكاة (LocalStorage) ------------------
-    let users = JSON.parse(localStorage.getItem('dental_users')) || [];
-    // مستخدم المدير الافتراضي (لا يحذف)
-    if (!users.find(u => u.email === 'admin@dentalhub.com')) {
-        users.push({
-            id: 'admin1',
-            name: 'المدير العام',
-            email: 'admin@dentalhub.com',
-            password: 'salem1959',   // كلمة المرور الثابتة
-            role: 'admin',
-            status: 'active',
-            lifetime: true,
-            registeredAt: new Date().toISOString()
-        });
+    // كلمة السر الثابتة للمدير
+    const ADMIN_PASS = "salem1959";
+    
+    // بيانات الطلاب (محاكاة) – بدون أسماء مسبقة
+    let students = JSON.parse(localStorage.getItem('dental_students')) || [];
+    // خزن المرضى لكل طالب (سنستخدم خريطة)
+    let patientsDB = JSON.parse(localStorage.getItem('dental_patients')) || {}; // { studentId: [patient1, patient2] }
+    
+    let currentStudentId = null; // عند اختيار طالب من لوحة المدير
+    
+    // دوال حفظ
+    function saveStudents() { localStorage.setItem('dental_students', JSON.stringify(students)); }
+    function savePatients() { localStorage.setItem('dental_patients', JSON.stringify(patientsDB)); }
+    
+    // إضافة طالب جديد (تسجيل)
+    function addStudent(name, phone) {
+        let id = 's_' + Date.now();
+        students.push({ id, name, phone, status: 'active', createdAt: new Date().toISOString() });
+        saveStudents();
+        if (!patientsDB[id]) patientsDB[id] = [];
+        savePatients();
+        return id;
     }
-    // متغير الجلسة الحالية
-    let currentUser = null;
-
-    function saveUsers() { localStorage.setItem('dental_users', JSON.stringify(users)); }
-    saveUsers();
-
-    // دوال المصادقة
-    function login(email, password, roleFromSelect) {
-        const user = users.find(u => u.email === email && u.password === password);
-        if (!user) { alert('البيانات غير صحيحة أو الحساب غير موجود'); return false; }
-        if (roleFromSelect === 'admin' && user.role !== 'admin') { alert('هذا الحساب ليس مديراً'); return false; }
-        if (roleFromSelect === 'student' && user.role !== 'student') { alert('هذا الحساب ليس طالباً'); return false; }
-        if (user.status !== 'active') { alert('حسابك معطل (مرقن). تواصل مع المدير.'); return false; }
-        currentUser = { ...user };
-        sessionStorage.setItem('dental_current', JSON.stringify({ id: user.id, email: user.email, role: user.role, name: user.name, lifetime: user.lifetime, status: user.status }));
-        return true;
+    
+    // حذف طالب
+    function deleteStudent(id) {
+        students = students.filter(s => s.id !== id);
+        delete patientsDB[id];
+        saveStudents();
+        savePatients();
+        if (currentStudentId === id) currentStudentId = null;
     }
-
-    function register(name, email, password) {
-        if (users.find(u => u.email === email)) { alert('البريد مسجل مسبقاً'); return false; }
-        const newUser = {
-            id: 'user_' + Date.now(),
-            name: name,
-            email: email,
-            password: password,
-            role: 'student',
-            status: 'active',    // حساب نشط لكن lifetime غير مفعل بعد
-            lifetime: false,
-            trialEnd: new Date(Date.now() + 7*86400000).toISOString(),
-            registeredAt: new Date().toISOString()
-        };
-        users.push(newUser);
-        saveUsers();
-        alert('تم التسجيل بنجاح! يمكنك الدخول الآن. ستحتاج لتفعيل الاشتراك مدى الحياة لاحقاً (5$). المدير يمكنه تفعيله.');
-        return true;
-    }
-
-    function loadSession() {
-        const sess = sessionStorage.getItem('dental_current');
-        if (sess) {
-            try {
-                const saved = JSON.parse(sess);
-                const found = users.find(u => u.id === saved.id);
-                if (found && found.status === 'active') {
-                    currentUser = { ...found };
-                    return true;
-                } else {
-                    sessionStorage.removeItem('dental_current');
-                    return false;
-                }
-            } catch(e) { return false; }
+    
+    // تبديل حالة الترقين
+    function toggleSuspend(id) {
+        let student = students.find(s => s.id === id);
+        if (student) {
+            student.status = student.status === 'active' ? 'suspended' : 'active';
+            saveStudents();
         }
-        return false;
     }
-
-    // ---------- بناء واجهة التطبيق حسب الدور ----------
+    
+    // ------------------ واجهة التطبيق (للمدير فقط) ------------------
+    let currentTab = 'dashboard';
+    
     function renderApp() {
-        if (!currentUser) return;
-        document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('adminLoginScreen').style.display = 'none';
         document.getElementById('appMain').style.display = 'block';
-        document.getElementById('currentUserName').innerText = currentUser.name || currentUser.email;
-        document.getElementById('currentUserRoleBadge').innerText = currentUser.role === 'admin' ? 'مدير النظام' : (currentUser.lifetime ? '⭐ عضوية مدى الحياة' : 'حساب تجريبي');
-        
+        buildTabsAndContents();
+        activateTab(currentTab);
+    }
+    
+    function buildTabsAndContents() {
         const tabsContainer = document.getElementById('tabsContainer');
         const contentsContainer = document.getElementById('tabContentsContainer');
         tabsContainer.innerHTML = '';
         contentsContainer.innerHTML = '';
         
-        let tabs = [];
-        if (currentUser.role === 'admin') {
-            tabs = [
-                { id: 'dashboard', name: '📊 لوحة التحكم', adminOnly: false },
-                { id: 'patients', name: '📋 سجل المرضى', adminOnly: false },
-                { id: 'assistant', name: '🚨 المساعد الذكي', adminOnly: false },
-                { id: 'adminPanel', name: '⚙️ إدارة الطلاب (تفعيل/ترقين)', adminOnly: true }
-            ];
-        } else {
-            tabs = [
-                { id: 'dashboard', name: '📊 لوحة التحكم', adminOnly: false },
-                { id: 'patients', name: '📋 مرضاي', adminOnly: false },
-                { id: 'assistant', name: '🚨 مساعد الطوارئ', adminOnly: false }
-            ];
-        }
+        const tabs = [
+            { id: 'dashboard', name: '📊 لوحة التحكم' },
+            { id: 'patientsManager', name: '📋 سجل المرضى (لجميع الطلاب)' },
+            { id: 'assistant', name: '🚨 المساعد الذكي للطوارئ' },
+            { id: 'studentsPanel', name: '👥 إدارة الطلاب (ترقين/تفعيل)' }
+        ];
         
         tabs.forEach(tab => {
-            if (tab.adminOnly && currentUser.role !== 'admin') return;
             const btn = document.createElement('button');
             btn.classList.add('tab-btn');
             btn.innerText = tab.name;
             btn.setAttribute('data-tab', tab.id);
-            btn.addEventListener('click', () => activateTab(tab.id));
+            btn.addEventListener('click', () => { activateTab(tab.id); });
             tabsContainer.appendChild(btn);
         });
         
-        // إنشاء المحتوى لكل تبويب (ديناميكي)
-        // 1. Dashboard
-        const dashboardDiv = createDashboardContent();
-        dashboardDiv.id = 'dashboard';
-        dashboardDiv.classList.add('tab-content');
+        // إنشاء محتوى كل تبويب
+        const dashboardDiv = createDashboardContent(); dashboardDiv.id = 'dashboard'; dashboardDiv.classList.add('tab-content');
+        const patientsDiv = createPatientsManagerContent(); patientsDiv.id = 'patientsManager'; patientsDiv.classList.add('tab-content');
+        const assistantDiv = createAssistantContent(); assistantDiv.id = 'assistant'; assistantDiv.classList.add('tab-content');
+        const studentsDiv = createStudentsPanelContent(); studentsDiv.id = 'studentsPanel'; studentsDiv.classList.add('tab-content');
+        
         contentsContainer.appendChild(dashboardDiv);
-        
-        // 2. patients
-        const patientsDiv = createPatientsContent();
-        patientsDiv.id = 'patients';
-        patientsDiv.classList.add('tab-content');
         contentsContainer.appendChild(patientsDiv);
-        
-        // 3. assistant
-        const assistantDiv = createAssistantContent();
-        assistantDiv.id = 'assistant';
-        assistantDiv.classList.add('tab-content');
         contentsContainer.appendChild(assistantDiv);
-        
-        // 4. adminPanel (فقط للمدير)
-        if (currentUser.role === 'admin') {
-            const adminDiv = createAdminPanel();
-            adminDiv.id = 'adminPanel';
-            adminDiv.classList.add('tab-content');
-            contentsContainer.appendChild(adminDiv);
-        }
-        
-        // تفعيل أول تبويب
-        const firstTab = document.querySelector('.tab-btn');
-        if (firstTab) firstTab.click();
+        contentsContainer.appendChild(studentsDiv);
     }
     
     function activateTab(tabId) {
@@ -461,129 +169,107 @@
         const target = document.getElementById(tabId);
         if (target) target.classList.add('active');
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+            const t = btn.getAttribute('data-tab');
+            if (t === tabId) btn.classList.add('active');
             else btn.classList.remove('active');
         });
+        currentTab = tabId;
     }
     
-    // ------------------ محتوى خاص بالطالب/المدير ------------------
+    // تبويب لوحة التحكم
     function createDashboardContent() {
         const div = document.createElement('div');
-        div.className = 'tab-content';
         div.innerHTML = `
             <div class="card">
-                <div class="card-header"><h3>📈 موجز نشاطك</h3><span>مرحباً ${currentUser.name}</span></div>
+                <div class="card-header"><h3>📈 ملخص العيادة</h3></div>
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>🦷 مرضى مسجلون</h4><p style="font-size:2rem;" id="statPatients">0</p></div>
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>📨 رسائل واتساب</h4><p style="font-size:2rem;" id="statWhatsapp">0</p></div>
-                    <div style="flex:1; background:#fffaec; border-radius:24px; padding:1rem;"><h4>🚨 طوارئ (مساعد)</h4><p style="font-size:2rem;" id="statEmerg">0</p></div>
+                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>👥 عدد الطلاب</h4><p style="font-size:2rem;" id="statStudents">0</p></div>
+                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>🦷 إجمالي المرضى</h4><p style="font-size:2rem;" id="statPatientsTotal">0</p></div>
                 </div>
             </div>
-            <div class="card"><h3>💰 اشتراك مدى الحياة بـ 5$ فقط</h3><p>${currentUser.lifetime ? '✅ مميزات كاملة مفعلة إلى الأبد' : '⚠️ حسابك تجريبي أو غير مفعل. تواصل مع المدير لتفعيل الاشتراك (5$).'}</p></div>
         `;
-        // تحديث الإحصائيات لاحقاً عند تحميل البيانات
-        setTimeout(() => {
-            const patients = JSON.parse(localStorage.getItem(`patients_${currentUser.id}`)) || [];
-            document.getElementById('statPatients') && (document.getElementById('statPatients').innerText = patients.length);
-        }, 50);
+        const updateStats = () => {
+            document.getElementById('statStudents') && (document.getElementById('statStudents').innerText = students.length);
+            let totalPatients = 0;
+            for (let id in patientsDB) totalPatients += patientsDB[id].length;
+            document.getElementById('statPatientsTotal') && (document.getElementById('statPatientsTotal').innerText = totalPatients);
+        };
+        setTimeout(updateStats, 50);
         return div;
     }
     
-    // سجل المرضى + واتساب
-    function createPatientsContent() {
-        const container = document.createElement('div');
-        container.innerHTML = `
-            <div class="card">
-                <div class="card-header"><h3>➕ إضافة مريض</h3><button class="btn-primary" id="showAddPatientBtn">إضافة يدوي</button></div>
-                <div id="patientForm" style="display:none; background:#fafefa; border-radius:24px; padding:1rem; margin-bottom:1rem;">
-                    <input type="text" id="patName" placeholder="الاسم" style="margin-left:5px; padding:8px;" />
-                    <input type="tel" id="patPhone" placeholder="رقم واتساب" style="margin-left:5px; padding:8px;" />
-                    <input type="text" id="patDiag" placeholder="التشخيص" style="margin-left:5px; padding:8px;" />
-                    <button id="savePatientBtn" class="btn-primary">حفظ</button>
-                </div>
-                <h3>قائمة مرضاي</h3>
-                <table class="patients-table"><thead><tr><th>الاسم</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراء</th></tr></thead><tbody id="patientsTbody"></tbody></table>
-                <button class="btn-outline-light" id="bulkWhatsappBtn" style="margin-top: 1rem;">📢 إرسال تذكير جماعي (واتساب)</button>
-            </div>
-        `;
-        // تحميل المرضى من localStorage
-        const storageKey = `patients_${currentUser.id}`;
-        let patients = JSON.parse(localStorage.getItem(storageKey)) || [];
-        function renderPatients() {
-            const tbody = container.querySelector('#patientsTbody');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-            patients.forEach((p, idx) => {
-                const row = tbody.insertRow();
-                row.innerHTML = `
-                    <td>${p.name}</td><td>${p.diagnosis}</td><td>${p.phone}</td>
-                    <td><button class="whatsapp-btn" data-name="${p.name}" data-phone="${p.phone}">📱 تذكير</button></td>
-                `;
-            });
-            document.getElementById('statPatients') && (document.getElementById('statPatients').innerText = patients.length);
-        }
-        function savePatiens() { localStorage.setItem(storageKey, JSON.stringify(patients)); renderPatients(); }
-        renderPatients();
-        
-        container.querySelector('#showAddPatientBtn')?.addEventListener('click', () => {
-            const formDiv = container.querySelector('#patientForm');
-            formDiv.style.display = formDiv.style.display === 'none' ? 'block' : 'none';
-        });
-        container.querySelector('#savePatientBtn')?.addEventListener('click', () => {
-            const name = container.querySelector('#patName').value;
-            const phone = container.querySelector('#patPhone').value;
-            const diag = container.querySelector('#patDiag').value;
-            if(name && phone) {
-                patients.push({ name, phone, diagnosis: diag || 'فحص', date: new Date().toISOString() });
-                savePatiens();
-                container.querySelector('#patName').value = '';
-                container.querySelector('#patPhone').value = '';
-                container.querySelector('#patDiag').value = '';
-                container.querySelector('#patientForm').style.display = 'none';
-            } else alert('أدخل الاسم ورقم الهاتف');
-        });
-        container.querySelector('#bulkWhatsappBtn')?.addEventListener('click', () => {
-            alert(`📨 سيتم فتح واتساب لإرسال تذكير جماعي إلى ${patients.length} مريض (محاكاة). في التطبيق الحقيقي يتم فتح الروابط تباعاً.`);
-        });
-        container.addEventListener('click', (e) => {
-            if(e.target.classList.contains('whatsapp-btn')) {
-                const name = e.target.getAttribute('data-name');
-                alert(`📱 يتم فتح واتساب لتذكير المريض ${name} بموعده`);
+    // تبويب إدارة المرضى (للمدير – يعرض كل مرضى كل طالب)
+    function createPatientsManagerContent() {
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="card"><div class="card-header"><h3>📋 قائمة جميع المرضى (حسب الطالب)</h3></div><div id="allPatientsList"></div></div>`;
+        function renderAll() {
+            const container = div.querySelector('#allPatientsList');
+            if (!container) return;
+            container.innerHTML = '';
+            for (let sid of students) {
+                const patients = patientsDB[sid.id] || [];
+                const studentDiv = document.createElement('div');
+                studentDiv.style.marginBottom = '1.5rem';
+                studentDiv.style.border = '1px solid #e0f0e3';
+                studentDiv.style.borderRadius = '20px';
+                studentDiv.style.padding = '1rem';
+                studentDiv.innerHTML = `<h4>👩‍⚕️ الطالب: ${sid.name} (رقم: ${sid.phone}) - ${sid.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</h4>`;
+                if (patients.length === 0) {
+                    studentDiv.innerHTML += '<p>لا يوجد مرضى مسجلين لهذا الطالب.</p>';
+                } else {
+                    let table = '<table><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراء</th></tr></thead><tbody>';
+                    patients.forEach(p => {
+                        table += `<tr><td>${p.name}</td><td>${p.diagnosis || '-'}</td><td>${p.phone}</td><td><button class="whatsapp-btn" data-phone="${p.phone}" data-name="${p.name}">📱 تذكير</button></td></tr>`;
+                    });
+                    table += '</tbody></table>';
+                    studentDiv.innerHTML += table;
+                }
+                container.appendChild(studentDiv);
             }
-        });
-        return container;
+            // إضافة أحداث أزرار الواتساب
+            container.querySelectorAll('.whatsapp-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const name = btn.getAttribute('data-name');
+                    alert(`📲 سيتم فتح واتساب لتذكير المريض ${name}`);
+                });
+            });
+        }
+        renderAll();
+        // تحديث عند تغيير البيانات (سيتم استدعاء إعادة التصيير)
+        const observer = new MutationObserver(() => renderAll());
+        observer.observe(div, { childList: true, subtree: true });
+        return div;
     }
     
-    // مساعد طوارئ ذكي محلي
+    // المساعد الذكي (كما هو)
     function createAssistantContent() {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="card">
-                <div class="card-header"><h3>🚑 مساعد الطوارئ (يعمل بدون إنترنت)</h3><span>⚡ حساسية عالية للعربية الفصحى والعامية</span></div>
+                <div class="card-header"><h3>🚑 مساعد الطوارئ الذكي (محلي، فصحى وعامية)</h3></div>
                 <div id="assistantChat" style="background:#f8fefb; border-radius:24px; padding:1rem;">
                     <div id="chatMessages" style="height:200px; overflow-y:auto; margin-bottom:1rem;"></div>
-                    <div style="display:flex;"><input type="text" id="emergencyInput" placeholder="مثال: المريض ينزف بعد القلع..." style="flex:1; padding:10px; border-radius:60px; border:1px solid #cde5d4;"><button id="sendEmergBtn" class="btn-primary">استشارة</button></div>
+                    <div style="display:flex;"><input type="text" id="emergencyInput" placeholder="مثال: المريض ينزف بشدة..." style="flex:1; padding:10px; border-radius:60px; border:1px solid #cde5d4;"><button id="sendEmergBtn" class="btn-primary">استشارة</button></div>
                     <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-                        <button class="btn-outline-light" data-quick="نزيف حاد بعد الخلع">🩸 نزيف</button>
+                        <button class="btn-outline-light" data-quick="نزيف حاد بعد القلع">🩸 نزيف</button>
                         <button class="btn-outline-light" data-quick="المريض غاب عن الوعي">😵 إغماء</button>
                         <button class="btn-outline-light" data-quick="كسر الإبرة داخل الفم">⚠️ كسر إبرة</button>
                     </div>
                 </div>
             </div>
         `;
-        // خوارزمية المساعد (مطابقة كلمات)
         const emergencyDB = [
-            { keywords: ["نزيف","ينزف","دم","دمعة"], steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدام إسفنجة جيلاتين، ممنوع المضمضة. استدع مشرفاً إذا استمر." },
-            { keywords: ["اغمى","غاب عن الوعي","فقد وعيه","وقع"], steps: "😵 إغماء: افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً فوراً." },
-            { keywords: ["كسر الإبرة","الأبرة اتكسرت","إبرة مكسورة"], steps: "⚠️ لا تحاول بالإصبع، ثبّت المريض، استخدم ملقط معقم، أشعة، استدعاء جراح." },
-            { keywords: ["حساسية","لاتكس","تورم","حكة"], steps: "🤚 حساسية: أزل القفازات، مضاد هيستامين، مراقبة التنفس، استدع مشرفاً." }
+            { keywords: ["نزيف","ينزف","دم"], steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا للمضمضة. استدع مشرفاً إذا استمر." },
+            { keywords: ["اغمى","غاب عن الوعي","فقد وعيه"], steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً فوراً." },
+            { keywords: ["كسر الإبرة","الأبرة اتكسرت"], steps: "⚠️ لا تحاول بالإصبع، ثبّت المريض، استخدم ملقط معقم، أشعة، استدعاء جراح." },
+            { keywords: ["حساسية","لاتكس","تورم"], steps: "🤚 أزل القفازات، مضاد هيستامين، مراقبة التنفس، استدع مشرفاً." }
         ];
         function smartReply(text) {
             let lower = text.toLowerCase();
             for(let e of emergencyDB) {
-                if(e.keywords.some(kw => lower.includes(kw))) return e.steps + "\n🏥 تابع الحالة واستشر مشرفاً إن لزم.";
+                if(e.keywords.some(kw => lower.includes(kw))) return e.steps + "\n🏥 تابع الحالة واستشر مشرفاً.";
             }
-            return "⚠️ لم يتم التعرف على الحالة بدقة. اشرح أعراضاً أو اذكر كلمات مفتاحية (نزيف، إغماء، كسر). إذا كانت حالة خطيرة اتصل بالمشرف.";
+            return "⚠️ لم نتعرف على الحالة. اشرح أكثر (نزيف/إغماء/كسر). إذا كانت خطيرة اتصل بالمشرف.";
         }
         const chatDiv = div.querySelector('#chatMessages');
         function addMsg(txt, isUser) {
@@ -591,7 +277,6 @@
             msg.className = 'message-bubble';
             msg.style.textAlign = isUser ? 'left' : 'right';
             msg.style.background = isUser ? '#daf4e4' : '#ffffff';
-            msg.style.border = '1px solid #cfe6d6';
             msg.innerHTML = `<strong>${isUser ? 'أنت' : 'المساعد'}:</strong> ${txt}`;
             chatDiv.appendChild(msg);
             chatDiv.scrollTop = chatDiv.scrollHeight;
@@ -610,102 +295,109 @@
         input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendHandler(); });
         div.querySelectorAll('[data-quick]').forEach(btn => {
             btn.addEventListener('click', () => {
-                const txt = btn.getAttribute('data-quick');
-                input.value = txt;
+                input.value = btn.getAttribute('data-quick');
                 sendHandler();
             });
         });
-        addMsg("مرحباً! أنا مساعد الطوارئ الذكي. صف المشكلة (نزيف، إغماء، كسر أداة...) وسأقدم لك الخطوات.", false);
+        addMsg("مرحباً! أنا مساعد الطوارئ. صف المشكلة (نزيف، إغماء، كسر أداة...).", false);
         return div;
     }
     
-    // لوحة إدارة المدير (تفعيل/ترقين)
-    function createAdminPanel() {
+    // تبويب إدارة الطلاب (ترقين/تفعيل + إضافة طالب)
+    function createStudentsPanelContent() {
         const div = document.createElement('div');
-        div.className = 'tab-content';
-        const userList = users.filter(u => u.role === 'student');
-        const renderUsers = () => {
-            div.innerHTML = `<div class="card"><div class="card-header"><h3>🔐 إدارة الطلاب واشتراكات الـ 5$ (مدى الحياة)</h3></div>
-            <div id="adminUsersList"></div><p style="margin-top:1rem;">* تفعيل Lifetime = منح جميع الميزات للأبد. الترقين يعطل الحساب.</p></div>`;
-            const container = div.querySelector('#adminUsersList');
-            users.forEach(user => {
-                if(user.role === 'admin') return;
-                const row = document.createElement('div');
-                row.className = 'user-row';
-                row.innerHTML = `
-                    <div><strong>${user.name}</strong> (${user.email}) <span class="admin-badge">${user.lifetime ? '⭐ مدى الحياة' : (user.status === 'active' ? 'نشط تجريبي' : 'مُرقن')}</span></div>
-                    <div>
-                        ${!user.lifetime ? `<button class="btn-primary" data-activate="${user.id}" style="background:#2b9e5e; margin-left:6px;">💎 تفعيل Lifetime (دفعة 5$)</button>` : ''}
-                        ${user.status === 'active' ? `<button data-suspend="${user.id}" class="btn-primary" style="background:#e76f51;">🔴 ترقين (تعطيل)</button>` : `<button data-reactivate="${user.id}" class="btn-primary">🟢 إعادة تفعيل</button>`}
+        function renderStudents() {
+            div.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>➕ إضافة طالب جديد</h3></div>
+                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                        <input type="text" id="newStudentName" placeholder="اسم الطالب" style="flex:1; padding:8px; border-radius:40px; border:1px solid #ccc;">
+                        <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:1; padding:8px; border-radius:40px; border:1px solid #ccc;">
+                        <button id="addStudentBtn" class="btn-primary">إضافة</button>
                     </div>
-                `;
-                container.appendChild(row);
-            });
-            div.querySelectorAll('[data-activate]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const uid = btn.getAttribute('data-activate');
-                    const usr = users.find(u => u.id === uid);
-                    if(usr) { usr.lifetime = true; usr.status = 'active'; saveUsers(); alert(`✅ تم تفعيل الاشتراك مدى الحياة للمستخدم ${usr.name}`); renderUsers(); }
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>👥 قائمة الطلاب (ترقين / تفعيل)</h3></div>
+                    <div id="studentsList"></div>
+                </div>
+            `;
+            const listDiv = div.querySelector('#studentsList');
+            if (listDiv) {
+                listDiv.innerHTML = '';
+                students.forEach(std => {
+                    const row = document.createElement('div');
+                    row.className = 'user-row';
+                    row.innerHTML = `
+                        <div><strong>${std.name}</strong> (${std.phone}) <span class="admin-badge">${std.status === 'active' ? 'نشط' : 'مُرقن'}</span></div>
+                        <div>
+                            <button class="btn-primary" data-toggle="${std.id}" style="background:#e76f51; margin-left:6px;">${std.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
+                            <button class="btn-primary" data-delete="${std.id}" style="background:#aaa;">🗑 حذف</button>
+                        </div>
+                    `;
+                    listDiv.appendChild(row);
                 });
-            });
-            div.querySelectorAll('[data-suspend]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const uid = btn.getAttribute('data-suspend'); const usr = users.find(u => u.id === uid);
-                    if(usr) { usr.status = 'suspended'; saveUsers(); alert(`🔴 تم ترقين ${usr.name} لن يتمكن من الدخول`); renderUsers(); if(currentUser && currentUser.id === uid) setTimeout(()=> logout(),500); }
+                // ربط الأحداث
+                div.querySelectorAll('[data-toggle]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = btn.getAttribute('data-toggle');
+                        toggleSuspend(id);
+                        renderStudents();
+                    });
                 });
-            });
-            div.querySelectorAll('[data-reactivate]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const uid = btn.getAttribute('data-reactivate'); const usr = users.find(u => u.id === uid);
-                    if(usr) { usr.status = 'active'; saveUsers(); alert(`🟢 تم إعادة تفعيل ${usr.name}`); renderUsers(); }
+                div.querySelectorAll('[data-delete]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if(confirm('حذف الطالب سيؤدي إلى حذف جميع مرضاه. هل أنت متأكد؟')) {
+                            const id = btn.getAttribute('data-delete');
+                            deleteStudent(id);
+                            renderStudents();
+                        }
+                    });
                 });
-            });
-        };
-        renderUsers();
+            }
+            const addBtn = div.querySelector('#addStudentBtn');
+            if(addBtn) {
+                addBtn.addEventListener('click', () => {
+                    const name = div.querySelector('#newStudentName').value.trim();
+                    const phone = div.querySelector('#newStudentPhone').value.trim();
+                    if(name && phone) {
+                        addStudent(name, phone);
+                        div.querySelector('#newStudentName').value = '';
+                        div.querySelector('#newStudentPhone').value = '';
+                        renderStudents();
+                    } else alert('يرجى إدخال الاسم ورقم الهاتف');
+                });
+            }
+        }
+        renderStudents();
         return div;
     }
     
-    function logout() {
-        sessionStorage.removeItem('dental_current');
-        currentUser = null;
-        document.getElementById('authScreen').style.display = 'block';
-        document.getElementById('appMain').style.display = 'none';
-    }
-    
-    // أحداث شاشة الدخول
-    document.getElementById('doLoginBtn').addEventListener('click', () => {
-        const role = document.getElementById('loginRole').value;
-        const email = document.getElementById('loginEmail').value;
-        const pwd = document.getElementById('loginPassword').value;
-        if(login(email, pwd, role)) {
+    // تسجيل الدخول
+    document.getElementById('adminLoginBtn').addEventListener('click', () => {
+        const pass = document.getElementById('adminPassword').value;
+        if (pass === ADMIN_PASS) {
             renderApp();
+        } else {
+            alert('كلمة السر غير صحيحة');
         }
     });
-    document.getElementById('showRegister').addEventListener('click', () => {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('registerForm').style.display = 'block';
-    });
-    document.getElementById('showLogin').addEventListener('click', () => {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('registerForm').style.display = 'none';
-    });
-    document.getElementById('doRegisterBtn').addEventListener('click', () => {
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const pwd = document.getElementById('regPassword').value;
-        if(name && email && pwd) {
-            if(register(name, email, pwd)) {
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('registerForm').style.display = 'none';
-                document.getElementById('loginEmail').value = email;
-                document.getElementById('loginPassword').value = '';
-            }
-        } else alert('املأ جميع الحقول');
-    });
-    document.getElementById('logoutBtn')?.addEventListener('click', logout);
     
-    if(loadSession()) renderApp();
-    else { document.getElementById('authScreen').style.display = 'block'; document.getElementById('appMain').style.display = 'none'; }
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.clear(); // اختياري، مسح الجلسة
+        location.reload();
+    });
+    
+    // إضافة بيانات تجريبية أولية (للتجربة فقط) - بدون أسماء حقيقية
+    if (students.length === 0) {
+        addStudent('طالب تجريبي 1', '0550000001');
+        addStudent('طالب تجريبي 2', '0550000002');
+        // إضافة بعض المرضى
+        let s1 = students[0]?.id;
+        let s2 = students[1]?.id;
+        if(s1) patientsDB[s1] = [{ name: 'مريض أول', phone: '0501111111', diagnosis: 'حشو عصب' }];
+        if(s2) patientsDB[s2] = [{ name: 'مريض ثان', phone: '0502222222', diagnosis: 'قلع ضرس' }];
+        savePatients();
+    }
 </script>
 </body>
 </html>
