@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Dental Buddy Hub - رفيق عيادة الأسنان</title>
+    <title>DS ASSISTANCE - مساعد الطالب الطبيب</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #ecf9f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .app-wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
+        .wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
         
         /* شاشة الدخول */
-        .admin-login-box {
+        .login-card {
             background: white;
             border-radius: 48px;
-            max-width: 400px;
+            max-width: 360px;
             margin: 2rem auto;
             padding: 2rem;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-        .admin-login-box input {
+        .login-card h2 { color: #1f6e43; font-size: 2rem; margin-bottom: 0.5rem; }
+        .login-card input {
             width: 100%;
             padding: 12px;
             margin: 15px 0;
@@ -29,72 +30,140 @@
             text-align: center;
         }
         .btn { background: #2b9e5e; border: none; padding: 12px; border-radius: 50px; color: white; font-weight: bold; width: 100%; cursor: pointer; }
+        .error { color: #c5452f; margin-top: 8px; font-size: 0.85rem; }
         
         /* التطبيق الرئيسي */
         .app-main { background: white; border-radius: 40px; overflow: hidden; display: none; }
-        .header { background: linear-gradient(135deg,#e0f3e8,#c8e6d9); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
-        .logo h1 { color: #1f6e43; font-size: 1.6rem; }
-        .logout-btn { background: none; border: none; color: #c5452f; font-weight: bold; cursor: pointer; }
+        .header { background: linear-gradient(135deg,#e0f3e8,#c8e6d9); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .logo h1 { color: #1f6e43; font-size: 1.8rem; display: flex; align-items: center; gap: 8px; }
+        .logo h1::before { content: "🦷"; }
+        .logout-btn { background: none; border: none; color: #c5452f; font-weight: bold; cursor: pointer; font-size: 1rem; }
         .tabs { display: flex; gap: 0.25rem; background: #f9fefb; padding: 0.5rem 2rem 0 2rem; border-bottom: 1px solid #cde5d4; flex-wrap: wrap; }
-        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; }
+        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; transition: 0.2s; }
         .tab-btn.active { background: white; color: #1f6e43; border-bottom: 3px solid #2b9e5e; }
-        .tab-content { display: none; padding: 2rem; animation: fade 0.2s; }
+        .tab-content { display: none; padding: 2rem; animation: fade 0.2s ease; }
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
         .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1.8rem; }
-        .card-header { display: flex; justify-content: space-between; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; }
+        .card-header { display: flex; justify-content: space-between; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
         .btn-primary { background: #2b9e5e; padding: 0.5rem 1.2rem; border-radius: 40px; border: none; color: white; font-weight: 600; cursor: pointer; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px 5px; border-bottom: 1px solid #eef3ec; text-align: right; }
-        .whatsapp-btn { background: #25D366; border: none; color: white; padding: 4px 12px; border-radius: 40px; cursor: pointer; }
-        .chat-area { background: #f9fefb; border-radius: 28px; padding: 1rem; }
+        .whatsapp-btn { background: #25D366; border: none; color: white; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; }
         .message-bubble { background: #eef6f2; border-radius: 20px; padding: 10px 16px; margin: 8px 0; }
-        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #deecdf; }
-        .admin-badge { background: #f4e9cd; padding: 2px 12px; border-radius: 30px; font-size: 0.75rem; }
-        footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; }
-        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; } }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #deecdf; flex-wrap: wrap; gap: 8px; }
+        .badge { background: #f4e9cd; padding: 2px 12px; border-radius: 30px; font-size: 0.75rem; }
+        footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; margin-top: 1rem; }
+        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; } .card-header { flex-direction: column; } }
+        
+        /* قائمة حالات الطوارئ المنبثقة */
+        .emergency-list-btn {
+            background: #2b9e5e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            padding: 1.5rem;
+            position: relative;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #def0e2;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .emergency-item {
+            padding: 12px;
+            margin: 6px 0;
+            background: #f9fefb;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #e1f0e4;
+        }
+        .emergency-item:hover { background: #e0f3e8; }
     </style>
 </head>
 <body>
-<div class="app-wrapper">
-    <!-- شاشة دخول المدير فقط بكلمة السر -->
-    <div id="adminLoginScreen" class="admin-login-box">
-        <h2>🦷 Dental Buddy Hub</h2>
-        <p style="margin-bottom: 1rem;">دخول المدير فقط</p>
-        <input type="password" id="adminPassword" placeholder="كلمة السر" autocomplete="off">
-        <button class="btn" id="adminLoginBtn">دخول</button>
+<div class="wrapper">
+    <!-- شاشة دخول المدير -->
+    <div id="loginScreen" class="login-card">
+        <h2>DS ASSISTANCE</h2>
+        <p>مساعد الطالب الطبيب</p>
+        <input type="password" id="adminPass" placeholder="كلمة السر" autocomplete="off">
+        <button class="btn" id="loginBtn">دخول</button>
+        <div id="loginError" class="error"></div>
     </div>
 
-    <!-- التطبيق الرئيسي (بعد الدخول) -->
+    <!-- التطبيق الرئيسي -->
     <div id="appMain" class="app-main">
         <div class="header">
-            <div class="logo"><h1>🦷 Dental Buddy Hub</h1><small>رفيق عيادة الأسنان</small></div>
+            <div class="logo"><h1>DS ASSISTANCE</h1><small>مساعد الطالب الطبيب</small></div>
             <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
         </div>
         <div class="tabs" id="tabsContainer"></div>
         <div id="tabContentsContainer"></div>
-        <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي</footer>
+        <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 13+ حالة طوارئ</footer>
+    </div>
+</div>
+
+<!-- نافذة منبثقة لحالات الطوارئ -->
+<div id="emergencyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🚨 حالات الطوارئ</h3>
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+        </div>
+        <div id="emergencyList"></div>
     </div>
 </div>
 
 <script>
     // كلمة السر الثابتة للمدير
-    const ADMIN_PASS = "salem1959";
+    const ADMIN_PASSWORD = "salem1959";
     
-    // بيانات الطلاب (محاكاة) – بدون أسماء مسبقة
-    let students = JSON.parse(localStorage.getItem('dental_students')) || [];
-    // خزن المرضى لكل طالب (سنستخدم خريطة)
-    let patientsDB = JSON.parse(localStorage.getItem('dental_patients')) || {}; // { studentId: [patient1, patient2] }
+    // بيانات التخزين المحلي
+    let students = JSON.parse(localStorage.getItem('sanad_students')) || [];
+    let patientsDB = JSON.parse(localStorage.getItem('sanad_patients')) || {};
     
-    let currentStudentId = null; // عند اختيار طالب من لوحة المدير
+    function saveStudents() { localStorage.setItem('sanad_students', JSON.stringify(students)); }
+    function savePatients() { localStorage.setItem('sanad_patients', JSON.stringify(patientsDB)); }
     
-    // دوال حفظ
-    function saveStudents() { localStorage.setItem('dental_students', JSON.stringify(students)); }
-    function savePatients() { localStorage.setItem('dental_patients', JSON.stringify(patientsDB)); }
-    
-    // إضافة طالب جديد (تسجيل)
+    // إضافة طالب
     function addStudent(name, phone) {
-        let id = 's_' + Date.now();
+        const id = 's_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         students.push({ id, name, phone, status: 'active', createdAt: new Date().toISOString() });
         saveStudents();
         if (!patientsDB[id]) patientsDB[id] = [];
@@ -102,35 +171,76 @@
         return id;
     }
     
-    // حذف طالب
     function deleteStudent(id) {
         students = students.filter(s => s.id !== id);
         delete patientsDB[id];
         saveStudents();
         savePatients();
-        if (currentStudentId === id) currentStudentId = null;
     }
     
-    // تبديل حالة الترقين
     function toggleSuspend(id) {
-        let student = students.find(s => s.id === id);
-        if (student) {
-            student.status = student.status === 'active' ? 'suspended' : 'active';
-            saveStudents();
+        const student = students.find(s => s.id === id);
+        if (student) student.status = student.status === 'active' ? 'suspended' : 'active';
+        saveStudents();
+    }
+    
+    function addPatientToStudent(studentId, patientName, patientPhone, diagnosis) {
+        if (!patientsDB[studentId]) patientsDB[studentId] = [];
+        patientsDB[studentId].push({
+            name: patientName,
+            phone: patientPhone,
+            diagnosis: diagnosis || 'بدون تشخيص',
+            addedAt: new Date().toISOString()
+        });
+        savePatients();
+    }
+    
+    function deletePatient(studentId, patientIndex) {
+        if (patientsDB[studentId]) {
+            patientsDB[studentId].splice(patientIndex, 1);
+            savePatients();
         }
     }
     
-    // ------------------ واجهة التطبيق (للمدير فقط) ------------------
+    // ------------------ المساعد الذكي مع حالات الطوارئ الجديدة ------------------
+    const emergencyDatabase = [
+        { keywords: ["نزيف","ينزف","دم","دمعة"], steps: "🩸 الخطوات: اضغط بشاش معقم لمدة 5 دقائق، استخدم إسفنجة جيلاتين، لا تسمح للمريض بالمضمضة. إذا استمر النزيف أكثر من 20 دقيقة استدع مشرفاً فوراً." },
+        { keywords: ["اغمى","غاب عن الوعي","فقد وعيه","وقع","إغماء"], steps: "😵 الإغماء: افتح المجرى الهوائي، ارفع الرجلين لأعلى، أرخِ الملابس الضيقة، نادِ مشرفاً فوراً." },
+        { keywords: ["كسر الإبرة","الأبرة اتكسرت","إبرة مكسورة"], steps: "⚠️ كسر إبرة التخدير: لا تحاول الإخراج بالأصابع، ثبّت المريض، استخدم ملقطاً معقماً إذا كان الجزء ظاهراً، أرسل لأشعة، استدع مشرفاً فوراً." },
+        { keywords: ["حساسية","لاتكس","تورم","حكة","طفح"], steps: "🤚 حساسية اللاتكس: أزل القفازات فوراً، استخدم قفازات خالية من اللاتكس، أعط مضاد هيستامين إذا متوفر، راقب التنفس، استدع مشرفاً." },
+        // الحالات الجديدة المطلوبة:
+        { keywords: ["انكسار أداة","كسر أداة","أداة مكسورة","انكسار ضمن القناة"], steps: "🛠️ انكسار أداة ضمن القناة الجذرية: لا تحاول إخراجها بدون تصوير، خذ أشعة فورية، أشر للمريض بالحالة، استدع مشرفاً مختصاً لإزالة الأداة." },
+        { keywords: ["ابتلاع اداة","بلع أداة","ابتلاع","بلع"], steps: "⚠️ ابتلاع أداة (مثل البروي، الإبرة، السدادة): تهدئة المريض، لا تسبب تقيؤ، أرسل لأشعة صدر وبطن فوراً، استدع مشرفاً واختصاصي جراحة." },
+        { keywords: ["احتراق كيميائي","حرق كيميائي","مادة كيميائية","حريق كيميائي"], steps: "🔥 احتراق كيميائي: اغسل المنطقة بكمية كبيرة من الماء لمدة 20 دقيقة، لا تستخدم مواد معادلة، انزع القفازات الملوثة، استدع مشرفاً، سجل المادة المسببة." },
+        { keywords: ["طفل غير متعاون","طفل يبكي","طفل يعض","طفل عصبي"], steps: "🧸 طفل غير متعاون: استخدم تقنية أخبر-أظهر-نفذ، كافئ السلوك الجيد، استخدم لغة بسيطة، قد تحتاج لتثبيت الطفل بلطف مع موافقة ولي الأمر، استدع مشرفاً للمساعدة." },
+        { keywords: ["جرح لسان","تمزق لسان","لسان مجروح"], steps: "👅 جرح اللسان: نظف بلطف بمحلول ملحي، اضغط بشاش معقم لوقف النزيف، إذا كان الجرح عميقاً أو ينزف بشدة، أرسل للمستشفى لغرز محتمل." },
+        { keywords: ["جرح شفة","تمزق شفة","شفة مجروحة"], steps: "👄 جرح الشفة: نظف بالماء، ضغط بارد لتقليل التورم، إذا كان الجرح نافذاً (يخترق الشفة) أو ينزف بشدة، أرسل للمستشفى." },
+        { keywords: ["خدر العصب الوجهي","خدر الوجه","شلل العصب الوجهي","تخدير الوجه"], steps: "😐 خدر العصب الوجهي أو شلل بيل: غالباً مؤقت بسبب التخدير الموضعي. طمئن المريض، راقب التنفس، أبلغ المشرف، قد يحتاج متابعة عصبية." },
+        { keywords: ["تجاوز ذروة السن","مواد حاشية زائدة","فائض مواد","overfill"], steps: "📏 تجاوز المواد الحاشية لقمة السن: خذ أشعة لتحديد المدى، لا تحاول إزالة المواد دون إرشاد، أبلغ المشرف فوراً، راقب الأعراض (ألم، التهاب، ورم)." },
+        { keywords: ["انثقاب الجيب الفكي","ثقب الجيب الفكي","اتصال بين الفم والجيوب","oroantral"], steps: "🕳️ انثقاب الجيب الفكي: لا تنظف القناة، لا تضع ضغط هواء، وصف مضاد حيوي، تجنب العطس والفطس، أرسل للمشرف لإغلاق الجيب." }
+    ];
+    
+    function smartReply(text) {
+        const lower = text.toLowerCase();
+        for (let e of emergencyDatabase) {
+            if (e.keywords.some(kw => lower.includes(kw))) {
+                return e.steps;
+            }
+        }
+        return "⚠️ لم نتمكن من التعرف على الحالة بدقة. حاول ذكر أعراض أكثر (مثل 'نزيف' أو 'إغماء' أو 'كسر أداة' أو 'ابتلاع' أو 'انثقاب الجيب الفكي'). إذا كانت الحالة خطيرة، اتصل بالمشرف فوراً.";
+    }
+    
+    // ------------------ باقي دوال الواجهة ------------------
     let currentTab = 'dashboard';
     
     function renderApp() {
-        document.getElementById('adminLoginScreen').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('appMain').style.display = 'block';
-        buildTabsAndContents();
+        buildTabs();
         activateTab(currentTab);
     }
     
-    function buildTabsAndContents() {
+    function buildTabs() {
         const tabsContainer = document.getElementById('tabsContainer');
         const contentsContainer = document.getElementById('tabContentsContainer');
         tabsContainer.innerHTML = '';
@@ -138,30 +248,33 @@
         
         const tabs = [
             { id: 'dashboard', name: '📊 لوحة التحكم' },
-            { id: 'patientsManager', name: '📋 سجل المرضى (لجميع الطلاب)' },
-            { id: 'assistant', name: '🚨 المساعد الذكي للطوارئ' },
-            { id: 'studentsPanel', name: '👥 إدارة الطلاب (ترقين/تفعيل)' }
+            { id: 'studentsList', name: '👥 الطلاب' },
+            { id: 'allPatients', name: '📋 جميع المرضى' },
+            { id: 'assistant', name: '🚨 المساعد الذكي' },
+            { id: 'addStudent', name: '➕ إضافة طالب' }
         ];
         
         tabs.forEach(tab => {
             const btn = document.createElement('button');
-            btn.classList.add('tab-btn');
+            btn.className = 'tab-btn';
             btn.innerText = tab.name;
-            btn.setAttribute('data-tab', tab.id);
-            btn.addEventListener('click', () => { activateTab(tab.id); });
+            btn.dataset.tab = tab.id;
+            btn.addEventListener('click', () => activateTab(tab.id));
             tabsContainer.appendChild(btn);
         });
         
-        // إنشاء محتوى كل تبويب
-        const dashboardDiv = createDashboardContent(); dashboardDiv.id = 'dashboard'; dashboardDiv.classList.add('tab-content');
-        const patientsDiv = createPatientsManagerContent(); patientsDiv.id = 'patientsManager'; patientsDiv.classList.add('tab-content');
-        const assistantDiv = createAssistantContent(); assistantDiv.id = 'assistant'; assistantDiv.classList.add('tab-content');
-        const studentsDiv = createStudentsPanelContent(); studentsDiv.id = 'studentsPanel'; studentsDiv.classList.add('tab-content');
+        contentsContainer.appendChild(createDashboardContent());
+        contentsContainer.appendChild(createStudentsListContent());
+        contentsContainer.appendChild(createAllPatientsContent());
+        contentsContainer.appendChild(createAssistantContent());
+        contentsContainer.appendChild(createAddStudentContent());
         
-        contentsContainer.appendChild(dashboardDiv);
-        contentsContainer.appendChild(patientsDiv);
-        contentsContainer.appendChild(assistantDiv);
-        contentsContainer.appendChild(studentsDiv);
+        document.getElementById('dashboard').id = 'dashboard';
+        document.getElementById('studentsList').id = 'studentsList';
+        document.getElementById('allPatients').id = 'allPatients';
+        document.getElementById('assistant').id = 'assistant';
+        document.getElementById('addStudent').id = 'addStudent';
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('tab-content'));
     }
     
     function activateTab(tabId) {
@@ -169,234 +282,302 @@
         const target = document.getElementById(tabId);
         if (target) target.classList.add('active');
         document.querySelectorAll('.tab-btn').forEach(btn => {
-            const t = btn.getAttribute('data-tab');
-            if (t === tabId) btn.classList.add('active');
+            if (btn.dataset.tab === tabId) btn.classList.add('active');
             else btn.classList.remove('active');
         });
         currentTab = tabId;
+        if (tabId === 'dashboard') updateDashboardStats();
+        if (tabId === 'studentsList') refreshStudentsList();
+        if (tabId === 'allPatients') refreshAllPatients();
     }
     
-    // تبويب لوحة التحكم
     function createDashboardContent() {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="card">
                 <div class="card-header"><h3>📈 ملخص العيادة</h3></div>
                 <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>👥 عدد الطلاب</h4><p style="font-size:2rem;" id="statStudents">0</p></div>
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>🦷 إجمالي المرضى</h4><p style="font-size:2rem;" id="statPatientsTotal">0</p></div>
+                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>👥 عدد الطلاب</h4><p style="font-size:2rem;" id="dashStudentsCount">0</p></div>
+                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>🦷 إجمالي المرضى</h4><p style="font-size:2rem;" id="dashPatientsCount">0</p></div>
                 </div>
             </div>
         `;
-        const updateStats = () => {
-            document.getElementById('statStudents') && (document.getElementById('statStudents').innerText = students.length);
-            let totalPatients = 0;
-            for (let id in patientsDB) totalPatients += patientsDB[id].length;
-            document.getElementById('statPatientsTotal') && (document.getElementById('statPatientsTotal').innerText = totalPatients);
-        };
-        setTimeout(updateStats, 50);
         return div;
     }
     
-    // تبويب إدارة المرضى (للمدير – يعرض كل مرضى كل طالب)
-    function createPatientsManagerContent() {
+    function updateDashboardStats() {
+        const sEl = document.getElementById('dashStudentsCount');
+        const pEl = document.getElementById('dashPatientsCount');
+        if (sEl) sEl.innerText = students.length;
+        if (pEl) {
+            let total = 0;
+            for (let id in patientsDB) total += patientsDB[id].length;
+            pEl.innerText = total;
+        }
+    }
+    
+    function createStudentsListContent() {
         const div = document.createElement('div');
-        div.innerHTML = `<div class="card"><div class="card-header"><h3>📋 قائمة جميع المرضى (حسب الطالب)</h3></div><div id="allPatientsList"></div></div>`;
-        function renderAll() {
-            const container = div.querySelector('#allPatientsList');
-            if (!container) return;
-            container.innerHTML = '';
-            for (let sid of students) {
-                const patients = patientsDB[sid.id] || [];
-                const studentDiv = document.createElement('div');
-                studentDiv.style.marginBottom = '1.5rem';
-                studentDiv.style.border = '1px solid #e0f0e3';
-                studentDiv.style.borderRadius = '20px';
-                studentDiv.style.padding = '1rem';
-                studentDiv.innerHTML = `<h4>👩‍⚕️ الطالب: ${sid.name} (رقم: ${sid.phone}) - ${sid.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</h4>`;
-                if (patients.length === 0) {
-                    studentDiv.innerHTML += '<p>لا يوجد مرضى مسجلين لهذا الطالب.</p>';
-                } else {
-                    let table = '<table><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراء</th></tr></thead><tbody>';
-                    patients.forEach(p => {
-                        table += `<tr><td>${p.name}</td><td>${p.diagnosis || '-'}</td><td>${p.phone}</td><td><button class="whatsapp-btn" data-phone="${p.phone}" data-name="${p.name}">📱 تذكير</button></td></tr>`;
-                    });
-                    table += '</tbody></table>';
-                    studentDiv.innerHTML += table;
-                }
-                container.appendChild(studentDiv);
-            }
-            // إضافة أحداث أزرار الواتساب
-            container.querySelectorAll('.whatsapp-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const name = btn.getAttribute('data-name');
-                    alert(`📲 سيتم فتح واتساب لتذكير المريض ${name}`);
-                });
+        div.innerHTML = `<div class="card"><div id="studentsListContainer"></div></div>`;
+        return div;
+    }
+    
+    function refreshStudentsList() {
+        const container = document.getElementById('studentsListContainer');
+        if (!container) return;
+        if (students.length === 0) {
+            container.innerHTML = '<p>لا يوجد طلاب مسجلون بعد. أضف طالباً من التبويب المخصص.</p>';
+            return;
+        }
+        let html = '';
+        students.forEach(student => {
+            const patientCount = patientsDB[student.id] ? patientsDB[student.id].length : 0;
+            html += `
+                <div style="border:1px solid #e0f0e3; border-radius:24px; padding:1rem; margin-bottom:1rem;">
+                    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
+                        <div><strong>${escapeHtml(student.name)}</strong> (📞 ${student.phone}) <span class="badge">${student.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</span> <span class="badge">🦷 ${patientCount} مريض</span></div>
+                        <div>
+                            <button class="btn-primary" style="background:#e76f51; margin-left:8px;" onclick="window.toggleStudentSuspend('${student.id}')">${student.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
+                            <button class="btn-primary" style="background:#aaa;" onclick="window.deleteStudentById('${student.id}')">🗑 حذف الطالب</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>مرضى هذا الطالب:</h4>
+                        ${renderPatientTableForStudent(student.id)}
+                        <button class="btn-primary" style="margin-top:8px;" onclick="window.showAddPatientForm('${student.id}')">➕ إضافة مريض لهذا الطالب</button>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+    
+    function renderPatientTableForStudent(studentId) {
+        const patients = patientsDB[studentId] || [];
+        if (patients.length === 0) return '<p>لا يوجد مرضى مسجلون لهذا الطالب.</p>';
+        let table = '<td><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراءات</th></thead><tbody>';
+        patients.forEach((p, idx) => {
+            table += `
+                <tr>
+                    <td>${escapeHtml(p.name)}</td>
+                    <td>${escapeHtml(p.diagnosis)}</td>
+                    <td>${escapeHtml(p.phone)}</td>
+                    <td>
+                        <button class="whatsapp-btn" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
+                        <button class="btn-primary" style="background:#d9534f; margin-right:5px;" onclick="window.deletePatient('${studentId}', ${idx})">🗑 حذف</button>
+                     </td>
+                </tr>
+            `;
+        });
+        table += '</tbody></table>';
+        return table;
+    }
+    
+    function createAllPatientsContent() {
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="card"><div id="allPatientsList"></div></div>`;
+        return div;
+    }
+    
+    function refreshAllPatients() {
+        const container = document.getElementById('allPatientsList');
+        if (!container) return;
+        let all = [];
+        for (let sid of students) {
+            const patients = patientsDB[sid.id] || [];
+            patients.forEach(p => {
+                all.push({ studentName: sid.name, studentPhone: sid.phone, patientName: p.name, patientPhone: p.phone, diagnosis: p.diagnosis });
             });
         }
-        renderAll();
-        // تحديث عند تغيير البيانات (سيتم استدعاء إعادة التصيير)
-        const observer = new MutationObserver(() => renderAll());
-        observer.observe(div, { childList: true, subtree: true });
+        if (all.length === 0) {
+            container.innerHTML = '<p>لا يوجد مرضى مسجلون.</p>';
+            return;
+        }
+        let html = '<table><thead><tr><th>الطالب</th><th>المريض</th><th>التشخيص</th><th>رقم واتساب المريض</th><th>إجراء</th></thead><tbody>';
+        all.forEach(a => {
+            html += `<tr>
+                        <td>${escapeHtml(a.studentName)}</td>
+                        <td>${escapeHtml(a.patientName)}</td>
+                        <td>${escapeHtml(a.diagnosis)}</td>
+                        <td>${escapeHtml(a.patientPhone)}</td>
+                        <td><button class="whatsapp-btn" onclick="window.sendWhatsapp('${a.patientPhone}', '${a.patientName}')">📱 تذكير</button></td>
+                     </tr>`;
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    }
+    
+    function createAddStudentContent() {
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <div class="card">
+                <div class="card-header"><h3>➕ إضافة طالب جديد إلى النظام</h3></div>
+                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+                    <input type="text" id="newStudentName" placeholder="اسم الطالب" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                    <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                    <button id="addNewStudentBtn" class="btn-primary">إضافة الطالب</button>
+                </div>
+                <div id="addStudentResult" style="margin-top:1rem;"></div>
+            </div>
+        `;
+        setTimeout(() => {
+            const btn = document.getElementById('addNewStudentBtn');
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    const name = document.getElementById('newStudentName').value.trim();
+                    const phone = document.getElementById('newStudentPhone').value.trim();
+                    if (name && phone) {
+                        addStudent(name, phone);
+                        document.getElementById('newStudentName').value = '';
+                        document.getElementById('newStudentPhone').value = '';
+                        document.getElementById('addStudentResult').innerHTML = '<span style="color:green;">✅ تم إضافة الطالب بنجاح</span>';
+                        refreshStudentsList();
+                        refreshAllPatients();
+                        updateDashboardStats();
+                    } else {
+                        document.getElementById('addStudentResult').innerHTML = '<span style="color:red;">❌ يرجى ملء جميع الحقول</span>';
+                    }
+                });
+            }
+        }, 10);
         return div;
     }
     
-    // المساعد الذكي (كما هو)
+    // تبويب المساعد الذكي مع زر القائمة المنبثقة
     function createAssistantContent() {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="card">
-                <div class="card-header"><h3>🚑 مساعد الطوارئ الذكي (محلي، فصحى وعامية)</h3></div>
-                <div id="assistantChat" style="background:#f8fefb; border-radius:24px; padding:1rem;">
-                    <div id="chatMessages" style="height:200px; overflow-y:auto; margin-bottom:1rem;"></div>
-                    <div style="display:flex;"><input type="text" id="emergencyInput" placeholder="مثال: المريض ينزف بشدة..." style="flex:1; padding:10px; border-radius:60px; border:1px solid #cde5d4;"><button id="sendEmergBtn" class="btn-primary">استشارة</button></div>
-                    <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
-                        <button class="btn-outline-light" data-quick="نزيف حاد بعد القلع">🩸 نزيف</button>
-                        <button class="btn-outline-light" data-quick="المريض غاب عن الوعي">😵 إغماء</button>
-                        <button class="btn-outline-light" data-quick="كسر الإبرة داخل الفم">⚠️ كسر إبرة</button>
+                <div class="card-header">
+                    <h3>🚑 المساعد الذكي للطوارئ (محلي، فصحى وعامية)</h3>
+                    <button id="showEmergencyModalBtn" class="btn-primary">📋 قائمة حالات الطوارئ</button>
+                </div>
+                <div style="background:#f8fefb; border-radius:24px; padding:1rem;">
+                    <div id="chatMessages" style="height:280px; overflow-y:auto; margin-bottom:1rem; border:1px solid #e0f0e3; border-radius:20px; padding:10px;"></div>
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="emergencyInput" placeholder="مثال: المريض ينزف بشدة..." style="flex:1; padding:10px; border-radius:60px; border:1px solid #cde5d4;">
+                        <button id="sendEmergBtn" class="btn-primary">استشارة</button>
                     </div>
                 </div>
             </div>
         `;
-        const emergencyDB = [
-            { keywords: ["نزيف","ينزف","دم"], steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا للمضمضة. استدع مشرفاً إذا استمر." },
-            { keywords: ["اغمى","غاب عن الوعي","فقد وعيه"], steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً فوراً." },
-            { keywords: ["كسر الإبرة","الأبرة اتكسرت"], steps: "⚠️ لا تحاول بالإصبع، ثبّت المريض، استخدم ملقط معقم، أشعة، استدعاء جراح." },
-            { keywords: ["حساسية","لاتكس","تورم"], steps: "🤚 أزل القفازات، مضاد هيستامين، مراقبة التنفس، استدع مشرفاً." }
-        ];
-        function smartReply(text) {
-            let lower = text.toLowerCase();
-            for(let e of emergencyDB) {
-                if(e.keywords.some(kw => lower.includes(kw))) return e.steps + "\n🏥 تابع الحالة واستشر مشرفاً.";
-            }
-            return "⚠️ لم نتعرف على الحالة. اشرح أكثر (نزيف/إغماء/كسر). إذا كانت خطيرة اتصل بالمشرف.";
-        }
+        
         const chatDiv = div.querySelector('#chatMessages');
-        function addMsg(txt, isUser) {
+        function addMessage(txt, isUser) {
             const msg = document.createElement('div');
             msg.className = 'message-bubble';
             msg.style.textAlign = isUser ? 'left' : 'right';
             msg.style.background = isUser ? '#daf4e4' : '#ffffff';
-            msg.innerHTML = `<strong>${isUser ? 'أنت' : 'المساعد'}:</strong> ${txt}`;
+            msg.style.border = '1px solid #cfe6d6';
+            msg.innerHTML = `<strong>${isUser ? '&#128172; أنت' : '&#129302; المساعد'}:</strong> ${txt.replace(/\n/g,'<br>')}`;
             chatDiv.appendChild(msg);
             chatDiv.scrollTop = chatDiv.scrollHeight;
         }
+        
         const input = div.querySelector('#emergencyInput');
         const sendBtn = div.querySelector('#sendEmergBtn');
         const sendHandler = () => {
-            let val = input.value.trim();
-            if(!val) return;
-            addMsg(val, true);
+            const val = input.value.trim();
+            if (!val) return;
+            addMessage(val, true);
             const reply = smartReply(val);
-            addMsg(reply, false);
+            addMessage(reply, false);
             input.value = '';
         };
         sendBtn.addEventListener('click', sendHandler);
-        input.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendHandler(); });
-        div.querySelectorAll('[data-quick]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                input.value = btn.getAttribute('data-quick');
-                sendHandler();
+        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendHandler(); });
+        addMessage("مرحباً! أنا مساعد الطوارئ الذكي. اكتب المشكلة بالعامية أو الفصحى (مثل 'انكسار أداة ضمن القناة' أو 'ابتلاع أداة' أو 'احتراق كيميائي' أو 'انثقاب الجيب الفكي') وسأعطيك الخطوات العاجلة.", false);
+        
+        // زر فتح القائمة المنبثقة
+        const modalBtn = div.querySelector('#showEmergencyModalBtn');
+        if (modalBtn) {
+            modalBtn.addEventListener('click', () => {
+                const modal = document.getElementById('emergencyModal');
+                const listContainer = document.getElementById('emergencyList');
+                if (listContainer) {
+                    listContainer.innerHTML = '';
+                    emergencyDatabase.forEach(emergency => {
+                        const title = emergency.keywords[0]; // أخذ أول كلمة مفتاحية كعنوان
+                        const divItem = document.createElement('div');
+                        divItem.className = 'emergency-item';
+                        divItem.innerText = `• ${title}`;
+                        divItem.addEventListener('click', () => {
+                            input.value = title;
+                            sendHandler();
+                            modal.style.display = 'none';
+                        });
+                        listContainer.appendChild(divItem);
+                    });
+                }
+                modal.style.display = 'flex';
             });
-        });
-        addMsg("مرحباً! أنا مساعد الطوارئ. صف المشكلة (نزيف، إغماء، كسر أداة...).", false);
+        }
         return div;
     }
     
-    // تبويب إدارة الطلاب (ترقين/تفعيل + إضافة طالب)
-    function createStudentsPanelContent() {
-        const div = document.createElement('div');
-        function renderStudents() {
-            div.innerHTML = `
-                <div class="card">
-                    <div class="card-header"><h3>➕ إضافة طالب جديد</h3></div>
-                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                        <input type="text" id="newStudentName" placeholder="اسم الطالب" style="flex:1; padding:8px; border-radius:40px; border:1px solid #ccc;">
-                        <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:1; padding:8px; border-radius:40px; border:1px solid #ccc;">
-                        <button id="addStudentBtn" class="btn-primary">إضافة</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><h3>👥 قائمة الطلاب (ترقين / تفعيل)</h3></div>
-                    <div id="studentsList"></div>
-                </div>
-            `;
-            const listDiv = div.querySelector('#studentsList');
-            if (listDiv) {
-                listDiv.innerHTML = '';
-                students.forEach(std => {
-                    const row = document.createElement('div');
-                    row.className = 'user-row';
-                    row.innerHTML = `
-                        <div><strong>${std.name}</strong> (${std.phone}) <span class="admin-badge">${std.status === 'active' ? 'نشط' : 'مُرقن'}</span></div>
-                        <div>
-                            <button class="btn-primary" data-toggle="${std.id}" style="background:#e76f51; margin-left:6px;">${std.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
-                            <button class="btn-primary" data-delete="${std.id}" style="background:#aaa;">🗑 حذف</button>
-                        </div>
-                    `;
-                    listDiv.appendChild(row);
-                });
-                // ربط الأحداث
-                div.querySelectorAll('[data-toggle]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const id = btn.getAttribute('data-toggle');
-                        toggleSuspend(id);
-                        renderStudents();
-                    });
-                });
-                div.querySelectorAll('[data-delete]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        if(confirm('حذف الطالب سيؤدي إلى حذف جميع مرضاه. هل أنت متأكد؟')) {
-                            const id = btn.getAttribute('data-delete');
-                            deleteStudent(id);
-                            renderStudents();
-                        }
-                    });
-                });
-            }
-            const addBtn = div.querySelector('#addStudentBtn');
-            if(addBtn) {
-                addBtn.addEventListener('click', () => {
-                    const name = div.querySelector('#newStudentName').value.trim();
-                    const phone = div.querySelector('#newStudentPhone').value.trim();
-                    if(name && phone) {
-                        addStudent(name, phone);
-                        div.querySelector('#newStudentName').value = '';
-                        div.querySelector('#newStudentPhone').value = '';
-                        renderStudents();
-                    } else alert('يرجى إدخال الاسم ورقم الهاتف');
-                });
-            }
-        }
-        renderStudents();
-        return div;
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
     }
+    
+    // ربط الوظائف العامة
+    window.toggleStudentSuspend = (id) => { toggleSuspend(id); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); };
+    window.deleteStudentById = (id) => { if (confirm('هل أنت متأكد من حذف هذا الطالب وجميع مرضاه؟')) { deleteStudent(id); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); } };
+    window.deletePatient = (studentId, idx) => { if (confirm('حذف المريض؟')) { deletePatient(studentId, idx); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); } };
+    window.showAddPatientForm = (studentId) => {
+        const name = prompt('اسم المريض:');
+        if (!name) return;
+        const phone = prompt('رقم واتساب المريض:');
+        if (!phone) return;
+        const diag = prompt('التشخيص (اختياري):');
+        addPatientToStudent(studentId, name, phone, diag || '');
+        refreshStudentsList();
+        refreshAllPatients();
+        updateDashboardStats();
+    };
+    window.sendWhatsapp = (phone, name) => {
+        alert(`📲 سيتم فتح واتساب لتذكير المريض ${name} على الرقم ${phone}. (يمكن إرسال رسالة تذكير بالدواء أو الموعد)`);
+    };
     
     // تسجيل الدخول
-    document.getElementById('adminLoginBtn').addEventListener('click', () => {
-        const pass = document.getElementById('adminPassword').value;
-        if (pass === ADMIN_PASS) {
+    document.getElementById('loginBtn').addEventListener('click', () => {
+        const pass = document.getElementById('adminPass').value;
+        if (pass === ADMIN_PASSWORD) {
             renderApp();
         } else {
-            alert('كلمة السر غير صحيحة');
+            document.getElementById('loginError').innerText = 'كلمة السر غير صحيحة';
         }
     });
-    
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        localStorage.clear(); // اختياري، مسح الجلسة
+        localStorage.clear();
         location.reload();
     });
     
-    // إضافة بيانات تجريبية أولية (للتجربة فقط) - بدون أسماء حقيقية
+    // نافذة الطوارئ المنبثقة
+    const modal = document.getElementById('emergencyModal');
+    if (modal) {
+        document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        });
+    }
+    
+    // بيانات تجريبية أولية
     if (students.length === 0) {
-        addStudent('طالب تجريبي 1', '0550000001');
-        addStudent('طالب تجريبي 2', '0550000002');
-        // إضافة بعض المرضى
-        let s1 = students[0]?.id;
-        let s2 = students[1]?.id;
-        if(s1) patientsDB[s1] = [{ name: 'مريض أول', phone: '0501111111', diagnosis: 'حشو عصب' }];
-        if(s2) patientsDB[s2] = [{ name: 'مريض ثان', phone: '0502222222', diagnosis: 'قلع ضرس' }];
-        savePatients();
+        addStudent('طالب تجريبي 1', '0511111111');
+        addStudent('طالب تجريبي 2', '0522222222');
+        const s1 = students[0]?.id;
+        const s2 = students[1]?.id;
+        if (s1) addPatientToStudent(s1, 'أحمد المريض', '0501234567', 'فحص روتيني');
+        if (s1) addPatientToStudent(s1, 'نورا', '0507654321', 'علاج عصب');
+        if (s2) addPatientToStudent(s2, 'سعيد', '0588888888', 'قلع ضرس');
     }
 </script>
 </body>
