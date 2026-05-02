@@ -9,28 +9,23 @@
         body { background: #ecf9f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
         
-        /* شاشة الدخول */
+        /* شاشة الدخول الموحدة */
         .login-card {
             background: white;
             border-radius: 48px;
-            max-width: 360px;
+            max-width: 400px;
             margin: 2rem auto;
             padding: 2rem;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-        .login-card h2 { color: #1f6e43; font-size: 2rem; margin-bottom: 0.5rem; }
-        .login-card input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 60px;
-            border: 1px solid #cbdfd1;
-            font-size: 1rem;
-            text-align: center;
-        }
+        .role-buttons { display: flex; gap: 1rem; margin: 1rem 0; }
+        .role-btn { flex: 1; padding: 12px; border-radius: 60px; border: none; background: #e0f3e8; color: #1f6e43; font-weight: bold; cursor: pointer; }
+        .role-btn.active { background: #2b9e5e; color: white; }
+        .login-field { display: none; margin-top: 1rem; }
+        .login-field input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 60px; border: 1px solid #cbdfd1; }
         .btn { background: #2b9e5e; border: none; padding: 12px; border-radius: 50px; color: white; font-weight: bold; width: 100%; cursor: pointer; }
-        .error { color: #c5452f; margin-top: 8px; font-size: 0.85rem; }
+        .error { color: #c5452f; margin-top: 8px; }
         
         /* التطبيق الرئيسي */
         .app-main { background: white; border-radius: 40px; overflow: hidden; display: none; }
@@ -39,136 +34,84 @@
         .logo h1::before { content: "🦷"; }
         .logout-btn { background: none; border: none; color: #c5452f; font-weight: bold; cursor: pointer; font-size: 1rem; }
         .tabs { display: flex; gap: 0.25rem; background: #f9fefb; padding: 0.5rem 2rem 0 2rem; border-bottom: 1px solid #cde5d4; flex-wrap: wrap; }
-        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; transition: 0.2s; }
+        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; }
         .tab-btn.active { background: white; color: #1f6e43; border-bottom: 3px solid #2b9e5e; }
-        .tab-content { display: none; padding: 2rem; animation: fade 0.2s ease; }
+        .tab-content { display: none; padding: 2rem; animation: fade 0.2s; }
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
         .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1.8rem; }
-        .card-header { display: flex; justify-content: space-between; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
-        .btn-primary { background: #2b9e5e; padding: 0.5rem 1.2rem; border-radius: 40px; border: none; color: white; font-weight: 600; cursor: pointer; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
+        .btn-primary { background: #2b9e5e; padding: 12px 20px; border-radius: 40px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 1rem; min-width: 120px; }
+        .btn-danger { background: #e76f51; }
+        .btn-whatsapp { background: #25D366; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px 5px; border-bottom: 1px solid #eef3ec; text-align: right; }
-        .whatsapp-btn { background: #25D366; border: none; color: white; padding: 4px 12px; border-radius: 40px; cursor: pointer; font-size: 0.8rem; }
-        .message-bubble { background: #eef6f2; border-radius: 20px; padding: 10px 16px; margin: 8px 0; }
-        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #deecdf; flex-wrap: wrap; gap: 8px; }
-        .badge { background: #f4e9cd; padding: 2px 12px; border-radius: 30px; font-size: 0.75rem; }
+        th, td { padding: 12px 8px; border-bottom: 1px solid #eef3ec; text-align: right; }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #deecdf; flex-wrap: wrap; gap: 10px; }
+        .badge { background: #f4e9cd; padding: 5px 12px; border-radius: 30px; font-size: 0.8rem; }
         footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; margin-top: 1rem; }
-        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; } .card-header { flex-direction: column; } }
         
-        /* قائمة حالات الطوارئ المنبثقة */
-        .emergency-list-btn {
-            background: #2b9e5e;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 32px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80%;
-            overflow-y: auto;
-            padding: 1.5rem;
-            position: relative;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #def0e2;
-        }
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #888;
-        }
-        .emergency-item {
-            padding: 12px;
-            margin: 6px 0;
-            background: #f9fefb;
-            border-radius: 60px;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid #e1f0e4;
-        }
-        .emergency-item:hover { background: #e0f3e8; }
+        /* بطاقات الطوارئ */
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .emergency-card { background: #f9fefb; border: 1px solid #cde5d4; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; transition: 0.2s; }
+        .emergency-card:hover { background: #e0f3e8; transform: translateY(-3px); }
+        .emergency-card h4 { color: #1f6e43; margin-bottom: 0.5rem; }
+        .emergency-card p { font-size: 0.8rem; color: #4a6a5e; }
+        .chat-area { background: #f8fefb; border-radius: 24px; padding: 1rem; margin-top: 1.5rem; }
+        .message-bubble { background: #eef6f2; border-radius: 20px; padding: 12px 16px; margin: 8px 0; }
+        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; } .emergency-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
 <div class="wrapper">
-    <!-- شاشة دخول المدير -->
+    <!-- شاشة الدخول الموحدة -->
     <div id="loginScreen" class="login-card">
         <h2>DS ASSISTANCE</h2>
         <p>مساعد الطالب الطبيب</p>
-        <input type="password" id="adminPass" placeholder="كلمة السر" autocomplete="off">
-        <button class="btn" id="loginBtn">دخول</button>
+        <div class="role-buttons">
+            <button id="adminRoleBtn" class="role-btn active">👨‍⚕️ مدير</button>
+            <button id="studentRoleBtn" class="role-btn">👩‍🎓 طالب</button>
+        </div>
+        <div id="adminLoginFields" class="login-field">
+            <input type="password" id="adminPassword" placeholder="كلمة السر">
+        </div>
+        <div id="studentLoginFields" class="login-field" style="display:none;">
+            <input type="tel" id="studentPhone" placeholder="رقم الهاتف">
+            <input type="password" id="studentPassword" placeholder="كلمة السر">
+        </div>
+        <button id="loginActionBtn" class="btn">دخول</button>
         <div id="loginError" class="error"></div>
     </div>
 
-    <!-- التطبيق الرئيسي -->
+    <!-- التطبيق الرئيسي (سيتم استخدامه للمدير أو للطالب حسب الدخول) -->
     <div id="appMain" class="app-main">
         <div class="header">
-            <div class="logo"><h1>DS ASSISTANCE</h1><small>مساعد الطالب الطبيب</small></div>
+            <div class="logo"><h1>DS ASSISTANCE</h1><small id="userRoleLabel"></small></div>
             <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
         </div>
-        <div class="tabs" id="tabsContainer"></div>
-        <div id="tabContentsContainer"></div>
+        <div id="dynamicContent"><!-- سيتم ملؤه بالجافا سكريبت --></div>
         <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 13+ حالة طوارئ</footer>
     </div>
 </div>
 
-<!-- نافذة منبثقة لحالات الطوارئ -->
-<div id="emergencyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>🚨 حالات الطوارئ</h3>
-            <button class="close-modal" id="closeModalBtn">&times;</button>
-        </div>
-        <div id="emergencyList"></div>
-    </div>
-</div>
-
 <script>
-    // كلمة السر الثابتة للمدير
-    const ADMIN_PASSWORD = "salem1959";
+    // ------------------- بيانات التخزين (محاكاة قاعدة بيانات) -------------------
+    let students = JSON.parse(localStorage.getItem('ds_students')) || [];
+    // كل طالب له مجموعة مرضى (patients)
+    let patientsDB = JSON.parse(localStorage.getItem('ds_patients')) || {};
     
-    // بيانات التخزين المحلي
-    let students = JSON.parse(localStorage.getItem('sanad_students')) || [];
-    let patientsDB = JSON.parse(localStorage.getItem('sanad_patients')) || {};
+    // حفظ الدوال
+    function saveStudents() { localStorage.setItem('ds_students', JSON.stringify(students)); }
+    function savePatients() { localStorage.setItem('ds_patients', JSON.stringify(patientsDB)); }
     
-    function saveStudents() { localStorage.setItem('sanad_students', JSON.stringify(students)); }
-    function savePatients() { localStorage.setItem('sanad_patients', JSON.stringify(patientsDB)); }
-    
-    // إضافة طالب
-    function addStudent(name, phone) {
-        const id = 's_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-        students.push({ id, name, phone, status: 'active', createdAt: new Date().toISOString() });
+    // إضافة طالب (للمدير)
+    function addStudent(name, phone, password) {
+        if (students.find(s => s.phone === phone)) return false;
+        const id = 's_' + Date.now();
+        students.push({ id, name, phone, password, status: 'active' });
         saveStudents();
         if (!patientsDB[id]) patientsDB[id] = [];
         savePatients();
-        return id;
+        return true;
     }
     
     function deleteStudent(id) {
@@ -184,167 +127,127 @@
         saveStudents();
     }
     
-    function addPatientToStudent(studentId, patientName, patientPhone, diagnosis) {
+    // دوال إدارة المرضى (خاصة بالطالب)
+    function addPatientToStudent(studentId, name, phone, diagnosis) {
         if (!patientsDB[studentId]) patientsDB[studentId] = [];
-        patientsDB[studentId].push({
-            name: patientName,
-            phone: patientPhone,
-            diagnosis: diagnosis || 'بدون تشخيص',
-            addedAt: new Date().toISOString()
-        });
+        patientsDB[studentId].push({ name, phone, diagnosis: diagnosis || '', addedAt: new Date() });
         savePatients();
     }
     
-    function deletePatient(studentId, patientIndex) {
+    function deletePatient(studentId, index) {
         if (patientsDB[studentId]) {
-            patientsDB[studentId].splice(patientIndex, 1);
+            patientsDB[studentId].splice(index, 1);
             savePatients();
         }
     }
     
-    // ------------------ المساعد الذكي مع حالات الطوارئ الجديدة ------------------
-    const emergencyDatabase = [
-        { keywords: ["نزيف","ينزف","دم","دمعة"], steps: "🩸 الخطوات: اضغط بشاش معقم لمدة 5 دقائق، استخدم إسفنجة جيلاتين، لا تسمح للمريض بالمضمضة. إذا استمر النزيف أكثر من 20 دقيقة استدع مشرفاً فوراً." },
-        { keywords: ["اغمى","غاب عن الوعي","فقد وعيه","وقع","إغماء"], steps: "😵 الإغماء: افتح المجرى الهوائي، ارفع الرجلين لأعلى، أرخِ الملابس الضيقة، نادِ مشرفاً فوراً." },
-        { keywords: ["كسر الإبرة","الأبرة اتكسرت","إبرة مكسورة"], steps: "⚠️ كسر إبرة التخدير: لا تحاول الإخراج بالأصابع، ثبّت المريض، استخدم ملقطاً معقماً إذا كان الجزء ظاهراً، أرسل لأشعة، استدع مشرفاً فوراً." },
-        { keywords: ["حساسية","لاتكس","تورم","حكة","طفح"], steps: "🤚 حساسية اللاتكس: أزل القفازات فوراً، استخدم قفازات خالية من اللاتكس، أعط مضاد هيستامين إذا متوفر، راقب التنفس، استدع مشرفاً." },
-        // الحالات الجديدة المطلوبة:
-        { keywords: ["انكسار أداة","كسر أداة","أداة مكسورة","انكسار ضمن القناة"], steps: "🛠️ انكسار أداة ضمن القناة الجذرية: لا تحاول إخراجها بدون تصوير، خذ أشعة فورية، أشر للمريض بالحالة، استدع مشرفاً مختصاً لإزالة الأداة." },
-        { keywords: ["ابتلاع اداة","بلع أداة","ابتلاع","بلع"], steps: "⚠️ ابتلاع أداة (مثل البروي، الإبرة، السدادة): تهدئة المريض، لا تسبب تقيؤ، أرسل لأشعة صدر وبطن فوراً، استدع مشرفاً واختصاصي جراحة." },
-        { keywords: ["احتراق كيميائي","حرق كيميائي","مادة كيميائية","حريق كيميائي"], steps: "🔥 احتراق كيميائي: اغسل المنطقة بكمية كبيرة من الماء لمدة 20 دقيقة، لا تستخدم مواد معادلة، انزع القفازات الملوثة، استدع مشرفاً، سجل المادة المسببة." },
-        { keywords: ["طفل غير متعاون","طفل يبكي","طفل يعض","طفل عصبي"], steps: "🧸 طفل غير متعاون: استخدم تقنية أخبر-أظهر-نفذ، كافئ السلوك الجيد، استخدم لغة بسيطة، قد تحتاج لتثبيت الطفل بلطف مع موافقة ولي الأمر، استدع مشرفاً للمساعدة." },
-        { keywords: ["جرح لسان","تمزق لسان","لسان مجروح"], steps: "👅 جرح اللسان: نظف بلطف بمحلول ملحي، اضغط بشاش معقم لوقف النزيف، إذا كان الجرح عميقاً أو ينزف بشدة، أرسل للمستشفى لغرز محتمل." },
-        { keywords: ["جرح شفة","تمزق شفة","شفة مجروحة"], steps: "👄 جرح الشفة: نظف بالماء، ضغط بارد لتقليل التورم، إذا كان الجرح نافذاً (يخترق الشفة) أو ينزف بشدة، أرسل للمستشفى." },
-        { keywords: ["خدر العصب الوجهي","خدر الوجه","شلل العصب الوجهي","تخدير الوجه"], steps: "😐 خدر العصب الوجهي أو شلل بيل: غالباً مؤقت بسبب التخدير الموضعي. طمئن المريض، راقب التنفس، أبلغ المشرف، قد يحتاج متابعة عصبية." },
-        { keywords: ["تجاوز ذروة السن","مواد حاشية زائدة","فائض مواد","overfill"], steps: "📏 تجاوز المواد الحاشية لقمة السن: خذ أشعة لتحديد المدى، لا تحاول إزالة المواد دون إرشاد، أبلغ المشرف فوراً، راقب الأعراض (ألم، التهاب، ورم)." },
-        { keywords: ["انثقاب الجيب الفكي","ثقب الجيب الفكي","اتصال بين الفم والجيوب","oroantral"], steps: "🕳️ انثقاب الجيب الفكي: لا تنظف القناة، لا تضع ضغط هواء، وصف مضاد حيوي، تجنب العطس والفطس، أرسل للمشرف لإغلاق الجيب." }
+    // ------------------- قاعدة بيانات المساعد الذكي -------------------
+    const emergencyCases = [
+        { title: "نزيف حاد", keywords: ["نزيف","ينزف"], steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة. استدع مشرفاً إذا استمر." },
+        { title: "إغماء", keywords: ["اغمى","غاب عن الوعي"], steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً." },
+        { title: "كسر إبرة تخدير", keywords: ["كسر الإبرة","الأبرة اتكسرت"], steps: "⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم، أشعة، استدع مشرفاً." },
+        { title: "حساسية لاتكس", keywords: ["حساسية","لاتكس","تورم"], steps: "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، استدع مشرفاً." },
+        { title: "انكسار أداة ضمن القناة", keywords: ["انكسار أداة","كسر أداة ضمن القناة"], steps: "🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف، لا تكمل العلاج." },
+        { title: "ابتلاع أداة", keywords: ["ابتلاع اداة","بلع أداة"], steps: "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن فوراً، استدع مشرفاً." },
+        { title: "احتراق كيميائي", keywords: ["احتراق كيميائي","حرق كيميائي"], steps: "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً." },
+        { title: "طفل غير متعاون", keywords: ["طفل غير متعاون","طفل يبكي"], steps: "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، قد تحتاج تثبيت بلطف، استدع مشرفاً." },
+        { title: "جرح لسان", keywords: ["جرح لسان"], steps: "👅 نظف بمحلول ملحي، اضغط بشاش، إذا كان عميقاً أرسل للمستشفى." },
+        { title: "جرح شفة", keywords: ["جرح شفة"], steps: "👄 نظف، ضغط بارد، إذا كان نافذاً أرسل للمستشفى." },
+        { title: "خدر العصب الوجهي", keywords: ["خدر العصب الوجهي","شلل الوجه"], steps: "😐 طمئن المريض، عادة مؤقت، راقب التنفس، أبلغ المشرف." },
+        { title: "تجاوز ذروة السن بالمواد", keywords: ["تجاوز ذروة السن","overfill"], steps: "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب الأعراض." },
+        { title: "انثقاب الجيب الفكي", keywords: ["انثقاب الجيب الفكي","oroantral"], steps: "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف." }
     ];
     
-    function smartReply(text) {
-        const lower = text.toLowerCase();
-        for (let e of emergencyDatabase) {
-            if (e.keywords.some(kw => lower.includes(kw))) {
-                return e.steps;
-            }
-        }
-        return "⚠️ لم نتمكن من التعرف على الحالة بدقة. حاول ذكر أعراض أكثر (مثل 'نزيف' أو 'إغماء' أو 'كسر أداة' أو 'ابتلاع' أو 'انثقاب الجيب الفكي'). إذا كانت الحالة خطيرة، اتصل بالمشرف فوراً.";
+    function getEmergencyResponse(title) {
+        const found = emergencyCases.find(e => e.title === title);
+        return found ? found.steps : "لم نتعرف على الحالة.";
     }
     
-    // ------------------ باقي دوال الواجهة ------------------
-    let currentTab = 'dashboard';
+    // ------------------- دوال بناء الواجهة حسب الدور -------------------
+    let currentUser = null; // يمكن أن يكون { role: 'admin' } أو { role: 'student', id, name, phone }
     
-    function renderApp() {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appMain').style.display = 'block';
-        buildTabs();
-        activateTab(currentTab);
-    }
-    
-    function buildTabs() {
-        const tabsContainer = document.getElementById('tabsContainer');
-        const contentsContainer = document.getElementById('tabContentsContainer');
-        tabsContainer.innerHTML = '';
-        contentsContainer.innerHTML = '';
-        
-        const tabs = [
-            { id: 'dashboard', name: '📊 لوحة التحكم' },
-            { id: 'studentsList', name: '👥 الطلاب' },
-            { id: 'allPatients', name: '📋 جميع المرضى' },
-            { id: 'assistant', name: '🚨 المساعد الذكي' },
-            { id: 'addStudent', name: '➕ إضافة طالب' }
-        ];
-        
-        tabs.forEach(tab => {
-            const btn = document.createElement('button');
-            btn.className = 'tab-btn';
-            btn.innerText = tab.name;
-            btn.dataset.tab = tab.id;
-            btn.addEventListener('click', () => activateTab(tab.id));
-            tabsContainer.appendChild(btn);
-        });
-        
-        contentsContainer.appendChild(createDashboardContent());
-        contentsContainer.appendChild(createStudentsListContent());
-        contentsContainer.appendChild(createAllPatientsContent());
-        contentsContainer.appendChild(createAssistantContent());
-        contentsContainer.appendChild(createAddStudentContent());
-        
-        document.getElementById('dashboard').id = 'dashboard';
-        document.getElementById('studentsList').id = 'studentsList';
-        document.getElementById('allPatients').id = 'allPatients';
-        document.getElementById('assistant').id = 'assistant';
-        document.getElementById('addStudent').id = 'addStudent';
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('tab-content'));
-    }
-    
-    function activateTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-        const target = document.getElementById(tabId);
-        if (target) target.classList.add('active');
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            if (btn.dataset.tab === tabId) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-        currentTab = tabId;
-        if (tabId === 'dashboard') updateDashboardStats();
-        if (tabId === 'studentsList') refreshStudentsList();
-        if (tabId === 'allPatients') refreshAllPatients();
-    }
-    
-    function createDashboardContent() {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <div class="card">
-                <div class="card-header"><h3>📈 ملخص العيادة</h3></div>
-                <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>👥 عدد الطلاب</h4><p style="font-size:2rem;" id="dashStudentsCount">0</p></div>
-                    <div style="flex:1; background:#edf7f0; border-radius:24px; padding:1rem;"><h4>🦷 إجمالي المرضى</h4><p style="font-size:2rem;" id="dashPatientsCount">0</p></div>
+    function renderAdminDashboard() {
+        const container = document.getElementById('dynamicContent');
+        container.innerHTML = `
+            <div class="tabs" id="adminTabs">
+                <button class="tab-btn active" data-tab="adminStudents">👥 إدارة الطلاب</button>
+                <button class="tab-btn" data-tab="adminAssistant">🚨 المساعد الذكي</button>
+            </div>
+            <div id="adminTabContents">
+                <div class="tab-content active" id="adminStudents">
+                    <div class="card">
+                        <div class="card-header"><h3>➕ إضافة طالب جديد</h3></div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <input type="text" id="stdName" placeholder="الاسم" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                            <input type="tel" id="stdPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                            <input type="password" id="stdPassword" placeholder="كلمة السر" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                            <button id="addStudentBtn" class="btn-primary">إضافة طالب</button>
+                        </div>
+                        <div id="addResult" style="margin-top:10px;"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>📋 قائمة الطلاب</h3></div>
+                        <div id="studentsListAdmin"></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="adminAssistant">
+                    <div class="card">
+                        <div class="card-header"><h3>🚑 المساعد الذكي للطوارئ</h3></div>
+                        <div class="emergency-grid" id="emergencyGridAdmin"></div>
+                        <div class="chat-area" id="chatAreaAdmin">
+                            <div id="chatMessagesAdmin" style="height:200px; overflow-y:auto; margin-bottom:10px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
-        return div;
+        // بناء بطاقات الطوارئ
+        buildEmergencyGrid('emergencyGridAdmin', 'chatMessagesAdmin');
+        // عرض قائمة الطلاب
+        refreshStudentsListAdmin();
+        // أحداث التبويبات
+        document.querySelectorAll('#adminTabs .tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                document.querySelectorAll('#adminTabContents .tab-content').forEach(tc => tc.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                document.querySelectorAll('#adminTabs .tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        // إضافة طالب
+        document.getElementById('addStudentBtn').addEventListener('click', () => {
+            const name = document.getElementById('stdName').value.trim();
+            const phone = document.getElementById('stdPhone').value.trim();
+            const pass = document.getElementById('stdPassword').value.trim();
+            if (name && phone && pass) {
+                if (addStudent(name, phone, pass)) {
+                    document.getElementById('addResult').innerHTML = '<span style="color:green;">✅ تم إضافة الطالب</span>';
+                    document.getElementById('stdName').value = '';
+                    document.getElementById('stdPhone').value = '';
+                    document.getElementById('stdPassword').value = '';
+                    refreshStudentsListAdmin();
+                } else {
+                    document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ رقم الهاتف موجود مسبقاً</span>';
+                }
+            } else {
+                document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ يرجى ملء جميع الحقول</span>';
+            }
+        });
     }
     
-    function updateDashboardStats() {
-        const sEl = document.getElementById('dashStudentsCount');
-        const pEl = document.getElementById('dashPatientsCount');
-        if (sEl) sEl.innerText = students.length;
-        if (pEl) {
-            let total = 0;
-            for (let id in patientsDB) total += patientsDB[id].length;
-            pEl.innerText = total;
-        }
-    }
-    
-    function createStudentsListContent() {
-        const div = document.createElement('div');
-        div.innerHTML = `<div class="card"><div id="studentsListContainer"></div></div>`;
-        return div;
-    }
-    
-    function refreshStudentsList() {
-        const container = document.getElementById('studentsListContainer');
+    function refreshStudentsListAdmin() {
+        const container = document.getElementById('studentsListAdmin');
         if (!container) return;
-        if (students.length === 0) {
-            container.innerHTML = '<p>لا يوجد طلاب مسجلون بعد. أضف طالباً من التبويب المخصص.</p>';
-            return;
-        }
+        if (students.length === 0) { container.innerHTML = '<p>لا يوجد طلاب</p>'; return; }
         let html = '';
-        students.forEach(student => {
-            const patientCount = patientsDB[student.id] ? patientsDB[student.id].length : 0;
+        students.forEach(s => {
             html += `
-                <div style="border:1px solid #e0f0e3; border-radius:24px; padding:1rem; margin-bottom:1rem;">
-                    <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; margin-bottom:1rem;">
-                        <div><strong>${escapeHtml(student.name)}</strong> (📞 ${student.phone}) <span class="badge">${student.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</span> <span class="badge">🦷 ${patientCount} مريض</span></div>
-                        <div>
-                            <button class="btn-primary" style="background:#e76f51; margin-left:8px;" onclick="window.toggleStudentSuspend('${student.id}')">${student.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
-                            <button class="btn-primary" style="background:#aaa;" onclick="window.deleteStudentById('${student.id}')">🗑 حذف الطالب</button>
-                        </div>
-                    </div>
+                <div class="user-row">
+                    <div><strong>${escapeHtml(s.name)}</strong> (📞 ${s.phone}) <span class="badge">${s.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</span></div>
                     <div>
-                        <h4>مرضى هذا الطالب:</h4>
-                        ${renderPatientTableForStudent(student.id)}
-                        <button class="btn-primary" style="margin-top:8px;" onclick="window.showAddPatientForm('${student.id}')">➕ إضافة مريض لهذا الطالب</button>
+                        <button class="btn-primary btn-danger" onclick="window.toggleSuspendStudent('${s.id}')" style="margin-left:8px;">${s.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
+                        <button class="btn-primary" style="background:#aaa;" onclick="window.deleteStudentById('${s.id}')">🗑 حذف</button>
                     </div>
                 </div>
             `;
@@ -352,232 +255,188 @@
         container.innerHTML = html;
     }
     
-    function renderPatientTableForStudent(studentId) {
-        const patients = patientsDB[studentId] || [];
-        if (patients.length === 0) return '<p>لا يوجد مرضى مسجلون لهذا الطالب.</p>';
-        let table = '<td><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراءات</th></thead><tbody>';
-        patients.forEach((p, idx) => {
-            table += `
-                <tr>
-                    <td>${escapeHtml(p.name)}</td>
-                    <td>${escapeHtml(p.diagnosis)}</td>
-                    <td>${escapeHtml(p.phone)}</td>
-                    <td>
-                        <button class="whatsapp-btn" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
-                        <button class="btn-primary" style="background:#d9534f; margin-right:5px;" onclick="window.deletePatient('${studentId}', ${idx})">🗑 حذف</button>
-                     </td>
-                </tr>
-            `;
-        });
-        table += '</tbody></table>';
-        return table;
-    }
-    
-    function createAllPatientsContent() {
-        const div = document.createElement('div');
-        div.innerHTML = `<div class="card"><div id="allPatientsList"></div></div>`;
-        return div;
-    }
-    
-    function refreshAllPatients() {
-        const container = document.getElementById('allPatientsList');
-        if (!container) return;
-        let all = [];
-        for (let sid of students) {
-            const patients = patientsDB[sid.id] || [];
-            patients.forEach(p => {
-                all.push({ studentName: sid.name, studentPhone: sid.phone, patientName: p.name, patientPhone: p.phone, diagnosis: p.diagnosis });
+    // واجهة الطالب
+    function renderStudentDashboard(student) {
+        const container = document.getElementById('dynamicContent');
+        container.innerHTML = `
+            <div class="tabs" id="studentTabs">
+                <button class="tab-btn active" data-tab="studentPatients">📋 مرضاي</button>
+                <button class="tab-btn" data-tab="studentAssistant">🚨 المساعد الذكي</button>
+            </div>
+            <div id="studentTabContents">
+                <div class="tab-content active" id="studentPatients">
+                    <div class="card">
+                        <div class="card-header"><h3>➕ إضافة مريض جديد</h3></div>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <input type="text" id="patName" placeholder="اسم المريض" style="flex:2; padding:10px; border-radius:40px;">
+                            <input type="tel" id="patPhone" placeholder="رقم واتساب" style="flex:2; padding:10px; border-radius:40px;">
+                            <input type="text" id="patDiag" placeholder="التشخيص" style="flex:2; padding:10px; border-radius:40px;">
+                            <button id="addPatientBtn" class="btn-primary">إضافة</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>📋 قائمة مرضاي</h3></div>
+                        <div id="patientsListStudent"></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="studentAssistant">
+                    <div class="card">
+                        <div class="card-header"><h3>🚑 المساعد الذكي للطوارئ</h3></div>
+                        <div class="emergency-grid" id="emergencyGridStudent"></div>
+                        <div class="chat-area" id="chatAreaStudent">
+                            <div id="chatMessagesStudent" style="height:200px; overflow-y:auto; margin-bottom:10px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        buildEmergencyGrid('emergencyGridStudent', 'chatMessagesStudent');
+        refreshPatientsList(student.id);
+        // أحداث التبويبات
+        document.querySelectorAll('#studentTabs .tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                document.querySelectorAll('#studentTabContents .tab-content').forEach(tc => tc.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                document.querySelectorAll('#studentTabs .tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
             });
-        }
-        if (all.length === 0) {
-            container.innerHTML = '<p>لا يوجد مرضى مسجلون.</p>';
-            return;
-        }
-        let html = '<table><thead><tr><th>الطالب</th><th>المريض</th><th>التشخيص</th><th>رقم واتساب المريض</th><th>إجراء</th></thead><tbody>';
-        all.forEach(a => {
+        });
+        // إضافة مريض
+        document.getElementById('addPatientBtn').addEventListener('click', () => {
+            const name = document.getElementById('patName').value.trim();
+            const phone = document.getElementById('patPhone').value.trim();
+            const diag = document.getElementById('patDiag').value.trim();
+            if (name && phone) {
+                addPatientToStudent(student.id, name, phone, diag);
+                refreshPatientsList(student.id);
+                document.getElementById('patName').value = '';
+                document.getElementById('patPhone').value = '';
+                document.getElementById('patDiag').value = '';
+            } else alert('يرجى إدخال اسم المريض ورقم الهاتف');
+        });
+    }
+    
+    function refreshPatientsList(studentId) {
+        const container = document.getElementById('patientsListStudent');
+        if (!container) return;
+        const patients = patientsDB[studentId] || [];
+        if (patients.length === 0) { container.innerHTML = '<p>لا يوجد مرضى مسجلون</p>'; return; }
+        let html = '<table><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراءات</th></thead><tbody>';
+        patients.forEach((p, idx) => {
             html += `<tr>
-                        <td>${escapeHtml(a.studentName)}</td>
-                        <td>${escapeHtml(a.patientName)}</td>
-                        <td>${escapeHtml(a.diagnosis)}</td>
-                        <td>${escapeHtml(a.patientPhone)}</td>
-                        <td><button class="whatsapp-btn" onclick="window.sendWhatsapp('${a.patientPhone}', '${a.patientName}')">📱 تذكير</button></td>
-                     </tr>`;
+                        <td>${escapeHtml(p.name)}</td>
+                        <td>${escapeHtml(p.diagnosis)}</td>
+                        <td>${escapeHtml(p.phone)}</td>
+                        <td><button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
+                        <button class="btn-primary btn-danger" onclick="window.deletePatientById('${studentId}', ${idx})">🗑 حذف</button>
+                        </td>
+                    </tr>`;
         });
         html += '</tbody></table>';
         container.innerHTML = html;
     }
     
-    function createAddStudentContent() {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <div class="card">
-                <div class="card-header"><h3>➕ إضافة طالب جديد إلى النظام</h3></div>
-                <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-                    <input type="text" id="newStudentName" placeholder="اسم الطالب" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
-                    <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
-                    <button id="addNewStudentBtn" class="btn-primary">إضافة الطالب</button>
-                </div>
-                <div id="addStudentResult" style="margin-top:1rem;"></div>
-            </div>
-        `;
-        setTimeout(() => {
-            const btn = document.getElementById('addNewStudentBtn');
-            if (btn) {
-                btn.addEventListener('click', () => {
-                    const name = document.getElementById('newStudentName').value.trim();
-                    const phone = document.getElementById('newStudentPhone').value.trim();
-                    if (name && phone) {
-                        addStudent(name, phone);
-                        document.getElementById('newStudentName').value = '';
-                        document.getElementById('newStudentPhone').value = '';
-                        document.getElementById('addStudentResult').innerHTML = '<span style="color:green;">✅ تم إضافة الطالب بنجاح</span>';
-                        refreshStudentsList();
-                        refreshAllPatients();
-                        updateDashboardStats();
-                    } else {
-                        document.getElementById('addStudentResult').innerHTML = '<span style="color:red;">❌ يرجى ملء جميع الحقول</span>';
-                    }
-                });
-            }
-        }, 10);
-        return div;
-    }
-    
-    // تبويب المساعد الذكي مع زر القائمة المنبثقة
-    function createAssistantContent() {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <div class="card">
-                <div class="card-header">
-                    <h3>🚑 المساعد الذكي للطوارئ (محلي، فصحى وعامية)</h3>
-                    <button id="showEmergencyModalBtn" class="btn-primary">📋 قائمة حالات الطوارئ</button>
-                </div>
-                <div style="background:#f8fefb; border-radius:24px; padding:1rem;">
-                    <div id="chatMessages" style="height:280px; overflow-y:auto; margin-bottom:1rem; border:1px solid #e0f0e3; border-radius:20px; padding:10px;"></div>
-                    <div style="display:flex; gap:8px;">
-                        <input type="text" id="emergencyInput" placeholder="مثال: المريض ينزف بشدة..." style="flex:1; padding:10px; border-radius:60px; border:1px solid #cde5d4;">
-                        <button id="sendEmergBtn" class="btn-primary">استشارة</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        const chatDiv = div.querySelector('#chatMessages');
-        function addMessage(txt, isUser) {
-            const msg = document.createElement('div');
-            msg.className = 'message-bubble';
-            msg.style.textAlign = isUser ? 'left' : 'right';
-            msg.style.background = isUser ? '#daf4e4' : '#ffffff';
-            msg.style.border = '1px solid #cfe6d6';
-            msg.innerHTML = `<strong>${isUser ? '&#128172; أنت' : '&#129302; المساعد'}:</strong> ${txt.replace(/\n/g,'<br>')}`;
-            chatDiv.appendChild(msg);
-            chatDiv.scrollTop = chatDiv.scrollHeight;
-        }
-        
-        const input = div.querySelector('#emergencyInput');
-        const sendBtn = div.querySelector('#sendEmergBtn');
-        const sendHandler = () => {
-            const val = input.value.trim();
-            if (!val) return;
-            addMessage(val, true);
-            const reply = smartReply(val);
-            addMessage(reply, false);
-            input.value = '';
-        };
-        sendBtn.addEventListener('click', sendHandler);
-        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendHandler(); });
-        addMessage("مرحباً! أنا مساعد الطوارئ الذكي. اكتب المشكلة بالعامية أو الفصحى (مثل 'انكسار أداة ضمن القناة' أو 'ابتلاع أداة' أو 'احتراق كيميائي' أو 'انثقاب الجيب الفكي') وسأعطيك الخطوات العاجلة.", false);
-        
-        // زر فتح القائمة المنبثقة
-        const modalBtn = div.querySelector('#showEmergencyModalBtn');
-        if (modalBtn) {
-            modalBtn.addEventListener('click', () => {
-                const modal = document.getElementById('emergencyModal');
-                const listContainer = document.getElementById('emergencyList');
-                if (listContainer) {
-                    listContainer.innerHTML = '';
-                    emergencyDatabase.forEach(emergency => {
-                        const title = emergency.keywords[0]; // أخذ أول كلمة مفتاحية كعنوان
-                        const divItem = document.createElement('div');
-                        divItem.className = 'emergency-item';
-                        divItem.innerText = `• ${title}`;
-                        divItem.addEventListener('click', () => {
-                            input.value = title;
-                            sendHandler();
-                            modal.style.display = 'none';
-                        });
-                        listContainer.appendChild(divItem);
-                    });
+    // بناء بطاقات الطوارئ
+    function buildEmergencyGrid(gridId, chatId) {
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        grid.innerHTML = '';
+        emergencyCases.forEach(c => {
+            const card = document.createElement('div');
+            card.className = 'emergency-card';
+            card.innerHTML = `<h4>${c.title}</h4><p>اضغط للحصول على الخطوات</p>`;
+            card.addEventListener('click', () => {
+                const response = getEmergencyResponse(c.title);
+                const chatDiv = document.getElementById(chatId);
+                if (chatDiv) {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message-bubble';
+                    msgDiv.innerHTML = `<strong>🔔 ${c.title}:</strong><br>${response}`;
+                    chatDiv.appendChild(msgDiv);
+                    chatDiv.scrollTop = chatDiv.scrollHeight;
                 }
-                modal.style.display = 'flex';
             });
-        }
-        return div;
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
+            grid.appendChild(card);
         });
+        // إضافة رسالة ترحيب للشات
+        const chatDiv = document.getElementById(chatId);
+        if (chatDiv && chatDiv.children.length === 0) {
+            const welcome = document.createElement('div');
+            welcome.className = 'message-bubble';
+            welcome.innerHTML = "<strong>🤖 المساعد الذكي:</strong> اختر حالة طوارئ من البطاقات أعلاه لتحصل على الإرشادات.";
+            chatDiv.appendChild(welcome);
+        }
     }
     
-    // ربط الوظائف العامة
-    window.toggleStudentSuspend = (id) => { toggleSuspend(id); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); };
-    window.deleteStudentById = (id) => { if (confirm('هل أنت متأكد من حذف هذا الطالب وجميع مرضاه؟')) { deleteStudent(id); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); } };
-    window.deletePatient = (studentId, idx) => { if (confirm('حذف المريض؟')) { deletePatient(studentId, idx); refreshStudentsList(); refreshAllPatients(); updateDashboardStats(); } };
-    window.showAddPatientForm = (studentId) => {
-        const name = prompt('اسم المريض:');
-        if (!name) return;
-        const phone = prompt('رقم واتساب المريض:');
-        if (!phone) return;
-        const diag = prompt('التشخيص (اختياري):');
-        addPatientToStudent(studentId, name, phone, diag || '');
-        refreshStudentsList();
-        refreshAllPatients();
-        updateDashboardStats();
-    };
-    window.sendWhatsapp = (phone, name) => {
-        alert(`📲 سيتم فتح واتساب لتذكير المريض ${name} على الرقم ${phone}. (يمكن إرسال رسالة تذكير بالدواء أو الموعد)`);
-    };
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     
-    // تسجيل الدخول
-    document.getElementById('loginBtn').addEventListener('click', () => {
-        const pass = document.getElementById('adminPass').value;
-        if (pass === ADMIN_PASSWORD) {
-            renderApp();
+    // دوال عامة للعمليات
+    window.toggleSuspendStudent = (id) => { toggleSuspend(id); refreshStudentsListAdmin(); };
+    window.deleteStudentById = (id) => { if(confirm('حذف الطالب سيؤدي لحذف جميع مرضاه؟')) { deleteStudent(id); refreshStudentsListAdmin(); } };
+    window.deletePatientById = (studentId, idx) => { if(confirm('حذف المريض؟')) { deletePatient(studentId, idx); refreshPatientsList(studentId); } };
+    window.sendWhatsapp = (phone, name) => { alert(`📲 سيتم فتح واتساب لتذكير المريض ${name} على الرقم ${phone}`); };
+    
+    // ------------------- إدارة الدخول -------------------
+    function showAdminLogin() { document.getElementById('adminLoginFields').style.display = 'block'; document.getElementById('studentLoginFields').style.display = 'none'; }
+    function showStudentLogin() { document.getElementById('adminLoginFields').style.display = 'none'; document.getElementById('studentLoginFields').style.display = 'block'; }
+    
+    document.getElementById('adminRoleBtn').addEventListener('click', () => {
+        document.getElementById('adminRoleBtn').classList.add('active');
+        document.getElementById('studentRoleBtn').classList.remove('active');
+        showAdminLogin();
+    });
+    document.getElementById('studentRoleBtn').addEventListener('click', () => {
+        document.getElementById('studentRoleBtn').classList.add('active');
+        document.getElementById('adminRoleBtn').classList.remove('active');
+        showStudentLogin();
+    });
+    
+    document.getElementById('loginActionBtn').addEventListener('click', () => {
+        const isAdmin = document.getElementById('adminRoleBtn').classList.contains('active');
+        if (isAdmin) {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === 'salem1959') {
+                currentUser = { role: 'admin' };
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appMain').style.display = 'block';
+                document.getElementById('userRoleLabel').innerText = 'لوحة المدير';
+                renderAdminDashboard();
+            } else {
+                document.getElementById('loginError').innerText = 'كلمة السر غير صحيحة';
+            }
         } else {
-            document.getElementById('loginError').innerText = 'كلمة السر غير صحيحة';
+            const phone = document.getElementById('studentPhone').value.trim();
+            const pwd = document.getElementById('studentPassword').value.trim();
+            const student = students.find(s => s.phone === phone && s.password === pwd && s.status === 'active');
+            if (student) {
+                currentUser = { role: 'student', id: student.id, name: student.name, phone: student.phone };
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appMain').style.display = 'block';
+                document.getElementById('userRoleLabel').innerHTML = `طالب: ${student.name}`;
+                renderStudentDashboard(student);
+            } else {
+                document.getElementById('loginError').innerText = 'رقم الهاتف أو كلمة السر غير صحيحة، أو الحساب معطل';
+            }
         }
     });
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        localStorage.clear();
+    
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        currentUser = null;
+        localStorage.clear(); // فقط لتجديد الجلسة
         location.reload();
     });
     
-    // نافذة الطوارئ المنبثقة
-    const modal = document.getElementById('emergencyModal');
-    if (modal) {
-        document.getElementById('closeModalBtn')?.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) modal.style.display = 'none';
-        });
-    }
-    
-    // بيانات تجريبية أولية
+    // بيانات افتراضية أولية
     if (students.length === 0) {
-        addStudent('طالب تجريبي 1', '0511111111');
-        addStudent('طالب تجريبي 2', '0522222222');
-        const s1 = students[0]?.id;
-        const s2 = students[1]?.id;
-        if (s1) addPatientToStudent(s1, 'أحمد المريض', '0501234567', 'فحص روتيني');
-        if (s1) addPatientToStudent(s1, 'نورا', '0507654321', 'علاج عصب');
-        if (s2) addPatientToStudent(s2, 'سعيد', '0588888888', 'قلع ضرس');
+        addStudent('أحمد الطالب', '0512345678', '1234');
+        addStudent('سارة الطالبة', '0598765432', '5678');
+        // إضافة مرضى تجريبيين للطالب الأول
+        const firstStudent = students[0];
+        if (firstStudent) {
+            addPatientToStudent(firstStudent.id, 'مريض تجريبي 1', '0501111111', 'حشو عصب');
+            addPatientToStudent(firstStudent.id, 'مريض تجريبي 2', '0502222222', 'قلع ضرس');
+        }
     }
 </script>
 </body>
