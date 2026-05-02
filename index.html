@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <style>
-        /* نفس الأنماط السابقة مع بعض التحسينات */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         body { background: #ecf9f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
@@ -108,14 +107,15 @@
 </div>
 
 <script>
-    // ------------------- إعداد Firebase (استبدل config بقيم مشروعك) -------------------
+    // ------------------- إعداد Firebase -------------------
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyDy9SjXIhlI-18G4kI2Uwj9FrNIf9-YzPw",
+        authDomain: "d-s-assistant.firebaseapp.com",
+        projectId: "d-s-assistant",
+        storageBucket: "d-s-assistant.firebasestorage.app",
+        messagingSenderId: "1098833652254",
+        appId: "1:1098833652254:web:5f894ffdaae4de4b8f9c0f",
+        measurementId: "G-HL2YFRHD3L"
     };
     
     // تهيئة Firebase
@@ -124,7 +124,6 @@
     const db = firebase.firestore();
     
     // ------------------- دوال مساعدة Firebase -------------------
-    // إضافة طالب جديد (يتم إنشاء حساب Auth ثم إضافة وثيقة)
     async function addStudent(name, phone, email, password) {
         try {
             const userCred = await auth.createUserWithEmailAndPassword(email, password);
@@ -143,24 +142,16 @@
         }
     }
     
-    // حذف طالب (حذف الوثيقة وحساب Auth)
     async function deleteStudent(uid) {
         try {
-            // حذف وثيقة الطالب
             await db.collection("students").doc(uid).delete();
-            // حذف مرضاه
             const patientsSnap = await db.collection("patients").where("studentId", "==", uid).get();
             patientsSnap.forEach(doc => doc.ref.delete());
-            // حذف مهامه
             const todosSnap = await db.collection("todos").where("studentId", "==", uid).get();
             todosSnap.forEach(doc => doc.ref.delete());
-            // حذف حساب Auth
             const user = auth.currentUser;
             if (user && user.uid === uid) await user.delete();
-            else {
-                // إذا لم يكن المسجل هو نفسه، نستخدم Admin SDK غير متاح هنا، لذا نطلب من المدير تسجيل الدخول بحساب المدير
-                alert("لا يمكن حذف حساب الطالب تلقائياً من الواجهة الأمامية بسبب قيود الأمان. يرجى حذفه من لوحة تحكم Firebase Auth.");
-            }
+            else alert("لا يمكن حذف حساب الطالب تلقائياً بالكامل، يرجى حذفه من Firebase Console.");
             return true;
         } catch (error) {
             console.error(error);
@@ -168,13 +159,11 @@
         }
     }
     
-    // تبديل حالة الترقين
     async function toggleSuspend(uid, currentStatus) {
         const newStatus = currentStatus === "active" ? "suspended" : "active";
         await db.collection("students").doc(uid).update({ status: newStatus });
     }
     
-    // إضافة مريض لطالب
     async function addPatientToStudent(studentId, name, phone, diagnosis) {
         await db.collection("patients").add({
             studentId: studentId,
@@ -185,12 +174,10 @@
         });
     }
     
-    // حذف مريض
     async function deletePatient(patientId) {
         await db.collection("patients").doc(patientId).delete();
     }
     
-    // إضافة مهمة
     async function addTodo(studentId, text) {
         await db.collection("todos").add({
             studentId: studentId,
@@ -200,17 +187,15 @@
         });
     }
     
-    // تبديل حالة المهمة
     async function toggleTodo(todoId, completed) {
         await db.collection("todos").doc(todoId).update({ completed: !completed });
     }
     
-    // حذف مهمة
     async function deleteTodo(todoId) {
         await db.collection("todos").doc(todoId).delete();
     }
     
-    // ------------------- 50 حالة طوارئ (نفس السابق) -------------------
+    // ------------------- 50 حالة طوارئ -------------------
     const emergencyCases = [
         { title: "نزيف حاد بعد القلع", steps: "🩸 اضغط بشاش معقم بقوة 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة، استدع مشرفاً إذا استمر." },
         { title: "إغماء المريض", steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً، أعطِ أكسجين." },
@@ -271,7 +256,6 @@
     
     // ------------------- واجهة المدير -------------------
     let unsubscribeStudents = null;
-    let currentAdminUser = null;
     
     async function renderAdminDashboard() {
         const container = document.getElementById('dynamicContent');
@@ -294,14 +278,10 @@
             </div>
         `;
         
-        // تحميل الطلاب من Firestore
         if (unsubscribeStudents) unsubscribeStudents();
         unsubscribeStudents = db.collection("students").onSnapshot(async (snapshot) => {
-            const studentsList = [];
-            snapshot.forEach(doc => {
-                studentsList.push({ id: doc.id, ...doc.data() });
-            });
-            renderAccordion(studentsList);
+            const studentsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            await renderAccordion(studentsList);
         });
         
         document.getElementById('addStudentAdminBtn').onclick = async () => {
@@ -335,7 +315,6 @@
         }
         let html = '';
         for (const student of studentsList) {
-            // جلب مرضى الطالب
             const patientsSnap = await db.collection("patients").where("studentId", "==", student.id).get();
             const patients = patientsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             const patientListHtml = patients.map(p => `<li>${escapeHtml(p.name)} (${p.phone}) - ${escapeHtml(p.diagnosis)}</li>`).join('');
@@ -358,7 +337,6 @@
             `;
         }
         container.innerHTML = html;
-        // ربط أحداث الطي
         document.querySelectorAll('.accordion-header').forEach(header => {
             header.addEventListener('click', () => {
                 const id = header.dataset.id;
@@ -370,14 +348,8 @@
         });
     }
     
-    window.toggleSuspendStudent = async (uid, currentStatus) => {
-        await toggleSuspend(uid, currentStatus);
-    };
-    window.deleteStudentById = async (uid) => {
-        if (confirm('حذف المشترك سيؤدي لحذف جميع مرضاه ومهامه وحسابه. هل أنت متأكد؟')) {
-            await deleteStudent(uid);
-        }
-    };
+    window.toggleSuspendStudent = async (uid, currentStatus) => { await toggleSuspend(uid, currentStatus); };
+    window.deleteStudentById = async (uid) => { if (confirm('حذف المشترك سيؤدي لحذف جميع مرضاه ومهامه وحسابه. هل أنت متأكد؟')) await deleteStudent(uid); };
     window.showAdminAddPatient = async (studentId) => {
         const name = prompt('اسم المريض:');
         if (!name) return;
@@ -385,7 +357,6 @@
         if (!phone) return;
         const diag = prompt('التشخيص (اختياري):');
         await addPatientToStudent(studentId, name, phone, diag);
-        // تحديث العرض (إعادة تحميل القائمة)
         const snapshot = await db.collection("students").get();
         const studentsList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderAccordion(studentsList);
@@ -455,8 +426,8 @@
                                   <td style="white-space: nowrap;">
                                       <button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
                                       <button class="btn-primary btn-danger" onclick="window.deletePatientById('${p.id}')">🗑 حذف</button>
-                                  </td>
-                              </tr>`;
+                                   </div>
+                               </div>`;
                 });
                 html += '</tbody></table></div></div>';
                 area.innerHTML = html;
@@ -568,7 +539,6 @@
         }
     }
     
-    // دوال مساعدة
     function escapeHtml(str) { 
         if (!str) return '';
         return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
@@ -576,19 +546,9 @@
     window.sendWhatsapp = (phone, name) => {
         window.open(`https://wa.me/${phone}?text=${encodeURIComponent(`مرحباً ${name}، تذكير بموعدك في عيادة الأسنان. شكراً.`)}`, '_blank');
     };
-    window.deletePatientById = async (patientId) => {
-        if (confirm('حذف المريض؟')) {
-            await deletePatient(patientId);
-        }
-    };
-    window.toggleTodoItem = async (todoId, completed) => {
-        await toggleTodo(todoId, completed);
-    };
-    window.deleteTodoItem = async (todoId) => {
-        if (confirm('حذف المهمة؟')) {
-            await deleteTodo(todoId);
-        }
-    };
+    window.deletePatientById = async (patientId) => { if (confirm('حذف المريض؟')) await deletePatient(patientId); };
+    window.toggleTodoItem = async (todoId, completed) => { await toggleTodo(todoId, completed); };
+    window.deleteTodoItem = async (todoId) => { if (confirm('حذف المهمة؟')) await deleteTodo(todoId); };
     
     // ------------------- إدارة الدخول -------------------
     function showAdminLogin() { document.getElementById('adminLoginFields').style.display = 'block'; document.getElementById('studentLoginFields').style.display = 'none'; }
@@ -614,18 +574,14 @@
             const pass = document.getElementById('adminPassword').value;
             try {
                 const userCred = await auth.signInWithEmailAndPassword(email, pass);
-                // تحقق من وجود حساب المدير في Firestore (نفترض أن المدير لديه دور admin)
                 const userDoc = await db.collection("admins").doc(userCred.user.uid).get();
-                if (!userDoc.exists) {
-                    await auth.signOut();
-                    throw new Error('غير مصرح لك كمدير');
-                }
+                if (!userDoc.exists) throw new Error('غير مصرح');
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appMain').style.display = 'block';
                 document.getElementById('userRoleLabel').innerText = 'لوحة المدير';
                 renderAdminDashboard();
             } catch (error) {
-                document.getElementById('loginError').innerText = 'بيانات المدير غير صحيحة أو غير مصرح به';
+                document.getElementById('loginError').innerText = 'بيانات المدير غير صحيحة';
             }
         } else {
             const email = document.getElementById('studentEmail').value;
@@ -633,22 +589,18 @@
             try {
                 const userCred = await auth.signInWithEmailAndPassword(email, pass);
                 const studentDoc = await db.collection("students").doc(userCred.user.uid).get();
-                if (!studentDoc.exists || studentDoc.data().status !== 'active') {
-                    await auth.signOut();
-                    throw new Error('الحساب معطل أو غير موجود');
-                }
+                if (!studentDoc.exists || studentDoc.data().status !== 'active') throw new Error('معطل');
                 const student = { id: userCred.user.uid, ...studentDoc.data() };
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appMain').style.display = 'block';
                 document.getElementById('userRoleLabel').innerHTML = `طالب: ${student.name}`;
                 renderStudentDashboard(student);
             } catch (error) {
-                document.getElementById('loginError').innerText = 'البريد أو كلمة السر غير صحيحة أو الحساب معطل';
+                document.getElementById('loginError').innerText = 'بيانات غير صحيحة أو الحساب معطل';
             }
         }
     });
     
-    // التسجيل الذاتي للطلاب
     let registerVisible = false;
     document.getElementById('showRegisterBtn').addEventListener('click', () => {
         const form = document.getElementById('registerForm');
@@ -677,7 +629,7 @@
             document.getElementById('studentEmail').value = email;
             document.getElementById('studentPassword').value = pwd;
         } else {
-            document.getElementById('regError').innerText = '❌ البريد الإلكتروني موجود مسبقاً أو حدث خطأ';
+            document.getElementById('regError').innerText = '❌ البريد الإلكتروني موجود مسبقاً';
         }
     });
     
@@ -686,12 +638,9 @@
         location.reload();
     });
     
-    // ------------------- إعداد مستخدم المدير في Firebase (يجب تشغيله مرة واحدة) -------------------
-    // يمكنك إنشاء حساب المدير يدوياً من Firebase Console، أو تعليمة لإنشائه.
-    // لتجنب التعقيد، سننشئه عبر الكود إذا لم يكن موجوداً (قد يتطلب السماح بإنشاء المستخدم)
+    // إنشاء حساب المدير تلقائياً (مرة واحدة)
     (async () => {
         try {
-            // إنشاء حساب المدير إذا لم يكن موجوداً (ضع بريد وكلمة سر من اختيارك)
             const adminEmail = "admin@sdassistant.com";
             const adminPass = "salem1959";
             try {
@@ -699,7 +648,6 @@
                 await db.collection("admins").doc(userCred.user.uid).set({ role: "admin" });
                 console.log("تم إنشاء حساب المدير بنجاح");
             } catch (err) {
-                // إذا كان المستخدم موجوداً مسبقاً، نتجاهل الخطأ
                 if (err.code !== 'auth/email-already-in-use') console.error(err);
             }
         } catch (e) { console.error(e); }
