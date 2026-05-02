@@ -1,381 +1,519 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>DS ASSISTANCE - مساعد الطالب الطبيب</title>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui; }
-        body { background: #ecf9f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { background: white; border-radius: 48px; padding: 2rem; max-width: 550px; margin: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .btn { background: #2b9e5e; color: white; border: none; padding: 12px; border-radius: 60px; width: 100%; font-weight: bold; cursor: pointer; margin: 8px 0; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 60px; border: 1px solid #ccc; }
-        .error { color: red; text-align: center; margin-top: 10px; }
-        .flex { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .hidden { display: none; }
-        hr { margin: 15px 0; }
-        .status-dot { width: 20px; height: 20px; border-radius: 50%; display: inline-block; margin-left: 10px; }
-        .status-green { background-color: #2b9e5e; box-shadow: 0 0 5px #2b9e5e; }
-        .status-red { background-color: #e76f51; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: right; }
-        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; max-height: 400px; overflow-y: auto; }
-        .emergency-card { background: #fff; border: 1px solid #2b9e5e; border-radius: 20px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .emergency-card:hover { background: #e0f3e8; }
-        .todo-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
-        .todo-text.completed { text-decoration: line-through; color: #888; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DS ASSISTANCE - مساعد الطالب الطبيب</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',system-ui,sans-serif}
+body{background:#ecf9f0;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.wrapper{max-width:1400px;width:100%;margin:0 auto}
+.login-card{background:#fff;border-radius:48px;max-width:400px;margin:2rem auto;padding:2rem;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,.1)}
+.role-buttons{display:flex;gap:1rem;margin:1rem 0}
+.role-btn{flex:1;padding:12px;border-radius:60px;border:none;background:#e0f3e8;color:#1f6e43;font-weight:bold;cursor:pointer;transition:.2s}
+.role-btn.active{background:#2b9e5e;color:#fff}
+.login-field{display:none;margin-top:1rem}
+.login-field input{width:100%;padding:12px;margin:8px 0;border-radius:60px;border:1px solid #cbdfd1;font-size:1rem}
+.register-field{margin-top:1rem;border-top:1px solid #cbdfd1;padding-top:1rem}
+.btn{background:#2b9e5e;border:none;padding:12px;border-radius:50px;color:#fff;font-weight:bold;width:100%;cursor:pointer;margin-top:8px;font-size:1rem;transition:.2s}
+.btn:hover{background:#238a4f}
+.btn-outline{background:transparent;border:1px solid #2b9e5e;color:#2b9e5e}
+.error{color:#c5452f;margin-top:8px;font-size:.85rem;min-height:1.2rem}
+.app-main{background:#fff;border-radius:40px;overflow:hidden;display:none;box-shadow:0 20px 40px rgba(0,0,0,.1)}
+.header{background:linear-gradient(135deg,#e0f3e8,#c8e6d9);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo h1{color:#1f6e43;font-size:1.8rem;display:flex;align-items:center;gap:8px}
+.logo h1::before{content:"🦷"}
+.logout-btn{background:none;border:none;color:#c5452f;font-weight:bold;cursor:pointer;font-size:1rem;padding:8px 16px;border-radius:20px}
+.logout-btn:hover{background:rgba(197,69,47,.1)}
+.student-dashboard{padding:1.5rem}
+.welcome{background:#e0f3e8;border-radius:30px;padding:1rem;text-align:center;margin-bottom:1.5rem}
+.big-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.5rem}
+.big-btn{background:#fff;border:2px solid #2b9e5e;border-radius:25px;padding:1rem .3rem;text-align:center;cursor:pointer;transition:.2s;font-weight:bold;font-size:1rem;color:#1f6e43;display:flex;flex-direction:column;align-items:center;gap:5px}
+.big-btn span:first-child{font-size:1.6rem}
+.big-btn:hover{background:#2b9e5e;color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(43,158,94,.3)}
+.content-area{background:#f9fefb;border-radius:30px;padding:1rem;border:1px solid #cde5d4;min-height:300px}
+.card{background:#fff;border:1px solid #e1f0e4;border-radius:24px;padding:1rem;margin-bottom:1rem}
+.btn-primary{background:#2b9e5e;padding:6px 12px;border-radius:30px;border:none;color:#fff;font-weight:bold;cursor:pointer;font-size:.8rem}
+.btn-danger{background:#e76f51}
+.btn-whatsapp{background:#25D366}
+.table-responsive{overflow-x:auto}
+table{width:100%;min-width:500px;border-collapse:collapse;font-size:.85rem}
+th,td{padding:8px 6px;border-bottom:1px solid #eef3ec;text-align:right;white-space:nowrap}
+.emergency-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem;margin-bottom:1rem;max-height:400px;overflow-y:auto}
+.emergency-card{background:#fff;border:1px solid #cde5d4;border-radius:18px;padding:.6rem;text-align:center;cursor:pointer;transition:.2s;font-size:.8rem}
+.emergency-card:hover{background:#e0f3e8;border-color:#2b9e5e}
+.emergency-card strong{display:block}
+.message-bubble{background:#eef6f2;border-radius:18px;padding:8px 12px;margin:6px 0}
+.todo-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #e1f0e4}
+.todo-text{flex:1;margin-right:8px;font-size:.9rem}
+.todo-text.completed{text-decoration:line-through;color:#888}
+.todo-actions button{margin-right:6px;background:none;border:none;cursor:pointer;font-size:1rem}.accordion-item{border:1px solid #cde5d4;border-radius:20px;margin-bottom:1rem;overflow:hidden}
+.accordion-header{background:#e0f3e8;padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
+.accordion-header:hover{background:#c8e6d9}
+.accordion-content{display:none;padding:1rem;background:#fff;border-top:1px solid #cde5d4}
+.accordion-content.open{display:block}
+footer{background:#e9f3ec;text-align:center;padding:.8rem;font-size:.7rem;margin-top:1rem}
+@media(max-width:700px){
+.student-dashboard{padding:1rem}
+.big-buttons{grid-template-columns:repeat(2,1fr);gap:.6rem}
+.big-btn{padding:.8rem .2rem;font-size:.9rem}
+.big-btn span:first-child{font-size:1.4rem}
+.emergency-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+</style>
 </head>
 <body>
-
-<div id="authScreen" class="card">
-    <div class="flex" style="justify-content: space-between;">
-        <h2>🦷 DS ASSISTANCE</h2>
-        <div><span id="statusDot" class="status-dot status-red"></span></div>
+<div class="wrapper">
+  <!-- شاشة الدخول -->
+  <div id="loginScreen" class="login-card">
+    <h2>DS ASSISTANCE</h2>
+    <p>مساعد الطالب الطبيب</p>
+    <div class="role-buttons">
+      <button id="btnAdminRole" class="role-btn active">👨‍⚕️ مدير</button>
+      <button id="btnStudentRole" class="role-btn">👩‍🎓 طالب</button>
     </div>
-    <p style="text-align:center;">مساعد الطالب الطبيب</p>
-    <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
-    <input type="password" id="loginPassword" placeholder="كلمة السر">
-    <button id="loginBtn" class="btn">دخول</button>
-    <hr>
-    <button id="showRegisterBtn" class="btn" style="background:#888;">📝 تسجيل طالب جديد</button>
-    <div id="loginError" class="error"></div>
-
-    <div id="registerForm" class="hidden" style="margin-top: 1rem;">
+    <div id="adminFields" class="login-field" style="display:block">
+      <input type="password" id="adminPass" placeholder="كلمة سر المدير">
+    </div>
+    <div id="studentFields" class="login-field" style="display:none">
+      <input type="tel" id="studPhone" placeholder="رقم الهاتف">
+      <input type="password" id="studPass" placeholder="كلمة السر">
+    </div>
+    <button id="btnLogin" class="btn">دخول</button>
+    <div id="loginErr" class="error"></div>
+    <div class="register-field">
+      <button id="btnShowReg" class="btn btn-outline">📝 تسجيل طالب جديد</button>
+      <div id="regForm" style="display:none;margin-top:1rem">
         <input type="text" id="regName" placeholder="الاسم الكامل">
-        <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
         <input type="tel" id="regPhone" placeholder="رقم الهاتف">
-        <input type="password" id="regPassword" placeholder="كلمة السر">
-        <button id="doRegisterBtn" class="btn">إنشاء حساب طالب</button>
-        <div id="regError" class="error"></div>
+        <input type="password" id="regPass" placeholder="كلمة السر">
+        <button id="btnRegister" class="btn">تسجيل</button>
+        <div id="regErr" class="error"></div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div id="adminDashboard" class="card hidden">
-    <div class="flex" style="justify-content: space-between;">
-        <h3>لوحة المدير</h3>
-        <div class="flex">
-            <span id="adminStatusDot" class="status-dot status-red"></span>
-            <button id="logoutAdminBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
-        </div>
+  <!-- التطبيق الرئيسي -->
+  <div id="appMain" class="app-main">
+    <div class="header">
+      <div class="logo"><h1>DS ASSISTANCE</h1><small id="userLabel"></small></div>      <button id="btnLogout" class="logout-btn">🚪 خروج</button>
     </div>
-    <hr>
-    <h4>➕ إضافة طالب جديد</h4>
-    <div class="flex">
-        <input type="text" id="newStudentName" placeholder="الاسم" style="flex:2">
-        <input type="email" id="newStudentEmail" placeholder="البريد" style="flex:2">
-        <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:2">
-        <input type="password" id="newStudentPassword" placeholder="كلمة السر" style="flex:2">
-        <button id="addStudentBtn" class="btn" style="width:auto;">إضافة</button>
-    </div>
-    <h4>📋 قائمة الطلاب</h4>
-    <div id="studentsList"></div>
-</div>
-
-<div id="studentDashboard" class="card hidden">
-    <div class="flex" style="justify-content: space-between;">
-        <h3 id="welcomeName"></h3>
-        <div class="flex">
-            <span id="studentStatusDot" class="status-dot status-red"></span>
-            <button id="logoutStudentBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
-        </div>
-    </div>
-    <hr>
-    <div class="flex" style="justify-content: center;">
-        <button id="showPatientsBtn" class="btn" style="width:auto;">📋 مرضاي</button>
-        <button id="showEmergencyBtn" class="btn" style="width:auto;">🚑 طوارئ</button>
-        <button id="showAddPatientBtn" class="btn" style="width:auto;">➕ أضف مريض</button>
-        <button id="showTodosBtn" class="btn" style="width:auto;">📅 مهامي</button>
-    </div>
-    <div id="studentContent" style="margin-top:20px; min-height:250px;"></div>
+    <div id="mainContent"></div>
+    <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 50+ حالة</footer>
+  </div>
 </div>
 
 <script>
-    // ========== Firebase Config ==========
-    const firebaseConfig = {
-        apiKey: "AIzaSyDy9SjXIhlI-18G4kI2Uwj9FrNIf9-YzPw",
-        authDomain: "ds-assistant.firebaseapp.com",
-        projectId: "ds-assistant",
-        storageBucket: "ds-assistant.firebasestorage.app",
-        messagingSenderId: "1098833652254",
-        appId: "1:1098833652254:web:5f894ffdaae4de4b8f9c0f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+(function(){
+  "use strict";
 
-    // ========== حالة الاتصال ==========
-    function updateStatusDots(connected) {
-        document.querySelectorAll('.status-dot').forEach(dot => {
-            dot.classList.remove('status-green', 'status-red');
-            dot.classList.add(connected ? 'status-green' : 'status-red');
-        });
+  // ========== التخزين ==========
+  const K = { students:'ds_st', patients:'ds_pt', todos:'ds_td', adminPass:'ds_ap' };
+  function load(k){ try{return JSON.parse(localStorage.getItem(k))}catch{return null} }
+  function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch{} }
+  function esc(s){ if(!s)return''; return s.replace(/[&<>"']/g,m=>({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m])) }
+
+  let students = load(K.students) || [];
+  let patientsDB = load(K.patients) || {};
+  let todosDB = load(K.todos) || {};
+  let currentStudent = null;
+  let activeSection = 'welcome';
+
+  function sync(){ save(K.students,students); save(K.patients,patientsDB); save(K.todos,todosDB); }
+
+  // ========== إدارة كلمة سر المدير ==========
+  function getAPass(){ return load(K.adminPass) }
+  function setAPass(p){ save(K.adminPass,p) }
+
+  // ========== دوال البيانات ==========
+  function addStudent(name,phone,pass){
+    if(students.find(s=>s.phone===phone)) return false;
+    const id='s_'+Date.now();
+    students.push({id,name,phone,pass,status:'active'});
+    if(!patientsDB[id]) patientsDB[id]=[];
+    if(!todosDB[id]) todosDB[id]=[];
+    sync();
+    return true;
+  }
+
+  function deleteStudent(id){
+    students=students.filter(s=>s.id!==id);
+    delete patientsDB[id];
+    delete todosDB[id];
+    sync();
+  }
+
+  function toggleStatus(id){
+    const s=students.find(x=>x.id===id);
+    if(s) s.status=s.status==='active'?'suspended':'active';    sync();
+  }
+
+  function addPatient(sid,name,phone,diag){
+    if(!patientsDB[sid]) patientsDB[sid]=[];
+    patientsDB[sid].push({name,phone,diagnosis:diag||'',ts:new Date().toISOString()});
+    sync();
+  }
+
+  function deletePatient(sid,idx){
+    if(patientsDB[sid]) patientsDB[sid].splice(idx,1);
+    sync();
+  }
+
+  function addTodo(sid,text){
+    if(!todosDB[sid]) todosDB[sid]=[];
+    todosDB[sid].push({text,done:false});
+    sync();
+  }
+
+  function toggleTodoItem(sid,idx){
+    if(todosDB[sid]&&todosDB[sid][idx]) todosDB[sid][idx].done=!todosDB[sid][idx].done;
+    sync();
+  }
+
+  function deleteTodoItem(sid,idx){
+    if(todosDB[sid]) todosDB[sid].splice(idx,1);
+    sync();
+  }
+
+  // ========== حالات الطوارئ ==========
+  const emergencies = [
+    {t:"نزيف حاد بعد القلع",s:"🩸 اضغط بشاش معقم بقوة 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة، استدع مشرفاً إذا استمر."},
+    {t:"إغماء المريض",s:"😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً، أعطِ أكسجين."},
+    {t:"كسر إبرة تخدير",s:"⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم إذا ظاهر، أشعة، استدع مشرفاً."},
+    {t:"حساسية لاتكس",s:"🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، راقب التنفس، استدع مشرفاً."},
+    {t:"انكسار أداة ضمن القناة",s:"🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف، لا تكمل العلاج."},
+    {t:"ابتلاع أداة صغيرة",s:"⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن فوراً، استدع مشرفاً وجراحة."},
+    {t:"احتراق كيميائي",s:"🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً، سجل المادة."},
+    {t:"طفل غير متعاون",s:"🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، تثبيت لطيف مع موافقة ولي الأمر."},
+    {t:"جرح لسان عميق",s:"👅 نظف بمحلول ملحي، اضغط بشاش، إذا لا يتوقف نزيف أرسل للمستشفى لخياطة."},
+    {t:"جرح شفة نافذ",s:"👄 نظف، ضغط بارد، أرسل للمستشفى لخياطة إذا كان نافذاً."},
+    {t:"خدر العصب الوجهي",s:"😐 طمئن المريض، عادة مؤقت بسبب التخدير، راقب التنفس، أبلغ المشرف."},
+    {t:"تجاوز ذروة السن بالمواد",s:"📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب أعراض التهاب."},
+    {t:"انثقاب الجيب الفكي",s:"🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف."},
+    {t:"خلع سن مؤقت في غير وقته",s:"🦷 لا تقلعه، طمئن الطفل، طبّق ضغط بارد، استشر المشرف لتركيب حافظ مسافة."},
+    {t:"كسر تاج سن حي",s:"🦷 احفظ القطعة في حليب بارد، قم بتغطية السن بالكالسيوم هيدروكسيد، أرسل لترميم."},
+    {t:"نزيف تحت اللسان (ورم دموي)",s:"🩸 ضغط بارد، مراقبة مجرى الهواء، إذا كبر أرسل للمستشفى."},
+    {t:"قلع ضرس مع جيوب صديدية",s:"🦠 أعطِ مضاد حيوي قبل وبعد القلع، نظف الجيب بلطف، استدع مشرفاً."},
+    {t:"كسر الفك السفلي المشتبه",s:"🦴 ثبّت الفك برباط، ضغط بارد، أشعة بانورامية، إحالة فورية."},    {t:"خلع جزئي للسن (النزوح)",s:"🦷 حاول إعادة وضعه بلطف، ثبّته، أشعة، أرسل لأخصائي."},
+    {t:"انسداد مجرى الهواء بجسم غريب",s:"🚨 مناورة هايمليش، اتصل بالإسعاف، لا تترك المريض."},
+    {t:"نوبة صرع داخل العيادة",s:"⚡ أزل الأدوات من الفم، ضع المريض على جانبه، لا تضع شيئاً بين أسنانه، اتصل بالإسعاف."},
+    {t:"صدمة الحساسية (Anaphylaxis)",s:"💉 أدرينالين (حقنة) فوراً، أكسجين، استلقاء، إسعاف، إنعاش."},
+    {t:"ارتفاع ضغط الدم الحاد",s:"📈 أريح المريض، لا تعالج تحت الضغط، قس الضغط، استدع مشرفاً."},
+    {t:"نقص سكر الدم (هبوط سكر)",s:"🍬 أعط محلول سكري فموي إذا واعي، أو جلوكوز وريدي، استدع مشرفاً."},
+    {t:"تفاعل وعائي مبهمي",s:"😰 استلقِ وارفع الرجلين، سوائل وريدية، أتروبين إذا بطء قلب."},
+    {t:"تخدير زائد (سمية المخدر)",s:"💊 أكسجين، بنزوديازبين للتشنجات، دعم حيوي، استدع مشرفاً."},
+    {t:"كسر طرف بروي داخل القناة",s:"🦷 لا تحاول إزالتها بدون ميكروسكوب، أشعة، أحيل للمختص."},
+    {t:"تمزق أربطة المفصل الفكي",s:"🦴 راحة، أدوية مضادة للالتهاب، أطعمة طرية، تحويل لأخصائي الفك."},
+    {t:"خلع جزئي للمفصل الفكي",s:"🦷 لا تحاول الرد، ضماد داعم، استدع مشرفاً أو أخصائي."},
+    {t:"نزيف من شرايين قاع الفم",s:"🩸 ضغط قوي داخل الفم، استدع مشرفاً فوراً، جهز للجراحة."},
+    {t:"حرق اللثة بالماء الساخن",s:"🔥 ماء بارد، جل تبريد، مسكن ألم، متابعة."},
+    {t:"دخول جسم غريب تحت اللثة",s:"🔍 أشعة، إزالة بمشرط معقم، غسل بمحلول ملحي."},
+    {t:"تمزق لجام الشفة العليا",s:"👄 نظف، ضغط، إذا عميق خياطة، استدع مشرفاً."},
+    {t:"تفتت ضرس العقل أثناء الخلع",s:"🦷 أزل القطع الكبيرة، أشعة للبحث عن الباقي، استدع مشرفاً."},
+    {t:"خراج حول اللثة حاد",s:"🦠 بزل الضغط، مضاد حيوي، مسكن، استدع مشرفاً."},
+    {t:"عدوى فيروس هربس بالشفاه",s:"💊 مضاد فيروسي موضعي، تجنب اللمس، نظافة."},
+    {t:"التهاب النسيج الخلوي للوجه",s:"🦷 مضاد حيوي وريدي، أشعة، استدع مشرفاً فوراً."},
+    {t:"ضعف تخثر الدم",s:"💊 خذ تاريخاً دوائياً، استشر طبيب، تجنب الجراحة."},
+    {t:"مرضى زراعة القلب",s:"❤️ استشر طبيب القلب، أوقف وارفارين قبل الجراحة، غطِ بمضادات حيوية."},
+    {t:"مرضى الصمام الصناعي",s:"💊 غطاء مضاد حيوي قبل أي إجراء، استشر طبيب القلب."},
+    {t:"الربو الحاد أثناء العلاج",s:"🌬️ موسع قصبي (بخاخ)، أكسجين، وضعية الجلوس، طوارئ."},
+    {t:"سكتة دماغية مشتبهة",s:"🧠 FAST: وجه، ذراع، كلام، وقت. استدع إسعاف، لا تعالج."},
+    {t:"كسر أداة تنظيف القناة",s:"🛠️ لا تحاول الإزالة، أشعة، أحيل لأخصائي الجذور."},
+    {t:"تمزق غشاء الفم المخاطي",s:"🧻 نظف، مرهم مضاد حيوي، متابعة."},
+    {t:"اختناق بسدادة مطاطية",s:"🚨 استخدم ملقطاً طويلاً، هايمليش، إسعاف."},
+    {t:"كسر الطرف السني للمشرط",s:"🦷 لا تحاول الحفر، أشعة، أزل باستخدام الموجات فوق الصوتية."},
+    {t:"نزيف من الوريد الحنكي",s:"🩸 اضغط بشاش مرقئ، غرز إذا لزم، استدع مشرفاً."},
+    {t:"تقيح العظم السنخي",s:"🦷 صرف مضاد حيوي، كشط العظم، أرسل لعينة."},
+    {t:"ورم دموي خلف المقلة",s:"👁️ نادر، ضعف بصر، استدع إسعاف وجراحة فورية."},
+    {t:"انزلاق الغضروف المفصلي للفك",s:"🦷 راحة، كمادات دافئة، تمارين لطيفة، استدع أخصائي الفك."}
+  ];
+
+  // ========== عناصر DOM ==========
+  const $ = id => document.getElementById(id);
+
+  // شاشة الدخول
+  const loginScreen = $('loginScreen');
+  const btnAdminRole = $('btnAdminRole');
+  const btnStudentRole = $('btnStudentRole');
+  const adminFields = $('adminFields');
+  const studentFields = $('studentFields');
+  const adminPassInput = $('adminPass');
+  const studPhoneInput = $('studPhone');
+  const studPassInput = $('studPass');
+  const btnLogin = $('btnLogin');
+  const loginErr = $('loginErr');
+  const btnShowReg = $('btnShowReg');
+  const regForm = $('regForm');  const regName = $('regName');
+  const regPhone = $('regPhone');
+  const regPass = $('regPass');
+  const btnRegister = $('btnRegister');
+  const regErr = $('regErr');
+
+  // التطبيق
+  const appMain = $('appMain');
+  const userLabel = $('userLabel');
+  const mainContent = $('mainContent');
+  const btnLogout = $('btnLogout');
+
+  // ========== تبديل الأدوار ==========
+  btnAdminRole.onclick = function(){
+    btnAdminRole.classList.add('active');
+    btnStudentRole.classList.remove('active');
+    adminFields.style.display='block';
+    studentFields.style.display='none';
+    regForm.style.display='none';
+    loginErr.textContent='';
+  };
+
+  btnStudentRole.onclick = function(){
+    btnStudentRole.classList.add('active');
+    btnAdminRole.classList.remove('active');
+    studentFields.style.display='block';
+    adminFields.style.display='none';
+    regForm.style.display='none';
+    loginErr.textContent='';
+  };
+
+  // ========== زر الدخول ==========
+  btnLogin.onclick = function(){
+    loginErr.textContent='';
+    const isAdmin = btnAdminRole.classList.contains('active');
+
+    if(isAdmin){
+      const input = adminPassInput.value;
+      const stored = getAPass();
+      if(!stored){
+        if(input.length < 3){ loginErr.textContent='أدخل كلمة سر جديدة (3 أحرف على الأقل)'; return; }
+        setAPass(input);
+        alert('✅ تم تعيين كلمة سر المدير. احفظها جيداً.');
+      } else if(input !== stored){
+        loginErr.textContent='كلمة السر غير صحيحة';
+        return;
+      }
+      loginScreen.style.display='none';
+      appMain.style.display='block';
+      userLabel.textContent='👨‍⚕️ المدير';      renderAdmin();
+    } else {
+      const phone = studPhoneInput.value.trim();
+      const pass = studPassInput.value.trim();
+      const student = students.find(s => s.phone===phone && s.pass===pass && s.status==='active');
+      if(student){
+        loginScreen.style.display='none';
+        appMain.style.display='block';
+        userLabel.innerHTML='👩‍🎓 '+esc(student.name);
+        currentStudent = student;
+        activeSection='welcome';
+        renderStudent();
+      } else {
+        loginErr.textContent='بيانات خاطئة أو حساب معطل';
+      }
     }
-    auth.onAuthStateChanged(() => updateStatusDots(true));
-    updateStatusDots(true);
+  };
 
-    // ========== إنشاء حساب المدير تلقائياً ==========
-    const ADMIN_EMAIL = "zakariaattouni@gmail.com";
-    const ADMIN_PASS = "salem1959";
-    async function ensureAdmin() {
-        try {
-            await auth.signInWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
-            const user = auth.currentUser;
-            const doc = await db.collection("users").doc(user.uid).get();
-            if (!doc.exists) await db.collection("users").doc(user.uid).set({ role: "admin" });
-            await auth.signOut();
-        } catch (e) {
-            if (e.code === "auth/user-not-found") {
-                const user = await auth.createUserWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
-                await db.collection("users").doc(user.user.uid).set({ role: "admin" });
-                await auth.signOut();
-            }
-        }
+  // ========== التسجيل ==========
+  let regVisible=false;
+  btnShowReg.onclick = function(){
+    regVisible=!regVisible;
+    regForm.style.display=regVisible?'block':'none';
+    regErr.textContent='';
+  };
+
+  btnRegister.onclick = function(){
+    regErr.textContent='';
+    const n=regName.value.trim(), p=regPhone.value.trim(), w=regPass.value.trim();
+    if(!n||!p||!w){ regErr.textContent='❌ املأ جميع الحقول'; return; }
+    if(students.find(s=>s.phone===p)){ regErr.textContent='❌ الرقم مسجل مسبقاً'; return; }
+    if(addStudent(n,p,w)){
+      alert('✅ تم التسجيل بنجاح');
+      regName.value=''; regPhone.value=''; regPass.value='';
+      regForm.style.display='none'; regVisible=false;
+      btnStudentRole.click();
+      studPhoneInput.value=p; studPassInput.value=w;
+    } else { regErr.textContent='❌ حدث خطأ'; }
+  };
+
+  // ========== الخروج ==========
+  btnLogout.onclick = function(){ location.reload(); };
+
+  // ===================== واجهة المدير =====================
+  function renderAdmin(){
+    let h = '<div style="padding:1.5rem">';
+    h += '<div class="card"><h3>➕ إضافة طالب جديد</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">';
+    h += '<input id="aName" placeholder="الاسم" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
+    h += '<input id="aPhone" placeholder="الهاتف" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
+    h += '<input id="aPass" placeholder="كلمة السر" type="password" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';    h += '<button id="aAddBtn" class="btn-primary">إضافة</button></div></div>';
+    h += '<div class="card"><h3>📋 الطلاب ('+students.length+')</h3><div id="accWrap"></div></div></div>';
+    mainContent.innerHTML = h;
+
+    $('aAddBtn').onclick = function(){
+      const n=$('aName').value.trim(), p=$('aPhone').value.trim(), w=$('aPass').value.trim();
+      if(n&&p&&w){
+        if(addStudent(n,p,w)){ alert('✅ تمت الإضافة'); $('aName').value=''; $('aPhone').value=''; $('aPass').value=''; refreshAcc(); }
+        else alert('❌ الرقم موجود');
+      } else alert('⚠️ املأ الحقول');
+    };
+    refreshAcc();
+  }
+
+  function refreshAcc(){
+    students = load(K.students) || [];
+    patientsDB = load(K.patients) || {};
+    const c = $('accWrap');
+    if(!c) return;
+    if(!students.length){ c.innerHTML='<p style="padding:1rem;text-align:center">لا يوجد طلاب</p>'; return; }
+    let h='';
+    students.forEach(function(s,idx){
+      const pts = patientsDB[s.id] || [];
+      let ptsList='';
+      if(pts.length){
+        ptsList='<ul style="margin:8px 0;padding-right:16px">';
+        pts.forEach(function(p){ ptsList+='<li>'+esc(p.name)+' ('+esc(p.phone)+') - '+esc(p.diagnosis)+'</li>'; });
+        ptsList+='</ul>';
+      } else { ptsList='<p style="color:#999;margin:8px 0">لا يوجد مرضى</p>'; }
+      h += '<div class="accordion-item"><div class="accordion-header" data-i="'+idx+'">';
+      h += '<span><strong>'+esc(s.name)+'</strong> 📞 '+esc(s.phone)+'</span>';
+      h += '<span>'+(s.status==='active'?'🟢':'🔴')+' ▼</span></div>';
+      h += '<div class="accordion-content" id="ac'+idx+'"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">';
+      h += '<button class="btn-primary '+(s.status==='active'?'btn-danger':'')+'" onclick="window.__tog(\''+s.id+'\')">'+(s.status==='active'?'🔴 تعطيل':'🟢 تفعيل')+'</button>';
+      h += '<button class="btn-primary" style="background:#888" onclick="window.__del(\''+s.id+'\')">🗑 حذف</button>';
+      h += '<button class="btn-primary" onclick="window.__addPat(\''+s.id+'\')">➕ إضافة مريض</button></div>';
+      h += ptsList+'</div></div>';
+    });
+    c.innerHTML=h;
+    document.querySelectorAll('.accordion-header').forEach(function(el){
+      el.onclick=function(){
+        const i=el.dataset.i;
+        const ac=$('ac'+i);
+        ac.classList.toggle('open');
+        el.querySelector('span:last-child').textContent=ac.classList.contains('open')?'▲':'▼';
+      };
+    });
+  }
+
+  window.__tog=function(id){ toggleStatus(id); refreshAcc(); };  window.__del=function(id){ if(confirm('حذف الطالب وبياناته؟')){ deleteStudent(id); refreshAcc(); } };
+  window.__addPat=function(sid){
+    const n=prompt('اسم المريض:'); if(!n) return;
+    const p=prompt('رقم الواتساب:'); if(!p) return;
+    const d=prompt('التشخيص:')||'';
+    addPatient(sid,n,p,d);
+    refreshAcc();
+  };
+
+  // ===================== واجهة الطالب =====================
+  function renderStudent(){
+    let h='<div class="student-dashboard">';
+    h+='<div class="welcome"><h2>✨ أهلاً '+esc(currentStudent.name)+' ✨</h2></div>';
+    h+='<div class="big-buttons">';
+    h+='<div class="big-btn" data-s="patients"><span>📋</span><span>مرضاي</span></div>';
+    h+='<div class="big-btn" data-s="emergency"><span>🚑</span><span>طوارئ</span></div>';
+    h+='<div class="big-btn" data-s="addPatient"><span>➕</span><span>مريض</span></div>';
+    h+='<div class="big-btn" data-s="todos"><span>📅</span><span>مهام</span></div>';
+    h+='</div>';
+    h+='<div id="secArea" class="content-area"><p style="text-align:center;color:#2b9e5e;padding:2rem">اختر من الأزرار أعلاه</p></div>';
+    h+='</div>';
+    mainContent.innerHTML=h;
+    mainContent.querySelectorAll('.big-btn').forEach(function(btn){
+      btn.onclick=function(){
+        activeSection=btn.dataset.s;
+        showSection();
+      };
+    });
+    if(activeSection!=='welcome') showSection();
+  }
+
+  function showSection(){
+    const area=$('secArea');
+    if(!area) return;
+    if(activeSection==='patients') showPatients(area);
+    else if(activeSection==='emergency') showEmergency(area);
+    else if(activeSection==='addPatient') showAddPatient(area);
+    else if(activeSection==='todos') showTodos(area);
+  }
+
+  function showPatients(area){
+    patientsDB = load(K.patients)||{};
+    const pts = patientsDB[currentStudent.id]||[];
+    if(!pts.length){ area.innerHTML='<div class="card"><p style="text-align:center">📭 لا يوجد مرضى.<br><br>اضغط "مريض" لإضافة واحد.</p></div>'; return; }
+    let h='<div class="card"><h3>📋 مرضاي</h3><div class="table-responsive"><table><thead><tr><th>الاسم</th><th>التشخيص</th><th>واتساب</th><th></th></tr></thead><tbody>';
+    pts.forEach(function(p,i){
+      h+='<tr><td>'+esc(p.name)+'</td><td><small>'+esc(p.diagnosis||'-')+'</small></td><td>'+esc(p.phone)+'</td>';
+      h+='<td><button class="btn-primary btn-whatsapp" onclick="window.__wa(\''+p.phone+'\')">📱</button> ';
+      h+='<button class="btn-primary btn-danger" onclick="window.__delPat('+i+')">🗑</button></td></tr>';
+    });    h+='</tbody></table></div></div>';
+    area.innerHTML=h;
+  }
+
+  function showAddPatient(area){
+    area.innerHTML='<div class="card"><h3>➕ مريض جديد</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">';
+    area.innerHTML+='<input id="pN" placeholder="اسم المريض" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
+    area.innerHTML+='<input id="pP" type="tel" placeholder="رقم الواتساب" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
+    area.innerHTML+='<input id="pD" placeholder="التشخيص (اختياري)" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
+    area.innerHTML+='<button id="pSave" class="btn">حفظ</button></div></div>';
+    $('pSave').onclick=function(){
+      const n=$('pN').value.trim(), p=$('pP').value.trim(), d=$('pD').value.trim();
+      if(n&&p){ addPatient(currentStudent.id,n,p,d); alert('✅ تم الحفظ'); activeSection='patients'; showSection(); }
+      else alert('⚠️ الاسم والرقم مطلوبان');
+    };
+  }
+
+  function showEmergency(area){
+    let h='<div class="card"><h3>🚑 دليل الطوارئ</h3><p style="font-size:.85rem;color:#666;margin-bottom:10px">اضغط على أي حالة</p>';
+    h+='<div class="emergency-grid" id="emGrid"></div>';
+    h+='<div id="emChat" style="margin-top:1rem;max-height:200px;overflow-y:auto"></div></div>';
+    area.innerHTML=h;
+    const grid=$('emGrid'), chat=$('emChat');
+    emergencies.forEach(function(em){
+      const card=document.createElement('div');
+      card.className='emergency-card';
+      card.innerHTML='<strong>'+em.t+'</strong>';
+      card.onclick=function(){
+        chat.innerHTML+='<div class="message-bubble"><strong>🔔 '+em.t+'</strong><br>'+em.s+'</div>';
+        chat.scrollTop=chat.scrollHeight;
+      };
+      grid.appendChild(card);
+    });
+    if(!chat.children.length) chat.innerHTML='<div class="message-bubble">🤖 اختر حالة من البطاقات</div>';
+  }
+
+  function showTodos(area){
+    todosDB = load(K.todos)||{};
+    const todos = todosDB[currentStudent.id]||[];
+    let h='<div class="card"><h3>📝 مهامي</h3><div style="display:flex;gap:8px;margin:10px 0">';
+    h+='<input id="newT" placeholder="مهمة جديدة..." style="flex:1;padding:8px;border-radius:20px;border:1px solid #ddd">';
+    h+='<button id="addT" class="btn-primary">➕</button></div><div id="tList">';
+    if(!todos.length) h+='<p style="color:#999;text-align:center">✅ لا مهام حالياً</p>';
+    else {
+      h+='<ul style="list-style:none">';
+      todos.forEach(function(t,i){
+        h+='<li class="todo-item"><span class="todo-text'+(t.done?' completed':'')+'">'+esc(t.text)+'</span>';
+        h+='<div class="todo-actions"><button onclick="window.__togT('+i+')">✅</button>';
+        h+='<button onclick="window.__delT('+i+')" style="color:#c5452f">🗑</button></div></li>';
+      });      h+='</ul>';
     }
-    ensureAdmin();
-
-    // ========== عناصر DOM ==========
-    const authDiv = document.getElementById('authScreen');
-    const adminDiv = document.getElementById('adminDashboard');
-    const studentDiv = document.getElementById('studentDashboard');
-
-    // ========== دوال تسجيل الدخول ==========
-    document.getElementById('loginBtn').onclick = async () => {
-        const email = document.getElementById('loginEmail').value.trim();
-        const pwd = document.getElementById('loginPassword').value;
-        try {
-            const user = await auth.signInWithEmailAndPassword(email, pwd);
-            const doc = await db.collection("users").doc(user.user.uid).get();
-            if (!doc.exists) throw new Error("لا توجد بيانات");
-            if (doc.data().role === "admin") {
-                authDiv.classList.add('hidden');
-                adminDiv.classList.remove('hidden');
-                loadStudentsList();
-            } else {
-                if (doc.data().status !== "active") throw new Error("الحساب معطل");
-                authDiv.classList.add('hidden');
-                studentDiv.classList.remove('hidden');
-                document.getElementById('welcomeName').innerText = "مرحباً " + doc.data().name;
-                window.currentStudentId = user.user.uid;
-                showPatients();
-            }
-        } catch (e) {
-            document.getElementById('loginError').innerText = e.message;
-        }
+    h+='</div></div>';
+    area.innerHTML=h;
+    $('addT').onclick=function(){
+      const v=$('newT').value.trim();
+      if(v){ addTodo(currentStudent.id,v); showTodos(area); }
     };
+  }
 
-    // تسجيل طالب جديد
-    document.getElementById('showRegisterBtn').onclick = () => {
-        document.getElementById('registerForm').classList.toggle('hidden');
-    };
-    document.getElementById('doRegisterBtn').onclick = async () => {
-        const name = document.getElementById('regName').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const pwd = document.getElementById('regPassword').value;
-        if (!name || !email || !phone || !pwd) {
-            document.getElementById('regError').innerText = "جميع الحقول مطلوبة";
-            return;
-        }
-        try {
-            const user = await auth.createUserWithEmailAndPassword(email, pwd);
-            await db.collection("users").doc(user.user.uid).set({
-                name, email, phone, role: "student", status: "active"
-            });
-            alert("تم التسجيل بنجاح، يمكنك الدخول الآن");
-            document.getElementById('registerForm').classList.add('hidden');
-        } catch (e) {
-            document.getElementById('regError').innerText = e.message;
-        }
-    };
+  window.__wa=function(phone){ window.open('https://wa.me/'+phone+'?text='+encodeURIComponent('مرحباً، تذكير بموعدك في العيادة.'),'_blank'); };
+  window.__delPat=function(i){ if(confirm('حذف؟')){ deletePatient(currentStudent.id,i); showSection(); } };
+  window.__togT=function(i){ toggleTodoItem(currentStudent.id,i); showSection(); };
+  window.__delT=function(i){ deleteTodoItem(currentStudent.id,i); showSection(); };
 
-    // ========== إدارة الطلاب (للمدير) ==========
-    async function loadStudentsList() {
-        const snap = await db.collection("users").where("role", "==", "student").get();
-        const container = document.getElementById('studentsList');
-        container.innerHTML = '';
-        snap.forEach(doc => {
-            const s = doc.data();
-            const div = document.createElement('div');
-            div.style.border = "1px solid #ddd";
-            div.style.borderRadius = "20px";
-            div.style.padding = "10px";
-            div.style.marginBottom = "10px";
-            div.innerHTML = `
-                <div><strong>${s.name}</strong> (${s.email})</div>
-                <div>هاتف: ${s.phone} | الحالة: ${s.status === 'active' ? '🟢 نشط' : '🔴 معطل'}</div>
-                <div class="flex">
-                    <button class="btn" style="width:auto; background:#e76f51;" onclick="toggleStudentStatus('${doc.id}', '${s.status}')">${s.status === 'active' ? 'تعطيل' : 'تفعيل'}</button>
-                    <button class="btn" style="width:auto; background:#888;" onclick="deleteStudentAccount('${doc.id}')">حذف</button>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-    }
-    window.toggleStudentStatus = async (uid, currentStatus) => {
-        const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
-        await db.collection("users").doc(uid).update({ status: newStatus });
-        loadStudentsList();
-    };
-    window.deleteStudentAccount = async (uid) => {
-        if (confirm("حذف الطالب نهائياً؟")) {
-            await db.collection("users").doc(uid).delete();
-            loadStudentsList();
-        }
-    };
-    document.getElementById('addStudentBtn').onclick = async () => {
-        const name = document.getElementById('newStudentName').value.trim();
-        const email = document.getElementById('newStudentEmail').value.trim();
-        const phone = document.getElementById('newStudentPhone').value.trim();
-        const pwd = document.getElementById('newStudentPassword').value;
-        if (!name || !email || !phone || !pwd) return alert("املأ جميع الحقول");
-        try {
-            const user = await auth.createUserWithEmailAndPassword(email, pwd);
-            await db.collection("users").doc(user.user.uid).set({
-                name, email, phone, role: "student", status: "active"
-            });
-            alert("تمت إضافة الطالب");
-            loadStudentsList();
-        } catch (e) { alert(e.message); }
-    };
+  // ========== بيانات تجريبية أولية ==========
+  if(students.length===0){
+    addStudent('أحمد الطالب','0512345678','1234');
+    addStudent('سارة الطالبة','0598765432','5678');
+    addPatient(students[0].id,'سومر','09865542387','نخر نافذ في الرحى الأولى السفلية');
+    addPatient(students[0].id,'مريض تجريبي 2','0502222222','قلع ضرس');
+    addTodo(students[0].id,'مراجعة جدول العيادة');
+    addTodo(students[0].id,'تجهيز مواد التعقيم');
+  }
 
-    // ========== دوال الطالب ==========
-    let currentStudentId = null;
-
-    async function showPatients() {
-        const snap = await db.collection("patients").where("userId", "==", currentStudentId).get();
-        let html = '<h4>📋 مرضاي</h4><ul style="list-style:none;">';
-        if (snap.empty) html += '<li>لا يوجد مرضى</li>';
-        snap.forEach(doc => {
-            const p = doc.data();
-            html += `<li style="margin:10px 0; padding:8px; border-bottom:1px solid #ddd;">
-                        <strong>${p.name}</strong> - ${p.diagnosis || ''} - ${p.phone}
-                        <a href="https://wa.me/${p.phone}" target="_blank" style="margin:0 8px;">📱</a>
-                        <button onclick="deletePatient('${doc.id}')">🗑️</button>
-                     </li>`;
-        });
-        html += '</ul>';
-        document.getElementById('studentContent').innerHTML = html;
-    }
-    window.deletePatient = async (patientId) => {
-        if (confirm("حذف المريض؟")) {
-            await db.collection("patients").doc(patientId).delete();
-            showPatients();
-        }
-    };
-
-    function showEmergency() {
-        const emergencyCases = [
-            "نزيف حاد بعد القلع", "إغماء المريض", "كسر إبرة تخدير", "حساسية لاتكس",
-            "انكسار أداة ضمن القناة", "ابتلاع أداة", "احتراق كيميائي", "طفل غير متعاون",
-            "جرح لسان", "جرح شفة", "خدر العصب الوجهي", "انثقاب الجيب الفكي",
-            "تجاوز ذروة السن", "خلع سن مؤقت", "كسر تاج سن حي", "تمزق أربطة الفك",
-            "صدمة الحساسية", "نوبة صرع", "سكتة دماغية", "أزمة ربوية"
-        ];
-        const steps = {
-            "نزيف حاد بعد القلع": "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين",
-            "إغماء المريض": "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس",
-            "كسر إبرة تخدير": "⚠️ لا تحاول الإخراج، استخدم ملقطاً معقماً، أشعة",
-            "حساسية لاتكس": "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس",
-            "انكسار أداة ضمن القناة": "🛠️ لا تحاول الإخراج بدون تصوير، أبلغ المشرف",
-            "ابتلاع أداة": "⚠️ تهدئة المريض، أشعة صدر وبطن، استدع مشرفاً",
-            "احتراق كيميائي": "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة",
-            "طفل غير متعاون": "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك",
-            "جرح لسان": "👅 نظف بمحلول ملحي، اضغط بشاش، إذا عميق أرسل للمستشفى",
-            "جرح شفة": "👄 نظف، ضغط بارد، إذا نافذ أرسل للمستشفى",
-            "خدر العصب الوجهي": "😐 طمئن المريض، عادة مؤقت راقب التنفس",
-            "انثقاب الجيب الفكي": "🕳️ لا تنظف القناة، مضاد حيوي، تجنب العطس",
-            "تجاوز ذروة السن": "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف",
-            "خلع سن مؤقت": "🦷 لا تقلعه، استشر المشرف لتركيب حافظ مسافة",
-            "كسر تاج سن حي": "🦷 احفظ القطعة في حليب بارد، غطِّ السن",
-            "تمزق أربطة الفك": "🦴 راحة، مضادات التهاب، أطعمة طرية",
-            "صدمة الحساسية": "💉 أدرينالين فوراً، أكسجين، استلقاء، إسعاف",
-            "نوبة صرع": "⚡ أزل الأدوات من الفم، ضع المريض على جانبه",
-            "سكتة دماغية": "🧠 FAST، إسعاف فوري",
-            "أزمة ربوية": "🌬️ موسع قصبي، أكسجين، وضعية الجلوس"
-        };
-        let html = '<h4>🚑 دليل الطوارئ</h4><div class="emergency-grid">';
-        emergencyCases.forEach(c => {
-            const step = steps[c] || "استدع مشرفاً فوراً";
-            html += `<div class="emergency-card" onclick="alert('${step.replace(/'/g, "\\'")}')">${c}</div>`;
-        });
-        html += '</div>';
-        document.getElementById('studentContent').innerHTML = html;
-    }
-
-    function showAddPatientForm() {
-        document.getElementById('studentContent').innerHTML = `
-            <h4>➕ إضافة مريض جديد</h4>
-            <input type="text" id="newPatName" placeholder="اسم المريض">
-            <input type="tel" id="newPatPhone" placeholder="رقم الواتساب">
-            <input type="text" id="newPatDiag" placeholder="التشخيص (اختياري)">
-            <button id="savePatientBtn" class="btn">حفظ المريض</button>
-        `;
-        document.getElementById('savePatientBtn').onclick = async () => {
-            const name = document.getElementById('newPatName').value.trim();
-            const phone = document.getElementById('newPatPhone').value.trim();
-            const diag = document.getElementById('newPatDiag').value.trim();
-            if (!name || !phone) return alert("الاسم والرقم مطلوبان");
-            await db.collection("patients").add({
-                userId: currentStudentId, name, phone, diagnosis: diag, createdAt: new Date()
-            });
-            alert("تم الحفظ");
-            showPatients();
-        };
-    }
-
-    async function showTodos() {
-        const snap = await db.collection("todos").where("userId", "==", currentStudentId).get();
-        let html = `<h4>📝 مهامي</h4>
-                    <div class="flex"><input type="text" id="newTodoText" placeholder="مهمة جديدة" style="flex:1"><button id="addTodoBtn">➕</button></div>
-                    <div id="todosList">`;
-        if (snap.empty) html += '<p>لا توجد مهام</p>';
-        else {
-            html += '<ul style="list-style:none;">';
-            snap.forEach(doc => {
-                const t = doc.data();
-                html += `<li class="todo-item">
-                            <span class="todo-text ${t.completed ? 'completed' : ''}">${t.text}</span>
-                            <div>
-                                <button onclick="toggleTodoStatus('${doc.id}', ${t.completed})">✅</button>
-                                <button onclick="deleteTodoItem('${doc.id}')">🗑️</button>
-                            </div>
-                         </li>`;
-            });
-            html += '</ul>';
-        }
-        html += `</div>`;
-        document.getElementById('studentContent').innerHTML = html;
-        document.getElementById('addTodoBtn').onclick = async () => {
-            const text = document.getElementById('newTodoText').value.trim();
-            if (text) {
-                await db.collection("todos").add({ userId: currentStudentId, text, completed: false });
-                showTodos();
-            }
-        };
-    }
-    window.toggleTodoStatus = async (id, current) => {
-        await db.collection("todos").doc(id).update({ completed: !current });
-        showTodos();
-    };
-    window.deleteTodoItem = async (id) => {
-        if (confirm("حذف المهمة؟")) await db.collection("todos").doc(id).delete();
-        showTodos();
-    };
-
-    // ربط الأزرار بوظائف الطالب
-    document.getElementById('showPatientsBtn').onclick = showPatients;
-    document.getElementById('showEmergencyBtn').onclick = showEmergency;
-    document.getElementById('showAddPatientBtn').onclick = showAddPatientForm;
-    document.getElementById('showTodosBtn').onclick = showTodos;
-
-    // تسجيل الخروج
-    document.getElementById('logoutAdminBtn').onclick = () => auth.signOut().then(() => location.reload());
-    document.getElementById('logoutStudentBtn').onclick = () => auth.signOut().then(() => location.reload());
+})();
 </script>
 </body>
 </html>
