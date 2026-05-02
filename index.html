@@ -9,7 +9,7 @@
         body { background: #ecf9f0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .wrapper { max-width: 1400px; width: 100%; margin: 0 auto; }
         
-        /* شاشة الدخول الموحدة */
+        /* شاشة الدخول */
         .login-card {
             background: white;
             border-radius: 48px;
@@ -24,8 +24,10 @@
         .role-btn.active { background: #2b9e5e; color: white; }
         .login-field { display: none; margin-top: 1rem; }
         .login-field input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 60px; border: 1px solid #cbdfd1; }
-        .btn { background: #2b9e5e; border: none; padding: 12px; border-radius: 50px; color: white; font-weight: bold; width: 100%; cursor: pointer; }
-        .error { color: #c5452f; margin-top: 8px; }
+        .register-field { margin-top: 1rem; border-top: 1px solid #cbdfd1; padding-top: 1rem; }
+        .btn { background: #2b9e5e; border: none; padding: 12px; border-radius: 50px; color: white; font-weight: bold; width: 100%; cursor: pointer; margin-top: 8px; }
+        .btn-outline { background: transparent; border: 1px solid #2b9e5e; color: #2b9e5e; }
+        .error { color: #c5452f; margin-top: 8px; font-size: 0.85rem; }
         
         /* التطبيق الرئيسي */
         .app-main { background: white; border-radius: 40px; overflow: hidden; display: none; }
@@ -55,7 +57,6 @@
         .emergency-card { background: #f9fefb; border: 1px solid #cde5d4; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; transition: 0.2s; }
         .emergency-card:hover { background: #e0f3e8; transform: translateY(-3px); }
         .emergency-card h4 { color: #1f6e43; margin-bottom: 0.5rem; }
-        .emergency-card p { font-size: 0.8rem; color: #4a6a5e; }
         .chat-area { background: #f8fefb; border-radius: 24px; padding: 1rem; margin-top: 1.5rem; }
         .message-bubble { background: #eef6f2; border-radius: 20px; padding: 12px 16px; margin: 8px 0; }
         @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; } .emergency-grid { grid-template-columns: 1fr 1fr; } }
@@ -80,15 +81,27 @@
         </div>
         <button id="loginActionBtn" class="btn">دخول</button>
         <div id="loginError" class="error"></div>
+        
+        <!-- قسم تسجيل طالب جديد -->
+        <div class="register-field">
+            <button id="showRegisterBtn" class="btn btn-outline">📝 تسجيل طالب جديد</button>
+            <div id="registerForm" style="display: none; margin-top: 1rem;">
+                <input type="text" id="regName" placeholder="الاسم الكامل" style="width:100%; padding:10px; margin:5px 0; border-radius:40px; border:1px solid #ccc;">
+                <input type="tel" id="regPhone" placeholder="رقم الهاتف" style="width:100%; padding:10px; margin:5px 0; border-radius:40px; border:1px solid #ccc;">
+                <input type="password" id="regPassword" placeholder="كلمة السر" style="width:100%; padding:10px; margin:5px 0; border-radius:40px; border:1px solid #ccc;">
+                <button id="doRegisterBtn" class="btn">تسجيل</button>
+                <div id="regError" class="error"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- التطبيق الرئيسي (سيتم استخدامه للمدير أو للطالب حسب الدخول) -->
+    <!-- التطبيق الرئيسي -->
     <div id="appMain" class="app-main">
         <div class="header">
             <div class="logo"><h1>DS ASSISTANCE</h1><small id="userRoleLabel"></small></div>
             <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
         </div>
-        <div id="dynamicContent"><!-- سيتم ملؤه بالجافا سكريبت --></div>
+        <div id="dynamicContent"></div>
         <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 13+ حالة طوارئ</footer>
     </div>
 </div>
@@ -96,18 +109,16 @@
 <script>
     // ------------------- بيانات التخزين (محاكاة قاعدة بيانات) -------------------
     let students = JSON.parse(localStorage.getItem('ds_students')) || [];
-    // كل طالب له مجموعة مرضى (patients)
     let patientsDB = JSON.parse(localStorage.getItem('ds_patients')) || {};
     
-    // حفظ الدوال
     function saveStudents() { localStorage.setItem('ds_students', JSON.stringify(students)); }
     function savePatients() { localStorage.setItem('ds_patients', JSON.stringify(patientsDB)); }
     
-    // إضافة طالب (للمدير)
-    function addStudent(name, phone, password) {
+    // إضافة طالب (للمدير أو التسجيل الذاتي)
+    function addStudent(name, phone, password, status = 'active') {
         if (students.find(s => s.phone === phone)) return false;
         const id = 's_' + Date.now();
-        students.push({ id, name, phone, password, status: 'active' });
+        students.push({ id, name, phone, password, status });
         saveStudents();
         if (!patientsDB[id]) patientsDB[id] = [];
         savePatients();
@@ -143,19 +154,19 @@
     
     // ------------------- قاعدة بيانات المساعد الذكي -------------------
     const emergencyCases = [
-        { title: "نزيف حاد", keywords: ["نزيف","ينزف"], steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة. استدع مشرفاً إذا استمر." },
-        { title: "إغماء", keywords: ["اغمى","غاب عن الوعي"], steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً." },
-        { title: "كسر إبرة تخدير", keywords: ["كسر الإبرة","الأبرة اتكسرت"], steps: "⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم، أشعة، استدع مشرفاً." },
-        { title: "حساسية لاتكس", keywords: ["حساسية","لاتكس","تورم"], steps: "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، استدع مشرفاً." },
-        { title: "انكسار أداة ضمن القناة", keywords: ["انكسار أداة","كسر أداة ضمن القناة"], steps: "🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف، لا تكمل العلاج." },
-        { title: "ابتلاع أداة", keywords: ["ابتلاع اداة","بلع أداة"], steps: "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن فوراً، استدع مشرفاً." },
-        { title: "احتراق كيميائي", keywords: ["احتراق كيميائي","حرق كيميائي"], steps: "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً." },
-        { title: "طفل غير متعاون", keywords: ["طفل غير متعاون","طفل يبكي"], steps: "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، قد تحتاج تثبيت بلطف، استدع مشرفاً." },
-        { title: "جرح لسان", keywords: ["جرح لسان"], steps: "👅 نظف بمحلول ملحي، اضغط بشاش، إذا كان عميقاً أرسل للمستشفى." },
-        { title: "جرح شفة", keywords: ["جرح شفة"], steps: "👄 نظف، ضغط بارد، إذا كان نافذاً أرسل للمستشفى." },
-        { title: "خدر العصب الوجهي", keywords: ["خدر العصب الوجهي","شلل الوجه"], steps: "😐 طمئن المريض، عادة مؤقت، راقب التنفس، أبلغ المشرف." },
-        { title: "تجاوز ذروة السن بالمواد", keywords: ["تجاوز ذروة السن","overfill"], steps: "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب الأعراض." },
-        { title: "انثقاب الجيب الفكي", keywords: ["انثقاب الجيب الفكي","oroantral"], steps: "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف." }
+        { title: "نزيف حاد", steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة. استدع مشرفاً إذا استمر." },
+        { title: "إغماء", steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً." },
+        { title: "كسر إبرة تخدير", steps: "⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم، أشعة، استدع مشرفاً." },
+        { title: "حساسية لاتكس", steps: "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، استدع مشرفاً." },
+        { title: "انكسار أداة ضمن القناة", steps: "🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف، لا تكمل العلاج." },
+        { title: "ابتلاع أداة", steps: "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن فوراً، استدع مشرفاً." },
+        { title: "احتراق كيميائي", steps: "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً." },
+        { title: "طفل غير متعاون", steps: "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، قد تحتاج تثبيت بلطف، استدع مشرفاً." },
+        { title: "جرح لسان", steps: "👅 نظف بمحلول ملحي، اضغط بشاش، إذا كان عميقاً أرسل للمستشفى." },
+        { title: "جرح شفة", steps: "👄 نظف، ضغط بارد، إذا كان نافذاً أرسل للمستشفى." },
+        { title: "خدر العصب الوجهي", steps: "😐 طمئن المريض، عادة مؤقت، راقب التنفس، أبلغ المشرف." },
+        { title: "تجاوز ذروة السن بالمواد", steps: "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب الأعراض." },
+        { title: "انثقاب الجيب الفكي", steps: "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف." }
     ];
     
     function getEmergencyResponse(title) {
@@ -164,7 +175,7 @@
     }
     
     // ------------------- دوال بناء الواجهة حسب الدور -------------------
-    let currentUser = null; // يمكن أن يكون { role: 'admin' } أو { role: 'student', id, name, phone }
+    let currentUser = null;
     
     function renderAdminDashboard() {
         const container = document.getElementById('dynamicContent');
@@ -178,10 +189,10 @@
                     <div class="card">
                         <div class="card-header"><h3>➕ إضافة طالب جديد</h3></div>
                         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <input type="text" id="stdName" placeholder="الاسم" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
-                            <input type="tel" id="stdPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
-                            <input type="password" id="stdPassword" placeholder="كلمة السر" style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
-                            <button id="addStudentBtn" class="btn-primary">إضافة طالب</button>
+                            <input type="text" id="stdName" placeholder="الاسم" style="flex:1; padding:10px; border-radius:40px;">
+                            <input type="tel" id="stdPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px;">
+                            <input type="password" id="stdPassword" placeholder="كلمة السر" style="flex:1; padding:10px; border-radius:40px;">
+                            <button id="addStudentBtn" class="btn-primary">إضافة</button>
                         </div>
                         <div id="addResult" style="margin-top:10px;"></div>
                     </div>
@@ -201,11 +212,9 @@
                 </div>
             </div>
         `;
-        // بناء بطاقات الطوارئ
         buildEmergencyGrid('emergencyGridAdmin', 'chatMessagesAdmin');
-        // عرض قائمة الطلاب
         refreshStudentsListAdmin();
-        // أحداث التبويبات
+        
         document.querySelectorAll('#adminTabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.dataset.tab;
@@ -215,23 +224,23 @@
                 btn.classList.add('active');
             });
         });
-        // إضافة طالب
+        
         document.getElementById('addStudentBtn').addEventListener('click', () => {
             const name = document.getElementById('stdName').value.trim();
             const phone = document.getElementById('stdPhone').value.trim();
             const pass = document.getElementById('stdPassword').value.trim();
             if (name && phone && pass) {
                 if (addStudent(name, phone, pass)) {
-                    document.getElementById('addResult').innerHTML = '<span style="color:green;">✅ تم إضافة الطالب</span>';
+                    document.getElementById('addResult').innerHTML = '<span style="color:green;">✅ تم الإضافة</span>';
                     document.getElementById('stdName').value = '';
                     document.getElementById('stdPhone').value = '';
                     document.getElementById('stdPassword').value = '';
                     refreshStudentsListAdmin();
                 } else {
-                    document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ رقم الهاتف موجود مسبقاً</span>';
+                    document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ الرقم موجود مسبقاً</span>';
                 }
             } else {
-                document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ يرجى ملء جميع الحقول</span>';
+                document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ املأ جميع الحقول</span>';
             }
         });
     }
@@ -255,7 +264,6 @@
         container.innerHTML = html;
     }
     
-    // واجهة الطالب
     function renderStudentDashboard(student) {
         const container = document.getElementById('dynamicContent');
         container.innerHTML = `
@@ -292,7 +300,7 @@
         `;
         buildEmergencyGrid('emergencyGridStudent', 'chatMessagesStudent');
         refreshPatientsList(student.id);
-        // أحداث التبويبات
+        
         document.querySelectorAll('#studentTabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabId = btn.dataset.tab;
@@ -302,7 +310,7 @@
                 btn.classList.add('active');
             });
         });
-        // إضافة مريض
+        
         document.getElementById('addPatientBtn').addEventListener('click', () => {
             const name = document.getElementById('patName').value.trim();
             const phone = document.getElementById('patPhone').value.trim();
@@ -330,14 +338,13 @@
                         <td>${escapeHtml(p.phone)}</td>
                         <td><button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
                         <button class="btn-primary btn-danger" onclick="window.deletePatientById('${studentId}', ${idx})">🗑 حذف</button>
-                        </td>
+                         </td>
                     </tr>`;
         });
         html += '</tbody></table>';
         container.innerHTML = html;
     }
     
-    // بناء بطاقات الطوارئ
     function buildEmergencyGrid(gridId, chatId) {
         const grid = document.getElementById(gridId);
         if (!grid) return;
@@ -359,7 +366,6 @@
             });
             grid.appendChild(card);
         });
-        // إضافة رسالة ترحيب للشات
         const chatDiv = document.getElementById(chatId);
         if (chatDiv && chatDiv.children.length === 0) {
             const welcome = document.createElement('div');
@@ -375,9 +381,13 @@
     window.toggleSuspendStudent = (id) => { toggleSuspend(id); refreshStudentsListAdmin(); };
     window.deleteStudentById = (id) => { if(confirm('حذف الطالب سيؤدي لحذف جميع مرضاه؟')) { deleteStudent(id); refreshStudentsListAdmin(); } };
     window.deletePatientById = (studentId, idx) => { if(confirm('حذف المريض؟')) { deletePatient(studentId, idx); refreshPatientsList(studentId); } };
-    window.sendWhatsapp = (phone, name) => { alert(`📲 سيتم فتح واتساب لتذكير المريض ${name} على الرقم ${phone}`); };
+    window.sendWhatsapp = (phone, name) => {
+        const message = `مرحباً ${name}، تذكير بموعدك في عيادة الأسنان. الرجاء الحضور في الوقت المحدد. شكراً.`;
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+    };
     
-    // ------------------- إدارة الدخول -------------------
+    // ------------------- إدارة الدخول والتسجيل -------------------
     function showAdminLogin() { document.getElementById('adminLoginFields').style.display = 'block'; document.getElementById('studentLoginFields').style.display = 'none'; }
     function showStudentLogin() { document.getElementById('adminLoginFields').style.display = 'none'; document.getElementById('studentLoginFields').style.display = 'block'; }
     
@@ -385,11 +395,13 @@
         document.getElementById('adminRoleBtn').classList.add('active');
         document.getElementById('studentRoleBtn').classList.remove('active');
         showAdminLogin();
+        document.getElementById('registerForm').style.display = 'none';
     });
     document.getElementById('studentRoleBtn').addEventListener('click', () => {
         document.getElementById('studentRoleBtn').classList.add('active');
         document.getElementById('adminRoleBtn').classList.remove('active');
         showStudentLogin();
+        document.getElementById('registerForm').style.display = 'none';
     });
     
     document.getElementById('loginActionBtn').addEventListener('click', () => {
@@ -421,17 +433,51 @@
         }
     });
     
+    // التسجيل الذاتي
+    let registerFormVisible = false;
+    document.getElementById('showRegisterBtn').addEventListener('click', () => {
+        const form = document.getElementById('registerForm');
+        registerFormVisible = !registerFormVisible;
+        form.style.display = registerFormVisible ? 'block' : 'none';
+    });
+    document.getElementById('doRegisterBtn').addEventListener('click', () => {
+        const name = document.getElementById('regName').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const pwd = document.getElementById('regPassword').value.trim();
+        if (!name || !phone || !pwd) {
+            document.getElementById('regError').innerText = '❌ يرجى ملء جميع الحقول';
+            return;
+        }
+        if (students.find(s => s.phone === phone)) {
+            document.getElementById('regError').innerText = '❌ رقم الهاتف مسجل مسبقاً';
+            return;
+        }
+        if (addStudent(name, phone, pwd, 'active')) {
+            alert('تم التسجيل بنجاح! يمكنك الآن الدخول باستخدام رقم الهاتف وكلمة السر.');
+            document.getElementById('regName').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('registerForm').style.display = 'none';
+            registerFormVisible = false;
+            // تحويل إلى وضع الطالب وملء حقول الدخول
+            document.getElementById('studentRoleBtn').click();
+            document.getElementById('studentPhone').value = phone;
+            document.getElementById('studentPassword').value = pwd;
+            document.getElementById('loginError').innerText = '';
+        } else {
+            document.getElementById('regError').innerText = '❌ حدث خطأ، حاول مرة أخرى';
+        }
+    });
+    
     document.getElementById('logoutBtn').addEventListener('click', () => {
         currentUser = null;
-        localStorage.clear(); // فقط لتجديد الجلسة
         location.reload();
     });
     
-    // بيانات افتراضية أولية
+    // بيانات افتراضية أولية (للتجربة)
     if (students.length === 0) {
         addStudent('أحمد الطالب', '0512345678', '1234');
         addStudent('سارة الطالبة', '0598765432', '5678');
-        // إضافة مرضى تجريبيين للطالب الأول
         const firstStudent = students[0];
         if (firstStudent) {
             addPatientToStudent(firstStudent.id, 'مريض تجريبي 1', '0501111111', 'حشو عصب');
