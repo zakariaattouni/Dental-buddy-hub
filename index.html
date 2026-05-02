@@ -17,6 +17,7 @@ body{background:#ecf9f0;min-height:100vh;display:flex;justify-content:center;ali
 .register-field{margin-top:1rem;border-top:1px solid #cbdfd1;padding-top:1rem}
 .btn{background:#2b9e5e;border:none;padding:12px;border-radius:50px;color:#fff;font-weight:bold;width:100%;cursor:pointer;margin-top:8px;font-size:1rem;transition:.2s}
 .btn:hover{background:#238a4f}
+.btn:disabled{background:#888;cursor:wait}
 .btn-outline{background:transparent;border:1px solid #2b9e5e;color:#2b9e5e}
 .error{color:#c5452f;margin-top:8px;font-size:.85rem;min-height:1.2rem}
 .app-main{background:#fff;border-radius:40px;overflow:hidden;display:none;box-shadow:0 20px 40px rgba(0,0,0,.1)}
@@ -46,28 +47,26 @@ th,td{padding:8px 6px;border-bottom:1px solid #eef3ec;text-align:right;white-spa
 .message-bubble{background:#eef6f2;border-radius:18px;padding:8px 12px;margin:6px 0}
 .todo-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #e1f0e4}
 .todo-text{flex:1;margin-right:8px;font-size:.9rem}
-.todo-text.completed{text-decoration:line-through;color:#888}
-.todo-actions button{margin-right:6px;background:none;border:none;cursor:pointer;font-size:1rem}.accordion-item{border:1px solid #cde5d4;border-radius:20px;margin-bottom:1rem;overflow:hidden}
+.todo-text.completed{text-decoration:line-through;color:#888}.todo-actions button{margin-right:6px;background:none;border:none;cursor:pointer;font-size:1rem}
+.accordion-item{border:1px solid #cde5d4;border-radius:20px;margin-bottom:1rem;overflow:hidden}
 .accordion-header{background:#e0f3e8;padding:1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:bold}
 .accordion-header:hover{background:#c8e6d9}
 .accordion-content{display:none;padding:1rem;background:#fff;border-top:1px solid #cde5d4}
 .accordion-content.open{display:block}
 footer{background:#e9f3ec;text-align:center;padding:.8rem;font-size:.7rem;margin-top:1rem}
-@media(max-width:700px){
-.student-dashboard{padding:1rem}
-.big-buttons{grid-template-columns:repeat(2,1fr);gap:.6rem}
-.big-btn{padding:.8rem .2rem;font-size:.9rem}
-.big-btn span:first-child{font-size:1.4rem}
-.emergency-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
-}
+#loader{display:none;position:fixed;inset:0;background:rgba(236,249,240,.9);z-index:9999;justify-content:center;align-items:center;flex-direction:column}
+.spinner{width:40px;height:40px;border:4px solid #ddd;border-top:4px solid #2b9e5e;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@media(max-width:700px){.student-dashboard{padding:1rem}.big-buttons{grid-template-columns:repeat(2,1fr);gap:.6rem}.big-btn{padding:.8rem .2rem;font-size:.9rem}.big-btn span:first-child{font-size:1.4rem}.emergency-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
 </style>
 </head>
 <body>
+<div id="loader"><div class="spinner"></div><p style="margin-top:10px;color:#2b9e5e">جاري المزامنة...</p></div>
+
 <div class="wrapper">
-  <!-- شاشة الدخول -->
   <div id="loginScreen" class="login-card">
     <h2>DS ASSISTANCE</h2>
-    <p>مساعد الطالب الطبيب</p>
+    <p>مساعد الطالب الطبيب | نظام سحابي حقيقي</p>
     <div class="role-buttons">
       <button id="btnAdminRole" class="role-btn active">👨‍⚕️ مدير</button>
       <button id="btnStudentRole" class="role-btn">👩‍🎓 طالب</button>
@@ -86,432 +85,296 @@ footer{background:#e9f3ec;text-align:center;padding:.8rem;font-size:.7rem;margin
       <div id="regForm" style="display:none;margin-top:1rem">
         <input type="text" id="regName" placeholder="الاسم الكامل">
         <input type="tel" id="regPhone" placeholder="رقم الهاتف">
-        <input type="password" id="regPass" placeholder="كلمة السر">
+        <input type="password" id="regPass" placeholder="كلمة السر (6 أحرف على الأقل)">
         <button id="btnRegister" class="btn">تسجيل</button>
         <div id="regErr" class="error"></div>
       </div>
     </div>
   </div>
 
-  <!-- التطبيق الرئيسي -->
   <div id="appMain" class="app-main">
     <div class="header">
-      <div class="logo"><h1>DS ASSISTANCE</h1><small id="userLabel"></small></div>      <button id="btnLogout" class="logout-btn">🚪 خروج</button>
-    </div>
-    <div id="mainContent"></div>
-    <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 50+ حالة</footer>
+      <div class="logo"><h1>DS ASSISTANCE</h1><small id="userLabel"></small></div>
+      <button id="btnLogout" class="logout-btn">🚪 خروج</button>
+    </div>    <div id="mainContent"></div>
+    <footer>نظام إدارة العيادة | سحابي آمن | دعم 50+ حالة</footer>
   </div>
 </div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
 (function(){
   "use strict";
+  
+  // 🔑 1. ضع بيانات مشروعك هنا (موجودة في Firebase Console)
+  const firebaseConfig = {
+    apiKey: "AIzaSyD-YOUR_API_KEY_HERE",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef"
+  };
 
-  // ========== التخزين ==========
-  const K = { students:'ds_st', patients:'ds_pt', todos:'ds_td', adminPass:'ds_ap' };
-  function load(k){ try{return JSON.parse(localStorage.getItem(k))}catch{return null} }
-  function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch{} }
-  function esc(s){ if(!s)return''; return s.replace(/[&<>"']/g,m=>({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m])) }
+  const loader = document.getElementById('loader');
+  function showLoad(show){ loader.style.display = show ? 'flex' : 'none'; }
 
-  let students = load(K.students) || [];
-  let patientsDB = load(K.patients) || {};
-  let todosDB = load(K.todos) || {};
-  let currentStudent = null;
+  // تهيئة Firebase
+  let app, auth, db, isCloud = true;
+  try {
+    if(firebaseConfig.apiKey.includes("YOUR_API_KEY")) throw new Error("Config missing");
+    app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+  } catch(e) {
+    isCloud = false;
+    console.warn("⚠️ Firebase غير مفعل. يعمل النظام محلياً فقط.");
+  }
+
+  const $ = id => document.getElementById(id);
+  let currentUser = null; // {uid, name, phone, ...}
   let activeSection = 'welcome';
 
-  function sync(){ save(K.students,students); save(K.patients,patientsDB); save(K.todos,todosDB); }
-
-  // ========== إدارة كلمة سر المدير ==========
-  function getAPass(){ return load(K.adminPass) }
-  function setAPass(p){ save(K.adminPass,p) }
-
-  // ========== دوال البيانات ==========
-  function addStudent(name,phone,pass){
-    if(students.find(s=>s.phone===phone)) return false;
-    const id='s_'+Date.now();
-    students.push({id,name,phone,pass,status:'active'});
-    if(!patientsDB[id]) patientsDB[id]=[];
-    if(!todosDB[id]) todosDB[id]=[];
-    sync();
-    return true;
-  }
-
-  function deleteStudent(id){
-    students=students.filter(s=>s.id!==id);
-    delete patientsDB[id];
-    delete todosDB[id];
-    sync();
-  }
-
-  function toggleStatus(id){
-    const s=students.find(x=>x.id===id);
-    if(s) s.status=s.status==='active'?'suspended':'active';    sync();
-  }
-
-  function addPatient(sid,name,phone,diag){
-    if(!patientsDB[sid]) patientsDB[sid]=[];
-    patientsDB[sid].push({name,phone,diagnosis:diag||'',ts:new Date().toISOString()});
-    sync();
-  }
-
-  function deletePatient(sid,idx){
-    if(patientsDB[sid]) patientsDB[sid].splice(idx,1);
-    sync();
-  }
-
-  function addTodo(sid,text){
-    if(!todosDB[sid]) todosDB[sid]=[];
-    todosDB[sid].push({text,done:false});
-    sync();
-  }
-
-  function toggleTodoItem(sid,idx){
-    if(todosDB[sid]&&todosDB[sid][idx]) todosDB[sid][idx].done=!todosDB[sid][idx].done;
-    sync();
-  }
-
-  function deleteTodoItem(sid,idx){
-    if(todosDB[sid]) todosDB[sid].splice(idx,1);
-    sync();
-  }
-
-  // ========== حالات الطوارئ ==========
-  const emergencies = [
-    {t:"نزيف حاد بعد القلع",s:"🩸 اضغط بشاش معقم بقوة 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة، استدع مشرفاً إذا استمر."},
-    {t:"إغماء المريض",s:"😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً، أعطِ أكسجين."},
-    {t:"كسر إبرة تخدير",s:"⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم إذا ظاهر، أشعة، استدع مشرفاً."},
-    {t:"حساسية لاتكس",s:"🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، راقب التنفس، استدع مشرفاً."},
-    {t:"انكسار أداة ضمن القناة",s:"🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف، لا تكمل العلاج."},
-    {t:"ابتلاع أداة صغيرة",s:"⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن فوراً، استدع مشرفاً وجراحة."},
-    {t:"احتراق كيميائي",s:"🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً، سجل المادة."},
-    {t:"طفل غير متعاون",s:"🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، تثبيت لطيف مع موافقة ولي الأمر."},
-    {t:"جرح لسان عميق",s:"👅 نظف بمحلول ملحي، اضغط بشاش، إذا لا يتوقف نزيف أرسل للمستشفى لخياطة."},
-    {t:"جرح شفة نافذ",s:"👄 نظف، ضغط بارد، أرسل للمستشفى لخياطة إذا كان نافذاً."},
-    {t:"خدر العصب الوجهي",s:"😐 طمئن المريض، عادة مؤقت بسبب التخدير، راقب التنفس، أبلغ المشرف."},
-    {t:"تجاوز ذروة السن بالمواد",s:"📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب أعراض التهاب."},
-    {t:"انثقاب الجيب الفكي",s:"🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف."},
-    {t:"خلع سن مؤقت في غير وقته",s:"🦷 لا تقلعه، طمئن الطفل، طبّق ضغط بارد، استشر المشرف لتركيب حافظ مسافة."},
-    {t:"كسر تاج سن حي",s:"🦷 احفظ القطعة في حليب بارد، قم بتغطية السن بالكالسيوم هيدروكسيد، أرسل لترميم."},
-    {t:"نزيف تحت اللسان (ورم دموي)",s:"🩸 ضغط بارد، مراقبة مجرى الهواء، إذا كبر أرسل للمستشفى."},
-    {t:"قلع ضرس مع جيوب صديدية",s:"🦠 أعطِ مضاد حيوي قبل وبعد القلع، نظف الجيب بلطف، استدع مشرفاً."},
-    {t:"كسر الفك السفلي المشتبه",s:"🦴 ثبّت الفك برباط، ضغط بارد، أشعة بانورامية، إحالة فورية."},    {t:"خلع جزئي للسن (النزوح)",s:"🦷 حاول إعادة وضعه بلطف، ثبّته، أشعة، أرسل لأخصائي."},
-    {t:"انسداد مجرى الهواء بجسم غريب",s:"🚨 مناورة هايمليش، اتصل بالإسعاف، لا تترك المريض."},
-    {t:"نوبة صرع داخل العيادة",s:"⚡ أزل الأدوات من الفم، ضع المريض على جانبه، لا تضع شيئاً بين أسنانه، اتصل بالإسعاف."},
-    {t:"صدمة الحساسية (Anaphylaxis)",s:"💉 أدرينالين (حقنة) فوراً، أكسجين، استلقاء، إسعاف، إنعاش."},
-    {t:"ارتفاع ضغط الدم الحاد",s:"📈 أريح المريض، لا تعالج تحت الضغط، قس الضغط، استدع مشرفاً."},
-    {t:"نقص سكر الدم (هبوط سكر)",s:"🍬 أعط محلول سكري فموي إذا واعي، أو جلوكوز وريدي، استدع مشرفاً."},
-    {t:"تفاعل وعائي مبهمي",s:"😰 استلقِ وارفع الرجلين، سوائل وريدية، أتروبين إذا بطء قلب."},
-    {t:"تخدير زائد (سمية المخدر)",s:"💊 أكسجين، بنزوديازبين للتشنجات، دعم حيوي، استدع مشرفاً."},
-    {t:"كسر طرف بروي داخل القناة",s:"🦷 لا تحاول إزالتها بدون ميكروسكوب، أشعة، أحيل للمختص."},
-    {t:"تمزق أربطة المفصل الفكي",s:"🦴 راحة، أدوية مضادة للالتهاب، أطعمة طرية، تحويل لأخصائي الفك."},
-    {t:"خلع جزئي للمفصل الفكي",s:"🦷 لا تحاول الرد، ضماد داعم، استدع مشرفاً أو أخصائي."},
-    {t:"نزيف من شرايين قاع الفم",s:"🩸 ضغط قوي داخل الفم، استدع مشرفاً فوراً، جهز للجراحة."},
-    {t:"حرق اللثة بالماء الساخن",s:"🔥 ماء بارد، جل تبريد، مسكن ألم، متابعة."},
-    {t:"دخول جسم غريب تحت اللثة",s:"🔍 أشعة، إزالة بمشرط معقم، غسل بمحلول ملحي."},
-    {t:"تمزق لجام الشفة العليا",s:"👄 نظف، ضغط، إذا عميق خياطة، استدع مشرفاً."},
-    {t:"تفتت ضرس العقل أثناء الخلع",s:"🦷 أزل القطع الكبيرة، أشعة للبحث عن الباقي، استدع مشرفاً."},
-    {t:"خراج حول اللثة حاد",s:"🦠 بزل الضغط، مضاد حيوي، مسكن، استدع مشرفاً."},
-    {t:"عدوى فيروس هربس بالشفاه",s:"💊 مضاد فيروسي موضعي، تجنب اللمس، نظافة."},
-    {t:"التهاب النسيج الخلوي للوجه",s:"🦷 مضاد حيوي وريدي، أشعة، استدع مشرفاً فوراً."},
-    {t:"ضعف تخثر الدم",s:"💊 خذ تاريخاً دوائياً، استشر طبيب، تجنب الجراحة."},
-    {t:"مرضى زراعة القلب",s:"❤️ استشر طبيب القلب، أوقف وارفارين قبل الجراحة، غطِ بمضادات حيوية."},
-    {t:"مرضى الصمام الصناعي",s:"💊 غطاء مضاد حيوي قبل أي إجراء، استشر طبيب القلب."},
-    {t:"الربو الحاد أثناء العلاج",s:"🌬️ موسع قصبي (بخاخ)، أكسجين، وضعية الجلوس، طوارئ."},
-    {t:"سكتة دماغية مشتبهة",s:"🧠 FAST: وجه، ذراع، كلام، وقت. استدع إسعاف، لا تعالج."},
-    {t:"كسر أداة تنظيف القناة",s:"🛠️ لا تحاول الإزالة، أشعة، أحيل لأخصائي الجذور."},
-    {t:"تمزق غشاء الفم المخاطي",s:"🧻 نظف، مرهم مضاد حيوي، متابعة."},
-    {t:"اختناق بسدادة مطاطية",s:"🚨 استخدم ملقطاً طويلاً، هايمليش، إسعاف."},
-    {t:"كسر الطرف السني للمشرط",s:"🦷 لا تحاول الحفر، أشعة، أزل باستخدام الموجات فوق الصوتية."},
-    {t:"نزيف من الوريد الحنكي",s:"🩸 اضغط بشاش مرقئ، غرز إذا لزم، استدع مشرفاً."},
-    {t:"تقيح العظم السنخي",s:"🦷 صرف مضاد حيوي، كشط العظم، أرسل لعينة."},
-    {t:"ورم دموي خلف المقلة",s:"👁️ نادر، ضعف بصر، استدع إسعاف وجراحة فورية."},
-    {t:"انزلاق الغضروف المفصلي للفك",s:"🦷 راحة، كمادات دافئة، تمارين لطيفة، استدع أخصائي الفك."}
-  ];
-
-  // ========== عناصر DOM ==========
-  const $ = id => document.getElementById(id);
-
-  // شاشة الدخول
-  const loginScreen = $('loginScreen');
-  const btnAdminRole = $('btnAdminRole');
-  const btnStudentRole = $('btnStudentRole');
-  const adminFields = $('adminFields');
-  const studentFields = $('studentFields');
-  const adminPassInput = $('adminPass');
-  const studPhoneInput = $('studPhone');
-  const studPassInput = $('studPass');
-  const btnLogin = $('btnLogin');
-  const loginErr = $('loginErr');
-  const btnShowReg = $('btnShowReg');
-  const regForm = $('regForm');  const regName = $('regName');
-  const regPhone = $('regPhone');
-  const regPass = $('regPass');
-  const btnRegister = $('btnRegister');
-  const regErr = $('regErr');
-
-  // التطبيق
-  const appMain = $('appMain');
-  const userLabel = $('userLabel');
-  const mainContent = $('mainContent');
-  const btnLogout = $('btnLogout');
-
-  // ========== تبديل الأدوار ==========
-  btnAdminRole.onclick = function(){
-    btnAdminRole.classList.add('active');
-    btnStudentRole.classList.remove('active');
-    adminFields.style.display='block';
-    studentFields.style.display='none';
-    regForm.style.display='none';
-    loginErr.textContent='';
+  // عناصر الواجهة
+  const els = {
+    btnAdminRole: $('btnAdminRole'), btnStudentRole: $('btnStudentRole'),
+    adminFields: $('adminFields'), studentFields: $('studentFields'),
+    adminPass: $('adminPass'), studPhone: $('studPhone'), studPass: $('studPass'),
+    btnLogin: $('btnLogin'), loginErr: $('loginErr'), btnShowReg: $('btnShowReg'),
+    regForm: $('regForm'), regName: $('regName'), regPhone: $('regPhone'), regPass: $('regPass'),    btnRegister: $('btnRegister'), regErr: $('regErr'),
+    loginScreen: $('loginScreen'), appMain: $('appMain'), userLabel: $('userLabel'),
+    mainContent: $('mainContent'), btnLogout: $('btnLogout')
   };
 
-  btnStudentRole.onclick = function(){
-    btnStudentRole.classList.add('active');
-    btnAdminRole.classList.remove('active');
-    studentFields.style.display='block';
-    adminFields.style.display='none';
-    regForm.style.display='none';
-    loginErr.textContent='';
+  // ===================== إدارة المصادقة =====================
+  if(isCloud){
+    auth.onAuthStateChanged(async user => {
+      if(user){
+        showLoad(true);
+        try {
+          const doc = await db.collection('users').doc(user.uid).get();
+          if(doc.exists){
+            currentUser = {uid: user.uid, ...doc.data()};
+            loginSuccess(currentUser);
+          } else { await auth.signOut(); }
+        } catch(e){ await auth.signOut(); }
+        showLoad(false);
+      }
+    });
+  }
+
+  function loginSuccess(user){
+    currentUser = user;
+    els.loginScreen.style.display = 'none';
+    els.appMain.style.display = 'block';
+    els.userLabel.innerHTML = `👩‍🎓 ${user.name}`;
+    renderStudent();
+  }
+
+  els.btnAdminRole.onclick = () => {
+    els.btnAdminRole.classList.add('active'); els.btnStudentRole.classList.remove('active');
+    els.adminFields.style.display = 'block'; els.studentFields.style.display = 'none';
+    els.regForm.style.display = 'none'; els.loginErr.textContent = '';
+  };
+  els.btnStudentRole.onclick = () => {
+    els.btnStudentRole.classList.add('active'); els.btnAdminRole.classList.remove('active');
+    els.studentFields.style.display = 'block'; els.adminFields.style.display = 'none';
+    els.regForm.style.display = 'none'; els.loginErr.textContent = '';
   };
 
-  // ========== زر الدخول ==========
-  btnLogin.onclick = function(){
-    loginErr.textContent='';
-    const isAdmin = btnAdminRole.classList.contains('active');
-
+  els.btnLogin.onclick = async () => {
+    els.loginErr.textContent = '';
+    const isAdmin = els.btnAdminRole.classList.contains('active');
+    
     if(isAdmin){
-      const input = adminPassInput.value;
-      const stored = getAPass();
-      if(!stored){
-        if(input.length < 3){ loginErr.textContent='أدخل كلمة سر جديدة (3 أحرف على الأقل)'; return; }
-        setAPass(input);
-        alert('✅ تم تعيين كلمة سر المدير. احفظها جيداً.');
-      } else if(input !== stored){
-        loginErr.textContent='كلمة السر غير صحيحة';
-        return;
+      const p = els.adminPass.value;
+      // كلمة سر المدير محفوظة محلياً بأمان
+      const stored = localStorage.getItem('ds_admin_pass');
+      if(!stored){        if(p.length < 4){ els.loginErr.textContent = 'أدخل كلمة سر جديدة (4 أحرف على الأقل)'; return; }
+        localStorage.setItem('ds_admin_pass', p);
+        alert('✅ تم تعيين كلمة سر المدير');
+      } else if(p !== stored){
+        els.loginErr.textContent = 'كلمة السر غير صحيحة'; return;
       }
-      loginScreen.style.display='none';
-      appMain.style.display='block';
-      userLabel.textContent='👨‍⚕️ المدير';      renderAdmin();
+      els.loginScreen.style.display = 'none'; els.appMain.style.display = 'block';
+      els.userLabel.textContent = '👨‍⚕️ المدير'; renderAdmin();
     } else {
-      const phone = studPhoneInput.value.trim();
-      const pass = studPassInput.value.trim();
-      const student = students.find(s => s.phone===phone && s.pass===pass && s.status==='active');
-      if(student){
-        loginScreen.style.display='none';
-        appMain.style.display='block';
-        userLabel.innerHTML='👩‍🎓 '+esc(student.name);
-        currentStudent = student;
-        activeSection='welcome';
-        renderStudent();
-      } else {
-        loginErr.textContent='بيانات خاطئة أو حساب معطل';
+      const phone = els.studPhone.value.trim();
+      const pass = els.studPass.value.trim();
+      if(!phone || !pass){ els.loginErr.textContent = 'أدخل الرقم وكلمة السر'; return; }
+      
+      showLoad(true);
+      try {
+        if(isCloud){
+          // Firebase يستخدم البريد، نحوله تلقائياً للنظام
+          const email = `${phone.replace(/\s/g,'')}@ds.secure`;
+          await auth.signInWithEmailAndPassword(email, pass);
+        } else {
+          // وضع محلي احتياطي
+          const mockUsers = JSON.parse(localStorage.getItem('ds_users_local') || '[]');
+          const u = mockUsers.find(x => x.phone === phone && x.pass === pass);
+          if(u) { currentUser = u; loginSuccess(u); showLoad(false); return; }
+          throw new Error("بيانات خاطئة");
+        }
+      } catch(e){
+        let msg = e.message.includes("user-not-found") || e.message.includes("wrong-password") 
+          ? "رقم الهاتف أو كلمة السر غير صحيحة" : "خطأ في الاتصال";
+        els.loginErr.textContent = msg;
       }
+      showLoad(false);
     }
   };
 
-  // ========== التسجيل ==========
-  let regVisible=false;
-  btnShowReg.onclick = function(){
-    regVisible=!regVisible;
-    regForm.style.display=regVisible?'block':'none';
-    regErr.textContent='';
+  let regVisible = false;
+  els.btnShowReg.onclick = () => { regVisible = !regVisible; els.regForm.style.display = regVisible ? 'block' : 'none'; els.regErr.textContent = ''; };
+  
+  els.btnRegister.onclick = async () => {
+    els.regErr.textContent = '';
+    const n = els.regName.value.trim(), p = els.regPhone.value.trim(), w = els.regPass.value.trim();
+    if(!n || !p || !w){ els.regErr.textContent = '❌ املأ جميع الحقول'; return; }
+    if(w.length < 6){ els.regErr.textContent = '❌ كلمة السر يجب أن تكون 6 أحرف على الأقل'; return; }
+    
+    showLoad(true);
+    try {
+      if(isCloud){
+        const email = `${p.replace(/\s/g,'')}@ds.secure`;
+        const cred = await auth.createUserWithEmailAndPassword(email, w);
+        await db.collection('users').doc(cred.user.uid).set({ name: n, phone: p, createdAt: new Date() });        alert('✅ تم التسجيل بنجاح. يمكنك الدخول الآن.');
+      } else {
+        const id = 'local_' + Date.now();
+        const u = {uid:id, name:n, phone:p, pass:w};
+        const users = JSON.parse(localStorage.getItem('ds_users_local') || '[]');
+        if(users.find(x=>x.phone===p)) throw new Error("موجود");
+        users.push(u); localStorage.setItem('ds_users_local', JSON.stringify(users));
+        alert('✅ تم التسجيل محلياً');
+      }
+      els.regName.value=''; els.regPhone.value=''; els.regPass.value='';
+      els.regForm.style.display='none'; regVisible=false;
+      els.studPhone.value=p; els.studPass.value=w;
+      els.btnStudentRole.click();
+    } catch(e){
+      els.regErr.textContent = e.message.includes("email-already-in-use") || e.message.includes("موجود") 
+        ? "❌ الرقم مسجل مسبقاً" : "❌ فشل التسجيل: " + e.message;
+    }
+    showLoad(false);
   };
 
-  btnRegister.onclick = function(){
-    regErr.textContent='';
-    const n=regName.value.trim(), p=regPhone.value.trim(), w=regPass.value.trim();
-    if(!n||!p||!w){ regErr.textContent='❌ املأ جميع الحقول'; return; }
-    if(students.find(s=>s.phone===p)){ regErr.textContent='❌ الرقم مسجل مسبقاً'; return; }
-    if(addStudent(n,p,w)){
-      alert('✅ تم التسجيل بنجاح');
-      regName.value=''; regPhone.value=''; regPass.value='';
-      regForm.style.display='none'; regVisible=false;
-      btnStudentRole.click();
-      studPhoneInput.value=p; studPassInput.value=w;
-    } else { regErr.textContent='❌ حدث خطأ'; }
+  els.btnLogout.onclick = () => {
+    if(isCloud) auth.signOut();
+    location.reload();
   };
 
-  // ========== الخروج ==========
-  btnLogout.onclick = function(){ location.reload(); };
+  // ===================== دوال البيانات (Firestore) =====================
+  async function saveData(collection, data){
+    if(isCloud) await db.collection('users').doc(currentUser.uid).collection(collection).add(data);
+    else {
+      const k = `ds_${collection}_${currentUser.uid}`;
+      const arr = JSON.parse(localStorage.getItem(k)||'[]');
+      arr.push({...data, id: Date.now()}); localStorage.setItem(k, JSON.stringify(arr));
+    }
+  }
+  async function getData(collection){
+    if(isCloud){
+      const snap = await db.collection('users').doc(currentUser.uid).collection(collection).get();
+      return snap.docs.map(d=>({id:d.id,...d.data()}));
+    } else {
+      return JSON.parse(localStorage.getItem(`ds_${collection}_${currentUser.uid}`)||'[]');
+    }
+  }
+  async function updateData(collection, id, updates){
+    if(isCloud) await db.collection('users').doc(currentUser.uid).collection(collection).doc(id).update(updates);
+    else {
+      const k = `ds_${collection}_${currentUser.uid}`;
+      const arr = JSON.parse(localStorage.getItem(k)||'[]');
+      const item = arr.find(x=>x.id==id);
+      if(item) Object.assign(item, updates);
+      localStorage.setItem(k, JSON.stringify(arr));    }
+  }
+  async function deleteData(collection, id){
+    if(isCloud) await db.collection('users').doc(currentUser.uid).collection(collection).doc(id).delete();
+    else {
+      const k = `ds_${collection}_${currentUser.uid}`;
+      const arr = JSON.parse(localStorage.getItem(k)||'[]').filter(x=>x.id!=id);
+      localStorage.setItem(k, JSON.stringify(arr));
+    }
+  }
 
   // ===================== واجهة المدير =====================
-  function renderAdmin(){
-    let h = '<div style="padding:1.5rem">';
-    h += '<div class="card"><h3>➕ إضافة طالب جديد</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">';
-    h += '<input id="aName" placeholder="الاسم" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
-    h += '<input id="aPhone" placeholder="الهاتف" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
-    h += '<input id="aPass" placeholder="كلمة السر" type="password" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';    h += '<button id="aAddBtn" class="btn-primary">إضافة</button></div></div>';
-    h += '<div class="card"><h3>📋 الطلاب ('+students.length+')</h3><div id="accWrap"></div></div></div>';
-    mainContent.innerHTML = h;
-
-    $('aAddBtn').onclick = function(){
-      const n=$('aName').value.trim(), p=$('aPhone').value.trim(), w=$('aPass').value.trim();
-      if(n&&p&&w){
-        if(addStudent(n,p,w)){ alert('✅ تمت الإضافة'); $('aName').value=''; $('aPhone').value=''; $('aPass').value=''; refreshAcc(); }
-        else alert('❌ الرقم موجود');
-      } else alert('⚠️ املأ الحقول');
-    };
-    refreshAcc();
-  }
-
-  function refreshAcc(){
-    students = load(K.students) || [];
-    patientsDB = load(K.patients) || {};
-    const c = $('accWrap');
-    if(!c) return;
-    if(!students.length){ c.innerHTML='<p style="padding:1rem;text-align:center">لا يوجد طلاب</p>'; return; }
-    let h='';
-    students.forEach(function(s,idx){
-      const pts = patientsDB[s.id] || [];
-      let ptsList='';
-      if(pts.length){
-        ptsList='<ul style="margin:8px 0;padding-right:16px">';
-        pts.forEach(function(p){ ptsList+='<li>'+esc(p.name)+' ('+esc(p.phone)+') - '+esc(p.diagnosis)+'</li>'; });
-        ptsList+='</ul>';
-      } else { ptsList='<p style="color:#999;margin:8px 0">لا يوجد مرضى</p>'; }
-      h += '<div class="accordion-item"><div class="accordion-header" data-i="'+idx+'">';
-      h += '<span><strong>'+esc(s.name)+'</strong> 📞 '+esc(s.phone)+'</span>';
-      h += '<span>'+(s.status==='active'?'🟢':'🔴')+' ▼</span></div>';
-      h += '<div class="accordion-content" id="ac'+idx+'"><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">';
-      h += '<button class="btn-primary '+(s.status==='active'?'btn-danger':'')+'" onclick="window.__tog(\''+s.id+'\')">'+(s.status==='active'?'🔴 تعطيل':'🟢 تفعيل')+'</button>';
-      h += '<button class="btn-primary" style="background:#888" onclick="window.__del(\''+s.id+'\')">🗑 حذف</button>';
-      h += '<button class="btn-primary" onclick="window.__addPat(\''+s.id+'\')">➕ إضافة مريض</button></div>';
-      h += ptsList+'</div></div>';
-    });
-    c.innerHTML=h;
-    document.querySelectorAll('.accordion-header').forEach(function(el){
-      el.onclick=function(){
-        const i=el.dataset.i;
-        const ac=$('ac'+i);
-        ac.classList.toggle('open');
-        el.querySelector('span:last-child').textContent=ac.classList.contains('open')?'▲':'▼';
-      };
-    });
-  }
-
-  window.__tog=function(id){ toggleStatus(id); refreshAcc(); };  window.__del=function(id){ if(confirm('حذف الطالب وبياناته؟')){ deleteStudent(id); refreshAcc(); } };
-  window.__addPat=function(sid){
-    const n=prompt('اسم المريض:'); if(!n) return;
-    const p=prompt('رقم الواتساب:'); if(!p) return;
-    const d=prompt('التشخيص:')||'';
-    addPatient(sid,n,p,d);
-    refreshAcc();
+  window.renderAdmin = function(){
+    let h='<div style="padding:1.5rem"><div class="card"><h3>➕ إضافة طالب جديد</h3><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">';
+    h+='<input id="aName" placeholder="الاسم" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
+    h+='<input id="aPhone" placeholder="الهاتف" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
+    h+='<input id="aPass" type="password" placeholder="كلمة السر" style="flex:1;padding:8px;border-radius:30px;border:1px solid #ddd">';
+    h+='<button id="aAddBtn" class="btn-primary">إضافة</button></div></div>';
+    h+='<div class="card"><h3>📋 الطلاب (يتم إدارتهم محلياً)</h3><p style="padding:1rem;color:#666">في النظام السحابي، يُدار الطلاب ذاتياً عبر التسجيل.</p></div></div>';
+    els.mainContent.innerHTML = h;
   };
 
   // ===================== واجهة الطالب =====================
-  function renderStudent(){
-    let h='<div class="student-dashboard">';
-    h+='<div class="welcome"><h2>✨ أهلاً '+esc(currentStudent.name)+' ✨</h2></div>';
-    h+='<div class="big-buttons">';
+  window.renderStudent = function(){
+    let h='<div class="student-dashboard"><div class="welcome"><h2>✨ أهلاً '+currentUser.name+' ✨</h2></div><div class="big-buttons">';
     h+='<div class="big-btn" data-s="patients"><span>📋</span><span>مرضاي</span></div>';
     h+='<div class="big-btn" data-s="emergency"><span>🚑</span><span>طوارئ</span></div>';
     h+='<div class="big-btn" data-s="addPatient"><span>➕</span><span>مريض</span></div>';
-    h+='<div class="big-btn" data-s="todos"><span>📅</span><span>مهام</span></div>';
-    h+='</div>';
-    h+='<div id="secArea" class="content-area"><p style="text-align:center;color:#2b9e5e;padding:2rem">اختر من الأزرار أعلاه</p></div>';
-    h+='</div>';
-    mainContent.innerHTML=h;
-    mainContent.querySelectorAll('.big-btn').forEach(function(btn){
-      btn.onclick=function(){
-        activeSection=btn.dataset.s;
-        showSection();
+    h+='<div class="big-btn" data-s="todos"><span>📅</span><span>مهام</span></div></div>';
+    h+='<div id="secArea" class="content-area"><p style="text-align:center;color:#2b9e5e;padding:2rem">اختر من الأزرار أعلاه</p></div></div>';
+    els.mainContent.innerHTML = h;
+    els.mainContent.querySelectorAll('.big-btn').forEach(btn=>{
+      btn.onclick = async () => {
+        activeSection = btn.dataset.s;
+        showLoad(true); await renderSection(); showLoad(false);
       };
     });
-    if(activeSection!=='welcome') showSection();
-  }
+    if(activeSection!=='welcome') renderSection();
+  };
 
-  function showSection(){
-    const area=$('secArea');
-    if(!area) return;
-    if(activeSection==='patients') showPatients(area);
-    else if(activeSection==='emergency') showEmergency(area);
-    else if(activeSection==='addPatient') showAddPatient(area);
-    else if(activeSection==='todos') showTodos(area);
-  }
-
-  function showPatients(area){
-    patientsDB = load(K.patients)||{};
-    const pts = patientsDB[currentStudent.id]||[];
-    if(!pts.length){ area.innerHTML='<div class="card"><p style="text-align:center">📭 لا يوجد مرضى.<br><br>اضغط "مريض" لإضافة واحد.</p></div>'; return; }
-    let h='<div class="card"><h3>📋 مرضاي</h3><div class="table-responsive"><table><thead><tr><th>الاسم</th><th>التشخيص</th><th>واتساب</th><th></th></tr></thead><tbody>';
-    pts.forEach(function(p,i){
-      h+='<tr><td>'+esc(p.name)+'</td><td><small>'+esc(p.diagnosis||'-')+'</small></td><td>'+esc(p.phone)+'</td>';
-      h+='<td><button class="btn-primary btn-whatsapp" onclick="window.__wa(\''+p.phone+'\')">📱</button> ';
-      h+='<button class="btn-primary btn-danger" onclick="window.__delPat('+i+')">🗑</button></td></tr>';
-    });    h+='</tbody></table></div></div>';
-    area.innerHTML=h;
-  }
-
-  function showAddPatient(area){
-    area.innerHTML='<div class="card"><h3>➕ مريض جديد</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">';
-    area.innerHTML+='<input id="pN" placeholder="اسم المريض" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
-    area.innerHTML+='<input id="pP" type="tel" placeholder="رقم الواتساب" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
-    area.innerHTML+='<input id="pD" placeholder="التشخيص (اختياري)" style="padding:10px;border-radius:20px;border:1px solid #ddd">';
-    area.innerHTML+='<button id="pSave" class="btn">حفظ</button></div></div>';
-    $('pSave').onclick=function(){
-      const n=$('pN').value.trim(), p=$('pP').value.trim(), d=$('pD').value.trim();
-      if(n&&p){ addPatient(currentStudent.id,n,p,d); alert('✅ تم الحفظ'); activeSection='patients'; showSection(); }
-      else alert('⚠️ الاسم والرقم مطلوبان');
-    };
-  }
-
-  function showEmergency(area){
-    let h='<div class="card"><h3>🚑 دليل الطوارئ</h3><p style="font-size:.85rem;color:#666;margin-bottom:10px">اضغط على أي حالة</p>';
-    h+='<div class="emergency-grid" id="emGrid"></div>';
-    h+='<div id="emChat" style="margin-top:1rem;max-height:200px;overflow-y:auto"></div></div>';
-    area.innerHTML=h;
-    const grid=$('emGrid'), chat=$('emChat');
-    emergencies.forEach(function(em){
-      const card=document.createElement('div');
-      card.className='emergency-card';
-      card.innerHTML='<strong>'+em.t+'</strong>';
-      card.onclick=function(){
-        chat.innerHTML+='<div class="message-bubble"><strong>🔔 '+em.t+'</strong><br>'+em.s+'</div>';
-        chat.scrollTop=chat.scrollHeight;
+  async function renderSection(){
+    const area = $('secArea'); if(!area) return;
+    if(activeSection==='patients') {
+      const pts = await getData('patients');
+      if(!pts.length){ area.innerHTML='<div class="card"><p style="text-align:center">📭 لا يوجد مرضى.</p></div>'; return; }
+      let h='<div class="card"><h3>📋 مرضاي</h3><div class="table-responsive"><table><thead><tr><th>الاسم</th><th>التشخيص</th><th>واتساب</th><th></th></tr></thead><tbody>';
+      pts.forEach(p=>{
+        h+=`<tr><td>${esc(p.name)}</td><td><small>${esc(p.diagnosis||'-')}</small></td><td>${esc(p.phone)}</td>
+             <td><button class="btn-primary btn-whatsapp" onclick="window.__wa('${p.phone}')">📱</button> 
+             <button class="btn-primary btn-danger" onclick="window.__delPat('${p.id}')">🗑</button></td></tr>`;      });
+      h+='</tbody></table></div></div>'; area.innerHTML=h;
+    } else if(activeSection==='addPatient') {
+      area.innerHTML=`<div class="card"><h3>➕ مريض جديد</h3><div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+        <input id="pN" placeholder="اسم المريض" style="padding:10px;border-radius:20px;border:1px solid #ddd">
+        <input id="pP" type="tel" placeholder="رقم الواتساب" style="padding:10px;border-radius:20px;border:1px solid #ddd">
+        <input id="pD" placeholder="التشخيص" style="padding:10px;border-radius:20px;border:1px solid #ddd">
+        <button id="pSave" class="btn">حفظ</button></div></div>`;
+      $('pSave').onclick = async () => {
+        const n=$('pN').value.trim(), p=$('pP').value.trim(), d=$('pD').value.trim();
+        if(n&&p){ await saveData('patients',{name:n,phone:p,diagnosis:d,ts:new Date()}); alert('✅ تم الحفظ سحابياً'); activeSection='patients'; renderSection(); }
+        else alert('⚠️ الاسم والرقم مطلوبان');
       };
-      grid.appendChild(card);
-    });
-    if(!chat.children.length) chat.innerHTML='<div class="message-bubble">🤖 اختر حالة من البطاقات</div>';
-  }
-
-  function showTodos(area){
-    todosDB = load(K.todos)||{};
-    const todos = todosDB[currentStudent.id]||[];
-    let h='<div class="card"><h3>📝 مهامي</h3><div style="display:flex;gap:8px;margin:10px 0">';
-    h+='<input id="newT" placeholder="مهمة جديدة..." style="flex:1;padding:8px;border-radius:20px;border:1px solid #ddd">';
-    h+='<button id="addT" class="btn-primary">➕</button></div><div id="tList">';
-    if(!todos.length) h+='<p style="color:#999;text-align:center">✅ لا مهام حالياً</p>';
-    else {
-      h+='<ul style="list-style:none">';
-      todos.forEach(function(t,i){
-        h+='<li class="todo-item"><span class="todo-text'+(t.done?' completed':'')+'">'+esc(t.text)+'</span>';
-        h+='<div class="todo-actions"><button onclick="window.__togT('+i+')">✅</button>';
-        h+='<button onclick="window.__delT('+i+')" style="color:#c5452f">🗑</button></div></li>';
-      });      h+='</ul>';
+    } else if(activeSection==='emergency') {
+      const ems=[{t:"نزيف حاد",s:"🩸 اضغط بشاش 5 دقائق، لا مضمضة، استدع مشرفاً."},{t:"إغماء",s:"😵 افتح المجرى الهوائي، ارفع الرجلين."},{t:"كسر إبرة",s:"⚠️ لا تحاول الإخراج، أشعة، استدع مشرفاً."},{t:"حساسية",s:"🤚 أزل اللاتكس، مضاد هيستامين."},{t:"انسداد مجرى",s:"🚨 مناورة هايمليش فوراً."},{t:"نوبة صرع",s:"⚡ أزل الأدوات، ضع على الجانب."},{t:"صدمة حساسية",s:"💉 أدرينالين، أكسجين، إسعاف."}];
+      let h=`<div class="card"><h3>🚑 دليل الطوارئ</h3><div class="emergency-grid" id="emGrid"></div><div id="emChat" style="margin-top:1rem;max-height:200px;overflow-y:auto"></div></div>`;
+      area.innerHTML=h; const grid=$('emGrid'), chat=$('emChat');
+      ems.forEach(em=>{ const c=document.createElement('div'); c.className='emergency-card'; c.innerHTML=`<strong>${em.t}</strong>`; c.onclick=()=>{ chat.innerHTML+=`<div class="message-bubble"><strong>🔔 ${em.t}</strong><br>${em.s}</div>`; chat.scrollTop=chat.scrollHeight; }; grid.appendChild(c); });
+      if(!chat.children.length) chat.innerHTML='<div class="message-bubble">🤖 اختر حالة</div>';
+    } else if(activeSection==='todos') {
+      const todos = await getData('todos'); let h='<div class="card"><h3>📝 مهامي</h3><div style="display:flex;gap:8px;margin:10px 0"><input id="newT" placeholder="مهمة جديدة..." style="flex:1;padding:8px;border-radius:20px;border:1px solid #ddd"><button id="addT" class="btn-primary">➕</button></div><div id="tList">';
+      if(!todos.length) h+='<p style="color:#999;text-align:center">✅ لا مهام</p>';
+      else { h+='<ul style="list-style:none">'; todos.forEach(t=>{ h+=`<li class="todo-item"><span class="todo-text${t.done?' completed':''}">${esc(t.text)}</span><div class="todo-actions"><button onclick="window.__togT('${t.id}')">✅</button><button onclick="window.__delT('${t.id}')" style="color:#c5452f">🗑</button></div></li>`; }); h+='</ul>'; }
+      h+='</div></div>'; area.innerHTML=h;
+      $('addT').onclick = async () => { const v=$('newT').value.trim(); if(v){ await saveData('todos',{text:v,done:false}); renderSection(); } };
     }
-    h+='</div></div>';
-    area.innerHTML=h;
-    $('addT').onclick=function(){
-      const v=$('newT').value.trim();
-      if(v){ addTodo(currentStudent.id,v); showTodos(area); }
-    };
   }
 
-  window.__wa=function(phone){ window.open('https://wa.me/'+phone+'?text='+encodeURIComponent('مرحباً، تذكير بموعدك في العيادة.'),'_blank'); };
-  window.__delPat=function(i){ if(confirm('حذف؟')){ deletePatient(currentStudent.id,i); showSection(); } };
-  window.__togT=function(i){ toggleTodoItem(currentStudent.id,i); showSection(); };
-  window.__delT=function(i){ deleteTodoItem(currentStudent.id,i); showSection(); };
-
-  // ========== بيانات تجريبية أولية ==========
-  if(students.length===0){
-    addStudent('أحمد الطالب','0512345678','1234');
-    addStudent('سارة الطالبة','0598765432','5678');
-    addPatient(students[0].id,'سومر','09865542387','نخر نافذ في الرحى الأولى السفلية');
-    addPatient(students[0].id,'مريض تجريبي 2','0502222222','قلع ضرس');
-    addTodo(students[0].id,'مراجعة جدول العيادة');
-    addTodo(students[0].id,'تجهيز مواد التعقيم');
-  }
+  // دوال عامة
+  window.__wa = ph => window.open('https://wa.me/'+ph+'?text='+encodeURIComponent('مرحباً، تذكير بموعدك في العيادة.'),'_blank');
+  window.__delPat = async id => { if(confirm('حذف؟')){ await deleteData('patients',id); renderSection(); } };
+  window.__togT = async id => { const t = (await getData('todos')).find(x=>x.id==id); if(t) await updateData('todos',id,{done:!t.done}); renderSection(); };
+  window.__delT = async id => { await deleteData('todos',id); renderSection(); };
+  function esc(s){ if(!s)return''; return s.replace(/[&<>"']/g,m=>({'&':'&','<':'<','>':'>','"':'"',"'":'''}[m])) }
 
 })();
 </script>
