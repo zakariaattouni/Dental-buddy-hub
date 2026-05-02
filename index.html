@@ -2,73 +2,100 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DS ASSISTANCE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DS ASSISTANCE - مساعد الطالب الطبيب</title>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
-        body{background:#ecf9f0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
-        .card{background:white;border-radius:48px;padding:2rem;max-width:500px;margin:auto;box-shadow:0 20px 40px rgba(0,0,0,0.1);}
-        .btn{background:#2b9e5e;color:white;border:none;padding:12px;border-radius:60px;width:100%;font-weight:bold;cursor:pointer;margin:8px 0;}
-        input{width:100%;padding:12px;margin:8px 0;border-radius:60px;border:1px solid #ccc;}
-        .error{color:red;text-align:center;margin-top:10px;}
-        .flex{display:flex;gap:8px;flex-wrap:wrap;}
-        .hidden{display:none;}
-        hr{margin:15px 0;}
-        .status-dot{width:20px;height:20px;border-radius:50%;display:inline-block;margin-left:10px;}
-        .status-green{background-color:#2b9e5e;}
-        .status-red{background-color:#e76f51;}
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui; }
+        body { background: #ecf9f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { background: white; border-radius: 48px; padding: 2rem; max-width: 550px; margin: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .btn { background: #2b9e5e; color: white; border: none; padding: 12px; border-radius: 60px; width: 100%; font-weight: bold; cursor: pointer; margin: 8px 0; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 60px; border: 1px solid #ccc; }
+        .error { color: red; text-align: center; margin-top: 10px; }
+        .flex { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .hidden { display: none; }
+        hr { margin: 15px 0; }
+        .status-dot { width: 20px; height: 20px; border-radius: 50%; display: inline-block; margin-left: 10px; }
+        .status-green { background-color: #2b9e5e; box-shadow: 0 0 5px #2b9e5e; }
+        .status-red { background-color: #e76f51; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: right; }
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; max-height: 400px; overflow-y: auto; }
+        .emergency-card { background: #fff; border: 1px solid #2b9e5e; border-radius: 20px; padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .emergency-card:hover { background: #e0f3e8; }
+        .todo-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .todo-text.completed { text-decoration: line-through; color: #888; }
     </style>
 </head>
 <body>
-<div id="auth" class="card">
-    <div class="flex" style="justify-content:space-between;">
+
+<div id="authScreen" class="card">
+    <div class="flex" style="justify-content: space-between;">
         <h2>🦷 DS ASSISTANCE</h2>
         <div><span id="statusDot" class="status-dot status-red"></span></div>
     </div>
-    <p>مساعد الطالب الطبيب</p>
-    <input type="email" id="email" placeholder="البريد الإلكتروني">
-    <input type="password" id="password" placeholder="كلمة السر">
+    <p style="text-align:center;">مساعد الطالب الطبيب</p>
+    <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
+    <input type="password" id="loginPassword" placeholder="كلمة السر">
     <button id="loginBtn" class="btn">دخول</button>
     <hr>
-    <button id="registerBtn" class="btn" style="background:#888;">تسجيل حساب جديد</button>
-    <div id="error" class="error"></div>
+    <button id="showRegisterBtn" class="btn" style="background:#888;">📝 تسجيل طالب جديد</button>
+    <div id="loginError" class="error"></div>
+
+    <div id="registerForm" class="hidden" style="margin-top: 1rem;">
+        <input type="text" id="regName" placeholder="الاسم الكامل">
+        <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
+        <input type="tel" id="regPhone" placeholder="رقم الهاتف">
+        <input type="password" id="regPassword" placeholder="كلمة السر">
+        <button id="doRegisterBtn" class="btn">إنشاء حساب طالب</button>
+        <div id="regError" class="error"></div>
+    </div>
 </div>
 
-<div id="adminPanel" class="card hidden">
-    <div class="flex" style="justify-content:space-between;">
+<div id="adminDashboard" class="card hidden">
+    <div class="flex" style="justify-content: space-between;">
         <h3>لوحة المدير</h3>
-        <div><span id="adminStatusDot" class="status-dot status-red"></span><button id="logoutBtn" class="btn" style="width:auto;background:#e76f51;">خروج</button></div>
+        <div class="flex">
+            <span id="adminStatusDot" class="status-dot status-red"></span>
+            <button id="logoutAdminBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
+        </div>
     </div>
     <hr>
-    <h4>إضافة طالب</h4>
-    <input type="text" id="studentName" placeholder="الاسم">
-    <input type="email" id="studentEmail" placeholder="البريد">
-    <input type="text" id="studentPhone" placeholder="رقم الهاتف">
-    <input type="password" id="studentPass" placeholder="كلمة السر">
-    <button id="addStudentBtn" class="btn">إضافة طالب</button>
-    <h4>قائمة الطلاب</h4>
+    <h4>➕ إضافة طالب جديد</h4>
+    <div class="flex">
+        <input type="text" id="newStudentName" placeholder="الاسم" style="flex:2">
+        <input type="email" id="newStudentEmail" placeholder="البريد" style="flex:2">
+        <input type="tel" id="newStudentPhone" placeholder="رقم الهاتف" style="flex:2">
+        <input type="password" id="newStudentPassword" placeholder="كلمة السر" style="flex:2">
+        <button id="addStudentBtn" class="btn" style="width:auto;">إضافة</button>
+    </div>
+    <h4>📋 قائمة الطلاب</h4>
     <div id="studentsList"></div>
 </div>
 
-<div id="studentPanel" class="card hidden">
-    <div class="flex" style="justify-content:space-between;">
+<div id="studentDashboard" class="card hidden">
+    <div class="flex" style="justify-content: space-between;">
         <h3 id="welcomeName"></h3>
-        <div><span id="studentStatusDot" class="status-dot status-red"></span><button id="logoutStudentBtn" class="btn" style="width:auto;background:#e76f51;">خروج</button></div>
+        <div class="flex">
+            <span id="studentStatusDot" class="status-dot status-red"></span>
+            <button id="logoutStudentBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
+        </div>
     </div>
     <hr>
-    <div class="flex">
-        <button id="myPatientsBtn" class="btn" style="width:auto;">مرضاي</button>
-        <button id="emergencyBtn" class="btn" style="width:auto;">طوارئ</button>
-        <button id="addPatientBtn" class="btn" style="width:auto;">إضافة مريض</button>
-        <button id="myTodosBtn" class="btn" style="width:auto;">مهامي</button>
+    <div class="flex" style="justify-content: center;">
+        <button id="showPatientsBtn" class="btn" style="width:auto;">📋 مرضاي</button>
+        <button id="showEmergencyBtn" class="btn" style="width:auto;">🚑 طوارئ</button>
+        <button id="showAddPatientBtn" class="btn" style="width:auto;">➕ أضف مريض</button>
+        <button id="showTodosBtn" class="btn" style="width:auto;">📅 مهامي</button>
     </div>
-    <div id="content" style="margin-top:20px; min-height:200px;"></div>
+    <div id="studentContent" style="margin-top:20px; min-height:250px;"></div>
 </div>
 
 <script>
+    // ========== Firebase Config ==========
     const firebaseConfig = {
         apiKey: "AIzaSyDy9SjXIhlI-18G4kI2Uwj9FrNIf9-YzPw",
         authDomain: "ds-assistant.firebaseapp.com",
@@ -80,23 +107,20 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    
-    let currentStudentId = null;
-    const ADMIN_EMAIL = "zakariaattouni@gmail.com";
-    const ADMIN_PASS = "salem1959";
-    
+
+    // ========== حالة الاتصال ==========
     function updateStatusDots(connected) {
-        const dots = document.querySelectorAll('.status-dot');
-        dots.forEach(dot => {
+        document.querySelectorAll('.status-dot').forEach(dot => {
             dot.classList.remove('status-green', 'status-red');
             dot.classList.add(connected ? 'status-green' : 'status-red');
         });
     }
-    
-    auth.onAuthStateChanged(user => {
-        updateStatusDots(true); // افترض الاتصال قائم
-    });
-    
+    auth.onAuthStateChanged(() => updateStatusDots(true));
+    updateStatusDots(true);
+
+    // ========== إنشاء حساب المدير تلقائياً ==========
+    const ADMIN_EMAIL = "zakariaattouni@gmail.com";
+    const ADMIN_PASS = "salem1959";
     async function ensureAdmin() {
         try {
             await auth.signInWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
@@ -104,7 +128,7 @@
             const doc = await db.collection("users").doc(user.uid).get();
             if (!doc.exists) await db.collection("users").doc(user.uid).set({ role: "admin" });
             await auth.signOut();
-        } catch(e) {
+        } catch (e) {
             if (e.code === "auth/user-not-found") {
                 const user = await auth.createUserWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
                 await db.collection("users").doc(user.user.uid).set({ role: "admin" });
@@ -113,46 +137,64 @@
         }
     }
     ensureAdmin();
-    
+
+    // ========== عناصر DOM ==========
+    const authDiv = document.getElementById('authScreen');
+    const adminDiv = document.getElementById('adminDashboard');
+    const studentDiv = document.getElementById('studentDashboard');
+
+    // ========== دوال تسجيل الدخول ==========
     document.getElementById('loginBtn').onclick = async () => {
-        const email = document.getElementById('email').value;
-        const pwd = document.getElementById('password').value;
+        const email = document.getElementById('loginEmail').value.trim();
+        const pwd = document.getElementById('loginPassword').value;
         try {
             const user = await auth.signInWithEmailAndPassword(email, pwd);
             const doc = await db.collection("users").doc(user.user.uid).get();
             if (!doc.exists) throw new Error("لا توجد بيانات");
             if (doc.data().role === "admin") {
-                document.getElementById('auth').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                loadStudents();
+                authDiv.classList.add('hidden');
+                adminDiv.classList.remove('hidden');
+                loadStudentsList();
             } else {
-                currentStudentId = user.user.uid;
-                document.getElementById('auth').classList.add('hidden');
-                document.getElementById('studentPanel').classList.remove('hidden');
+                if (doc.data().status !== "active") throw new Error("الحساب معطل");
+                authDiv.classList.add('hidden');
+                studentDiv.classList.remove('hidden');
                 document.getElementById('welcomeName').innerText = "مرحباً " + doc.data().name;
+                window.currentStudentId = user.user.uid;
                 showPatients();
             }
-        } catch(e) {
-            document.getElementById('error').innerText = e.message;
+        } catch (e) {
+            document.getElementById('loginError').innerText = e.message;
         }
     };
-    
-    document.getElementById('registerBtn').onclick = async () => {
-        const email = prompt("البريد الإلكتروني:");
-        const pwd = prompt("كلمة السر:");
-        const name = prompt("الاسم الكامل:");
-        const phone = prompt("رقم الهاتف:");
-        if (!email || !pwd || !name || !phone) return;
+
+    // تسجيل طالب جديد
+    document.getElementById('showRegisterBtn').onclick = () => {
+        document.getElementById('registerForm').classList.toggle('hidden');
+    };
+    document.getElementById('doRegisterBtn').onclick = async () => {
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const pwd = document.getElementById('regPassword').value;
+        if (!name || !email || !phone || !pwd) {
+            document.getElementById('regError').innerText = "جميع الحقول مطلوبة";
+            return;
+        }
         try {
             const user = await auth.createUserWithEmailAndPassword(email, pwd);
             await db.collection("users").doc(user.user.uid).set({
                 name, email, phone, role: "student", status: "active"
             });
-            alert("تم التسجيل، يمكنك الدخول الآن");
-        } catch(e) { alert(e.message); }
+            alert("تم التسجيل بنجاح، يمكنك الدخول الآن");
+            document.getElementById('registerForm').classList.add('hidden');
+        } catch (e) {
+            document.getElementById('regError').innerText = e.message;
+        }
     };
-    
-    async function loadStudents() {
+
+    // ========== إدارة الطلاب (للمدير) ==========
+    async function loadStudentsList() {
         const snap = await db.collection("users").where("role", "==", "student").get();
         const container = document.getElementById('studentsList');
         container.innerHTML = '';
@@ -164,69 +206,70 @@
             div.style.padding = "10px";
             div.style.marginBottom = "10px";
             div.innerHTML = `
-                <strong>${s.name}</strong> (${s.email})<br>
-                هاتف: ${s.phone}<br>
-                الحالة: ${s.status === 'active' ? 'نشط' : 'معطل'}<br>
-                <button onclick="toggleStatus('${doc.id}', '${s.status}')" style="background:#e76f51; border:none; padding:5px 10px; border-radius:20px; color:white;">${s.status === 'active' ? 'تعطيل' : 'تفعيل'}</button>
-                <button onclick="deleteUser('${doc.id}')" style="background:#888; border:none; padding:5px 10px; border-radius:20px; color:white;">حذف</button>
+                <div><strong>${s.name}</strong> (${s.email})</div>
+                <div>هاتف: ${s.phone} | الحالة: ${s.status === 'active' ? '🟢 نشط' : '🔴 معطل'}</div>
+                <div class="flex">
+                    <button class="btn" style="width:auto; background:#e76f51;" onclick="toggleStudentStatus('${doc.id}', '${s.status}')">${s.status === 'active' ? 'تعطيل' : 'تفعيل'}</button>
+                    <button class="btn" style="width:auto; background:#888;" onclick="deleteStudentAccount('${doc.id}')">حذف</button>
+                </div>
             `;
             container.appendChild(div);
         });
     }
-    
-    window.toggleStatus = async (uid, currentStatus) => {
+    window.toggleStudentStatus = async (uid, currentStatus) => {
         const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
         await db.collection("users").doc(uid).update({ status: newStatus });
-        loadStudents();
+        loadStudentsList();
     };
-    
-    window.deleteUser = async (uid) => {
+    window.deleteStudentAccount = async (uid) => {
         if (confirm("حذف الطالب نهائياً؟")) {
             await db.collection("users").doc(uid).delete();
-            loadStudents();
+            loadStudentsList();
         }
     };
-    
     document.getElementById('addStudentBtn').onclick = async () => {
-        const name = document.getElementById('studentName').value.trim();
-        const email = document.getElementById('studentEmail').value.trim();
-        const phone = document.getElementById('studentPhone').value.trim();
-        const pwd = document.getElementById('studentPass').value;
-        if (!name || !email || !phone || !pwd) return alert("املأ الحقول");
+        const name = document.getElementById('newStudentName').value.trim();
+        const email = document.getElementById('newStudentEmail').value.trim();
+        const phone = document.getElementById('newStudentPhone').value.trim();
+        const pwd = document.getElementById('newStudentPassword').value;
+        if (!name || !email || !phone || !pwd) return alert("املأ جميع الحقول");
         try {
             const user = await auth.createUserWithEmailAndPassword(email, pwd);
             await db.collection("users").doc(user.user.uid).set({
                 name, email, phone, role: "student", status: "active"
             });
-            alert("تمت الإضافة");
-            loadStudents();
-            document.getElementById('studentName').value = '';
-            document.getElementById('studentEmail').value = '';
-            document.getElementById('studentPhone').value = '';
-            document.getElementById('studentPass').value = '';
-        } catch(e) { alert(e.message); }
+            alert("تمت إضافة الطالب");
+            loadStudentsList();
+        } catch (e) { alert(e.message); }
     };
-    
+
+    // ========== دوال الطالب ==========
+    let currentStudentId = null;
+
     async function showPatients() {
         const snap = await db.collection("patients").where("userId", "==", currentStudentId).get();
-        let html = "<ul style='list-style:none;'>";
+        let html = '<h4>📋 مرضاي</h4><ul style="list-style:none;">';
+        if (snap.empty) html += '<li>لا يوجد مرضى</li>';
         snap.forEach(doc => {
             const p = doc.data();
-            html += `<li style="margin:10px 0; border-bottom:1px solid #ddd; padding:5px;"><strong>${p.name}</strong> - ${p.diagnosis || ''} - ${p.phone} <a href="https://wa.me/${p.phone}" target="_blank">📱</a> <button onclick="deletePatient('${doc.id}')">🗑️</button></li>`;
+            html += `<li style="margin:10px 0; padding:8px; border-bottom:1px solid #ddd;">
+                        <strong>${p.name}</strong> - ${p.diagnosis || ''} - ${p.phone}
+                        <a href="https://wa.me/${p.phone}" target="_blank" style="margin:0 8px;">📱</a>
+                        <button onclick="deletePatient('${doc.id}')">🗑️</button>
+                     </li>`;
         });
-        html += "</ul>";
-        document.getElementById('content').innerHTML = html;
+        html += '</ul>';
+        document.getElementById('studentContent').innerHTML = html;
     }
-    
-    window.deletePatient = async (id) => {
+    window.deletePatient = async (patientId) => {
         if (confirm("حذف المريض؟")) {
-            await db.collection("patients").doc(id).delete();
+            await db.collection("patients").doc(patientId).delete();
             showPatients();
         }
     };
-    
+
     function showEmergency() {
-        const cases = [
+        const emergencyCases = [
             "نزيف حاد بعد القلع", "إغماء المريض", "كسر إبرة تخدير", "حساسية لاتكس",
             "انكسار أداة ضمن القناة", "ابتلاع أداة", "احتراق كيميائي", "طفل غير متعاون",
             "جرح لسان", "جرح شفة", "خدر العصب الوجهي", "انثقاب الجيب الفكي",
@@ -239,74 +282,99 @@
             "كسر إبرة تخدير": "⚠️ لا تحاول الإخراج، استخدم ملقطاً معقماً، أشعة",
             "حساسية لاتكس": "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس",
             "انكسار أداة ضمن القناة": "🛠️ لا تحاول الإخراج بدون تصوير، أبلغ المشرف",
-            "ابتلاع أداة": "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن",
+            "ابتلاع أداة": "⚠️ تهدئة المريض، أشعة صدر وبطن، استدع مشرفاً",
             "احتراق كيميائي": "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة",
             "طفل غير متعاون": "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك",
             "جرح لسان": "👅 نظف بمحلول ملحي، اضغط بشاش، إذا عميق أرسل للمستشفى",
             "جرح شفة": "👄 نظف، ضغط بارد، إذا نافذ أرسل للمستشفى",
-            "خدر العصب الوجهي": "😐 طمئن المريض، عادة مؤقت، راقب التنفس",
-            "انثقاب الجيب الفكي": "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي",
+            "خدر العصب الوجهي": "😐 طمئن المريض، عادة مؤقت راقب التنفس",
+            "انثقاب الجيب الفكي": "🕳️ لا تنظف القناة، مضاد حيوي، تجنب العطس",
             "تجاوز ذروة السن": "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف",
             "خلع سن مؤقت": "🦷 لا تقلعه، استشر المشرف لتركيب حافظ مسافة",
-            "كسر تاج سن حي": "🦷 احفظ القطعة في حليب بارد، قم بتغطية السن",
+            "كسر تاج سن حي": "🦷 احفظ القطعة في حليب بارد، غطِّ السن",
             "تمزق أربطة الفك": "🦴 راحة، مضادات التهاب، أطعمة طرية",
             "صدمة الحساسية": "💉 أدرينالين فوراً، أكسجين، استلقاء، إسعاف",
             "نوبة صرع": "⚡ أزل الأدوات من الفم، ضع المريض على جانبه",
-            "سكتة دماغية": "🧠 FAST: وجه، ذراع، كلام، وقت، إسعاف فوري",
-            "أزمة ربوية": "🌬️ موسع قصبي (بخاخ)، أكسجين، وضعية الجلوس"
+            "سكتة دماغية": "🧠 FAST، إسعاف فوري",
+            "أزمة ربوية": "🌬️ موسع قصبي، أكسجين، وضعية الجلوس"
         };
-        let html = `<div style="display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(170px,1fr));">`;
-        cases.forEach(c => {
+        let html = '<h4>🚑 دليل الطوارئ</h4><div class="emergency-grid">';
+        emergencyCases.forEach(c => {
             const step = steps[c] || "استدع مشرفاً فوراً";
-            html += `<div style="border:1px solid #2b9e5e; border-radius:20px; padding:10px; text-align:center; cursor:pointer;" onclick="alert('${step.replace(/'/g, "\\'")}')">${c}</div>`;
+            html += `<div class="emergency-card" onclick="alert('${step.replace(/'/g, "\\'")}')">${c}</div>`;
         });
-        html += `</div>`;
-        document.getElementById('content').innerHTML = html;
+        html += '</div>';
+        document.getElementById('studentContent').innerHTML = html;
     }
-    
+
     function showAddPatientForm() {
-        document.getElementById('content').innerHTML = `
-            <input type="text" id="patName" placeholder="اسم المريض">
-            <input type="tel" id="patPhone" placeholder="رقم الواتساب">
-            <input type="text" id="patDiag" placeholder="التشخيص">
-            <button id="savePatient" class="btn" style="width:auto;">حفظ</button>
+        document.getElementById('studentContent').innerHTML = `
+            <h4>➕ إضافة مريض جديد</h4>
+            <input type="text" id="newPatName" placeholder="اسم المريض">
+            <input type="tel" id="newPatPhone" placeholder="رقم الواتساب">
+            <input type="text" id="newPatDiag" placeholder="التشخيص (اختياري)">
+            <button id="savePatientBtn" class="btn">حفظ المريض</button>
         `;
-        document.getElementById('savePatient').onclick = async () => {
-            const name = document.getElementById('patName').value.trim();
-            const phone = document.getElementById('patPhone').value.trim();
-            const diag = document.getElementById('patDiag').value.trim();
+        document.getElementById('savePatientBtn').onclick = async () => {
+            const name = document.getElementById('newPatName').value.trim();
+            const phone = document.getElementById('newPatPhone').value.trim();
+            const diag = document.getElementById('newPatDiag').value.trim();
             if (!name || !phone) return alert("الاسم والرقم مطلوبان");
-            await db.collection("patients").add({ userId: currentStudentId, name, phone, diagnosis: diag });
+            await db.collection("patients").add({
+                userId: currentStudentId, name, phone, diagnosis: diag, createdAt: new Date()
+            });
             alert("تم الحفظ");
             showPatients();
         };
     }
-    
+
     async function showTodos() {
         const snap = await db.collection("todos").where("userId", "==", currentStudentId).get();
-        let html = `<div><input type="text" id="newTodo" placeholder="مهمة جديدة"><button id="addTodoBtn">➕</button></div><ul style="list-style:none;">`;
-        snap.forEach(doc => {
-            const t = doc.data();
-            html += `<li><input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTodo('${doc.id}', this.checked)"> ${t.text} <button onclick="deleteTodo('${doc.id}')">🗑️</button></li>`;
-        });
-        html += `</ul>`;
-        document.getElementById('content').innerHTML = html;
+        let html = `<h4>📝 مهامي</h4>
+                    <div class="flex"><input type="text" id="newTodoText" placeholder="مهمة جديدة" style="flex:1"><button id="addTodoBtn">➕</button></div>
+                    <div id="todosList">`;
+        if (snap.empty) html += '<p>لا توجد مهام</p>';
+        else {
+            html += '<ul style="list-style:none;">';
+            snap.forEach(doc => {
+                const t = doc.data();
+                html += `<li class="todo-item">
+                            <span class="todo-text ${t.completed ? 'completed' : ''}">${t.text}</span>
+                            <div>
+                                <button onclick="toggleTodoStatus('${doc.id}', ${t.completed})">✅</button>
+                                <button onclick="deleteTodoItem('${doc.id}')">🗑️</button>
+                            </div>
+                         </li>`;
+            });
+            html += '</ul>';
+        }
+        html += `</div>`;
+        document.getElementById('studentContent').innerHTML = html;
         document.getElementById('addTodoBtn').onclick = async () => {
-            const text = document.getElementById('newTodo').value.trim();
-            if (text) await db.collection("todos").add({ userId: currentStudentId, text, completed: false });
-            showTodos();
+            const text = document.getElementById('newTodoText').value.trim();
+            if (text) {
+                await db.collection("todos").add({ userId: currentStudentId, text, completed: false });
+                showTodos();
+            }
         };
     }
-    
-    window.toggleTodo = async (id, checked) => { await db.collection("todos").doc(id).update({ completed: checked }); };
-    window.deleteTodo = async (id) => { if (confirm("حذف المهمة؟")) await db.collection("todos").doc(id).delete(); showTodos(); };
-    
-    document.getElementById('myPatientsBtn').onclick = showPatients;
-    document.getElementById('emergencyBtn').onclick = showEmergency;
-    document.getElementById('addPatientBtn').onclick = showAddPatientForm;
-    document.getElementById('myTodosBtn').onclick = showTodos;
-    
-    document.getElementById('logoutBtn').onclick = () => auth.signOut().then(() => location.reload());
+    window.toggleTodoStatus = async (id, current) => {
+        await db.collection("todos").doc(id).update({ completed: !current });
+        showTodos();
+    };
+    window.deleteTodoItem = async (id) => {
+        if (confirm("حذف المهمة؟")) await db.collection("todos").doc(id).delete();
+        showTodos();
+    };
+
+    // ربط الأزرار بوظائف الطالب
+    document.getElementById('showPatientsBtn').onclick = showPatients;
+    document.getElementById('showEmergencyBtn').onclick = showEmergency;
+    document.getElementById('showAddPatientBtn').onclick = showAddPatientForm;
+    document.getElementById('showTodosBtn').onclick = showTodos;
+
+    // تسجيل الخروج
+    document.getElementById('logoutAdminBtn').onclick = () => auth.signOut().then(() => location.reload());
     document.getElementById('logoutStudentBtn').onclick = () => auth.signOut().then(() => location.reload());
 </script>
 </body>
