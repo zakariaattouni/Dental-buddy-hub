@@ -35,31 +35,84 @@
         .logo h1 { color: #1f6e43; font-size: 1.8rem; display: flex; align-items: center; gap: 8px; }
         .logo h1::before { content: "🦷"; }
         .logout-btn { background: none; border: none; color: #c5452f; font-weight: bold; cursor: pointer; font-size: 1rem; }
-        .tabs { display: flex; gap: 0.25rem; background: #f9fefb; padding: 0.5rem 2rem 0 2rem; border-bottom: 1px solid #cde5d4; flex-wrap: wrap; }
-        .tab-btn { background: none; border: none; padding: 0.7rem 1.6rem; font-weight: 600; color: #4a6a5e; border-radius: 30px 30px 0 0; cursor: pointer; }
-        .tab-btn.active { background: white; color: #1f6e43; border-bottom: 3px solid #2b9e5e; }
-        .tab-content { display: none; padding: 2rem; animation: fade 0.2s; }
-        .tab-content.active { display: block; }
-        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-        .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1.8rem; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #def0e2; padding-bottom: 0.7rem; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 10px; }
-        .btn-primary { background: #2b9e5e; padding: 12px 20px; border-radius: 40px; border: none; color: white; font-weight: bold; cursor: pointer; font-size: 1rem; min-width: 120px; }
+        
+        /* واجهة الطالب - أزرار كبيرة */
+        .student-dashboard {
+            padding: 2rem;
+        }
+        .welcome {
+            background: #e0f3e8;
+            border-radius: 30px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .big-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .big-btn {
+            background: white;
+            border: 2px solid #2b9e5e;
+            border-radius: 30px;
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1f6e43;
+        }
+        .big-btn:hover {
+            background: #2b9e5e;
+            color: white;
+            transform: translateY(-3px);
+        }
+        .content-area {
+            background: #f9fefb;
+            border-radius: 30px;
+            padding: 1.5rem;
+            border: 1px solid #cde5d4;
+            min-height: 300px;
+        }
+        .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1rem; }
+        .btn-primary { background: #2b9e5e; padding: 10px 18px; border-radius: 40px; border: none; color: white; font-weight: bold; cursor: pointer; }
         .btn-danger { background: #e76f51; }
         .btn-whatsapp { background: #25D366; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px 8px; border-bottom: 1px solid #eef3ec; text-align: right; }
-        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #deecdf; flex-wrap: wrap; gap: 10px; }
-        .badge { background: #f4e9cd; padding: 5px 12px; border-radius: 30px; font-size: 0.8rem; }
+        th, td { padding: 10px 5px; border-bottom: 1px solid #eef3ec; text-align: right; }
+        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1rem; }
+        .emergency-card { background: #fff; border: 1px solid #cde5d4; border-radius: 20px; padding: 0.8rem; text-align: center; cursor: pointer; transition: 0.2s; }
+        .emergency-card:hover { background: #e0f3e8; }
+        .message-bubble { background: #eef6f2; border-radius: 20px; padding: 10px 16px; margin: 8px 0; }
+        /* قائمة المهام */
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e1f0e4;
+        }
+        .todo-text {
+            flex: 1;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        .todo-text.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .todo-actions button {
+            margin-right: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
         footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; margin-top: 1rem; }
-        
-        /* بطاقات الطوارئ */
-        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .emergency-card { background: #f9fefb; border: 1px solid #cde5d4; border-radius: 20px; padding: 1rem; text-align: center; cursor: pointer; transition: 0.2s; }
-        .emergency-card:hover { background: #e0f3e8; transform: translateY(-3px); }
-        .emergency-card h4 { color: #1f6e43; margin-bottom: 0.5rem; }
-        .chat-area { background: #f8fefb; border-radius: 24px; padding: 1rem; margin-top: 1.5rem; }
-        .message-bubble { background: #eef6f2; border-radius: 20px; padding: 12px 16px; margin: 8px 0; }
-        @media (max-width: 700px) { .tabs { padding: 0 1rem; } .tab-btn { padding: 0.5rem 0.8rem; } .emergency-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 700px) { .big-buttons { grid-template-columns: 1fr 1fr; } .big-btn { font-size: 1rem; padding: 0.8rem; } }
     </style>
 </head>
 <body>
@@ -82,7 +135,6 @@
         <button id="loginActionBtn" class="btn">دخول</button>
         <div id="loginError" class="error"></div>
         
-        <!-- قسم تسجيل طالب جديد -->
         <div class="register-field">
             <button id="showRegisterBtn" class="btn btn-outline">📝 تسجيل طالب جديد</button>
             <div id="registerForm" style="display: none; margin-top: 1rem;">
@@ -102,34 +154,39 @@
             <button class="logout-btn" id="logoutBtn">🚪 خروج</button>
         </div>
         <div id="dynamicContent"></div>
-        <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 13+ حالة طوارئ</footer>
+        <footer>نظام إدارة العيادة | مساعد طوارئ ذكي محلي | دعم 13+ حالة</footer>
     </div>
 </div>
 
 <script>
-    // ------------------- بيانات التخزين (محاكاة قاعدة بيانات) -------------------
+    // ------------------- بيانات التخزين -------------------
     let students = JSON.parse(localStorage.getItem('ds_students')) || [];
     let patientsDB = JSON.parse(localStorage.getItem('ds_patients')) || {};
+    let todosDB = JSON.parse(localStorage.getItem('ds_todos')) || {}; // { studentId: [{ text, completed }] }
     
     function saveStudents() { localStorage.setItem('ds_students', JSON.stringify(students)); }
     function savePatients() { localStorage.setItem('ds_patients', JSON.stringify(patientsDB)); }
+    function saveTodos() { localStorage.setItem('ds_todos', JSON.stringify(todosDB)); }
     
-    // إضافة طالب (للمدير أو التسجيل الذاتي)
     function addStudent(name, phone, password, status = 'active') {
         if (students.find(s => s.phone === phone)) return false;
         const id = 's_' + Date.now();
         students.push({ id, name, phone, password, status });
         saveStudents();
         if (!patientsDB[id]) patientsDB[id] = [];
+        if (!todosDB[id]) todosDB[id] = [];
         savePatients();
+        saveTodos();
         return true;
     }
     
     function deleteStudent(id) {
         students = students.filter(s => s.id !== id);
         delete patientsDB[id];
+        delete todosDB[id];
         saveStudents();
         savePatients();
+        saveTodos();
     }
     
     function toggleSuspend(id) {
@@ -138,7 +195,6 @@
         saveStudents();
     }
     
-    // دوال إدارة المرضى (خاصة بالطالب)
     function addPatientToStudent(studentId, name, phone, diagnosis) {
         if (!patientsDB[studentId]) patientsDB[studentId] = [];
         patientsDB[studentId].push({ name, phone, diagnosis: diagnosis || '', addedAt: new Date() });
@@ -146,13 +202,30 @@
     }
     
     function deletePatient(studentId, index) {
-        if (patientsDB[studentId]) {
-            patientsDB[studentId].splice(index, 1);
-            savePatients();
+        if (patientsDB[studentId]) patientsDB[studentId].splice(index, 1);
+        savePatients();
+    }
+    
+    // دوال المهام (Todo)
+    function addTodo(studentId, text) {
+        if (!todosDB[studentId]) todosDB[studentId] = [];
+        todosDB[studentId].push({ text: text, completed: false });
+        saveTodos();
+    }
+    function toggleTodo(studentId, index) {
+        if (todosDB[studentId] && todosDB[studentId][index]) {
+            todosDB[studentId][index].completed = !todosDB[studentId][index].completed;
+            saveTodos();
+        }
+    }
+    function deleteTodo(studentId, index) {
+        if (todosDB[studentId]) {
+            todosDB[studentId].splice(index, 1);
+            saveTodos();
         }
     }
     
-    // ------------------- قاعدة بيانات المساعد الذكي -------------------
+    // ------------------- المساعد الذكي -------------------
     const emergencyCases = [
         { title: "نزيف حاد", steps: "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة. استدع مشرفاً إذا استمر." },
         { title: "إغماء", steps: "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً." },
@@ -174,74 +247,45 @@
         return found ? found.steps : "لم نتعرف على الحالة.";
     }
     
-    // ------------------- دوال بناء الواجهة حسب الدور -------------------
-    let currentUser = null;
-    
+    // ------------------- واجهة المدير (نفس السابق) -------------------
     function renderAdminDashboard() {
         const container = document.getElementById('dynamicContent');
         container.innerHTML = `
-            <div class="tabs" id="adminTabs">
-                <button class="tab-btn active" data-tab="adminStudents">👥 إدارة الطلاب</button>
-                <button class="tab-btn" data-tab="adminAssistant">🚨 المساعد الذكي</button>
-            </div>
-            <div id="adminTabContents">
-                <div class="tab-content active" id="adminStudents">
-                    <div class="card">
-                        <div class="card-header"><h3>➕ إضافة طالب جديد</h3></div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <input type="text" id="stdName" placeholder="الاسم" style="flex:1; padding:10px; border-radius:40px;">
-                            <input type="tel" id="stdPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px;">
-                            <input type="password" id="stdPassword" placeholder="كلمة السر" style="flex:1; padding:10px; border-radius:40px;">
-                            <button id="addStudentBtn" class="btn-primary">إضافة</button>
-                        </div>
-                        <div id="addResult" style="margin-top:10px;"></div>
+            <div style="padding:2rem;">
+                <div class="card">
+                    <div class="card-header" style="display:flex; justify-content:space-between;"><h3>👥 إدارة الطلاب</h3></div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1rem;">
+                        <input type="text" id="stdName" placeholder="الاسم" style="flex:1; padding:10px; border-radius:40px;">
+                        <input type="tel" id="stdPhone" placeholder="رقم الهاتف" style="flex:1; padding:10px; border-radius:40px;">
+                        <input type="password" id="stdPassword" placeholder="كلمة السر" style="flex:1; padding:10px; border-radius:40px;">
+                        <button id="addStudentBtn" class="btn-primary">إضافة طالب</button>
                     </div>
-                    <div class="card">
-                        <div class="card-header"><h3>📋 قائمة الطلاب</h3></div>
-                        <div id="studentsListAdmin"></div>
-                    </div>
+                    <div id="studentsListAdmin"></div>
                 </div>
-                <div class="tab-content" id="adminAssistant">
-                    <div class="card">
-                        <div class="card-header"><h3>🚑 المساعد الذكي للطوارئ</h3></div>
-                        <div class="emergency-grid" id="emergencyGridAdmin"></div>
-                        <div class="chat-area" id="chatAreaAdmin">
-                            <div id="chatMessagesAdmin" style="height:200px; overflow-y:auto; margin-bottom:10px;"></div>
-                        </div>
+                <div class="card">
+                    <h3>🚑 المساعد الذكي (للمدير)</h3>
+                    <div class="emergency-grid" id="emergencyGridAdmin"></div>
+                    <div class="chat-area" style="margin-top:1rem;">
+                        <div id="chatMessagesAdmin" style="height:200px; overflow-y:auto;"></div>
                     </div>
                 </div>
             </div>
         `;
-        buildEmergencyGrid('emergencyGridAdmin', 'chatMessagesAdmin');
         refreshStudentsListAdmin();
-        
-        document.querySelectorAll('#adminTabs .tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                document.querySelectorAll('#adminTabContents .tab-content').forEach(tc => tc.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                document.querySelectorAll('#adminTabs .tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
-        
+        buildEmergencyGrid('emergencyGridAdmin', 'chatMessagesAdmin');
         document.getElementById('addStudentBtn').addEventListener('click', () => {
             const name = document.getElementById('stdName').value.trim();
             const phone = document.getElementById('stdPhone').value.trim();
             const pass = document.getElementById('stdPassword').value.trim();
             if (name && phone && pass) {
                 if (addStudent(name, phone, pass)) {
-                    document.getElementById('addResult').innerHTML = '<span style="color:green;">✅ تم الإضافة</span>';
+                    alert('تمت الإضافة');
                     document.getElementById('stdName').value = '';
                     document.getElementById('stdPhone').value = '';
                     document.getElementById('stdPassword').value = '';
                     refreshStudentsListAdmin();
-                } else {
-                    document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ الرقم موجود مسبقاً</span>';
-                }
-            } else {
-                document.getElementById('addResult').innerHTML = '<span style="color:red;">❌ املأ جميع الحقول</span>';
-            }
+                } else alert('رقم الهاتف موجود مسبقاً');
+            } else alert('املأ جميع الحقول');
         });
     }
     
@@ -252,11 +296,11 @@
         let html = '';
         students.forEach(s => {
             html += `
-                <div class="user-row">
-                    <div><strong>${escapeHtml(s.name)}</strong> (📞 ${s.phone}) <span class="badge">${s.status === 'active' ? '✅ نشط' : '🔴 مُرقن'}</span></div>
+                <div class="user-row" style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd;">
+                    <div><strong>${escapeHtml(s.name)}</strong> (${s.phone}) <span class="badge">${s.status === 'active' ? 'نشط' : 'مُرقن'}</span></div>
                     <div>
-                        <button class="btn-primary btn-danger" onclick="window.toggleSuspendStudent('${s.id}')" style="margin-left:8px;">${s.status === 'active' ? '🔴 ترقين' : '🟢 تفعيل'}</button>
-                        <button class="btn-primary" style="background:#aaa;" onclick="window.deleteStudentById('${s.id}')">🗑 حذف</button>
+                        <button class="btn-primary btn-danger" onclick="window.toggleSuspendStudent('${s.id}')">${s.status === 'active' ? 'ترقين' : 'تفعيل'}</button>
+                        <button class="btn-primary" style="background:#aaa;" onclick="window.deleteStudentById('${s.id}')">حذف</button>
                     </div>
                 </div>
             `;
@@ -264,87 +308,163 @@
         container.innerHTML = html;
     }
     
+    // ------------------- واجهة الطالب -------------------
+    let currentStudent = null;
+    let activeContent = 'welcome';
+    
     function renderStudentDashboard(student) {
+        currentStudent = student;
         const container = document.getElementById('dynamicContent');
         container.innerHTML = `
-            <div class="tabs" id="studentTabs">
-                <button class="tab-btn active" data-tab="studentPatients">📋 مرضاي</button>
-                <button class="tab-btn" data-tab="studentAssistant">🚨 المساعد الذكي</button>
-            </div>
-            <div id="studentTabContents">
-                <div class="tab-content active" id="studentPatients">
-                    <div class="card">
-                        <div class="card-header"><h3>➕ إضافة مريض جديد</h3></div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <input type="text" id="patName" placeholder="اسم المريض" style="flex:2; padding:10px; border-radius:40px;">
-                            <input type="tel" id="patPhone" placeholder="رقم واتساب" style="flex:2; padding:10px; border-radius:40px;">
-                            <input type="text" id="patDiag" placeholder="التشخيص" style="flex:2; padding:10px; border-radius:40px;">
-                            <button id="addPatientBtn" class="btn-primary">إضافة</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header"><h3>📋 قائمة مرضاي</h3></div>
-                        <div id="patientsListStudent"></div>
-                    </div>
+            <div class="student-dashboard">
+                <div class="welcome">
+                    <h2>✨ أهلاً بك، ${escapeHtml(student.name)} ✨</h2>
                 </div>
-                <div class="tab-content" id="studentAssistant">
-                    <div class="card">
-                        <div class="card-header"><h3>🚑 المساعد الذكي للطوارئ</h3></div>
-                        <div class="emergency-grid" id="emergencyGridStudent"></div>
-                        <div class="chat-area" id="chatAreaStudent">
-                            <div id="chatMessagesStudent" style="height:200px; overflow-y:auto; margin-bottom:10px;"></div>
-                        </div>
-                    </div>
+                <div class="big-buttons">
+                    <div class="big-btn" data-action="patients">📋 مرضاي</div>
+                    <div class="big-btn" data-action="assistant">🚑 مساعدي الذكي</div>
+                    <div class="big-btn" data-action="addPatient">➕ أضف مريض</div>
+                    <div class="big-btn" data-action="todo">📅 ماذا اليوم</div>
+                </div>
+                <div id="studentContentArea" class="content-area">
+                    <p style="text-align:center; color:#2b9e5e;">اختر أحد الأزرار أعلاه</p>
                 </div>
             </div>
         `;
-        buildEmergencyGrid('emergencyGridStudent', 'chatMessagesStudent');
-        refreshPatientsList(student.id);
         
-        document.querySelectorAll('#studentTabs .tab-btn').forEach(btn => {
+        document.querySelectorAll('.big-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                document.querySelectorAll('#studentTabContents .tab-content').forEach(tc => tc.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-                document.querySelectorAll('#studentTabs .tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+                const action = btn.dataset.action;
+                activeContent = action;
+                if (action === 'patients') showPatientsList();
+                else if (action === 'assistant') showAssistant();
+                else if (action === 'addPatient') showAddPatientForm();
+                else if (action === 'todo') showTodoList();
             });
         });
         
-        document.getElementById('addPatientBtn').addEventListener('click', () => {
-            const name = document.getElementById('patName').value.trim();
-            const phone = document.getElementById('patPhone').value.trim();
-            const diag = document.getElementById('patDiag').value.trim();
-            if (name && phone) {
-                addPatientToStudent(student.id, name, phone, diag);
-                refreshPatientsList(student.id);
-                document.getElementById('patName').value = '';
-                document.getElementById('patPhone').value = '';
-                document.getElementById('patDiag').value = '';
-            } else alert('يرجى إدخال اسم المريض ورقم الهاتف');
-        });
+        // استعادة آخر محتوى نشط
+        if (activeContent === 'welcome') setDefault();
+        else if (activeContent === 'patients') showPatientsList();
+        else if (activeContent === 'assistant') showAssistant();
+        else if (activeContent === 'addPatient') showAddPatientForm();
+        else if (activeContent === 'todo') showTodoList();
+        else setDefault();
+        
+        function setDefault() {
+            const area = document.getElementById('studentContentArea');
+            if (area) area.innerHTML = '<p style="text-align:center; color:#2b9e5e;">اختر أحد الأزرار أعلاه</p>';
+        }
+        
+        function showPatientsList() {
+            const area = document.getElementById('studentContentArea');
+            const patients = patientsDB[student.id] || [];
+            if (patients.length === 0) {
+                area.innerHTML = '<div class="card"><p>لا يوجد مرضى مسجلون. اضغط على "أضف مريض" لإضافة أول مريض.</p></div>';
+                return;
+            }
+            let html = '<div class="card"><h3>📋 قائمة مرضاي</h3><table style="width:100%"><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراءات</th></tr></thead><tbody>';
+            patients.forEach((p, idx) => {
+                html += `<tr>
+                            <td>${escapeHtml(p.name)}</td>
+                            <td>${escapeHtml(p.diagnosis)}</td>
+                            <td>${escapeHtml(p.phone)}</td>
+                            <td>
+                                <button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
+                                <button class="btn-primary btn-danger" onclick="window.deletePatientFromStudent('${student.id}', ${idx})">🗑 حذف</button>
+                             </td>
+                          </tr>`;
+            });
+            html += '</tbody></table></div>';
+            area.innerHTML = html;
+        }
+        
+        function showAddPatientForm() {
+            const area = document.getElementById('studentContentArea');
+            area.innerHTML = `
+                <div class="card">
+                    <h3>➕ إضافة مريض جديد</h3>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:1rem;">
+                        <input type="text" id="newPatName" placeholder="اسم المريض" style="flex:2; padding:10px; border-radius:40px;">
+                        <input type="tel" id="newPatPhone" placeholder="رقم واتساب" style="flex:2; padding:10px; border-radius:40px;">
+                        <input type="text" id="newPatDiag" placeholder="التشخيص" style="flex:2; padding:10px; border-radius:40px;">
+                        <button id="confirmAddPatient" class="btn-primary">إضافة</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('confirmAddPatient').addEventListener('click', () => {
+                const name = document.getElementById('newPatName').value.trim();
+                const phone = document.getElementById('newPatPhone').value.trim();
+                const diag = document.getElementById('newPatDiag').value.trim();
+                if (name && phone) {
+                    addPatientToStudent(student.id, name, phone, diag);
+                    alert('تمت إضافة المريض');
+                    showPatientsList();
+                    activeContent = 'patients';
+                } else alert('يرجى إدخال الاسم ورقم الهاتف');
+            });
+        }
+        
+        function showAssistant() {
+            const area = document.getElementById('studentContentArea');
+            area.innerHTML = `
+                <div class="card">
+                    <h3>🚑 مساعدي الذكي للطوارئ</h3>
+                    <div class="emergency-grid" id="studentEmergencyGrid"></div>
+                    <div class="chat-area" style="margin-top:1rem;">
+                        <div id="studentChatMessages" style="height:200px; overflow-y:auto;"></div>
+                    </div>
+                </div>
+            `;
+            buildEmergencyGrid('studentEmergencyGrid', 'studentChatMessages');
+        }
+        
+        function showTodoList() {
+            const area = document.getElementById('studentContentArea');
+            const todos = todosDB[student.id] || [];
+            const render = () => {
+                const currentTodos = todosDB[student.id] || [];
+                let html = `
+                    <div class="card">
+                        <h3>📝 قائمة المهام اليومية (ماذا لدينا من أعمال)</h3>
+                        <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
+                            <input type="text" id="newTodoText" placeholder="أضف مهمة جديدة..." style="flex:1; padding:10px; border-radius:40px; border:1px solid #ccc;">
+                            <button id="addTodoBtn" class="btn-primary">➕ أضف</button>
+                        </div>
+                        <div id="todosList">
+                `;
+                if (currentTodos.length === 0) {
+                    html += '<p>لا توجد مهام اليوم. أضف مهمة جديدة.</p>';
+                } else {
+                    html += '<ul style="list-style: none;">';
+                    currentTodos.forEach((todo, idx) => {
+                        html += `
+                            <li class="todo-item">
+                                <span class="todo-text ${todo.completed ? 'completed' : ''}">${escapeHtml(todo.text)}</span>
+                                <div class="todo-actions">
+                                    <button title="إنجاز" onclick="window.toggleTodoItem('${student.id}', ${idx})">✅</button>
+                                    <button title="حذف" onclick="window.deleteTodoItem('${student.id}', ${idx})">🗑️</button>
+                                </div>
+                            </li>
+                        `;
+                    });
+                    html += '</ul>';
+                }
+                html += `</div></div>`;
+                area.innerHTML = html;
+                document.getElementById('addTodoBtn').addEventListener('click', () => {
+                    const newText = document.getElementById('newTodoText').value.trim();
+                    if (newText) {
+                        addTodo(student.id, newText);
+                        showTodoList(); // refresh
+                    }
+                });
+            };
+            render();
+        }
     }
     
-    function refreshPatientsList(studentId) {
-        const container = document.getElementById('patientsListStudent');
-        if (!container) return;
-        const patients = patientsDB[studentId] || [];
-        if (patients.length === 0) { container.innerHTML = '<p>لا يوجد مرضى مسجلون</p>'; return; }
-        let html = '<table><thead><tr><th>اسم المريض</th><th>التشخيص</th><th>رقم واتساب</th><th>إجراءات</th></thead><tbody>';
-        patients.forEach((p, idx) => {
-            html += `<tr>
-                        <td>${escapeHtml(p.name)}</td>
-                        <td>${escapeHtml(p.diagnosis)}</td>
-                        <td>${escapeHtml(p.phone)}</td>
-                        <td><button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
-                        <button class="btn-primary btn-danger" onclick="window.deletePatientById('${studentId}', ${idx})">🗑 حذف</button>
-                         </td>
-                    </tr>`;
-        });
-        html += '</tbody></table>';
-        container.innerHTML = html;
-    }
-    
+    // دوال عامة للمساعد الذكي
     function buildEmergencyGrid(gridId, chatId) {
         const grid = document.getElementById(gridId);
         if (!grid) return;
@@ -352,15 +472,15 @@
         emergencyCases.forEach(c => {
             const card = document.createElement('div');
             card.className = 'emergency-card';
-            card.innerHTML = `<h4>${c.title}</h4><p>اضغط للحصول على الخطوات</p>`;
+            card.innerHTML = `<strong>${c.title}</strong>`;
             card.addEventListener('click', () => {
                 const response = getEmergencyResponse(c.title);
                 const chatDiv = document.getElementById(chatId);
                 if (chatDiv) {
-                    const msgDiv = document.createElement('div');
-                    msgDiv.className = 'message-bubble';
-                    msgDiv.innerHTML = `<strong>🔔 ${c.title}:</strong><br>${response}`;
-                    chatDiv.appendChild(msgDiv);
+                    const msg = document.createElement('div');
+                    msg.className = 'message-bubble';
+                    msg.innerHTML = `<strong>🔔 ${c.title}:</strong><br>${response}`;
+                    chatDiv.appendChild(msg);
                     chatDiv.scrollTop = chatDiv.scrollHeight;
                 }
             });
@@ -370,22 +490,23 @@
         if (chatDiv && chatDiv.children.length === 0) {
             const welcome = document.createElement('div');
             welcome.className = 'message-bubble';
-            welcome.innerHTML = "<strong>🤖 المساعد الذكي:</strong> اختر حالة طوارئ من البطاقات أعلاه لتحصل على الإرشادات.";
+            welcome.innerHTML = "🤖 اختر حالة طوارئ من البطاقات أعلاه لتحصل على الإرشادات.";
             chatDiv.appendChild(welcome);
         }
     }
     
     function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
     
-    // دوال عامة للعمليات
+    // دوال النوافذ العامة
     window.toggleSuspendStudent = (id) => { toggleSuspend(id); refreshStudentsListAdmin(); };
-    window.deleteStudentById = (id) => { if(confirm('حذف الطالب سيؤدي لحذف جميع مرضاه؟')) { deleteStudent(id); refreshStudentsListAdmin(); } };
-    window.deletePatientById = (studentId, idx) => { if(confirm('حذف المريض؟')) { deletePatient(studentId, idx); refreshPatientsList(studentId); } };
+    window.deleteStudentById = (id) => { if(confirm('حذف الطالب سيؤدي لحذف جميع مرضاه ومهامه؟')) { deleteStudent(id); refreshStudentsListAdmin(); } };
+    window.deletePatientFromStudent = (studentId, idx) => { if(confirm('حذف المريض؟')) { deletePatient(studentId, idx); if (currentStudent && currentStudent.id === studentId) renderStudentDashboard(currentStudent); else refreshStudentsListAdmin(); } };
     window.sendWhatsapp = (phone, name) => {
-        const message = `مرحباً ${name}، تذكير بموعدك في عيادة الأسنان. الرجاء الحضور في الوقت المحدد. شكراً.`;
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(url, '_blank');
+        const message = `مرحباً ${name}، تذكير بموعدك في عيادة الأسنان. شكراً.`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     };
+    window.toggleTodoItem = (studentId, idx) => { toggleTodo(studentId, idx); if (currentStudent && currentStudent.id === studentId) renderStudentDashboard(currentStudent); };
+    window.deleteTodoItem = (studentId, idx) => { deleteTodo(studentId, idx); if (currentStudent && currentStudent.id === studentId) renderStudentDashboard(currentStudent); };
     
     // ------------------- إدارة الدخول والتسجيل -------------------
     function showAdminLogin() { document.getElementById('adminLoginFields').style.display = 'block'; document.getElementById('studentLoginFields').style.display = 'none'; }
@@ -409,7 +530,6 @@
         if (isAdmin) {
             const pass = document.getElementById('adminPassword').value;
             if (pass === 'salem1959') {
-                currentUser = { role: 'admin' };
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appMain').style.display = 'block';
                 document.getElementById('userRoleLabel').innerText = 'لوحة المدير';
@@ -422,23 +542,22 @@
             const pwd = document.getElementById('studentPassword').value.trim();
             const student = students.find(s => s.phone === phone && s.password === pwd && s.status === 'active');
             if (student) {
-                currentUser = { role: 'student', id: student.id, name: student.name, phone: student.phone };
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('appMain').style.display = 'block';
                 document.getElementById('userRoleLabel').innerHTML = `طالب: ${student.name}`;
                 renderStudentDashboard(student);
             } else {
-                document.getElementById('loginError').innerText = 'رقم الهاتف أو كلمة السر غير صحيحة، أو الحساب معطل';
+                document.getElementById('loginError').innerText = 'بيانات غير صحيحة أو الحساب معطل';
             }
         }
     });
     
     // التسجيل الذاتي
-    let registerFormVisible = false;
+    let registerVisible = false;
     document.getElementById('showRegisterBtn').addEventListener('click', () => {
         const form = document.getElementById('registerForm');
-        registerFormVisible = !registerFormVisible;
-        form.style.display = registerFormVisible ? 'block' : 'none';
+        registerVisible = !registerVisible;
+        form.style.display = registerVisible ? 'block' : 'none';
     });
     document.getElementById('doRegisterBtn').addEventListener('click', () => {
         const name = document.getElementById('regName').value.trim();
@@ -453,35 +572,36 @@
             return;
         }
         if (addStudent(name, phone, pwd, 'active')) {
-            alert('تم التسجيل بنجاح! يمكنك الآن الدخول باستخدام رقم الهاتف وكلمة السر.');
+            alert('تم التسجيل بنجاح! يمكنك الدخول الآن.');
             document.getElementById('regName').value = '';
             document.getElementById('regPhone').value = '';
             document.getElementById('regPassword').value = '';
             document.getElementById('registerForm').style.display = 'none';
-            registerFormVisible = false;
-            // تحويل إلى وضع الطالب وملء حقول الدخول
+            registerVisible = false;
             document.getElementById('studentRoleBtn').click();
             document.getElementById('studentPhone').value = phone;
             document.getElementById('studentPassword').value = pwd;
-            document.getElementById('loginError').innerText = '';
         } else {
-            document.getElementById('regError').innerText = '❌ حدث خطأ، حاول مرة أخرى';
+            document.getElementById('regError').innerText = '❌ حدث خطأ';
         }
     });
     
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        currentUser = null;
         location.reload();
     });
     
-    // بيانات افتراضية أولية (للتجربة)
+    // بيانات افتراضية
     if (students.length === 0) {
         addStudent('أحمد الطالب', '0512345678', '1234');
         addStudent('سارة الطالبة', '0598765432', '5678');
-        const firstStudent = students[0];
-        if (firstStudent) {
-            addPatientToStudent(firstStudent.id, 'مريض تجريبي 1', '0501111111', 'حشو عصب');
-            addPatientToStudent(firstStudent.id, 'مريض تجريبي 2', '0502222222', 'قلع ضرس');
+        const first = students[0];
+        if (first) {
+            addPatientToStudent(first.id, 'مريض تجريبي 1', '0501111111', 'حشو عصب');
+            addPatientToStudent(first.id, 'مريض تجريبي 2', '0502222222', 'قلع ضرس');
+            // إضافة مهام تجريبية
+            addTodo(first.id, 'مراجعة جدول العيادة');
+            addTodo(first.id, 'تجهيز مواد التعقيم');
+            addTodo(first.id, 'متابعة حالة المريض محمد');
         }
     }
 </script>
