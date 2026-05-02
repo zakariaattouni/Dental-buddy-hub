@@ -43,13 +43,13 @@
         .welcome {
             background: #e0f3e8;
             border-radius: 30px;
-            padding: 1rem;
+            padding: 1.2rem;
             text-align: center;
             margin-bottom: 2rem;
         }
         .big-buttons {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -57,25 +57,32 @@
             background: white;
             border: 2px solid #2b9e5e;
             border-radius: 30px;
-            padding: 1.2rem 0.5rem;
+            padding: 1.5rem 0.5rem;
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
             font-weight: bold;
             font-size: 1.2rem;
             color: #1f6e43;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
         .big-btn:hover {
             background: #2b9e5e;
             color: white;
             transform: translateY(-3px);
         }
+        .big-btn span:first-child {
+            font-size: 2rem;
+        }
         .content-area {
             background: #f9fefb;
             border-radius: 30px;
             padding: 1.5rem;
             border: 1px solid #cde5d4;
-            min-height: 300px;
+            min-height: 350px;
         }
         .card { background: #fff; border: 1px solid #e1f0e4; border-radius: 28px; padding: 1.5rem; margin-bottom: 1rem; }
         .btn-primary { background: #2b9e5e; padding: 10px 18px; border-radius: 40px; border: none; color: white; font-weight: bold; cursor: pointer; }
@@ -87,7 +94,6 @@
         .emergency-card { background: #fff; border: 1px solid #cde5d4; border-radius: 20px; padding: 0.8rem; text-align: center; cursor: pointer; transition: 0.2s; }
         .emergency-card:hover { background: #e0f3e8; }
         .message-bubble { background: #eef6f2; border-radius: 20px; padding: 10px 16px; margin: 8px 0; }
-        /* قائمة المهام */
         .todo-item {
             display: flex;
             justify-content: space-between;
@@ -112,7 +118,21 @@
             font-size: 1.2rem;
         }
         footer { background: #e9f3ec; text-align: center; padding: 1rem; font-size: 0.7rem; margin-top: 1rem; }
-        @media (max-width: 700px) { .big-buttons { grid-template-columns: 1fr 1fr; } .big-btn { font-size: 1rem; padding: 0.8rem; } }
+        
+        /* تحسين الأزرار للشاشات الصغيرة */
+        @media (max-width: 700px) {
+            .big-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            .big-btn {
+                padding: 1rem 0.3rem;
+                font-size: 1rem;
+            }
+            .big-btn span:first-child {
+                font-size: 1.6rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -206,7 +226,6 @@
         savePatients();
     }
     
-    // دوال المهام (Todo)
     function addTodo(studentId, text) {
         if (!todosDB[studentId]) todosDB[studentId] = [];
         todosDB[studentId].push({ text: text, completed: false });
@@ -247,7 +266,7 @@
         return found ? found.steps : "لم نتعرف على الحالة.";
     }
     
-    // ------------------- واجهة المدير (نفس السابق) -------------------
+    // ------------------- واجهة المدير -------------------
     function renderAdminDashboard() {
         const container = document.getElementById('dynamicContent');
         container.innerHTML = `
@@ -321,10 +340,18 @@
                     <h2>✨ أهلاً بك، ${escapeHtml(student.name)} ✨</h2>
                 </div>
                 <div class="big-buttons">
-                    <div class="big-btn" data-action="patients">📋 مرضاي</div>
-                    <div class="big-btn" data-action="assistant">🚑 مساعدي الذكي</div>
-                    <div class="big-btn" data-action="addPatient">➕ أضف مريض</div>
-                    <div class="big-btn" data-action="todo">📅 ماذا اليوم</div>
+                    <div class="big-btn" data-action="patients">
+                        <span>📋</span> <span>مرضاي</span>
+                    </div>
+                    <div class="big-btn" data-action="assistant">
+                        <span>🚑</span> <span>مساعدي الذكي</span>
+                    </div>
+                    <div class="big-btn" data-action="addPatient">
+                        <span>➕</span> <span>أضف مريض</span>
+                    </div>
+                    <div class="big-btn" data-action="todo">
+                        <span>📅</span> <span>ماذا اليوم</span>
+                    </div>
                 </div>
                 <div id="studentContentArea" class="content-area">
                     <p style="text-align:center; color:#2b9e5e;">اختر أحد الأزرار أعلاه</p>
@@ -372,8 +399,8 @@
                             <td>
                                 <button class="btn-primary btn-whatsapp" onclick="window.sendWhatsapp('${p.phone}', '${p.name}')">📱 واتساب</button>
                                 <button class="btn-primary btn-danger" onclick="window.deletePatientFromStudent('${student.id}', ${idx})">🗑 حذف</button>
-                             </td>
-                          </tr>`;
+                              </div>
+                           </div>`;
             });
             html += '</tbody></table></div>';
             area.innerHTML = html;
@@ -421,7 +448,6 @@
         
         function showTodoList() {
             const area = document.getElementById('studentContentArea');
-            const todos = todosDB[student.id] || [];
             const render = () => {
                 const currentTodos = todosDB[student.id] || [];
                 let html = `
@@ -598,7 +624,6 @@
         if (first) {
             addPatientToStudent(first.id, 'مريض تجريبي 1', '0501111111', 'حشو عصب');
             addPatientToStudent(first.id, 'مريض تجريبي 2', '0502222222', 'قلع ضرس');
-            // إضافة مهام تجريبية
             addTodo(first.id, 'مراجعة جدول العيادة');
             addTodo(first.id, 'تجهيز مواد التعقيم');
             addTodo(first.id, 'متابعة حالة المريض محمد');
