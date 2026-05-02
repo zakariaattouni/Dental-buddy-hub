@@ -2,48 +2,33 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DS ASSISTANCE</title>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui; }
-        body { background: #ecf9f0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { background: white; border-radius: 48px; padding: 2rem; max-width: 500px; margin: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .btn { background: #2b9e5e; color: white; border: none; padding: 12px; border-radius: 60px; width: 100%; font-weight: bold; cursor: pointer; margin: 8px 0; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 60px; border: 1px solid #ccc; }
-        .error { color: red; text-align: center; margin-top: 10px; }
-        .flex { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-        .hidden { display: none; }
-        hr { margin: 15px 0; }
-        .status-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-left: 10px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        }
-        .status-green { background-color: #2b9e5e; box-shadow: 0 0 8px #2b9e5e; }
-        .status-red { background-color: #e76f51; box-shadow: 0 0 8px #e76f51; }
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+        body{background:#ecf9f0;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
+        .card{background:white;border-radius:48px;padding:2rem;max-width:500px;margin:auto;box-shadow:0 20px 40px rgba(0,0,0,0.1);}
+        .btn{background:#2b9e5e;color:white;border:none;padding:12px;border-radius:60px;width:100%;font-weight:bold;cursor:pointer;margin:8px 0;}
+        input{width:100%;padding:12px;margin:8px 0;border-radius:60px;border:1px solid #ccc;}
+        .error{color:red;text-align:center;margin-top:10px;}
+        .flex{display:flex;gap:8px;flex-wrap:wrap;}
+        .hidden{display:none;}
+        hr{margin:15px 0;}
+        .status-dot{width:20px;height:20px;border-radius:50%;display:inline-block;margin-left:10px;}
+        .status-green{background-color:#2b9e5e;}
+        .status-red{background-color:#e76f51;}
     </style>
 </head>
 <body>
 <div id="auth" class="card">
-    <div class="flex" style="justify-content: space-between;">
-        <h2 style="text-align:center;">🦷 DS ASSISTANCE</h2>
-        <div class="header-status">
-            <span id="firebaseStatusDot" class="status-dot status-red"></span>
-            <span id="statusText" style="font-size:0.7rem;">غير متصل</span>
-        </div>
+    <div class="flex" style="justify-content:space-between;">
+        <h2>🦷 DS ASSISTANCE</h2>
+        <div><span id="statusDot" class="status-dot status-red"></span></div>
     </div>
-    <p style="text-align:center;">مساعد الطالب الطبيب</p>
+    <p>مساعد الطالب الطبيب</p>
     <input type="email" id="email" placeholder="البريد الإلكتروني">
     <input type="password" id="password" placeholder="كلمة السر">
     <button id="loginBtn" class="btn">دخول</button>
@@ -53,12 +38,9 @@
 </div>
 
 <div id="adminPanel" class="card hidden">
-    <div class="flex" style="justify-content: space-between;">
+    <div class="flex" style="justify-content:space-between;">
         <h3>لوحة المدير</h3>
-        <div class="header-status">
-            <span id="adminStatusDot" class="status-dot status-red"></span>
-            <button id="logoutBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
-        </div>
+        <div><span id="adminStatusDot" class="status-dot status-red"></span><button id="logoutBtn" class="btn" style="width:auto;background:#e76f51;">خروج</button></div>
     </div>
     <hr>
     <h4>إضافة طالب</h4>
@@ -72,12 +54,9 @@
 </div>
 
 <div id="studentPanel" class="card hidden">
-    <div class="flex" style="justify-content: space-between;">
+    <div class="flex" style="justify-content:space-between;">
         <h3 id="welcomeName"></h3>
-        <div class="header-status">
-            <span id="studentStatusDot" class="status-dot status-red"></span>
-            <button id="logoutStudentBtn" class="btn" style="width:auto; background:#e76f51;">خروج</button>
-        </div>
+        <div><span id="studentStatusDot" class="status-dot status-red"></span><button id="logoutStudentBtn" class="btn" style="width:auto;background:#e76f51;">خروج</button></div>
     </div>
     <hr>
     <div class="flex">
@@ -90,7 +69,6 @@
 </div>
 
 <script>
-    // ========== إعدادات Firebase ==========
     const firebaseConfig = {
         apiKey: "AIzaSyDy9SjXIhlI-18G4kI2Uwj9FrNIf9-YzPw",
         authDomain: "ds-assistant.firebaseapp.com",
@@ -102,109 +80,63 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // ========== إدارة حالة الاتصال ==========
-    function updateStatusDots(isConnected) {
-        const dots = document.querySelectorAll('.status-dot');
-        const statusTexts = document.querySelectorAll('#statusText');
-        dots.forEach(dot => {
-            dot.classList.remove('status-green', 'status-red');
-            dot.classList.add(isConnected ? 'status-green' : 'status-red');
-        });
-        statusTexts.forEach(txt => {
-            if (txt) txt.innerText = isConnected ? 'متصل' : 'غير متصل';
-        });
-    }
-
-    // مراقبة حالة المصادقة (إذا كان هناك مستخدم موثق، نعتبر Firebase متصلاً)
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            updateStatusDots(true);
-        } else {
-            updateStatusDots(true); // حتى بدون مستخدم، Firebase يعمل (لكن قد يكون غير موثق)
-            // نفضل أن نعتبره متصلاً لأنه قام بتحميل SDK
-        }
-    });
-
-    // التحقق من الشبكة بشكل دوري (اختياري)
-    window.addEventListener('online', () => updateStatusDots(true));
-    window.addEventListener('offline', () => updateStatusDots(false));
-    // في البداية، نفترض أن الاتصال موجود (سيتم تحديثه عند تحميل الصفحة)
-    updateStatusDots(true);
-
-    // ========== إنشاء حساب المدير الثابت ==========
+    
+    let currentStudentId = null;
     const ADMIN_EMAIL = "zakariaattouni@gmail.com";
     const ADMIN_PASS = "salem1959";
-
-    async function ensureAdminAccount() {
+    
+    function updateStatusDots(connected) {
+        const dots = document.querySelectorAll('.status-dot');
+        dots.forEach(dot => {
+            dot.classList.remove('status-green', 'status-red');
+            dot.classList.add(connected ? 'status-green' : 'status-red');
+        });
+    }
+    
+    auth.onAuthStateChanged(user => {
+        updateStatusDots(true); // افترض الاتصال قائم
+    });
+    
+    async function ensureAdmin() {
         try {
-            // محاولة تسجيل الدخول أولاً للتأكد من وجود الحساب
             await auth.signInWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
-            // إذا نجح، نتحقق من وجود وثيقة المدير في Firestore
             const user = auth.currentUser;
-            const docRef = db.collection("users").doc(user.uid);
-            const doc = await docRef.get();
-            if (!doc.exists) {
-                await docRef.set({ role: "admin", email: ADMIN_EMAIL });
-            }
-            await auth.signOut(); // نسجل خروج حتى لا نبقى داخل الجلسة
-        } catch (error) {
-            if (error.code === 'auth/user-not-found') {
-                // إنشاء الحساب
-                try {
-                    const userCred = await auth.createUserWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
-                    await db.collection("users").doc(userCred.user.uid).set({
-                        role: "admin",
-                        email: ADMIN_EMAIL
-                    });
-                    await auth.signOut();
-                } catch (err) {
-                    console.error("Error creating admin:", err);
-                }
-            } else {
-                console.error("Admin login error:", error);
+            const doc = await db.collection("users").doc(user.uid).get();
+            if (!doc.exists) await db.collection("users").doc(user.uid).set({ role: "admin" });
+            await auth.signOut();
+        } catch(e) {
+            if (e.code === "auth/user-not-found") {
+                const user = await auth.createUserWithEmailAndPassword(ADMIN_EMAIL, ADMIN_PASS);
+                await db.collection("users").doc(user.user.uid).set({ role: "admin" });
+                await auth.signOut();
             }
         }
     }
-    ensureAdminAccount();
-
-    // ========== متغيرات عامة ==========
-    let currentUserId = null;
-    let currentStudentId = null;
-    const authDiv = document.getElementById('auth');
-    const adminDiv = document.getElementById('adminPanel');
-    const studentDiv = document.getElementById('studentPanel');
-    const errorDiv = document.getElementById('error');
-
-    // ========== دوال تسجيل الدخول ==========
+    ensureAdmin();
+    
     document.getElementById('loginBtn').onclick = async () => {
-        const email = document.getElementById('email').value.trim();
+        const email = document.getElementById('email').value;
         const pwd = document.getElementById('password').value;
-        errorDiv.innerText = '';
         try {
-            const userCred = await auth.signInWithEmailAndPassword(email, pwd);
-            const user = userCred.user;
-            const doc = await db.collection("users").doc(user.uid).get();
-            if (!doc.exists) throw new Error("لا توجد بيانات للمستخدم");
-            const role = doc.data().role;
-            if (role === "admin") {
-                authDiv.classList.add('hidden');
-                adminDiv.classList.remove('hidden');
+            const user = await auth.signInWithEmailAndPassword(email, pwd);
+            const doc = await db.collection("users").doc(user.user.uid).get();
+            if (!doc.exists) throw new Error("لا توجد بيانات");
+            if (doc.data().role === "admin") {
+                document.getElementById('auth').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
                 loadStudents();
             } else {
-                currentStudentId = user.uid;
-                const studentData = doc.data();
-                authDiv.classList.add('hidden');
-                studentDiv.classList.remove('hidden');
-                document.getElementById('welcomeName').innerText = "مرحباً " + studentData.name;
+                currentStudentId = user.user.uid;
+                document.getElementById('auth').classList.add('hidden');
+                document.getElementById('studentPanel').classList.remove('hidden');
+                document.getElementById('welcomeName').innerText = "مرحباً " + doc.data().name;
                 showPatients();
             }
         } catch(e) {
-            errorDiv.innerText = "خطأ في الدخول: " + e.message;
+            document.getElementById('error').innerText = e.message;
         }
     };
-
-    // تسجيل حساب جديد (للطلاب)
+    
     document.getElementById('registerBtn').onclick = async () => {
         const email = prompt("البريد الإلكتروني:");
         const pwd = prompt("كلمة السر:");
@@ -212,15 +144,14 @@
         const phone = prompt("رقم الهاتف:");
         if (!email || !pwd || !name || !phone) return;
         try {
-            const userCred = await auth.createUserWithEmailAndPassword(email, pwd);
-            await db.collection("users").doc(userCred.user.uid).set({
+            const user = await auth.createUserWithEmailAndPassword(email, pwd);
+            await db.collection("users").doc(user.user.uid).set({
                 name, email, phone, role: "student", status: "active"
             });
             alert("تم التسجيل، يمكنك الدخول الآن");
         } catch(e) { alert(e.message); }
     };
-
-    // ========== إدارة الطلاب (للمدير) ==========
+    
     async function loadStudents() {
         const snap = await db.collection("users").where("role", "==", "student").get();
         const container = document.getElementById('studentsList');
@@ -242,42 +173,40 @@
             container.appendChild(div);
         });
     }
-
+    
     window.toggleStatus = async (uid, currentStatus) => {
         const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
         await db.collection("users").doc(uid).update({ status: newStatus });
         loadStudents();
     };
-
+    
     window.deleteUser = async (uid) => {
         if (confirm("حذف الطالب نهائياً؟")) {
             await db.collection("users").doc(uid).delete();
             loadStudents();
         }
     };
-
+    
     document.getElementById('addStudentBtn').onclick = async () => {
         const name = document.getElementById('studentName').value.trim();
         const email = document.getElementById('studentEmail').value.trim();
         const phone = document.getElementById('studentPhone').value.trim();
         const pwd = document.getElementById('studentPass').value;
-        if (!name || !email || !phone || !pwd) return alert("املأ جميع الحقول");
+        if (!name || !email || !phone || !pwd) return alert("املأ الحقول");
         try {
-            const userCred = await auth.createUserWithEmailAndPassword(email, pwd);
-            await db.collection("users").doc(userCred.user.uid).set({
+            const user = await auth.createUserWithEmailAndPassword(email, pwd);
+            await db.collection("users").doc(user.user.uid).set({
                 name, email, phone, role: "student", status: "active"
             });
-            alert("تمت إضافة الطالب");
+            alert("تمت الإضافة");
             loadStudents();
-            // تفريغ الحقول
             document.getElementById('studentName').value = '';
             document.getElementById('studentEmail').value = '';
             document.getElementById('studentPhone').value = '';
             document.getElementById('studentPass').value = '';
         } catch(e) { alert(e.message); }
     };
-
-    // ========== واجهة الطالب ==========
+    
     async function showPatients() {
         const snap = await db.collection("patients").where("userId", "==", currentStudentId).get();
         let html = "<ul style='list-style:none;'>";
@@ -288,44 +217,53 @@
         html += "</ul>";
         document.getElementById('content').innerHTML = html;
     }
+    
     window.deletePatient = async (id) => {
-        if(confirm("حذف المريض؟")) await db.collection("patients").doc(id).delete();
-        showPatients();
+        if (confirm("حذف المريض؟")) {
+            await db.collection("patients").doc(id).delete();
+            showPatients();
+        }
     };
-
+    
     function showEmergency() {
         const cases = [
             "نزيف حاد بعد القلع", "إغماء المريض", "كسر إبرة تخدير", "حساسية لاتكس",
             "انكسار أداة ضمن القناة", "ابتلاع أداة", "احتراق كيميائي", "طفل غير متعاون",
             "جرح لسان", "جرح شفة", "خدر العصب الوجهي", "انثقاب الجيب الفكي",
-            "تجاوز ذروة السن", "خلع سن مؤقت", "كسر تاج سن حي"
+            "تجاوز ذروة السن", "خلع سن مؤقت", "كسر تاج سن حي", "تمزق أربطة الفك",
+            "صدمة الحساسية", "نوبة صرع", "سكتة دماغية", "أزمة ربوية"
         ];
-        const stepsMap = {
-            "نزيف حاد بعد القلع": "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين، لا مضمضة، استدع مشرفاً.",
-            "إغماء المريض": "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس، نادِ مشرفاً.",
-            "كسر إبرة تخدير": "⚠️ لا تحاول الإخراج، ثبّت المريض، استخدم ملقط معقم، أشعة، استدع مشرفاً.",
-            "حساسية لاتكس": "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس، مضاد هيستامين، استدع مشرفاً.",
-            "انكسار أداة ضمن القناة": "🛠️ لا تحاول الإخراج بدون تصوير، أشعة فورية، أبلغ المشرف.",
-            "ابتلاع أداة": "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن، استدع مشرفاً.",
-            "احتراق كيميائي": "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة، انزع القفازات الملوثة، استدع مشرفاً.",
-            "طفل غير متعاون": "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك، تثبيت لطيف مع موافقة ولي الأمر.",
-            "جرح لسان": "👅 نظف بمحلول ملحي، اضغط بشاش، إذا عميق أرسل للمستشفى.",
-            "جرح شفة": "👄 نظف، ضغط بارد، إذا نافذ أرسل للمستشفى.",
-            "خدر العصب الوجهي": "😐 طمئن المريض، عادة مؤقت، راقب التنفس، أبلغ المشرف.",
-            "انثقاب الجيب الفكي": "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي، تجنب العطس، أرسل للمشرف.",
-            "تجاوز ذروة السن": "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف، راقب الأعراض.",
-            "خلع سن مؤقت": "🦷 لا تقلعه، طمئن الطفل، ضغط بارد، استشر المشرف.",
-            "كسر تاج سن حي": "🦷 احفظ القطعة في حليب بارد، غطِّ السن، أرسل لترميم."
+        const steps = {
+            "نزيف حاد بعد القلع": "🩸 اضغط بشاش معقم 5 دقائق، استخدم إسفنجة جيلاتين",
+            "إغماء المريض": "😵 افتح المجرى الهوائي، ارفع الرجلين، أرخِ الملابس",
+            "كسر إبرة تخدير": "⚠️ لا تحاول الإخراج، استخدم ملقطاً معقماً، أشعة",
+            "حساسية لاتكس": "🤚 أزل القفازات، استخدم قفازات خالية من اللاتكس",
+            "انكسار أداة ضمن القناة": "🛠️ لا تحاول الإخراج بدون تصوير، أبلغ المشرف",
+            "ابتلاع أداة": "⚠️ تهدئة المريض، لا تسبب تقيؤ، أشعة صدر وبطن",
+            "احتراق كيميائي": "🔥 اغسل بكمية كبيرة من الماء 20 دقيقة",
+            "طفل غير متعاون": "🧸 تقنية أخبر-أظهر-نفذ، كافئ السلوك",
+            "جرح لسان": "👅 نظف بمحلول ملحي، اضغط بشاش، إذا عميق أرسل للمستشفى",
+            "جرح شفة": "👄 نظف، ضغط بارد، إذا نافذ أرسل للمستشفى",
+            "خدر العصب الوجهي": "😐 طمئن المريض، عادة مؤقت، راقب التنفس",
+            "انثقاب الجيب الفكي": "🕳️ لا تنظف القناة، لا ضغط هواء، مضاد حيوي",
+            "تجاوز ذروة السن": "📏 أشعة، لا تحاول الإزالة، أبلغ المشرف",
+            "خلع سن مؤقت": "🦷 لا تقلعه، استشر المشرف لتركيب حافظ مسافة",
+            "كسر تاج سن حي": "🦷 احفظ القطعة في حليب بارد، قم بتغطية السن",
+            "تمزق أربطة الفك": "🦴 راحة، مضادات التهاب، أطعمة طرية",
+            "صدمة الحساسية": "💉 أدرينالين فوراً، أكسجين، استلقاء، إسعاف",
+            "نوبة صرع": "⚡ أزل الأدوات من الفم، ضع المريض على جانبه",
+            "سكتة دماغية": "🧠 FAST: وجه، ذراع، كلام، وقت، إسعاف فوري",
+            "أزمة ربوية": "🌬️ موسع قصبي (بخاخ)، أكسجين، وضعية الجلوس"
         };
         let html = `<div style="display:grid; gap:10px; grid-template-columns:repeat(auto-fill,minmax(170px,1fr));">`;
         cases.forEach(c => {
-            const step = stepsMap[c] || "استدع مشرفاً فوراً";
+            const step = steps[c] || "استدع مشرفاً فوراً";
             html += `<div style="border:1px solid #2b9e5e; border-radius:20px; padding:10px; text-align:center; cursor:pointer;" onclick="alert('${step.replace(/'/g, "\\'")}')">${c}</div>`;
         });
         html += `</div>`;
         document.getElementById('content').innerHTML = html;
     }
-
+    
     function showAddPatientForm() {
         document.getElementById('content').innerHTML = `
             <input type="text" id="patName" placeholder="اسم المريض">
@@ -338,12 +276,12 @@
             const phone = document.getElementById('patPhone').value.trim();
             const diag = document.getElementById('patDiag').value.trim();
             if (!name || !phone) return alert("الاسم والرقم مطلوبان");
-            await db.collection("patients").add({ userId: currentStudentId, name, phone, diagnosis: diag, createdAt: new Date() });
+            await db.collection("patients").add({ userId: currentStudentId, name, phone, diagnosis: diag });
             alert("تم الحفظ");
             showPatients();
         };
     }
-
+    
     async function showTodos() {
         const snap = await db.collection("todos").where("userId", "==", currentStudentId).get();
         let html = `<div><input type="text" id="newTodo" placeholder="مهمة جديدة"><button id="addTodoBtn">➕</button></div><ul style="list-style:none;">`;
@@ -359,32 +297,17 @@
             showTodos();
         };
     }
+    
     window.toggleTodo = async (id, checked) => { await db.collection("todos").doc(id).update({ completed: checked }); };
-    window.deleteTodo = async (id) => { if(confirm("حذف المهمة؟")) await db.collection("todos").doc(id).delete(); showTodos(); };
-
+    window.deleteTodo = async (id) => { if (confirm("حذف المهمة؟")) await db.collection("todos").doc(id).delete(); showTodos(); };
+    
     document.getElementById('myPatientsBtn').onclick = showPatients;
     document.getElementById('emergencyBtn').onclick = showEmergency;
     document.getElementById('addPatientBtn').onclick = showAddPatientForm;
     document.getElementById('myTodosBtn').onclick = showTodos;
-
-    // ========== تسجيل الخروج ==========
-    function logout() {
-        auth.signOut().then(() => {
-            location.reload();
-        });
-    }
-    document.getElementById('logoutBtn').onclick = logout;
-    document.getElementById('logoutStudentBtn').onclick = logout;
-
-    // ========== تحديث المؤشر عند تغيير حالة المصادقة ==========
-    auth.onAuthStateChanged(user => {
-        if (user) {
-            updateStatusDots(true);
-        } else {
-            // لا نعطي خطأ، فقط نعتبر الخدمة متصلة
-            updateStatusDots(true);
-        }
-    });
+    
+    document.getElementById('logoutBtn').onclick = () => auth.signOut().then(() => location.reload());
+    document.getElementById('logoutStudentBtn').onclick = () => auth.signOut().then(() => location.reload());
 </script>
 </body>
 </html>
