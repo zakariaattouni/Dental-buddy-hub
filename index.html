@@ -1,350 +1,410 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>DS ASSISTANCE - مساعد الطالب الطبيب</title>
-    <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; }
-        body { background: #f1f8f5; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
-        button, .btn { background-color: #2c7a6e; color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; transition: 0.2s; }
-        button:hover { background-color: #1e5a50; }
-        .card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        h2 { color: #1e5a50; margin-bottom: 20px; border-right: 5px solid #2c7a6e; padding-right: 15px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #ddd; }
-        th { background: #e9f3f0; }
-        .action-btn { margin: 0 5px; padding: 5px 12px; font-size: 0.85rem; }
-        .whatsapp-btn { background: #25D366; }
-        .delete-btn { background: #c7362b; }
-        .suspend-btn { background: #f4a261; }
-        .tasks-list { margin-top: 15px; }
-        .task-item { background: #f9fdfb; padding: 10px 15px; margin: 8px 0; border-radius: 30px; display: flex; align-items: center; gap: 12px; }
-        .task-item input { transform: scale(1.2); margin-left: 10px; }
-        .task-item .delete-task { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #b91c1c; margin-right: auto; }
-        .emergency-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-top: 20px; }
-        .emergency-card { background: white; border-radius: 18px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); border-right: 4px solid #2c7a6e; cursor: pointer; transition: 0.2s; }
-        .emergency-card:hover { transform: translateY(-3px); }
-        .emergency-card h4 { color: #1e5a50; margin-bottom: 8px; }
-        .emergency-card p { font-size: 0.85rem; color: #2c3e50; margin-bottom: 12px; }
-        .details-btn { background: #2c7a6e; width: 100%; }
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; max-width: 500px; width: 90%; border-radius: 28px; padding: 25px; text-align: center; }
-        .login-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #eef7f3; }
-        .login-card { width: 400px; max-width: 90%; background: white; border-radius: 32px; padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .tabs { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #ddd; }
-        .tab { cursor: pointer; padding: 8px 0; font-weight: bold; color: #7f8c8d; border-bottom: 3px solid transparent; }
-        .tab.active { color: #2c7a6e; border-bottom-color: #2c7a6e; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 30px; border: 1px solid #ccc; font-size: 1rem; }
-        @media (max-width: 768px) { th, td { font-size: 0.8rem; } .emergency-grid { gap: 12px; } }
-        footer { text-align: center; margin-top: 30px; font-size: 0.8rem; color: #5a7a6e; }
-        .logout-btn { background-color: #b91c1c; }
-        .logout-btn:hover { background-color: #8b1616; }
-    </style>
+<meta charset="UTF-8">
+<title>DS Assistant – حالات الطوارئ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: Tahoma, Arial, sans-serif;
+  background: #e3edf7;
+  margin: 0;
+  padding: 16px;
+}
+/* Neumorphism cards */
+.card {
+  background: #e3edf7;
+  padding: 18px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  box-shadow:
+    8px 8px 16px #c2ccd8,
+    -8px -8px 16px #ffffff;
+}
+/* Titles */
+h2, h3 {
+  margin-top: 0;
+  color: #1e3a5f;
+}
+/* Buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 12px;
+  background: #1e88e5;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 10px #c2ccd8,
+    -4px -4px 10px #ffffff;
+}
+button:active {
+  box-shadow:
+    inset 4px 4px 10px #c2ccd8,
+    inset -4px -4px 10px #ffffff;
+}
+/* Inputs */
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: none;
+  background: #e3edf7;
+  box-shadow:
+    inset 4px 4px 10px #c2ccd8,
+    inset -4px -4px 10px #ffffff;
+}
+/* Lists */
+#studentsList {
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+/* Accordion for emergencies */
+.accordion-item {
+  margin-bottom: 10px;
+}
+.accordion-title {
+  width: 100%;
+  text-align: right;
+  background: #e3edf7;
+  color: #1e3a5f;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow:
+    4px 4px 10px #c2ccd8,
+    -4px -4px 10px #ffffff;
+}
+.accordion-title:active {
+  box-shadow:
+    inset 4px 4px 10px #c2ccd8,
+    inset -4px -4px 10px #ffffff;
+}
+.accordion-content {
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #e3edf7;
+  box-shadow:
+    inset 4px 4px 10px #c2ccd8,
+    inset -4px -4px 10px #ffffff;
+  font-size: 13px;
+  display: none;
+}
+/* Utility */
+.hidden { display: none; }
+.small-note { font-size: 12px; color: #555; margin-top: 6px; }
+</style>
 </head>
 <body>
-
-<div id="loginContainer" class="login-container">
-    <div class="login-card">
-        <h2 style="text-align:center;">🩺 DS ASSISTANCE</h2>
-        <div class="tabs">
-            <div id="loginTab" class="tab active">تسجيل الدخول</div>
-            <div id="registerTab" class="tab">حساب جديد</div>
-        </div>
-        <div id="loginForm">
-            <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" autocomplete="email">
-            <input type="password" id="loginPassword" placeholder="كلمة المرور">
-            <button onclick="loginUser()" style="width:100%;">دخول</button>
-        </div>
-        <div id="registerForm" style="display:none;">
-            <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
-            <input type="tel" id="regPhone" placeholder="رقم الهاتف (اختياري)">
-            <input type="password" id="regPassword" placeholder="كلمة المرور">
-            <button onclick="registerStudent()" style="width:100%;">تسجيل حساب طالب</button>
-        </div>
+<!-- الصفحة الرئيسية -->
+<div id="home" class="card">
+  <h2>DS Assistant</h2>
+  <p class="small-note">اختر نوع الدخول:</p>
+  <button onclick="showAdminLogin()">دخول المدير</button>
+  <button onclick="showUserLogin()">دخول الطالب</button>
+</div>
+<!-- دخول المدير -->
+<div id="adminLogin" class="card hidden">
+  <h3>دخول المدير</h3>
+  <input id="adminPass" type="password" placeholder="كلمة السر (للمدير فقط)">
+  <button onclick="adminLogin()">دخول</button>
+  <button onclick="goHome()">رجوع</button>
+</div>
+<!-- لوحة المدير -->
+<div id="adminPanel" class="hidden">
+  <div class="card">
+    <h3>لوحة المدير</h3>
+    <p class="small-note">يمكنك إضافة الطلاب ومراجعة القائمة.</p>
+  </div>
+  <div class="card">
+    <h3>إضافة طالب</h3>
+    <input id="stName" placeholder="اسم الطالب">
+    <input id="stPhone" placeholder="رقم الهاتف">
+    <button onclick="addStudent()">إضافة الطالب</button>
+  </div>
+  <div class="card">
+    <h3>قائمة الطلاب</h3>
+    <div id="studentsList"></div>
+    <button onclick="loadStudents()">تحديث القائمة</button>
+  </div>
+  <div class="card">
+    <button onclick="goHome()">خروج من لوحة المدير</button>
+  </div>
+</div>
+<!-- دخول الطالب -->
+<div id="userLogin" class="card hidden">
+  <h3>دخول الطالب</h3>
+  <input id="userEmail" type="email" placeholder="البريد الإلكتروني">
+  <input id="userPass" type="password" placeholder="كلمة السر">
+  <button onclick="loginUser()">دخول</button>
+  <button onclick="showRegister()">إنشاء حساب جديد</button>
+  <button onclick="goHome()">رجوع</button>
+</div>
+<!-- تسجيل طالب جديد -->
+<div id="register" class="card hidden">
+  <h3>إنشاء حساب طالب</h3>
+  <input id="regName" placeholder="الاسم الكامل">
+  <input id="regEmail" type="email" placeholder="البريد الإلكتروني">
+  <input id="regPass" type="password" placeholder="كلمة السر">
+  <button onclick="registerUser()">تسجيل</button>
+  <button onclick="showUserLogin()">رجوع</button>
+</div>
+<!-- لوحة الطالب -->
+<div id="studentPanel" class="hidden">
+  <div class="card">
+    <h3>لوحة الطالب</h3>
+    <p class="small-note">يمكنك استعراض حالات الطوارئ السريرية.</p>
+    <button onclick="toggleEmergencies()">موسوعة حالات الطوارئ</button>
+  </div>
+  <div id="emergenciesCard" class="card hidden">
+    <h3>حالات الطوارئ (50 حالة)</h3>
+    <p class="small-note">اضغط على عنوان الحالة لعرض الوصف المختصر.</p>
+    <div id="accordionContainer">
+      <!-- سيتم ملؤه برمجياً -->
     </div>
+  </div>
+  <div class="card">
+    <button onclick="studentLogout()">تسجيل الخروج</button>
+  </div>
 </div>
-
-<div id="appContainer" style="display:none;">
-    <div class="container">
-        <div class="flex-between">
-            <h1>🩺 مساعد الطالب الطبيب</h1>
-            <button class="logout-btn" onclick="signOutUser()">تسجيل خروج</button>
-        </div>
-        <!-- لوحة المدير -->
-        <div id="adminPanel" style="display:none;">
-            <div class="card">
-                <div class="flex-between"><h2>📋 إدارة الطلاب</h2><button onclick="showAddStudentModal()">➕ إضافة طالب</button></div>
-                <table><thead><tr><th>البريد</th><th>الهاتف</th><th>الحالة</th><th>آخر نشاط</th><th>إجراءات</th></tr></thead><tbody id="studentsTableBody"></tbody></table>
-            </div>
-            <div class="card" id="activitySummary"></div>
-        </div>
-        <!-- لوحة الطالب -->
-        <div id="studentPanel" style="display:none;">
-            <div class="card">
-                <div class="flex-between"><h2>📋 إدارة المرضى</h2><button onclick="showAddPatientModal()">➕ إضافة مريض</button></div>
-                <div class="patients-table"><table><thead><tr><th>الاسم</th><th>العمر</th><th>التشخيص</th><th>الهاتف</th><th>إجراءات</th></tr></thead><tbody id="patientsTableBody"></tbody></table></div>
-            </div>
-            <div class="card tasks-section">
-                <h2>📅 المهام اليومية</h2>
-                <div style="display:flex; gap:10px;"><input id="newTaskInput" placeholder="أضف مهمة جديدة..."><button onclick="addTask()">إضافة</button></div>
-                <div id="tasksList" class="tasks-list"></div>
-            </div>
-            <div class="card">
-                <h2>🚑 دليل الطوارئ الطبي (50+ حالة)</h2>
-                <div id="emergencyGrid" class="emergency-grid"></div>
-            </div>
-        </div>
-        <footer>نظام سحابي متكامل - مساعد الطالب الطبيب</footer>
-    </div>
-</div>
-
-<!-- مودال الإرشادات -->
-<div id="emergencyModal" class="modal" onclick="if(event.target===this) closeEmergencyModal()">
-    <div class="modal-content">
-        <h3 id="emergencyModalTitle"></h3>
-        <p id="emergencyModalBody" style="text-align:right; margin:20px 0;"></p>
-        <button onclick="closeEmergencyModal()">إغلاق</button>
-    </div>
-</div>
-<!-- مودال إضافة طالب للمدير -->
-<div id="addStudentModal" class="modal" onclick="if(event.target===this) closeAddStudentModal()">
-    <div class="modal-content"><h3>إضافة طالب جديد</h3><input id="adminAddEmail" placeholder="البريد الإلكتروني"><input id="adminAddPhone" placeholder="رقم الهاتف"><input id="adminAddPassword" type="password" placeholder="كلمة المرور"><button onclick="addStudentByAdmin()">إنشاء حساب</button><button onclick="closeAddStudentModal()">إلغاء</button></div>
-</div>
-<!-- مودال إضافة مريض -->
-<div id="addPatientModal" class="modal" onclick="if(event.target===this) closeAddPatientModal()">
-    <div class="modal-content"><h3>إضافة مريض</h3><input id="patientName" placeholder="الاسم الكامل"><input id="patientAge" placeholder="العمر"><input id="patientDiagnosis" placeholder="التشخيص"><input id="patientPhone" placeholder="رقم الهاتف"><button onclick="addPatient()">حفظ</button><button onclick="closeAddPatientModal()">إلغاء</button></div>
-</div>
-
-<script type="module">
-    // ---------------------- بيانات Firebase الحقيقية ----------------------
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, doc, getDocs, getDoc, setDoc, updateDoc, deleteDoc, query, where, orderBy, addDoc, onSnapshot, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBabso8FIpE2aVVGaPPvyRHTpKEnPN-SgQ",
-        authDomain: "dsaapp-e64da.firebaseapp.com",
-        projectId: "dsaapp-e64da",
-        storageBucket: "dsaapp-e64da.firebasestorage.app",
-        messagingSenderId: "1010626223262",
-        appId: "1:1010626223262:web:839c434c262d11d94c2f8f",
-        measurementId: "G-K49225G0B1"
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    
-    window.auth = auth;
-    window.db = db;
-    window.Timestamp = Timestamp;
-    
-    // ---------------------- دليل الطوارئ ----------------------
-    const medicalEmergencies = [
-        { id: 1, title: "نوبة قلبية", instructions: "اتصل بالإسعاف فوراً، اجعل المريض جالساً، أعطه أسبرين إذا لم يكن ممنوعاً، حافظ على هدوئه." },
-        { id: 2, title: "سكتة دماغية", instructions: "تحقق من الوجه والذراعين والكلام، اتصل بالإسعاف فوراً، سجل وقت الأعراض." },
-        { id: 3, title: "نزيف حاد", instructions: "اضغط مباشرة على الجرح بقطعة قماش نظيفة، ارفع الطرف المصاب، استخدم عاصبة فقط للحالات القصوى." },
-        { id: 4, title: "حروق", instructions: "برد الحرق بماء جاري 20 دقيقة، لا تستخدم الثلج، غطِّ بضمادة معقمة." },
-        { id: 5, title: "اختناق", instructions: "قم بمناورة هيمليك: قبضة اليد فوق السرة، ضغط سريع لأعلى." },
-        { id: 6, title: "غرق", instructions: "أخرج المصاب من الماء، تحقق من التنفس، ابدأ الإنعاش القلبي الرئوي إذا لزم الأمر." }
-        // أضف باقي الحالات (50+) بالطريقة نفسها - هنا اختصاراً لكن الكود الكامل موجود سابقاً
-    ];
-    // إكمال القائمة حتى 50 (للتوفير نضيف 50 عنصراً في الكود النهائي، لكن للعرض سنكرر القيم)
-    for(let i=7; i<=52; i++) medicalEmergencies.push({ id:i, title: `حالة طارئة رقم ${i}`, instructions: "اتبع الإرشادات الطبية العامة واستشر الطبيب فوراً." });
-    window.medicalEmergencies = medicalEmergencies;
-    
-    // دوال عامة
-    window.showEmergencyModal = (title, instructions) => {
-        document.getElementById("emergencyModalTitle").innerText = title;
-        document.getElementById("emergencyModalBody").innerText = instructions;
-        document.getElementById("emergencyModal").style.display = "flex";
-    };
-    window.closeEmergencyModal = () => { document.getElementById("emergencyModal").style.display = "none"; };
-    
-    let currentUserId = null;
-    let currentUserRole = null;
-    let patientsUnsubscribe = null, tasksUnsubscribe = null;
-    
-    async function logActivity(studentId, action, details) {
-        try { await addDoc(collection(db, "activities"), { studentId, action, details, timestamp: Timestamp.now() }); } catch(e) { console.error(e); }
-    }
-    
-    window.loginUser = async () => {
-        const email = document.getElementById("loginEmail").value.trim();
-        const password = document.getElementById("loginPassword").value;
-        if(!email || !password) return alert("يرجى إدخال البريد وكلمة المرور");
-        try { await signInWithEmailAndPassword(auth, email, password); } catch(e) { alert("فشل تسجيل الدخول: "+ e.message); }
-    };
-    
-    window.registerStudent = async () => {
-        const email = document.getElementById("regEmail").value.trim();
-        const phone = document.getElementById("regPhone").value.trim();
-        const password = document.getElementById("regPassword").value;
-        if(!email || !password) return alert("البريد وكلمة المرور مطلوبة");
-        try {
-            const cred = await createUserWithEmailAndPassword(auth, email, password);
-            await setDoc(doc(db, "users", cred.user.uid), { email, phone: phone || "", role: "student", suspended: false, deleted: false, createdAt: Timestamp.now() });
-            await logActivity(cred.user.uid, "تسجيل حساب", "قام الطالب بتسجيل حسابه");
-            alert("تم التسجيل بنجاح، يمكنك الدخول");
-            document.getElementById("loginTab").click();
-        } catch(e) { alert("خطأ: "+ e.message); }
-    };
-    
-    window.signOutUser = () => signOut(auth);
-    
-    function renderDashboardByRole(role, userId) {
-        const adminPanel = document.getElementById("adminPanel"), studentPanel = document.getElementById("studentPanel");
-        if(role === "admin") {
-            adminPanel.style.display = "block"; studentPanel.style.display = "none";
-            loadAdminStudents(); loadAdminActivitiesSummary();
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+// إعدادات Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
+  authDomain: "diagnosis-6ea4b.firebaseapp.com",
+  databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
+  projectId: "diagnosis-6ea4b",
+  storageBucket: "diagnosis-6ea4b.firebasestorage.app",
+  messagingSenderId: "1014263737561",
+  appId: "1:1014263737561:web:ca8affac416227be8862c8",
+  measurementId: "G-RHHRFLZM2P"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+// عناصر DOM
+const homeDiv       = document.getElementById("home");
+const adminLoginDiv = document.getElementById("adminLogin");
+const adminPanel    = document.getElementById("adminPanel");
+const userLoginDiv  = document.getElementById("userLogin");
+const registerDiv   = document.getElementById("register");
+const studentPanel  = document.getElementById("studentPanel");
+const emergenciesCard = document.getElementById("emergenciesCard");
+const accordionContainer = document.getElementById("accordionContainer");
+// إخفاء/إظهار الصفحات
+function hideAll(){
+  homeDiv.classList.add("hidden");
+  adminLoginDiv.classList.add("hidden");
+  adminPanel.classList.add("hidden");
+  userLoginDiv.classList.add("hidden");
+  registerDiv.classList.add("hidden");
+  studentPanel.classList.add("hidden");
+}
+function goHome(){
+  hideAll();
+  homeDiv.classList.remove("hidden");
+}
+function showAdminLogin(){
+  hideAll();
+  adminLoginDiv.classList.remove("hidden");
+}
+function showUserLogin(){
+  hideAll();
+  userLoginDiv.classList.remove("hidden");
+}
+function showRegister(){
+  hideAll();
+  registerDiv.classList.remove("hidden");
+}
+// دخول المدير بكلمة السر فقط
+function adminLogin(){
+  const pass = document.getElementById("adminPass").value;
+  if(pass === "salem1959"){
+    hideAll();
+    adminPanel.classList.remove("hidden");
+    loadStudents();
+  } else {
+    alert("كلمة السر غير صحيحة");
+  }
+}
+// تسجيل طالب جديد
+function registerUser(){
+  const name = document.getElementById("regName").value;
+  const email = document.getElementById("regEmail").value;
+  const pass = document.getElementById("regPass").value;
+  if(!name || !email || !pass){
+    alert("يرجى تعبئة جميع الحقول");
+    return;
+  }
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(cred => {
+      const uid = cred.user.uid;
+      db.ref("DS-Assistant/users/" + uid).set({
+        name: name,
+        email: email,
+        role: "student"
+      });
+      alert("تم إنشاء حساب الطالب بنجاح");
+      showUserLogin();
+    })
+    .catch(err => alert(err.message));
+}
+// دخول الطالب
+function loginUser(){
+  const email = document.getElementById("userEmail").value;
+  const pass  = document.getElementById("userPass").value;
+  firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(cred => {
+      const uid = cred.user.uid;
+      db.ref("DS-Assistant/users/" + uid).once("value", snap => {
+        const data = snap.val();
+        if(data && data.role === "student"){
+          hideAll();
+          studentPanel.classList.remove("hidden");
+          buildEmergenciesAccordion();
         } else {
-            adminPanel.style.display = "none"; studentPanel.style.display = "block";
-            loadPatientsRealTime(userId); loadTasksRealTime(userId); renderEmergencyGuide();
+          alert("هذا الحساب ليس طالباً أو لم يتم ضبط الصلاحيات.");
+          firebase.auth().signOut();
         }
-    }
-    
-    async function loadAdminStudents() {
-        const q = query(collection(db, "users"), where("role", "==", "student"));
-        const snapshot = await getDocs(q);
-        const tbody = document.getElementById("studentsTableBody");
-        tbody.innerHTML = "";
-        for(const docSnap of snapshot.docs) {
-            const data = docSnap.data();
-            if(data.deleted === true) continue;
-            const lastAct = await getLastActivity(docSnap.id);
-            tbody.innerHTML += `<tr><td>${data.email}</td><td>${data.phone || "—"}</td><td>${data.suspended ? "موقوف" : "نشط"}</td><td>${lastAct}</td><td><button class="action-btn suspend-btn" onclick="toggleSuspend('${docSnap.id}', ${!data.suspended})">${data.suspended ? "تفعيل" : "تعليق"}</button><button class="action-btn delete-btn" onclick="deleteStudent('${docSnap.id}')">حذف</button></td></tr>`;
-        }
-    }
-    async function getLastActivity(studentId) {
-        const q = query(collection(db, "activities"), where("studentId", "==", studentId), orderBy("timestamp", "desc"));
-        const snap = await getDocs(q);
-        if(!snap.empty) { const last = snap.docs[0].data(); return `${last.action} - ${last.timestamp?.toDate().toLocaleString() || ""}`; }
-        return "—";
-    }
-    window.toggleSuspend = async (studentId, suspend) => { await updateDoc(doc(db, "users", studentId), { suspended: suspend }); loadAdminStudents(); loadAdminActivitiesSummary(); };
-    window.deleteStudent = async (studentId) => { if(confirm("حذف الطالب نهائياً؟")) { await updateDoc(doc(db, "users", studentId), { deleted: true, suspended: true }); await logActivity(studentId, "حذف حساب", "تم بواسطة المدير"); loadAdminStudents(); loadAdminActivitiesSummary(); } };
-    window.showAddStudentModal = () => { document.getElementById("addStudentModal").style.display = "flex"; };
-    window.closeAddStudentModal = () => { document.getElementById("addStudentModal").style.display = "none"; };
-    window.addStudentByAdmin = async () => {
-        const email = document.getElementById("adminAddEmail").value.trim(), phone = document.getElementById("adminAddPhone").value.trim(), password = document.getElementById("adminAddPassword").value;
-        if(!email || !password) return alert("املأ البريد وكلمة المرور");
-        try {
-            const cred = await createUserWithEmailAndPassword(auth, email, password);
-            await setDoc(doc(db, "users", cred.user.uid), { email, phone, role: "student", suspended: false, deleted: false, createdAt: Timestamp.now() });
-            await logActivity(cred.user.uid, "إنشاء حساب", "تم من قبل المدير");
-            alert("تم إضافة الطالب");
-            closeAddStudentModal();
-            loadAdminStudents(); loadAdminActivitiesSummary();
-        } catch(e) { alert("خطأ: "+e.message); }
-    };
-    async function loadAdminActivitiesSummary() {
-        const q = query(collection(db, "activities"), orderBy("timestamp", "desc"), limit(20));
-        const snap = await getDocs(q);
-        const container = document.getElementById("activitySummary");
-        container.innerHTML = "<h3>موجز النشاطات الأخيرة</h3><ul>";
-        snap.forEach(d => { const data = d.data(); container.innerHTML += `<li>${data.action} - ${data.details} (${data.timestamp?.toDate().toLocaleString()})</li>`; });
-        container.innerHTML += "</ul>";
-    }
-    
-    function loadPatientsRealTime(studentId) {
-        if(patientsUnsubscribe) patientsUnsubscribe();
-        const q = query(collection(db, "patients"), where("studentId", "==", studentId), orderBy("createdAt", "desc"));
-        patientsUnsubscribe = onSnapshot(q, (snapshot) => {
-            const tbody = document.getElementById("patientsTableBody");
-            tbody.innerHTML = "";
-            snapshot.forEach(docSnap => {
-                const p = docSnap.data();
-                tbody.innerHTML += `<tr><td>${p.name || ""}</td><td>${p.age || ""}</td><td>${p.diagnosis || ""}</td><td>${p.phone || ""}</td><td><button class="action-btn whatsapp-btn" onclick="openWhatsapp('${p.phone}','${p.name}')">واتساب</button><button class="action-btn delete-btn" onclick="deletePatient('${docSnap.id}')">حذف</button></td></tr>`;
-            });
-            if(snapshot.empty) tbody.innerHTML = "<tr><td colspan='5'>لا يوجد مرضى</td></tr>";
-        });
-    }
-    window.openWhatsapp = (phone, name) => { if(phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=مرحباً ${name}، هذا تذكير طبي.`, "_blank"); else alert("لا يوجد رقم"); };
-    window.deletePatient = async (patientId) => { if(confirm("حذف المريض؟")) { await deleteDoc(doc(db, "patients", patientId)); if(currentUserId) await logActivity(currentUserId, "حذف مريض", "تم"); } };
-    window.showAddPatientModal = () => { document.getElementById("addPatientModal").style.display = "flex"; };
-    window.closeAddPatientModal = () => { document.getElementById("addPatientModal").style.display = "none"; document.getElementById("patientName").value = ""; document.getElementById("patientAge").value = ""; document.getElementById("patientDiagnosis").value = ""; document.getElementById("patientPhone").value = ""; };
-    window.addPatient = async () => {
-        const name = document.getElementById("patientName").value.trim(), age = document.getElementById("patientAge").value.trim(), diagnosis = document.getElementById("patientDiagnosis").value.trim(), phone = document.getElementById("patientPhone").value.trim();
-        if(!name) return alert("اسم المريض مطلوب");
-        await addDoc(collection(db, "patients"), { studentId: currentUserId, name, age, diagnosis, phone, createdAt: Timestamp.now() });
-        await logActivity(currentUserId, "إضافة مريض", `أضاف ${name}`);
-        closeAddPatientModal();
-    };
-    
-    function loadTasksRealTime(studentId) {
-        if(tasksUnsubscribe) tasksUnsubscribe();
-        const q = query(collection(db, "tasks"), where("studentId", "==", studentId), orderBy("createdAt", "desc"));
-        tasksUnsubscribe = onSnapshot(q, (snapshot) => {
-            const container = document.getElementById("tasksList");
-            container.innerHTML = "";
-            snapshot.forEach(docSnap => {
-                const task = docSnap.data();
-                const completed = task.completed || false;
-                const div = document.createElement("div"); div.className = "task-item";
-                div.innerHTML = `<input type="checkbox" ${completed ? "checked" : ""} onchange="toggleTask('${docSnap.id}', this.checked)"><span style="${completed ? 'text-decoration:line-through; opacity:0.7' : ''}">${task.text}</span><button class="delete-task" onclick="deleteTask('${docSnap.id}')">🗑️</button>`;
-                container.appendChild(div);
-            });
-            if(snapshot.empty) container.innerHTML = "<p>لا توجد مهام، أضف مهمة جديدة</p>";
-        });
-    }
-    window.addTask = async () => { const text = document.getElementById("newTaskInput").value.trim(); if(!text) return; await addDoc(collection(db, "tasks"), { studentId: currentUserId, text, completed: false, createdAt: Timestamp.now() }); await logActivity(currentUserId, "إضافة مهمة", text); document.getElementById("newTaskInput").value = ""; };
-    window.toggleTask = async (taskId, completed) => { await updateDoc(doc(db, "tasks", taskId), { completed }); await logActivity(currentUserId, completed ? "إنجاز مهمة" : "إعادة مهمة", ""); };
-    window.deleteTask = async (taskId) => { await deleteDoc(doc(db, "tasks", taskId)); await logActivity(currentUserId, "حذف مهمة", ""); };
-    
-    function renderEmergencyGuide() {
-        const grid = document.getElementById("emergencyGrid");
-        if(!grid) return;
-        grid.innerHTML = "";
-        medicalEmergencies.forEach(emerg => {
-            const card = document.createElement("div"); card.className = "emergency-card";
-            card.innerHTML = `<h4>${emerg.title}</h4><p>${emerg.instructions.substring(0,60)}...</p><button class="details-btn" onclick="showEmergencyModal('${emerg.title.replace(/'/g, "\\'")}', '${emerg.instructions.replace(/'/g, "\\'")}')">عرض الإرشادات</button>`;
-            grid.appendChild(card);
-        });
-    }
-    
-    onAuthStateChanged(auth, async (user) => {
-        if(user) {
-            const userSnap = await getDoc(doc(db, "users", user.uid));
-            if(!userSnap.exists() || userSnap.data().deleted === true) { await signOut(auth); alert("حساب غير مصرح"); showLoginScreen(); return; }
-            const userData = userSnap.data();
-            if(userData.suspended === true) { await signOut(auth); alert("تم تعليق حسابك"); showLoginScreen(); return; }
-            currentUserId = user.uid;
-            currentUserRole = userData.role;
-            document.getElementById("loginContainer").style.display = "none";
-            document.getElementById("appContainer").style.display = "block";
-            renderDashboardByRole(currentUserRole, currentUserId);
-        } else {
-            currentUserId = null;
-            document.getElementById("loginContainer").style.display = "flex";
-            document.getElementById("appContainer").style.display = "none";
-            if(patientsUnsubscribe) patientsUnsubscribe();
-            if(tasksUnsubscribe) tasksUnsubscribe();
-        }
+      });
+    })
+    .catch(err => alert(err.message));
+}
+// خروج الطالب
+function studentLogout(){
+  firebase.auth().signOut().then(() => {
+    goHome();
+  });
+}
+// إضافة طالب (من لوحة المدير)
+function addStudent(){
+  const name = document.getElementById("stName").value;
+  const phone = document.getElementById("stPhone").value;
+  if(!name || !phone){
+    alert("يرجى إدخال اسم ورقم الطالب");
+    return;
+  }
+  db.ref("DS-Assistant/students").push({
+    name: name,
+    phone: phone
+  });
+  alert("تمت إضافة الطالب");
+  document.getElementById("stName").value = "";
+  document.getElementById("stPhone").value = "";
+  loadStudents();
+}
+// عرض الطلاب (لوحة المدير)
+function loadStudents(){
+  const box = document.getElementById("studentsList");
+  box.innerHTML = "";
+  db.ref("DS-Assistant/students").once("value", snap => {
+    snap.forEach(child => {
+      const s = child.val();
+      const line = document.createElement("div");
+      line.textContent = "- " + (s.name || "") + " (" + (s.phone || "") + ")";
+      box.appendChild(line);
     });
-    
-    function showLoginScreen() { document.getElementById("loginContainer").style.display = "flex"; document.getElementById("appContainer").style.display = "none"; }
-    window.showLoginTab = () => { document.getElementById("loginForm").style.display = "block"; document.getElementById("registerForm").style.display = "none"; };
-    window.showRegisterTab = () => { document.getElementById("loginForm").style.display = "none"; document.getElementById("registerForm").style.display = "block"; };
-    document.getElementById("loginTab").onclick = () => showLoginTab();
-    document.getElementById("registerTab").onclick = () => showRegisterTab();
-    window.showLoginTab();
-    
-    // إنشاء مدير افتراضي إذا لم يوجد
-    (async function ensureAdmin() {
-        const q = query(collection(db, "users"), where("role", "==", "admin"));
-        const snap = await getDocs(q);
-        if(snap.empty) {
-            try {
-                const adminEmail = "admin@example.com", adminPass = "salem1959";
-                const cred = await createUserWithEmailAndPassword(auth, adminEmail, adminPass);
-                await setDoc(doc(db, "users", cred.user.uid), { email: adminEmail, role: "admin", suspended: false, deleted: false, phone: "admin", createdAt: Timestamp.now() });
-                console.log("تم إنشاء المدير الافتراضي: admin@example.com / salem1959");
-            } catch(e) { console.warn("المدير الافتراضي موجود مسبقاً أو خطأ:", e); }
-        }
-    })();
+    if(!box.innerHTML){
+      box.innerHTML = "<div class='small-note'>لا يوجد طلاب مسجلون بعد.</div>";
+    }
+  });
+}
+// إظهار/إخفاء بطاقة الحالات للطالب
+function toggleEmergencies(){
+  emergenciesCard.classList.toggle("hidden");
+}
+// بيانات 50 حالة طوارئ (عنوان + جملة قصيرة)
+const emergencies = [
+  {title: "صدمة تحسسية شديدة", desc: "تورم مفاجئ وصعوبة تنفس بعد تعرض لمادة مثيرة."},
+  {title: "هبوط ضغط الدم الحاد", desc: "دوار شديد مع برودة الأطراف وضعف عام."},
+  {title: "إغماء مفاجئ", desc: "فقدان وعي قصير بسبب نقص التروية الدماغية."},
+  {title: "نوبة قلبية", desc: "ألم صدري ضاغط ممتد للكتف أو الفك."},
+  {title: "سكتة دماغية", desc: "ضعف مفاجئ في أحد الأطراف أو اضطراب الكلام."},
+  {title: "توقف التنفس", desc: "انقطاع كامل لحركة الصدر والتنفس."},
+  {title: "توقف القلب", desc: "غياب النبض مع فقدان الوعي."},
+  {title: "نوبة ربو حادة", desc: "صفير وضيق نفس لا يتحسن بالبخاخ."},
+  {title: "نزيف أنفي شديد", desc: "نزيف مستمر لا يتوقف بالضغط."},
+  {title: "نزيف فموي بعد خلع سن", desc: "نزيف مستمر رغم الضغط بالشاش."},
+  {title: "انسداد مجرى الهواء بجسم غريب", desc: "سعال شديد أو اختناق مفاجئ."},
+  {title: "ارتفاع ضغط الدم الخطير", desc: "صداع نابض مع تشوش رؤية."},
+  {title: "انخفاض سكر الدم", desc: "رجفة وتعرق وجوع شديد."},
+  {title: "ارتفاع سكر الدم", desc: "عطش شديد وتبول متكرر."},
+  {title: "نوبة صرع", desc: "تشنجات وفقدان وعي مؤقت."},
+  {title: "ألم صدري غير مفسر", desc: "انزعاج صدري مع ضيق نفس."},
+  {title: "ألم بطني حاد", desc: "ألم مفاجئ قد يشير لالتهاب أو انسداد."},
+  {title: "تسمم غذائي", desc: "إقياء وإسهال بعد تناول طعام ملوث."},
+  {title: "تجفاف شديد", desc: "عطش شديد وجفاف الفم وهبوط ضغط."},
+  {title: "ضربة شمس", desc: "حرارة مرتفعة مع ارتباك وصداع."},
+  {title: "حروق حرارية", desc: "احمرار أو فقاعات بعد تعرض للحرارة."},
+  {title: "حروق كيميائية", desc: "ألم شديد بعد ملامسة مادة كاوية."},
+  {title: "حروق كهربائية", desc: "إصابة جلدية مع احتمال ضرر داخلي."},
+  {title: "كسر في أحد الأطراف", desc: "ألم وتورم وتشوه واضح."},
+  {title: "التواء مفصل", desc: "ألم وتورم بعد حركة خاطئة."},
+  {title: "جرح عميق", desc: "نزيف مع انفصال واضح في الجلد."},
+  {title: "عضة حيوان", desc: "جرح مع احتمال عدوى أو داء الكلب."},
+  {title: "لسعة نحلة شديدة", desc: "تورم موضعي أو رد فعل تحسسي."},
+  {title: "تسمم دوائي", desc: "أعراض غير طبيعية بعد تناول دواء."},
+  {title: "ابتلاع مادة سامة", desc: "غثيان أو ألم بطني بعد ابتلاع مادة خطرة."},
+  {title: "استنشاق دخان", desc: "سعال وضيق نفس بعد حريق."},
+  {title: "إصابة رأس", desc: "صداع أو دوار بعد ضربة قوية."},
+  {title: "ارتجاج دماغي", desc: "تشوش ودوار بعد إصابة الرأس."},
+  {title: "نزيف داخلي محتمل", desc: "شحوب وهبوط ضغط دون سبب واضح."},
+  {title: "ألم أسنان حاد", desc: "ألم نابض مع تورم لثة."},
+  {title: "خراج سني", desc: "تورم مؤلم مع حرارة موضعية."},
+  {title: "التهاب لثة حاد", desc: "نزيف واحمرار وألم عند المضغ."},
+  {title: "انكسار سن", desc: "كسر واضح مع ألم عند اللمس."},
+  {title: "خلع سن دائم", desc: "سقوط سن كامل يحتاج حفظه وإعادته."},
+  {title: "التهاب حلق شديد", desc: "ألم عند البلع مع حرارة."},
+  {title: "انسداد أنفي حاد", desc: "صعوبة تنفس عبر الأنف."},
+  {title: "ألم أذن مفاجئ", desc: "ألم نابض مع احتمال التهاب."},
+  {title: "دوار شديد", desc: "إحساس بالدوران وعدم توازن."},
+  {title: "تجمد مفصل الفك", desc: "صعوبة فتح الفم بعد حركة خاطئة."},
+  {title: "تشنج عضلي حاد", desc: "ألم مفاجئ في العضلات."},
+  {title: "طفح جلدي مفاجئ", desc: "بقع حمراء مع حكة."},
+  {title: "حساسية دوائية", desc: "طفح أو تورم بعد تناول دواء."},
+  {title: "التهاب جيوب حاد", desc: "صداع وضغط في الوجه."},
+  {title: "جفاف العين الشديد", desc: "حرقة وإحساس بالرمل."},
+  {title: "ألم ظهر حاد", desc: "ألم مفاجئ بعد حمل أو حركة خاطئة."}
+];
+// بناء الـ Accordion للطالب
+function buildEmergenciesAccordion(){
+  // إذا كان قد بُني سابقاً لا نعيد البناء
+  if(accordionContainer.dataset.built === "1") return;
+  accordionContainer.innerHTML = "";
+  emergencies.forEach((item, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "accordion-item";
+    const btn = document.createElement("button");
+    btn.className = "accordion-title";
+    btn.textContent = (index+1) + ". " + item.title;
+    const content = document.createElement("div");
+    content.className = "accordion-content";
+    content.textContent = item.desc;
+    btn.addEventListener("click", () => {
+      const isVisible = content.style.display === "block";
+      // إغلاق كل المحتويات الأخرى
+      const allContents = accordionContainer.querySelectorAll(".accordion-content");
+      allContents.forEach(c => c.style.display = "none");
+      // فتح/إغلاق الحالي
+      content.style.display = isVisible ? "none" : "block";
+    });
+    wrap.appendChild(btn);
+    wrap.appendChild(content);
+    accordionContainer.appendChild(wrap);
+  });
+  accordionContainer.dataset.built = "1";
+}
 </script>
 </body>
 </html>
