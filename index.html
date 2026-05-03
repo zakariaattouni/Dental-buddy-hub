@@ -28,10 +28,6 @@ input{width:100%;padding:10px;margin-top:8px;border-radius:12px;border:none;back
 <rect x="8" y="8" width="84" height="84" rx="22" fill="#e3edf7" stroke="#1e88e5" stroke-width="2"/>
 <rect x="26" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
 <rect x="52" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
-<line x1="30" y1="34" x2="44" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-<line x1="56" y1="34" x2="70" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-<path d="M50 40 C55 45,60 45,65 40" fill="none" stroke="#1e88e5" stroke-width="2"/>
-<circle cx="65" cy="40" r="3" fill="#1e88e5"/>
 </svg>
 <div class="logo-title">DS Assistant</div>
 </div>
@@ -58,12 +54,17 @@ input{width:100%;padding:10px;margin-top:8px;border-radius:12px;border:none;back
 <button onclick="goHome()">رجوع</button>
 </div>
 
-<!-- تسجيل طالب (الإصلاح الجديد) -->
+<!-- تسجيل طالب + زر اختبار -->
 <div id="register" class="card hidden">
 <h3>إنشاء حساب طالب</h3>
+
 <input id="regName" placeholder="الاسم الكامل">
 <input id="regEmail" type="email" placeholder="البريد الإلكتروني">
 <input id="regPass" type="password" placeholder="كلمة السر">
+
+<!-- زر الاختبار -->
+<button onclick="alert('زر الاختبار يعمل ✔')">اختبار</button>
+
 <button onclick="registerUser()">تسجيل</button>
 <button onclick="showUserLogin()">رجوع</button>
 </div>
@@ -156,13 +157,16 @@ hideAll();appShell.classList.remove("hidden");adminPanel.classList.remove("hidde
 
 // تسجيل طالب
 function registerUser(){
+console.log("تم الضغط على زر التسجيل ✔");
+
 const n=regName.value.trim(),e=regEmail.value.trim(),p=regPass.value.trim();
 if(!n||!e||!p){alert("يرجى تعبئة جميع الحقول");return}
+
 firebase.auth().createUserWithEmailAndPassword(e,p).then(c=>{
 db.ref("DS-Assistant/requests/"+c.user.uid).set({name:n,email:e,status:"pending"}).then(()=>{
 alert("تم إرسال طلب التسجيل");firebase.auth().signOut();showUserLogin();
 });
-}).catch(err=>alert(err.message));
+}).catch(err=>alert("خطأ Firebase: "+err.message));
 }
 
 // دخول طالب
