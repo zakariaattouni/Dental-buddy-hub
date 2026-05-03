@@ -1,476 +1,230 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>DS Assistant</title><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-body{font-family:Tahoma,Arial,sans-serif;background:#e3edf7;margin:0;padding:16px}
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><title>DS Assistant</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+body{font-family:Tahoma,Arial;background:#e3edf7;margin:0;padding:16px}
 .card{background:#e3edf7;padding:18px;margin-bottom:18px;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff}
-h2,h3{margin:0;color:#1e3a5f}
+h3{margin:0;color:#1e3a5f}
 button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:12px;background:#1e88e5;color:#fff;font-size:15px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
 button:active{box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
 input{width:100%;padding:10px;margin-top:8px;border-radius:12px;border:none;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
-#studentsList,#requestsList{max-height:200px;overflow-y:auto;font-size:14px}
-.accordion-item{margin-bottom:10px}
-.accordion-title{width:100%;text-align:right;background:#e3edf7;color:#1e3a5f;padding:10px;border-radius:12px;border:none;font-size:14px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
-.accordion-content{margin-top:6px;padding:10px;border-radius:12px;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff;font-size:13px;display:none}
 .hidden{display:none}
-.small-note{font-size:12px;color:#555;margin-top:6px}
-footer{text-align:center;margin-top:20px;font-size:13px;color:#333;opacity:.8}
 .app-shell{display:flex;gap:10px}
-.sidebar{width:190px;min-height:100vh;background:#e3edf7;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff;padding:14px;box-sizing:border-box}
-.sidebar h3{font-size:16px;margin-bottom:10px}
-.sidebar button{width:100%;margin-top:6px;font-size:14px}
-.main-area{flex:1}
-.logo-wrap{text-align:center;margin-bottom:14px}
+.sidebar{width:190px;min-height:100vh;background:#e3edf7;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff;padding:14px}
 .logo-svg{width:70px;height:70px;margin-bottom:6px}
 .logo-title{font-weight:bold;color:#1e3a5f;font-size:18px}
-.logo-sub{font-size:12px;color:#555}
-.settings-item{margin-bottom:10px;font-size:14px}
-.settings-label{display:block;margin-bottom:4px;color:#1e3a5f}
-select{width:100%;padding:8px;border-radius:10px;border:none;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
-.about-text{font-size:14px;line-height:1.6;color:#333}
 .badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#1e88e5;color:#fff;font-size:11px;margin-top:6px}
-</style>
-</head>
-<body>
+.accordion-title{width:100%;background:#e3edf7;color:#1e3a5f;padding:10px;border-radius:12px;border:none;font-size:14px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
+.accordion-content{margin-top:6px;padding:10px;border-radius:12px;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff;font-size:13px;display:none}
+</style></head><body>
 
-<!-- مؤشر الاتصال -->
+<!-- حالة الاتصال -->
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
-  <div id="statusDot" style="width:14px;height:14px;border-radius:50%;background:#aaa;box-shadow:0 0 6px #999"></div>
-  <span id="statusText" style="font-size:14px;color:#444">جاري التحقق من الاتصال...</span>
+<div id="statusDot" style="width:14px;height:14px;border-radius:50%;background:#aaa"></div>
+<span id="statusText" style="font-size:14px;color:#444">جاري التحقق من الاتصال...</span>
 </div>
 
-<!-- الصفحة الرئيسية (دخول) -->
+<!-- الصفحة الرئيسية -->
 <div id="home" class="card">
-  <div class="logo-wrap">
-    <!-- أيقونة SVG كتاب + سماعة داخل مربع بزوايا دائرية -->
-    <svg class="logo-svg" viewBox="0 0 100 100">
-      <rect x="8" y="8" width="84" height="84" rx="22" ry="22" fill="#e3edf7" stroke="#1e88e5" stroke-width="2"/>
-      <rect x="26" y="28" width="22" height="40" rx="3" fill="#ffffff" stroke="#1e88e5" stroke-width="1.5"/>
-      <rect x="52" y="28" width="22" height="40" rx="3" fill="#ffffff" stroke="#1e88e5" stroke-width="1.5"/>
-      <line x1="30" y1="34" x2="44" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-      <line x1="30" y1="40" x2="44" y2="40" stroke="#1e88e5" stroke-width="1.5"/>
-      <line x1="56" y1="34" x2="70" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-      <path d="M50 40 C55 45,60 45,65 40" fill="none" stroke="#1e88e5" stroke-width="2"/>
-      <circle cx="65" cy="40" r="3" fill="#1e88e5"/>
-      <path d="M65 43 C65 52,55 56,50 52" fill="none" stroke="#1e88e5" stroke-width="2"/>
-      <circle cx="50" cy="52" r="2.5" fill="#1e88e5"/>
-    </svg>
-    <div class="logo-title">DS Assistant</div>
-    <div class="logo-sub">Dental &amp; Medical Smart Guide</div>
-  </div>
-  <button onclick="showAdminLogin()">دخول المدير</button>
-  <button onclick="showUserLogin()">دخول الطالب</button>
-  <button onclick="showRegister()">تسجيل حساب جديد</button>
+<div style="text-align:center">
+<svg class="logo-svg" viewBox="0 0 100 100">
+<rect x="8" y="8" width="84" height="84" rx="22" fill="#e3edf7" stroke="#1e88e5" stroke-width="2"/>
+<rect x="26" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
+<rect x="52" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
+<line x1="30" y1="34" x2="44" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
+<line x1="56" y1="34" x2="70" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
+<path d="M50 40 C55 45,60 45,65 40" fill="none" stroke="#1e88e5" stroke-width="2"/>
+<circle cx="65" cy="40" r="3" fill="#1e88e5"/>
+</svg>
+<div class="logo-title">DS Assistant</div>
+</div>
+<button onclick="showAdminLogin()">دخول المدير</button>
+<button onclick="showUserLogin()">دخول الطالب</button>
+<button onclick="showRegister()">تسجيل حساب جديد</button>
 </div>
 
 <!-- دخول المدير -->
 <div id="adminLogin" class="card hidden">
-  <h3>دخول المدير</h3>
-  <input id="adminPass" type="password" placeholder="كلمة السر (للمدير فقط)">
-  <button onclick="adminLogin()">دخول</button>
-  <button onclick="goHome()">رجوع</button>
-</div>
-
-<!-- غلاف التطبيق بعد الدخول (مدير/طالب) -->
-<div id="appShell" class="app-shell hidden">
-  <div class="sidebar">
-    <div class="logo-wrap" style="margin-bottom:10px">
-      <svg class="logo-svg" viewBox="0 0 100 100">
-        <rect x="8" y="8" width="84" height="84" rx="22" ry="22" fill="#e3edf7" stroke="#1e88e5" stroke-width="2"/>
-        <rect x="26" y="28" width="22" height="40" rx="3" fill="#ffffff" stroke="#1e88e5" stroke-width="1.5"/>
-        <rect x="52" y="28" width="22" height="40" rx="3" fill="#ffffff" stroke="#1e88e5" stroke-width="1.5"/>
-        <line x1="30" y1="34" x2="44" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-        <line x1="30" y1="40" x2="44" y2="40" stroke="#1e88e5" stroke-width="1.5"/>
-        <line x1="56" y1="34" x2="70" y2="34" stroke="#1e88e5" stroke-width="1.5"/>
-        <path d="M50 40 C55 45,60 45,65 40" fill="none" stroke="#1e88e5" stroke-width="2"/>
-        <circle cx="65" cy="40" r="3" fill="#1e88e5"/>
-        <path d="M65 43 C65 52,55 56,50 52" fill="none" stroke="#1e88e5" stroke-width="2"/>
-        <circle cx="50" cy="52" r="2.5" fill="#1e88e5"/>
-      </svg>
-      <div class="logo-title" style="font-size:15px">DS Assistant</div>
-    </div>
-    <h3>القائمة</h3>
-    <button onclick="showSection('dashboard')">الرئيسية</button>
-    <button onclick="showSection('settings')">الإعدادات</button>
-    <button onclick="showSection('about')">عن التطبيق</button>
-    <button onclick="logoutFromSidebar()">تسجيل الخروج</button>
-    <div style="margin-top:14px;font-size:11px;color:#777">وضع المستخدم: <span id="roleLabel">—</span></div>
-  </div>
-  <div class="main-area">
-    <!-- لوحة المدير -->
-    <div id="adminPanel" class="hidden">
-      <div class="card"><h3>لوحة المدير <span class="badge">Admin</span></h3></div>
-      <div id="adminDashboard" class="card">
-        <h3>طلبات التسجيل</h3>
-        <div id="requestsList"></div>
-        <button onclick="loadRequests()">تحديث الطلبات</button>
-      </div>
-      <div class="card">
-        <h3>إضافة طالب</h3>
-        <input id="stName" placeholder="اسم الطالب">
-        <input id="stPhone" placeholder="رقم الهاتف">
-        <button onclick="addStudent()">إضافة الطالب</button>
-      </div>
-      <div class="card">
-        <h3>قائمة الطلاب</h3>
-        <div id="studentsList"></div>
-        <button onclick="loadStudents()">تحديث القائمة</button>
-      </div>
-    </div>
-
-    <!-- لوحة الطالب -->
-    <div id="studentPanel" class="hidden">
-      <div class="card">
-        <h3>لوحة الطالب <span class="badge">Student</span></h3>
-        <button onclick="toggleEmergencies()">موسوعة حالات الطوارئ</button>
-      </div>
-      <div id="emergenciesCard" class="card hidden">
-        <h3>حالات الطوارئ (50 حالة)</h3>
-        <div id="accordionContainer"></div>
-      </div>
-    </div>
-
-    <!-- صفحة الإعدادات -->
-    <div id="settingsPage" class="card hidden">
-      <h3>الإعدادات</h3>
-      <div class="settings-item">
-        <span class="settings-label">اللغة (تجريبية):</span>
-        <select id="langSelect" onchange="changeLanguage()">
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">نمط الواجهة:</span>
-        <select id="themeSelect" onchange="changeTheme()">
-          <option value="light">فاتح (افتراضي)</option>
-          <option value="dark">غامق</option>
-        </select>
-      </div>
-      <div class="settings-item">
-        <span class="settings-label">معلومات الحساب:</span>
-        <div id="accountInfo" class="small-note">لم يتم تسجيل الدخول بعد.</div>
-      </div>
-      <button onclick="logoutFromSidebar()">تسجيل الخروج</button>
-    </div>
-
-    <!-- صفحة عن التطبيق -->
-    <div id="aboutPage" class="card hidden">
-      <h3>عن التطبيق</h3>
-      <div class="about-text">
-        تطبيق <b>DS Assistant</b> هو دليل ذكي مبسط لطلاب طب الأسنان والطب، يركز على حالات الطوارئ السريرية
-        وإدارة المرضى بشكل عملي وسريع. تم تصميمه ليعمل من ملف واحد فقط، مع واجهة عصرية بنمط Neumorphism،
-        ودعم لنظام دخول مدير وطلاب، مع إدارة طلبات التسجيل.
-        <br><br>
-        الإصدار: <b>1.0.0</b><br>
-        المطوّر والمصمم: <b>الدكتور زكريا محمد عطوني</b><br>
-        جميع الحقوق محفوظة.
-      </div>
-    </div>
-
-  </div>
+<h3>دخول المدير</h3>
+<input id="adminPass" type="password" placeholder="كلمة السر">
+<button onclick="adminLogin()">دخول</button>
+<button onclick="goHome()">رجوع</button>
 </div>
 
 <!-- دخول الطالب -->
 <div id="userLogin" class="card hidden">
-  <h3>دخول الطالب</h3>
-  <input id="userEmail" type="email" placeholder="البريد الإلكتروني">
-  <input id="userPass" type="password" placeholder="كلمة السر">
-  <button onclick="loginUser()">دخول</button>
-  <button onclick="showRegister()">إنشاء حساب جديد</button>
-  <button onclick="goHome()">رجوع</button>
+<h3>دخول الطالب</h3>
+<input id="userEmail" type="email" placeholder="البريد الإلكتروني">
+<input id="userPass" type="password" placeholder="كلمة السر">
+<button onclick="loginUser()">دخول</button>
+<button onclick="showRegister()">إنشاء حساب جديد</button>
+<button onclick="goHome()">رجوع</button>
 </div>
 
-<!-- تسجيل طالب -->
+<!-- تسجيل طالب (الإصلاح الجديد) -->
 <div id="register" class="card hidden">
-  <h3>إنشاء حساب طالب</h3>
-  <input id="regName" placeholder="الاسم الكامل">
-  <input id="regEmail" type="email" placeholder="البريد الإلكتروني">
-  <input id="regPass" type="password" placeholder="كلمة السر">
-  <button onclick="registerUser()">تسجيل</button>
-  <button onclick="showUserLogin()">رجوع</button>
+<h3>إنشاء حساب طالب</h3>
+<input id="regName" placeholder="الاسم الكامل">
+<input id="regEmail" type="email" placeholder="البريد الإلكتروني">
+<input id="regPass" type="password" placeholder="كلمة السر">
+<button onclick="registerUser()">تسجيل</button>
+<button onclick="showUserLogin()">رجوع</button>
 </div>
 
-<footer>تصميم وتطوير الدكتور زكريا محمد عطوني</footer>
+<!-- غلاف التطبيق -->
+<div id="appShell" class="app-shell hidden">
+<div class="sidebar">
+<svg class="logo-svg" viewBox="0 0 100 100">
+<rect x="8" y="8" width="84" height="84" rx="22" fill="#e3edf7" stroke="#1e88e5" stroke-width="2"/>
+<rect x="26" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
+<rect x="52" y="28" width="22" height="40" rx="3" fill="#fff" stroke="#1e88e5" stroke-width="1.5"/>
+</svg>
+<button onclick="showSection('dashboard')">الرئيسية</button>
+<button onclick="showSection('settings')">الإعدادات</button>
+<button onclick="showSection('about')">عن التطبيق</button>
+<button onclick="logout()">تسجيل الخروج</button>
+</div>
+
+<div style="flex:1">
+
+<!-- لوحة المدير -->
+<div id="adminPanel" class="hidden card">
+<h3>لوحة المدير <span class="badge">Admin</span></h3>
+<div id="requestsList"></div>
+<button onclick="loadRequests()">تحديث الطلبات</button>
+</div>
+
+<!-- لوحة الطالب -->
+<div id="studentPanel" class="hidden card">
+<h3>لوحة الطالب <span class="badge">Student</span></h3>
+<button onclick="toggleEmergencies()">موسوعة الطوارئ</button>
+<div id="emergenciesCard" class="hidden">
+<div id="accordionContainer"></div>
+</div>
+</div>
+
+<!-- الإعدادات -->
+<div id="settingsPage" class="hidden card">
+<h3>الإعدادات</h3>
+<div>اللغة: <b>العربية</b></div>
+</div>
+
+<!-- عن التطبيق -->
+<div id="aboutPage" class="hidden card">
+<h3>عن التطبيق</h3>
+<div>تطبيق DS Assistant — دليل ذكي لطلاب طب الأسنان.</div>
+</div>
+
+</div>
+</div>
+
+<footer style="text-align:center;margin-top:20px;font-size:13px;color:#333">تصميم وتطوير الدكتور زكريا محمد عطوني</footer>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-// Firebase init
+// Firebase
 firebase.initializeApp({
-  apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
-  authDomain:"diagnosis-6ea4b.firebaseapp.com",
-  databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
-  projectId:"diagnosis-6ea4b",
-  storageBucket:"diagnosis-6ea4b.firebasestorage.app",
-  messagingSenderId:"1014263737561",
-  appId:"1:1014263737561:web:ca8affac416227be8862c8"
+apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
+authDomain:"diagnosis-6ea4b.firebaseapp.com",
+databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
+projectId:"diagnosis-6ea4b",
+storageBucket:"diagnosis-6ea4b.firebasestorage.app",
+messagingSenderId:"1014263737561",
+appId:"1:1014263737561:web:ca8affac416227be8862c8"
 });
 const db=firebase.database();
 
 // اتصال
 db.ref(".info/connected").on("value",s=>{
-  const v=s.val();
-  statusDot.style.background=v?"#00c853":"#d50000";
-  statusText.textContent=v?"متصل بـ Firebase":"غير متصل بـ Firebase";
+statusDot.style.background=s.val()?"#00c853":"#d50000";
+statusText.textContent=s.val()?"متصل بـ Firebase":"غير متصل بـ Firebase";
 });
 
-// تنقل أساسي
-function hideAllRoot(){
-  home.classList.add("hidden");
-  adminLogin.classList.add("hidden");
-  userLogin.classList.add("hidden");
-  register.classList.add("hidden");
-  appShell.classList.add("hidden");
-}
-function goHome(){hideAllRoot();home.classList.remove("hidden")}
-function showAdminLogin(){hideAllRoot();adminLogin.classList.remove("hidden")}
-function showUserLogin(){hideAllRoot();userLogin.classList.remove("hidden")}
-function showRegister(){hideAllRoot();register.classList.remove("hidden")}
+// تنقل
+function hideAll(){home.classList.add("hidden");adminLogin.classList.add("hidden");userLogin.classList.add("hidden");register.classList.add("hidden");appShell.classList.add("hidden")}
+function goHome(){hideAll();home.classList.remove("hidden")}
+function showAdminLogin(){hideAll();adminLogin.classList.remove("hidden")}
+function showUserLogin(){hideAll();userLogin.classList.remove("hidden")}
+function showRegister(){hideAll();register.classList.remove("hidden")}
 
-// إدارة القوائم داخل الغلاف
-function showSection(sec){
-  // dashboard = حسب الدور
-  if(sec==="dashboard"){
-    settingsPage.classList.add("hidden");
-    aboutPage.classList.add("hidden");
-    if(currentRole==="admin"){
-      adminPanel.classList.remove("hidden");
-      studentPanel.classList.add("hidden");
-    }else if(currentRole==="student"){
-      studentPanel.classList.remove("hidden");
-      adminPanel.classList.add("hidden");
-    }
-  }else if(sec==="settings"){
-    adminPanel.classList.add("hidden");
-    studentPanel.classList.add("hidden");
-    aboutPage.classList.add("hidden");
-    settingsPage.classList.remove("hidden");
-  }else if(sec==="about"){
-    adminPanel.classList.add("hidden");
-    studentPanel.classList.add("hidden");
-    settingsPage.classList.add("hidden");
-    aboutPage.classList.remove("hidden");
-  }
-}
-
-// دخول المدير
+// مدير
 function adminLogin(){
-  if(adminPass.value==="salem1959"){
-    currentRole="admin";
-    roleLabel.textContent="مدير";
-    accountInfo.textContent="دخول كمدير (محلي).";
-    hideAllRoot();
-    appShell.classList.remove("hidden");
-    adminPanel.classList.remove("hidden");
-    studentPanel.classList.add("hidden");
-    settingsPage.classList.add("hidden");
-    aboutPage.classList.add("hidden");
-    loadRequests();loadStudents();
-  }else alert("كلمة السر غير صحيحة");
+if(adminPass.value==="salem1959"){
+hideAll();appShell.classList.remove("hidden");adminPanel.classList.remove("hidden");loadRequests();
+}else alert("خطأ في كلمة السر")
 }
 
-// تسجيل طالب → طلب تسجيل
+// تسجيل طالب
 function registerUser(){
-  const n=regName.value.trim(),e=regEmail.value.trim(),p=regPass.value.trim();
-  if(!n||!e||!p){alert("يرجى تعبئة جميع الحقول");return}
-  firebase.auth().createUserWithEmailAndPassword(e,p).then(c=>{
-    db.ref("DS-Assistant/requests/"+c.user.uid).set({name:n,email:e,status:"pending"});
-    alert("تم إرسال طلب التسجيل، بانتظار موافقة المدير");
-    firebase.auth().signOut();
-    showUserLogin();
-  }).catch(err=>alert(err.message));
+const n=regName.value.trim(),e=regEmail.value.trim(),p=regPass.value.trim();
+if(!n||!e||!p){alert("يرجى تعبئة جميع الحقول");return}
+firebase.auth().createUserWithEmailAndPassword(e,p).then(c=>{
+db.ref("DS-Assistant/requests/"+c.user.uid).set({name:n,email:e,status:"pending"}).then(()=>{
+alert("تم إرسال طلب التسجيل");firebase.auth().signOut();showUserLogin();
+});
+}).catch(err=>alert(err.message));
 }
 
-// دخول الطالب بعد الموافقة
-let currentRole=null;
+// دخول طالب
 function loginUser(){
-  const e=userEmail.value.trim(),p=userPass.value.trim();
-  if(!e||!p){alert("يرجى إدخال البريد وكلمة السر");return}
-  firebase.auth().signInWithEmailAndPassword(e,p).then(c=>{
-    const uid=c.user.uid;
-    db.ref("DS-Assistant/users/"+uid).once("value",s=>{
-      if(s.exists()){
-        currentRole="student";
-        roleLabel.textContent="طالب";
-        accountInfo.textContent="البريد: "+e;
-        hideAllRoot();
-        appShell.classList.remove("hidden");
-        adminPanel.classList.add("hidden");
-        studentPanel.classList.remove("hidden");
-        settingsPage.classList.add("hidden");
-        aboutPage.classList.add("hidden");
-        buildEmergenciesAccordion();
-      }else{
-        alert("حسابك بانتظار موافقة المدير");
-        firebase.auth().signOut();
-      }
-    });
-  }).catch(err=>alert(err.message));
+firebase.auth().signInWithEmailAndPassword(userEmail.value,userPass.value).then(c=>{
+db.ref("DS-Assistant/users/"+c.user.uid).once("value",s=>{
+if(s.exists()){
+hideAll();appShell.classList.remove("hidden");studentPanel.classList.remove("hidden");buildEmergencies();
+}else{
+alert("بانتظار موافقة المدير");firebase.auth().signOut();
+}
+});
+}).catch(err=>alert(err.message));
 }
 
-// خروج عام من القائمة الجانبية
-function logoutFromSidebar(){
-  if(currentRole==="admin"){
-    currentRole=null;
-    roleLabel.textContent="—";
-    accountInfo.textContent="لم يتم تسجيل الدخول بعد.";
-    goHome();
-  }else{
-    firebase.auth().signOut().then(()=>{
-      currentRole=null;
-      roleLabel.textContent="—";
-      accountInfo.textContent="لم يتم تسجيل الدخول بعد.";
-      goHome();
-    });
-  }
-}
-
-// إدارة الطلبات
+// طلبات
 function loadRequests(){
-  requestsList.innerHTML="";
-  db.ref("DS-Assistant/requests").once("value",snap=>{
-    snap.forEach(ch=>{
-      const r=ch.val(),uid=ch.key;
-      const d=document.createElement("div");
-      d.style.marginBottom="10px";
-      d.innerHTML=
-        "<b>"+r.name+"</b> ("+r.email+") — <span>"+(r.status||"pending")+"</span><br>"+
-        "<button onclick=\"approveRequest('"+uid+"','"+r.name+"','"+r.email+"')\">تفعيل</button>"+
-        "<button onclick=\"suspendRequest('"+uid+"')\">ترقين</button>"+
-        "<button onclick=\"deleteRequest('"+uid+"')\">حذف</button>";
-      requestsList.appendChild(d);
-    });
-    if(!requestsList.innerHTML)requestsList.innerHTML="<div class='small-note'>لا توجد طلبات تسجيل.</div>";
-  });
+requestsList.innerHTML="";
+db.ref("DS-Assistant/requests").once("value",snap=>{
+snap.forEach(ch=>{
+const r=ch.val(),uid=ch.key;
+requestsList.innerHTML+=`<div><b>${r.name}</b> (${r.email})<br>
+<button onclick="approve('${uid}','${r.name}','${r.email}')">تفعيل</button>
+<button onclick="delReq('${uid}')">حذف</button></div>`;
+});
+});
 }
-function approveRequest(uid,name,email){
-  db.ref("DS-Assistant/users/"+uid).set({name,email,role:"student"});
-  db.ref("DS-Assistant/requests/"+uid).remove();
-  alert("تم تفعيل الحساب");
-  loadRequests();
+function approve(uid,n,e){
+db.ref("DS-Assistant/users/"+uid).set({name:n,email:e,role:"student"});
+db.ref("DS-Assistant/requests/"+uid).remove();
+loadRequests();
 }
-function suspendRequest(uid){
-  db.ref("DS-Assistant/requests/"+uid+"/status").set("suspended");
-  alert("تم ترقين الطلب");
-  loadRequests();
-}
-function deleteRequest(uid){
-  db.ref("DS-Assistant/requests/"+uid).remove();
-  alert("تم حذف الطلب");
-  loadRequests();
-}
+function delReq(uid){db.ref("DS-Assistant/requests/"+uid).remove();loadRequests()}
 
-// الطلاب
-function addStudent(){
-  if(!stName.value.trim()||!stPhone.value.trim()){alert("يرجى إدخال اسم ورقم الطالب");return}
-  db.ref("DS-Assistant/students").push({name:stName.value.trim(),phone:stPhone.value.trim()});
-  alert("تمت إضافة الطالب");
-  stName.value="";stPhone.value="";
-  loadStudents();
-}
-function loadStudents(){
-  studentsList.innerHTML="";
-  db.ref("DS-Assistant/students").once("value",snap=>{
-    snap.forEach(ch=>{
-      const s=ch.val();
-      studentsList.innerHTML+="<div>- "+s.name+" ("+s.phone+")</div>";
-    });
-    if(!studentsList.innerHTML)studentsList.innerHTML="<div class='small-note'>لا يوجد طلاب مسجلون بعد.</div>";
-  });
-}
-
-// الحالات
+// الطوارئ
 const emergencies=[
-  {t:"صدمة تحسسية شديدة",d:"تورم مفاجئ وصعوبة تنفس."},
-  {t:"هبوط ضغط الدم",d:"دوار شديد وضعف عام."},
-  {t:"إغماء",d:"فقدان وعي قصير."},
-  {t:"نوبة قلبية",d:"ألم صدري ضاغط."},
-  {t:"سكتة دماغية",d:"ضعف مفاجئ أو اضطراب كلام."},
-  {t:"توقف التنفس",d:"انقطاع كامل للتنفس."},
-  {t:"توقف القلب",d:"غياب النبض."},
-  {t:"نوبة ربو",d:"صفير وضيق نفس."},
-  {t:"نزيف أنفي",d:"نزيف لا يتوقف."},
-  {t:"نزيف فموي",d:"نزيف بعد خلع سن."},
-  {t:"انسداد مجرى الهواء",d:"اختناق مفاجئ."},
-  {t:"ارتفاع ضغط خطير",d:"صداع وتشوش رؤية."},
-  {t:"انخفاض سكر",d:"رجفة وتعرق."},
-  {t:"ارتفاع سكر",d:"عطش وتبول متكرر."},
-  {t:"نوبة صرع",d:"تشنجات مؤقتة."},
-  {t:"ألم صدري",d:"انزعاج مع ضيق نفس."},
-  {t:"ألم بطني",d:"ألم مفاجئ حاد."},
-  {t:"تسمم غذائي",d:"إقياء وإسهال."},
-  {t:"تجفاف",d:"عطش شديد."},
-  {t:"ضربة شمس",d:"حرارة وارتباك."},
-  {t:"حروق حرارية",d:"احمرار أو فقاعات."},
-  {t:"حروق كيميائية",d:"ألم بعد مادة كاوية."},
-  {t:"حروق كهربائية",d:"إصابة جلدية."},
-  {t:"كسر",d:"ألم وتشوه."},
-  {t:"التواء",d:"ألم وتورم."},
-  {t:"جرح عميق",d:"نزيف واضح."},
-  {t:"عضة حيوان",d:"خطر عدوى."},
-  {t:"لسعة نحلة",d:"تورم موضعي."},
-  {t:"تسمم دوائي",d:"أعراض غير طبيعية."},
-  {t:"ابتلاع مادة",d:"غثيان وألم."},
-  {t:"استنشاق دخان",d:"سعال وضيق نفس."},
-  {t:"إصابة رأس",d:"صداع ودوار."},
-  {t:"ارتجاج",d:"تشوش ودوار."},
-  {t:"نزيف داخلي",d:"شحوب وهبوط ضغط."},
-  {t:"ألم أسنان",d:"ألم نابض."},
-  {t:"خراج سني",d:"تورم مؤلم."},
-  {t:"التهاب لثة",d:"نزيف واحمرار."},
-  {t:"انكسار سن",d:"كسر واضح."},
-  {t:"خلع سن",d:"سقوط سن كامل."},
-  {t:"التهاب حلق",d:"ألم عند البلع."},
-  {t:"انسداد أنفي",d:"صعوبة تنفس."},
-  {t:"ألم أذن",d:"ألم نابض."},
-  {t:"دوار",d:"إحساس بالدوران."},
-  {t:"تجمد الفك",d:"صعوبة فتح الفم."},
-  {t:"تشنج عضلي",d:"ألم مفاجئ."},
-  {t:"طفح جلدي",d:"بقع حمراء."},
-  {t:"حساسية دواء",d:"طفح أو تورم."},
-  {t:"التهاب جيوب",d:"صداع وضغط."},
-  {t:"جفاف العين",d:"حرقة وإحساس بالرمل."},
-  {t:"ألم ظهر",d:"ألم بعد حركة خاطئة."}
+{t:"صدمة تحسسية",d:"تورم وصعوبة تنفس"},
+{t:"هبوط ضغط",d:"دوار وضعف"},
+{t:"إغماء",d:"فقدان وعي"},
+{t:"نوبة قلبية",d:"ألم صدري"},
+{t:"سكتة دماغية",d:"ضعف مفاجئ"},
+{t:"توقف تنفس",d:"انقطاع كامل"},
+{t:"توقف قلب",d:"غياب النبض"},
+{t:"نوبة ربو",d:"صفير وضيق"},
+{t:"نزيف فموي",d:"نزيف بعد خلع"},
+{t:"انسداد مجرى الهواء",d:"اختناق"}
 ];
-function buildEmergenciesAccordion(){
-  if(accordionContainer.dataset.built==="1")return;
-  emergencies.forEach((x,i)=>{
-    const w=document.createElement("div");w.className="accordion-item";
-    const b=document.createElement("button");b.className="accordion-title";b.textContent=(i+1)+". "+x.t;
-    const c=document.createElement("div");c.className="accordion-content";c.textContent=x.d;
-    b.onclick=()=>{document.querySelectorAll(".accordion-content").forEach(e=>e.style.display="none");c.style.display=c.style.display==="block"?"none":"block"};
-    w.appendChild(b);w.appendChild(c);accordionContainer.appendChild(w);
-  });
-  accordionContainer.dataset.built="1";
+function buildEmergencies(){
+if(accordionContainer.dataset.built)return;
+emergencies.forEach((x,i)=>{
+accordionContainer.innerHTML+=`<button class="accordion-title" onclick="toggleAcc(${i})">${i+1}. ${x.t}</button><div id="acc${i}" class="accordion-content">${x.d}</div>`;
+});
+accordionContainer.dataset.built=1;
 }
-function toggleEmergencies(){
-  emergenciesCard.classList.toggle("hidden");
+function toggleAcc(i){
+document.querySelectorAll(".accordion-content").forEach(e=>e.style.display="none");
+const c=document.getElementById("acc"+i);
+c.style.display=c.style.display==="block"?"none":"block";
 }
+function toggleEmergencies(){emergenciesCard.classList.toggle("hidden")}
 
-// إعدادات بسيطة
-function changeLanguage(){
-  const v=langSelect.value;
-  alert("تغيير اللغة إلى: "+(v==="ar"?"العربية":"English")+" (تجريبي، لا يغيّر النصوص بعد).");
-}
-function changeTheme(){
-  const v=themeSelect.value;
-  if(v==="dark"){
-    document.body.style.background="#1f2933";
-    document.querySelectorAll(".card,.sidebar").forEach(c=>{
-      c.style.background="#1f2933";
-      c.style.boxShadow="8px 8px 16px #0b1014,-8px -8px 16px #2b3a4a";
-    });
-    document.querySelectorAll("h2,h3,.logo-title").forEach(e=>e.style.color="#e5f0ff");
-  }else{
-    document.body.style.background="#e3edf7";
-    document.querySelectorAll(".card,.sidebar").forEach(c=>{
-      c.style.background="#e3edf7";
-      c.style.boxShadow="8px 8px 16px #c2ccd8,-8px -8px 16px #fff";
-    });
-    document.querySelectorAll("h2,h3,.logo-title").forEach(e=>e.style.color="#1e3a5f");
-  }
-}
+// خروج
+function logout(){firebase.auth().signOut();goHome()}
 </script>
-
 </body></html>
