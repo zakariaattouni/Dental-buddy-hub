@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>مساعد طالب الأسنان — نسخة الطوارئ</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>مساعد طالب الأسنان</title>
 <style>
 body{margin:0;padding:0;font-family:Tahoma,Arial;background:#F7F7F7;}
 .topbar{height:56px;background:#F2F2F2;border-bottom:1px solid #D9D9D9;display:flex;align-items:center;justify-content:space-between;padding:0 14px;}
@@ -30,26 +29,40 @@ footer{position:fixed;bottom:0;left:0;width:100%;background:#222;color:#eee;padd
 <body>
 
 <div class="topbar">
-  <div class="home-icon" onclick="showSection('loginSection')">🏠</div>
+  <div class="home-icon" onclick="showSection('mainLogin')">🏠</div>
   <div id="topbarTitle" style="font-weight:bold;">مساعد طالب الأسنان</div>
   <div></div>
 </div>
 
-<div id="loginSection" class="container">
-  <h2 class="section-title">تسجيل الدخول</h2>
-  <label>نوع المستخدم</label>
-  <select id="userType">
-    <option value="student">طالب</option>
-    <option value="admin">مدير</option>
-  </select>
-  <label>البريد الإلكتروني</label>
-  <input id="loginEmail" type="email" placeholder="example@mail.com">
-  <label>كلمة المرور</label>
-  <input id="loginPassword" type="password" placeholder="••••••••">
-  <button class="btn btn-main" onclick="login()">دخول</button>
-  <button class="btn btn-sec" onclick="showSection('registerSection')">إنشاء حساب طالب جديد</button>
+<!-- شاشة البداية -->
+<div id="mainLogin" class="container">
+  <h2 class="section-title">اختر نوع الدخول</h2>
+  <button class="btn btn-main" onclick="showSection('adminLogin')">دخول كمدير</button>
+  <button class="btn btn-sec" onclick="showSection('studentLogin')">دخول كطالب</button>
 </div>
 
+<!-- دخول المدير -->
+<div id="adminLogin" class="container hidden">
+  <h2 class="section-title">دخول المدير</h2>
+  <label>كلمة السر</label>
+  <input id="adminPass" type="password" placeholder="••••••••">
+  <button class="btn btn-main" onclick="loginAdmin()">دخول</button>
+  <button class="btn btn-sec" onclick="showSection('mainLogin')">رجوع</button>
+</div>
+
+<!-- دخول الطالب -->
+<div id="studentLogin" class="container hidden">
+  <h2 class="section-title">دخول الطالب</h2>
+  <label>البريد الإلكتروني</label>
+  <input id="loginEmail" type="email">
+  <label>كلمة المرور</label>
+  <input id="loginPassword" type="password">
+  <button class="btn btn-main" onclick="loginStudent()">دخول</button>
+  <button class="btn btn-sec" onclick="showSection('registerSection')">إنشاء حساب جديد</button>
+  <button class="btn btn-sec" onclick="showSection('mainLogin')">رجوع</button>
+</div>
+
+<!-- تسجيل طالب -->
 <div id="registerSection" class="container hidden">
   <h2 class="section-title">تسجيل طالب جديد</h2>
   <label>الاسم الكامل</label>
@@ -59,181 +72,94 @@ footer{position:fixed;bottom:0;left:0;width:100%;background:#222;color:#eee;padd
   <label>كلمة المرور</label>
   <input id="regPassword" type="password">
   <button class="btn btn-main" onclick="registerStudent()">تسجيل</button>
-  <button class="btn btn-sec" onclick="showSection('loginSection')">رجوع لتسجيل الدخول</button>
+  <button class="btn btn-sec" onclick="showSection('studentLogin')">رجوع</button>
 </div>
 
+<!-- لوحة الطالب -->
 <div id="studentSection" class="container hidden">
   <h2 class="section-title">لوحة الطالب</h2>
   <button class="btn btn-main" onclick="openEmergency()">موسوعة الطوارئ</button>
   <button class="btn btn-sec" onclick="logout()">تسجيل الخروج</button>
 </div>
 
+<!-- لوحة المدير -->
 <div id="adminSection" class="container hidden">
   <h2 class="section-title">لوحة المدير</h2>
-  <p>هذه نسخة مبسطة، يمكنك لاحقًا إضافة إدارة حسابات وتفعيل وغيرها.</p>
+  <p>مرحبًا بك يا دكتور زكريا…</p>
+  <button class="btn btn-main" onclick="openEmergency()">موسوعة الطوارئ</button>
   <button class="btn btn-sec" onclick="logout()">تسجيل الخروج</button>
 </div>
 
+<!-- موسوعة الطوارئ -->
 <div id="emergencySection" class="container hidden">
   <h2 class="section-title">موسوعة الطوارئ</h2>
   <input id="search" class="search-box" type="text" placeholder="ابحث عن حالة..." oninput="searchCases()">
   <div id="casesList"></div>
-  <button class="btn btn-sec" onclick="showSection('studentSection')">رجوع للوحة الطالب</button>
+  <button class="btn btn-sec" onclick="backFromEmergency()">رجوع</button>
 </div>
 
+<!-- صفحة الحالة -->
 <div id="caseSection" class="container hidden">
   <h2 class="section-title">تفاصيل الحالة</h2>
   <div id="caseTitle" class="case-title"></div>
-  <div class="case-card">
-    <div class="case-card-title"><span>📘</span><span>التعريف</span></div>
-    <div id="caseDefinition" class="case-text"></div>
-  </div>
-  <div class="case-card">
-    <div class="case-card-title"><span>⚠️</span><span>الأسباب</span></div>
-    <div id="caseCauses" class="case-text"></div>
-  </div>
-  <div class="case-card">
-    <div class="case-card-title"><span>🩺</span><span>الأعراض والعلامات</span></div>
-    <div id="caseSigns" class="case-text"></div>
-  </div>
-  <div class="case-card">
-    <div class="case-card-title"><span>⛑️</span><span>الإسعافات الأولية</span></div>
-    <div id="caseAid" class="case-text"></div>
-  </div>
-  <div class="case-card">
-    <div class="case-card-title"><span>📝</span><span>ملاحظات</span></div>
-    <div id="caseNotes" class="case-text"></div>
-  </div>
-  <button class="btn btn-sec" onclick="backToEmergency()">رجوع لموسوعة الطوارئ</button>
+  <div class="case-card"><div class="case-card-title">📘 التعريف</div><div id="caseDefinition" class="case-text"></div></div>
+  <div class="case-card"><div class="case-card-title">⚠️ الأسباب</div><div id="caseCauses" class="case-text"></div></div>
+  <div class="case-card"><div class="case-card-title">🩺 الأعراض</div><div id="caseSigns" class="case-text"></div></div>
+  <div class="case-card"><div class="case-card-title">⛑️ الإسعافات</div><div id="caseAid" class="case-text"></div></div>
+  <div class="case-card"><div class="case-card-title">📝 ملاحظات</div><div id="caseNotes" class="case-text"></div></div>
+  <button class="btn btn-sec" onclick="showSection('emergencySection')">رجوع</button>
 </div>
 
-<footer>
-  الإصدار 1.0 — جميع الحقوق محفوظة © 2026<br>تصميم وتطوير الدكتور زكريا محمد عطوني
-</footer>
+<footer>الإصدار 1.0 — جميع الحقوق محفوظة © 2026<br>تصميم وتطوير الدكتور زكريا محمد عطوني</footer>
 
 <script>
-// قاعدة بيانات بسيطة للمستخدمين (تخزين محلي)
-let users = JSON.parse(localStorage.getItem("users")||"[]");
-let currentUser = JSON.parse(localStorage.getItem("currentUser")||"null");
+let users=JSON.parse(localStorage.getItem("users")||"[]");
+let currentUser=null;
 
-// قاعدة بيانات الطوارئ (50 حالة)
-const emergencyCases=[
-{"id":1,"name":"صدمة تأقية (Anaphylaxis)","definition":"تفاعل تحسسي شديد يهدد الحياة.","causes":"لسعات الحشرات، الأدوية، بعض الأطعمة مثل المكسرات.","signs":"تورم الوجه واللسان، صعوبة تنفس، هبوط ضغط، تسارع نبض.","first_aid":"إعطاء إبينفرين إن توفر، استدعاء الإسعاف فورًا، وضع المريض مستلقيًا مع رفع الساقين.","notes":"تعد من أخطر الحالات وتتطلب تدخلاً فوريًا."},
-{"id":2,"name":"إغماء (Syncope)","definition":"فقدان مؤقت للوعي بسبب نقص تدفق الدم إلى الدماغ.","causes":"الخوف الشديد، الألم، الوقوف الطويل، الجو الحار.","signs":"شحوب، تعرق، دوخة، فقدان وعي قصير.","first_aid":"وضع المريض مستلقيًا ورفع الساقين، تهوية المكان، فك الملابس الضيقة.","notes":"يجب تقييم السبب إذا تكرر الإغماء."},
-{"id":3,"name":"نوبة صرع (Seizure)","definition":"تفريغ كهربائي غير طبيعي في الدماغ يؤدي إلى تشنجات.","causes":"الصرع، الحمى العالية، نقص السكر، إصابات الرأس.","signs":"تشنجات عضلية، فقدان وعي، رغوة بالفم أحيانًا.","first_aid":"إبعاد الأشياء الخطرة، عدم تقييد المريض، وضعه على جانبه بعد النوبة.","notes":"لا يوضع شيء في فم المريض أثناء النوبة."},
-{"id":4,"name":"هبوط سكر الدم (Hypoglycemia)","definition":"انخفاض مستوى السكر في الدم إلى درجة تسبب أعراضًا خطيرة.","causes":"جرعة زائدة من الإنسولين، تأخير الوجبات، مجهود زائد.","signs":"رجفان، تعرق، جوع شديد، دوخة، تشوش.","first_aid":"إعطاء سكر سريع الامتصاص (عصير، سكر)، وإذا فقد الوعي → طوارئ.","notes":"يجب ضبط جرعات الأدوية ومواعيد الطعام."},
-{"id":5,"name":"ارتفاع ضغط الدم الحاد","definition":"ارتفاع شديد ومفاجئ في ضغط الدم قد يسبب أعراضًا عصبية أو قلبية.","causes":"الضغط المزمن غير المعالج، التوتر الشديد، الألم الحاد.","signs":"صداع شديد، دوخة، تشوش رؤية، نزيف أنفي أحيانًا.","first_aid":"تهدئة المريض، قياس الضغط، تجنب إعطاء أدوية سريعة بدون إشراف طبي.","notes":"قد يحتاج إلى تقييم في الطوارئ خاصة مع أعراض عصبية."},
-{"id":6,"name":"ألم صدري حاد","definition":"ألم مفاجئ في الصدر قد يشير إلى مشكلة قلبية أو رئوية.","causes":"ذبحة صدرية، احتشاء قلبي، قلق شديد، التهاب عضلات الصدر.","signs":"ألم ضاغط أو عاصر، قد يمتد للذراع أو الفك، تعرق، ضيق نفس.","first_aid":"إراحة المريض، إيقاف أي مجهود، استدعاء الإسعاف عند الشك بجلطة.","notes":"يُعامل كحالة طارئة حتى يثبت العكس."},
-{"id":7,"name":"انسداد مجرى الهواء","definition":"توقف أو صعوبة مرور الهواء بسبب جسم غريب.","causes":"ابتلاع طعام أو جسم صغير، خاصة عند الأطفال.","signs":"اختناق، عدم القدرة على الكلام أو السعال، زرقة.","first_aid":"مناورة هيمليك للبالغين، والطرق على الظهر مع الضغط الصدري للأطفال.","notes":"إذا فقد الوعي يجب البدء بالإنعاش القلبي الرئوي."},
-{"id":8,"name":"توقف التنفس","definition":"انعدام حركة الهواء داخل وخارج الرئتين.","causes":"غرق، اختناق، جرعة زائدة من أدوية مثبطة للجهاز العصبي.","signs":"غياب حركة الصدر، عدم الشعور بالنفس، زرقة.","first_aid":"تنفس إنقاذي وفحص النبض، والبدء بالإنعاش القلبي الرئوي عند الحاجة.","notes":"كل ثانية مهمة لإنقاذ الدماغ."},
-{"id":9,"name":"توقف القلب","definition":"توقف مفاجئ لنبض القلب وعدم ضخ الدم.","causes":"اضطرابات كهربائية، جلطة قلبية حادة، صدمة شديدة.","signs":"لا نبض، لا وعي، لا تنفس طبيعي.","first_aid":"البدء فورًا بالإنعاش القلبي الرئوي واستخدام جهاز الصدمات إن توفر.","notes":"كل دقيقة تأخير تقلل فرص النجاة بشكل كبير."},
-{"id":10,"name":"نزيف شديد","definition":"فقدان كمية كبيرة من الدم في وقت قصير.","causes":"جروح عميقة، حوادث، إصابات حادة.","signs":"نزيف مستمر، شحوب، تعرق، تسارع نبض.","first_aid":"الضغط المباشر على مكان النزيف، رفع الطرف المصاب إن أمكن.","notes":"إذا لم يتوقف النزيف أو ظهرت علامات صدمة → طوارئ."},
-{"id":11,"name":"نزيف أنفي","definition":"خروج دم من الأنف بدرجات مختلفة.","causes":"ارتفاع ضغط الدم، جفاف الأغشية، رضوض، التهابات.","signs":"نزيف أحمر من فتحة أو فتحتي الأنف.","first_aid":"إمالة الرأس للأمام والضغط على الجزء اللين من الأنف 10 دقائق.","notes":"لا يرجع الرأس للخلف حتى لا يبتلع الدم."},
-{"id":12,"name":"أزمة ربو","definition":"تضيق مفاجئ في الشعب الهوائية عند مرضى الربو.","causes":"غبار، دخان، مجهود، التهابات تنفسية.","signs":"صفير، ضيق نفس، سعال، شعور بالاختناق.","first_aid":"استخدام البخاخ الموسع، تهدئة المريض، الجلوس في وضع مريح.","notes":"إذا لم يتحسن أو ساءت الأعراض → طوارئ."},
-{"id":13,"name":"تسمم غذائي","definition":"اضطراب هضمي بسبب تناول طعام أو شراب ملوث.","causes":"بكتيريا، فيروسات، سموم غذائية.","signs":"إسهال، قيء، مغص بطني، أحيانًا حرارة.","first_aid":"تعويض السوائل بالفم، الراحة، مراقبة علامات الجفاف.","notes":"إذا كان الإسهال شديدًا أو مع دم → تقييم طبي."},
-{"id":14,"name":"ضربة شمس","definition":"ارتفاع حرارة الجسم بسبب التعرض الطويل للشمس أو الحر الشديد.","causes":"العمل أو الرياضة في الجو الحار، قلة السوائل.","signs":"حرارة عالية، احمرار الجلد، صداع، دوخة، غثيان.","first_aid":"نقل المريض لمكان بارد، تبريد الجسم بالماء، إعطاء سوائل إن أمكن.","notes":"قد تكون خطيرة خاصة عند كبار السن والأطفال."},
-{"id":15,"name":"حروق حرارية","definition":"تلف في الجلد والأنسجة بسبب التعرض للحرارة.","causes":"لهب، سوائل ساخنة، أجسام معدنية حارة.","signs":"ألم، احمرار، فقاعات، أو تفحم حسب الدرجة.","first_aid":"تبريد المكان بالماء الفاتر 10-20 دقيقة، عدم فتح الفقاعات.","notes":"الحروق الواسعة أو في الوجه والأعضاء التناسلية تحتاج طوارئ."},
-{"id":16,"name":"حروق كيميائية","definition":"تلف في الجلد أو العين أو الفم بسبب مواد كيميائية.","causes":"أحماض، قواعد قوية، مواد تنظيف مركزة.","signs":"ألم شديد، احمرار أو تآكل في الجلد أو الأغشية.","first_aid":"غسل المكان بالماء الجاري لفترة طويلة، إزالة الملابس الملوثة.","notes":"يجب معرفة نوع المادة إن أمكن وإبلاغ الطوارئ."},
-{"id":17,"name":"ابتلاع جسم غريب","definition":"دخول جسم غير غذائي إلى الجهاز الهضمي.","causes":"ابتلاع عملات، ألعاب صغيرة، عظام، خاصة عند الأطفال.","signs":"ألم بلع، قيء، سعال إذا علق في المريء العلوي.","first_aid":"مراقبة المريض، عدم محاولة إجبار القيء، مراجعة طبية عند الشك بانسداد.","notes":"الأجسام الحادة أو البطاريات خطيرة جدًا."},
-{"id":18,"name":"التواء مفصل","definition":"تمدد أو تمزق في أربطة المفصل دون كسر العظم.","causes":"سقوط، حركة مفاجئة أو خاطئة، رياضة عنيفة.","signs":"ألم، تورم، صعوبة حركة المفصل.","first_aid":"إراحة المفصل، وضع ثلج، رفع الطرف المصاب.","notes":"يجب استبعاد الكسر عند الشك."},
-{"id":19,"name":"كسر عظمي","definition":"انقطاع في استمرارية العظم.","causes":"حوادث، سقوط من ارتفاع، رضوض قوية.","signs":"ألم شديد، تشوه، تورم، عدم القدرة على الحركة.","first_aid":"تثبيت الطرف المصاب في وضع مريح، تجنب تحريكه.","notes":"لا تحاول إعادة العظم لمكانه."},
-{"id":20,"name":"خلع مفصل","definition":"خروج المفصل من مكانه الطبيعي.","causes":"سقوط، إصابة رياضية، حوادث.","signs":"تشوه واضح، ألم شديد، فقدان حركة المفصل.","first_aid":"تثبيت المفصل، عدم محاولة إرجاعه بالقوة.","notes":"يحتاج لتدخل طبي لإعادته."},
-{"id":21,"name":"عضة كلب","definition":"إصابة جلدية بسبب عضة حيوان خاصة الكلاب.","causes":"حيوانات ضالة أو غير مطعمة.","signs":"جرح، نزيف، ألم، احتمال عدوى.","first_aid":"غسل الجرح جيدًا بالماء والصابون، تغطيته بضماد نظيف.","notes":"يجب تقييم خطر داء الكلب والتيتانوس."},
-{"id":22,"name":"لسعة نحلة","definition":"تفاعل موضعي أو عام بسبب سم النحل.","causes":"لسع مباشر من النحل أو الحشرات المشابهة.","signs":"ألم موضعي، احمرار، تورم، أحيانًا تحسس عام.","first_aid":"إزالة إبرة اللسعة إن وجدت، تبريد المكان، مراقبة علامات التحسس.","notes":"إذا ظهرت صعوبة تنفس أو تورم عام → طوارئ."},
-{"id":23,"name":"تسمم دوائي","definition":"تناول جرعة زائدة أو خاطئة من دواء.","causes":"خطأ في الجرعات، تعاطي متعمد، أطفال يبتلعون الأدوية.","signs":"غثيان، قيء، دوخة، اضطراب وعي حسب نوع الدواء.","first_aid":"الاتصال بالطوارئ أو مركز السموم، عدم تحفيز القيء دون توجيه طبي.","notes":"إحضار علبة الدواء للطبيب مهم جدًا."},
-{"id":24,"name":"تسمم كحولي","definition":"ارتفاع مستوى الكحول في الدم إلى درجة سامة.","causes":"شرب كميات كبيرة من الكحول في وقت قصير.","signs":"ترنح، تقيؤ، اضطراب وعي، بطء تنفس.","first_aid":"وضع المريض على جانبه لمنع استنشاق القيء، مراقبة التنفس، طلب طوارئ.","notes":"قد يؤدي لتوقف التنفس أو القلب."},
-{"id":25,"name":"تجفاف شديد","definition":"نقص كبير في سوائل الجسم.","causes":"إسهال شديد، قيء متكرر، حرارة عالية، قلة شرب الماء.","signs":"عطش شديد، جفاف فم، دوخة، قلة بول، خمول.","first_aid":"إعطاء سوائل فموية أو محاليل إن أمكن، نقل للمستشفى عند الشدة.","notes":"الأطفال وكبار السن أكثر عرضة للمضاعفات."},
-{"id":26,"name":"انسداد أنفي حاد","definition":"صعوبة تنفس عبر الأنف بسبب تورم أو إفرازات.","causes":"تحسس، التهاب فيروسي، انحراف حاجز أنفي.","signs":"انسداد، صداع، صعوبة نوم.","first_aid":"غسول ملحي، بخار ماء، تجنب مزيلات الاحتقان لفترات طويلة.","notes":"إذا استمر طويلًا يجب تقييمه."},
-{"id":27,"name":"ألم أسنان حاد","definition":"ألم شديد في السن أو اللثة.","causes":"تسوس عميق، التهاب لب، كسر سن.","signs":"ألم نابض، يزداد مع البارد أو الحار، أحيانًا تورم.","first_aid":"مسكنات مناسبة، كمادات باردة خارجية، مراجعة طبيب الأسنان بأقرب وقت.","notes":"تأجيل العلاج قد يؤدي لخراج."},
-{"id":28,"name":"خراج سني","definition":"تجمع صديد حول جذر السن أو في اللثة.","causes":"تسوس مهمل، التهاب لب غير معالج.","signs":"ألم شديد، تورم موضعي، أحيانًا حرارة عامة.","first_aid":"مسكنات، أحيانًا مضاد حيوي حسب توجيه طبي، مراجعة طبيب الأسنان.","notes":"يحتاج فتح وتصريف أو علاج جذور."},
-{"id":29,"name":"كسر سن","definition":"انكسار جزء من تاج السن أو جذره.","causes":"سقوط، ضربة، عض شيء صلب.","signs":"ألم، حساسية، نزف من اللثة أحيانًا.","first_aid":"حفظ الجزء المكسور في حليب أو محلول ملحي، مراجعة طبيب الأسنان سريعًا.","notes":"إمكانية ترميم السن تعتمد على حجم الكسر."},
-{"id":30,"name":"انخلاع سن دائم","definition":"خروج السن الدائم بالكامل من مكانه في العظم.","causes":"ضربة مباشرة على الفم أو الأسنان.","signs":"نزيف، فراغ مكان السن، ألم شديد.","first_aid":"إمكانية إعادة السن للحفرة بلطف أو حفظه في حليب ونقله فورًا لطبيب الأسنان.","notes":"أفضل فرصة للإنقاذ خلال 60 دقيقة."},
-{"id":31,"name":"التهاب لثة حاد","definition":"التهاب مفاجئ ومؤلم في اللثة.","causes":"ترسبات جيرية، إهمال نظافة الفم، تدخين.","signs":"احمرار، تورم، نزف عند التفريش، رائحة فم كريهة.","first_aid":"تنظيف لطيف، مضمضة ملحية أو مطهرة، مراجعة طبيب الأسنان للتنظيف المهني.","notes":"قد يتطور لالتهاب لثوي مزمن."},
-{"id":32,"name":"التهاب لسان","definition":"تورم والتهاب في أنسجة اللسان.","causes":"تحسس، عدوى، نقص فيتامينات، رضوض.","signs":"ألم، صعوبة بلع أو كلام، تغير لون اللسان.","first_aid":"تجنب المهيجات، مسكنات بسيطة، مراجعة طبية عند الشدة.","notes":"يجب مراقبة أي علامات انسداد مجرى الهواء."},
-{"id":33,"name":"التهاب حلق حاد","definition":"التهاب في البلعوم يسبب ألمًا عند البلع.","causes":"فيروسات، بكتيريا (مثل العقديات).","signs":"ألم حلق، حرارة، تضخم عقد لمفاوية، أحيانًا سعال.","first_aid":"مسكنات، سوائل دافئة، غرغرة ملحية، تقييم الحاجة لمضاد حيوي.","notes":"العدوى البكتيرية تحتاج تشخيصًا طبيًا."},
-{"id":34,"name":"انسداد بلعومي","definition":"صعوبة شديدة في البلع بسبب تورم أو جسم غريب.","causes":"تحسس شديد، التهاب حاد، جسم عالق.","signs":"اختناق، سيلان لعاب، صعوبة تنفس.","first_aid":"اعتبارها حالة طارئة، عدم محاولة دفع الجسم للأسفل، طلب إسعاف.","notes":"قد يهدد الحياة بسرعة."},
-{"id":35,"name":"التهاب لوزات","definition":"التهاب في اللوزتين الحنكيّتين.","causes":"عدوى فيروسية أو بكتيرية.","signs":"ألم حلق، حرارة، صعوبة بلع، تضخم لوزات مع طبقة بيضاء أحيانًا.","first_aid":"مسكنات، سوائل، غرغرة، تقييم الحاجة لمضاد حيوي.","notes":"التكرار المتعدد قد يستدعي استشارة جراح أنف وأذن."},
-{"id":36,"name":"التهاب أذن وسطى","definition":"عدوى في الأذن الوسطى غالبًا بعد نزلة برد.","causes":"فيروسات، بكتيريا.","signs":"ألم أذن، حرارة، بكاء عند الأطفال، أحيانًا نقص سمع مؤقت.","first_aid":"مسكنات، كمادات دافئة، مراجعة طبيب لتقييم الحاجة لمضاد حيوي.","notes":"إهمالها قد يؤدي لمضاعفات."},
-{"id":37,"name":"دوار مفاجئ","definition":"إحساس بالدوران أو عدم الاتزان.","causes":"التهاب أذن داخلية، اضطراب ضغط، قلق، أدوية.","signs":"غثيان، ترنح، صعوبة ثبات.","first_aid":"الراحة في وضعية جلوس أو استلقاء، تجنب الحركات السريعة.","notes":"إذا ترافق مع أعراض عصبية → تقييم عاجل."},
-{"id":38,"name":"نوبة هلع","definition":"خوف شديد مفاجئ مع أعراض جسدية مزعجة.","causes":"توتر، قلق، ضغوط نفسية.","signs":"خفقان، ضيق نفس، تعرق، شعور بالموت الوشيك.","first_aid":"طمأنة المريض، تدريبه على التنفس العميق البطيء، الجلوس في مكان هادئ.","notes":"ليست حالة قلبية لكن قد تشبهها."},
-{"id":39,"name":"تجفاف فم شديد","definition":"نقص واضح في إفراز اللعاب.","causes":"أدوية، قلق، أمراض غدد، تنفس فموي.","signs":"صعوبة بلع، لزوجة الفم، تشققات، رائحة فم.","first_aid":"شرب الماء بانتظام، مضغ علكة خالية من السكر، تجنب الكافيين الزائد.","notes":"يجب تقييم السبب إذا استمر."},
-{"id":40,"name":"التهاب جيوب أنفية","definition":"التهاب في الجيوب حول الأنف.","causes":"نزلات برد متكررة، تحسس، انحراف حاجز.","signs":"صداع، ثقل بالوجه، انسداد أنف، إفرازات خلفية.","first_aid":"بخار ماء، غسول ملحي، مسكنات، أحيانًا مضاد حيوي.","notes":"الحالات المزمنة تحتاج تقييم اختصاصي."},
-{"id":41,"name":"انسداد قناة لعابية","definition":"انسداد في مجرى الغدة اللعابية يؤدي لتورم وألم.","causes":"حصاة لعابية، لزوجة لعاب، جفاف.","signs":"تورم مؤلم يزداد مع الأكل، أحيانًا احمرار.","first_aid":"تدليك لطيف، مص حلوى حامضة لتحفيز اللعاب، شرب ماء.","notes":"قد يحتاج إزالة الحصاة عند الطبيب."},
-{"id":42,"name":"التهاب غدة نكفية","definition":"التهاب في الغدة النكفية أمام الأذن.","causes":"عدوى فيروسية (مثل النكاف) أو بكتيرية.","signs":"تورم أمام الأذن، ألم، حرارة، صعوبة مضغ.","first_aid":"مسكنات، سوائل، كمادات دافئة، مراجعة طبية.","notes":"يجب الانتباه لعلامات الخراج."},
-{"id":43,"name":"انسداد تنفسي جزئي","definition":"صعوبة تنفس مع مرور بعض الهواء.","causes":"تحسس، تضيق حنجري، جسم صغير.","signs":"صفير، صوت شهيق عالي، قلق.","first_aid":"تهدئة المريض، وضعية جلوس، موسعات إن وصفت سابقًا، طلب طوارئ عند الشدة.","notes":"قد يتطور لانسداد كامل."},
-{"id":44,"name":"التهاب لسان المزمار","definition":"تورم خطير في لسان المزمار فوق الحنجرة.","causes":"عدوى بكتيرية غالبًا.","signs":"صعوبة تنفس، صوت شهيق عالي، سيلان لعاب، حمى.","first_aid":"حالة طارئة جدًا، عدم محاولة فحص الحلق بقوة، طلب إسعاف فورًا.","notes":"قد يسبب انسدادًا كاملاً لمجرى الهواء."},
-{"id":45,"name":"التهاب معدة","definition":"التهاب في بطانة المعدة.","causes":"أدوية (مثل المسكنات)، عدوى، توتر، أطعمة مهيجة.","signs":"ألم أعلى البطن، غثيان، أحيانًا قيء.","first_aid":"تجنب الأطعمة المهيجة، مسكنات مناسبة للمعدة، سوائل.","notes":"إذا كان الألم شديدًا أو مع قيء دموي → طوارئ."},
-{"id":46,"name":"انسداد أمعاء","definition":"توقف أو تعطل حركة محتويات الأمعاء.","causes":"التصاقات بعد جراحة، فتق، أورام، التفاف أمعاء.","signs":"ألم بطني مغصي، انتفاخ، قيء، انقطاع غازات وبراز.","first_aid":"عدم تناول الطعام أو الشراب، نقل عاجل للمستشفى.","notes":"حالة جراحية محتملة."},
-{"id":47,"name":"مغص كلوي","definition":"ألم حاد بسبب مرور حصاة في الحالب.","causes":"حصى الكلى أو الحالب.","signs":"ألم شديد في الخاصرة يمتد للأربية، غثيان، أحيانًا دم في البول.","first_aid":"مسكنات قوية حسب وصف طبي، سوائل إذا لم يكن هناك انسداد كامل.","notes":"يحتاج تقييم بالأشعة وتحليل بول."},
-{"id":48,"name":"التهاب بنكرياس حاد","definition":"التهاب مفاجئ في البنكرياس.","causes":"حصى مرارية، كحول، ارتفاع دهون، أدوية.","signs":"ألم شديد أعلى البطن يمتد للظهر، غثيان، قيء.","first_aid":"عدم تناول شيء بالفم، نقل للمستشفى فورًا.","notes":"حالة خطيرة تحتاج رعاية طبية."},
-{"id":49,"name":"انسداد بولي حاد","definition":"عدم القدرة على إخراج البول رغم امتلاء المثانة.","causes":"تضخم بروستات، حصاة، تضيق إحليل.","signs":"ألم شديد أسفل البطن، رغبة ملحة دون خروج بول.","first_aid":"عدم محاولة الضغط على البطن، نقل للمستشفى لوضع قثطرة.","notes":"تأخير التفريغ قد يضر الكلى."},
-{"id":50,"name":"التهاب رئوي","definition":"عدوى في أنسجة الرئة.","causes":"بكتيريا، فيروسات، استنشاق محتويات فموية.","signs":"سعال، بلغم، حرارة، ضيق نفس، ألم صدري مع التنفس.","first_aid":"مسكنات، سوائل، راحة، تقييم طبي للمضاد الحيوي المناسب.","notes":"كبار السن ومرضى الأمراض المزمنة أكثر عرضة للمضاعفات."}
-];
-
-localStorage.setItem("emergencyCases",JSON.stringify(emergencyCases));
-
-// عرض الأقسام
-function showSection(id){
-  document.getElementById("loginSection").classList.add("hidden");
-  document.getElementById("registerSection").classList.add("hidden");
-  document.getElementById("studentSection").classList.add("hidden");
-  document.getElementById("adminSection").classList.add("hidden");
-  document.getElementById("emergencySection").classList.add("hidden");
-  document.getElementById("caseSection").classList.add("hidden");
-  document.getElementById(id).classList.remove("hidden");
-  if(id==="loginSection")document.getElementById("topbarTitle").innerText="مساعد طالب الأسنان";
-  if(id==="studentSection")document.getElementById("topbarTitle").innerText="لوحة الطالب";
-  if(id==="adminSection")document.getElementById("topbarTitle").innerText="لوحة المدير";
-  if(id==="emergencySection")document.getElementById("topbarTitle").innerText="موسوعة الطوارئ";
-  if(id==="caseSection")document.getElementById("topbarTitle").innerText="تفاصيل الحالة";
+// دخول المدير
+function loginAdmin(){
+  const pass=document.getElementById("adminPass").value.trim();
+  if(pass==="salem1959"){
+    currentUser={type:"admin",name:"المدير"};
+    showSection("adminSection");
+  }else alert("كلمة السر غير صحيحة");
 }
 
-// تسجيل طالب جديد
+// تسجيل طالب
 function registerStudent(){
-  const name=document.getElementById("regName").value.trim();
-  const email=document.getElementById("regEmail").value.trim();
-  const pass=document.getElementById("regPassword").value.trim();
-  if(!name||!email||!pass){alert("يرجى تعبئة جميع الحقول");return;}
-  if(users.find(u=>u.email===email)){alert("هذا البريد مسجل مسبقًا");return;}
-  users.push({name,email,password:pass,type:"student"});
+  const n=document.getElementById("regName").value.trim();
+  const e=document.getElementById("regEmail").value.trim();
+  const p=document.getElementById("regPassword").value.trim();
+  if(!n||!e||!p){alert("املأ جميع الحقول");return;}
+  if(users.find(u=>u.email===e)){alert("البريد مستخدم");return;}
+  users.push({name:n,email:e,password:p,type:"student"});
   localStorage.setItem("users",JSON.stringify(users));
-  alert("تم تسجيل الطالب بنجاح، يمكنك الآن تسجيل الدخول");
-  showSection("loginSection");
+  alert("تم التسجيل");
+  showSection("studentLogin");
 }
 
-// تسجيل الدخول
-function login(){
-  const type=document.getElementById("userType").value;
-  const email=document.getElementById("loginEmail").value.trim();
-  const pass=document.getElementById("loginPassword").value.trim();
-  if(type==="admin"){
-    if(email==="admin@demo"&&pass==="1234"){
-      currentUser={name:"المدير",email,type:"admin"};
-      localStorage.setItem("currentUser",JSON.stringify(currentUser));
-      showSection("adminSection");
-    }else alert("بيانات المدير التجريبية: admin@demo / 1234");
-  }else{
-    const u=users.find(x=>x.email===email&&x.password===pass&&x.type==="student");
-    if(!u){alert("بيانات الطالب غير صحيحة أو غير مسجل");return;}
-    currentUser=u;
-    localStorage.setItem("currentUser",JSON.stringify(currentUser));
-    showSection("studentSection");
-  }
+// دخول الطالب
+function loginStudent(){
+  const e=document.getElementById("loginEmail").value.trim();
+  const p=document.getElementById("loginPassword").value.trim();
+  const u=users.find(x=>x.email===e&&x.password===p);
+  if(!u){alert("بيانات غير صحيحة");return;}
+  currentUser=u;
+  showSection("studentSection");
 }
 
-// فتح موسوعة الطوارئ
-function openEmergency(){
-  loadCases();
-  showSection("emergencySection");
-}
+// فتح الطوارئ
+function openEmergency(){loadCases();showSection("emergencySection");}
 
-// تحميل الحالات في صفحة الطوارئ
+// قاعدة بيانات الطوارئ
+const emergencyCases=JSON.parse(localStorage.getItem("emergencyCases")||"[]");
+
+// تحميل الحالات
 function loadCases(){
   const list=document.getElementById("casesList");
   list.innerHTML="";
   emergencyCases.forEach(c=>{
-    list.innerHTML+=`
-    <div class="card" onclick="openCase(${c.id})">
+    list.innerHTML+=`<div class="card" onclick="openCase(${c.id})">
       <div class="card-title">${c.name}</div>
       <div class="card-desc">${c.definition}</div>
       <div class="icons"><span>⚠️</span><span>🩺</span><span>⛑️</span></div>
@@ -241,57 +167,48 @@ function loadCases(){
   });
 }
 
-// بحث عن حالة
+// بحث
 function searchCases(){
   const q=document.getElementById("search").value.trim();
   const list=document.getElementById("casesList");
   list.innerHTML="";
-  emergencyCases
-    .filter(c=>c.name.includes(q)||c.definition.includes(q))
-    .forEach(c=>{
-      list.innerHTML+=`
-      <div class="card" onclick="openCase(${c.id})">
-        <div class="card-title">${c.name}</div>
-        <div class="card-desc">${c.definition}</div>
-        <div class="icons"><span>⚠️</span><span>🩺</span><span>⛑️</span></div>
-      </div>`;
-    });
+  emergencyCases.filter(c=>c.name.includes(q)||c.definition.includes(q))
+  .forEach(c=>{
+    list.innerHTML+=`<div class="card" onclick="openCase(${c.id})">
+      <div class="card-title">${c.name}</div>
+      <div class="card-desc">${c.definition}</div>
+      <div class="icons"><span>⚠️</span><span>🩺</span><span>⛑️</span></div>
+    </div>`;
+  });
 }
 
-// فتح صفحة حالة واحدة
+// فتح حالة
 function openCase(id){
   const c=emergencyCases.find(x=>x.id===id);
-  if(!c){alert("الحالة غير موجودة");return;}
   document.getElementById("caseTitle").innerText=c.name;
   document.getElementById("caseDefinition").innerText=c.definition;
   document.getElementById("caseCauses").innerText=c.causes;
   document.getElementById("caseSigns").innerText=c.signs;
   document.getElementById("caseAid").innerText=c.first_aid;
-  document.getElementById("caseNotes").innerText=c.notes||"لا توجد ملاحظات إضافية.";
+  document.getElementById("caseNotes").innerText=c.notes;
   showSection("caseSection");
 }
 
-// رجوع من الحالة إلى الطوارئ
-function backToEmergency(){
-  showSection("emergencySection");
+// رجوع
+function backFromEmergency(){
+  if(currentUser?.type==="admin")showSection("adminSection");
+  else showSection("studentSection");
 }
 
-// تسجيل الخروج
-function logout(){
-  localStorage.removeItem("currentUser");
-  currentUser=null;
-  showSection("loginSection");
+// عرض قسم
+function showSection(id){
+  ["mainLogin","adminLogin","studentLogin","registerSection","studentSection","adminSection","emergencySection","caseSection"]
+  .forEach(s=>document.getElementById(s).classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
 }
 
-// عند فتح الصفحة
-(function init(){
-  if(currentUser){
-    if(currentUser.type==="admin")showSection("adminSection");
-    else showSection("studentSection");
-  }else{
-    showSection("loginSection");
-  }
-})();
+// خروج
+function logout(){currentUser=null;showSection("mainLogin");}
 </script>
 
 </body></html>
