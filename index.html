@@ -2,12 +2,335 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>TEST</title>
+<title>DS Assistant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Tahoma,Arial;background:#e3edf7;margin:0;padding:16px}
+.card{background:#e3edf7;padding:18px;margin-bottom:18px;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff}
+h3{margin:0 0 10px;color:#1e3a5f}
+button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:12px;background:#1e88e5;color:#fff;font-size:15px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
+button:active{box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
+input{width:100%;padding:10px;margin-top:8px;border-radius:12px;border:none;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
+.hidden{display:none}
+.app-shell{display:flex;gap:10px}
+.sidebar{width:190px;min-height:100vh;background:#e3edf7;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff;padding:14px}
+.logo-title{font-weight:bold;color:#1e3a5f;font-size:18px;margin-bottom:10px}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;background:#1e88e5;color:#fff;font-size:11px;margin-top:6px}
+.accordion-title{width:100%;background:#e3edf7;color:#1e3a5f;padding:10px;border-radius:12px;border:none;font-size:14px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff;margin-top:8px}
+.accordion-content{margin-top:4px;padding:10px;border-radius:12px;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff;font-size:13px;display:none}
+</style>
 </head>
+
 <body>
 
-<h1>اختبار العرض</h1>
-<button onclick="alert('يعمل ✔')">اختبار</button>
+<!-- حالة الاتصال -->
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+  <div id="statusDot" style="width:14px;height:14px;border-radius:50%;background:#aaa"></div>
+  <span id="statusText" style="font-size:14px;color:#444">جاري التحقق من الاتصال...</span>
+</div>
+
+<!-- الصفحة الرئيسية -->
+<div id="home" class="card">
+  <div class="logo-title">DS Assistant</div>
+  <button onclick="showAdminLogin()">دخول المدير</button>
+  <button onclick="showUserLogin()">دخول الطالب</button>
+  <button onclick="showRegister()">تسجيل حساب جديد</button>
+</div>
+
+<!-- دخول المدير -->
+<div id="adminLogin" class="card hidden">
+  <h3>دخول المدير</h3>
+  <input id="adminPass" type="password" placeholder="كلمة السر">
+  <button onclick="adminLogin()">دخول</button>
+  <button onclick="goHome()">رجوع</button>
+</div>
+
+<!-- دخول الطالب -->
+<div id="userLogin" class="card hidden">
+  <h3>دخول الطالب</h3>
+  <input id="userEmail" type="email" placeholder="البريد الإلكتروني">
+  <input id="userPass" type="password" placeholder="كلمة السر">
+  <button onclick="loginUser()">دخول</button>
+  <button onclick="showRegister()">إنشاء حساب جديد</button>
+  <button onclick="goHome()">رجوع</button>
+</div>
+
+<!-- تسجيل طالب + زر اختبار -->
+<div id="register" class="card hidden">
+  <h3>إنشاء حساب طالب</h3>
+
+  <input id="regName" placeholder="الاسم الكامل">
+  <input id="regEmail" type="email" placeholder="البريد الإلكتروني">
+  <input id="regPass" type="password" placeholder="كلمة السر">
+
+  <!-- زر اختبار بسيط -->
+  <button onclick="alert('زر الاختبار يعمل ✔')">اختبار</button>
+
+  <button onclick="registerUser()">تسجيل</button>
+  <button onclick="showUserLogin()">رجوع</button>
+</div>
+
+<!-- غلاف التطبيق بعد الدخول -->
+<div id="appShell" class="app-shell hidden">
+  <div class="sidebar">
+    <div class="logo-title">DS Assistant</div>
+    <button onclick="showSection('adminPanel')">لوحة المدير</button>
+    <button onclick="showSection('studentPanel')">لوحة الطالب</button>
+    <button onclick="showSection('aboutPage')">عن التطبيق</button>
+    <button onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <div style="flex:1">
+
+    <!-- لوحة المدير -->
+    <div id="adminPanel" class="card hidden">
+      <h3>لوحة المدير <span class="badge">Admin</span></h3>
+      <div id="requestsList"></div>
+      <button onclick="loadRequests()">تحديث الطلبات</button>
+    </div>
+
+    <!-- لوحة الطالب -->
+    <div id="studentPanel" class="card hidden">
+      <h3>لوحة الطالب <span class="badge">Student</span></h3>
+      <button onclick="toggleEmergencies()">موسوعة الطوارئ</button>
+      <div id="emergenciesCard" class="hidden">
+        <div id="accordionContainer"></div>
+      </div>
+    </div>
+
+    <!-- عن التطبيق -->
+    <div id="aboutPage" class="card hidden">
+      <h3>عن التطبيق</h3>
+      <div>تطبيق DS Assistant — دليل مبسط لطلاب طب الأسنان.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer style="text-align:center;margin-top:20px;font-size:13px;color:#333">
+  تصميم وتطوير الدكتور زكريا محمد عطوني
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+// تهيئة Firebase
+firebase.initializeApp({
+  apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
+  authDomain:"diagnosis-6ea4b.firebaseapp.com",
+  databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
+  projectId:"diagnosis-6ea4b",
+  storageBucket:"diagnosis-6ea4b.firebasestorage.app",
+  messagingSenderId:"1014263737561",
+  appId:"1:1014263737561:web:ca8affac416227be8862c8"
+});
+var db = firebase.database();
+
+// حالة الاتصال
+db.ref(".info/connected").on("value", function(snap){
+  var dot = document.getElementById("statusDot");
+  var txt = document.getElementById("statusText");
+  if(snap.val()){
+    dot.style.background = "#00c853";
+    txt.textContent = "متصل بـ Firebase";
+  }else{
+    dot.style.background = "#d50000";
+    txt.textContent = "غير متصل بـ Firebase";
+  }
+});
+
+// إخفاء/إظهار الصفحات الأساسية
+function hideAll(){
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("adminLogin").classList.add("hidden");
+  document.getElementById("userLogin").classList.add("hidden");
+  document.getElementById("register").classList.add("hidden");
+  document.getElementById("appShell").classList.add("hidden");
+}
+function goHome(){ hideAll(); document.getElementById("home").classList.remove("hidden"); }
+function showAdminLogin(){ hideAll(); document.getElementById("adminLogin").classList.remove("hidden"); }
+function showUserLogin(){ hideAll(); document.getElementById("userLogin").classList.remove("hidden"); }
+function showRegister(){ hideAll(); document.getElementById("register").classList.remove("hidden"); }
+
+// تبديل الأقسام داخل appShell
+function showSection(id){
+  var ids = ["adminPanel","studentPanel","aboutPage"];
+  for(var i=0;i<ids.length;i++){
+    var el = document.getElementById(ids[i]);
+    if(el) el.classList.add("hidden");
+  }
+  var target = document.getElementById(id);
+  if(target) target.classList.remove("hidden");
+}
+
+// دخول المدير
+function adminLogin(){
+  var pass = document.getElementById("adminPass").value;
+  if(pass === "salem1959"){
+    hideAll();
+    document.getElementById("appShell").classList.remove("hidden");
+    showSection("adminPanel");
+    loadRequests();
+  }else{
+    alert("خطأ في كلمة السر");
+  }
+}
+
+// تسجيل طالب
+function registerUser(){
+  console.log("تم الضغط على زر التسجيل ✔");
+
+  var n = document.getElementById("regName").value.trim();
+  var e = document.getElementById("regEmail").value.trim();
+  var p = document.getElementById("regPass").value.trim();
+
+  if(!n || !e || !p){
+    alert("يرجى تعبئة جميع الحقول");
+    return;
+  }
+
+  firebase.auth().createUserWithEmailAndPassword(e, p)
+    .then(function(cred){
+      var uid = cred.user.uid;
+      db.ref("DS-Assistant/requests/" + uid).set({
+        name:n,
+        email:e,
+        status:"pending"
+      }).then(function(){
+        alert("تم إرسال طلب التسجيل، بانتظار موافقة المدير");
+        firebase.auth().signOut();
+        showUserLogin();
+      });
+    })
+    .catch(function(err){
+      alert("خطأ Firebase: " + err.message);
+    });
+}
+
+// دخول طالب
+function loginUser(){
+  var e = document.getElementById("userEmail").value.trim();
+  var p = document.getElementById("userPass").value.trim();
+
+  firebase.auth().signInWithEmailAndPassword(e, p)
+    .then(function(cred){
+      var uid = cred.user.uid;
+      db.ref("DS-Assistant/users/" + uid).once("value", function(snap){
+        if(snap.exists()){
+          hideAll();
+          document.getElementById("appShell").classList.remove("hidden");
+          showSection("studentPanel");
+          buildEmergencies();
+        }else{
+          alert("حسابك بانتظار موافقة المدير");
+          firebase.auth().signOut();
+        }
+      });
+    })
+    .catch(function(err){
+      alert("خطأ: " + err.message);
+    });
+}
+
+// تحميل طلبات التسجيل للمدير
+function loadRequests(){
+  var list = document.getElementById("requestsList");
+  list.innerHTML = "";
+  db.ref("DS-Assistant/requests").once("value", function(snap){
+    snap.forEach(function(child){
+      var r = child.val();
+      var uid = child.key;
+
+      var div = document.createElement("div");
+      div.style.marginBottom = "10px";
+      div.innerHTML =
+        "<b>" + (r.name || "") + "</b> (" + (r.email || "") + ")<br>";
+
+      var btn1 = document.createElement("button");
+      btn1.textContent = "تفعيل";
+      btn1.onclick = function(){ approve(uid, r.name, r.email); };
+
+      var btn2 = document.createElement("button");
+      btn2.textContent = "حذف";
+      btn2.onclick = function(){ delReq(uid); };
+
+      div.appendChild(btn1);
+      div.appendChild(btn2);
+      list.appendChild(div);
+    });
+  });
+}
+
+function approve(uid, name, email){
+  db.ref("DS-Assistant/users/" + uid).set({
+    name:name,
+    email:email,
+    role:"student"
+  });
+  db.ref("DS-Assistant/requests/" + uid).remove();
+  loadRequests();
+}
+
+function delReq(uid){
+  db.ref("DS-Assistant/requests/" + uid).remove();
+  loadRequests();
+}
+
+// موسوعة الطوارئ البسيطة
+var emergencies = [
+  {t:"صدمة تحسسية", d:"تورم مفاجئ، صعوبة تنفس، يحتاج إيقاف الدواء وتحويل فوري."},
+  {t:"هبوط ضغط", d:"دوار، تعرق، برودة أطراف، يفضل وضع المريض مستلقيًا ورفع القدمين."},
+  {t:"إغماء", d:"فقدان وعي مؤقت، غالبًا بسبب خوف أو ألم، مع مراقبة التنفس."},
+  {t:"نوبة ربو", d:"صفير وضيق نفس، يفضل استخدام بخاخ المريض إن وجد."}
+];
+
+function buildEmergencies(){
+  var cont = document.getElementById("accordionContainer");
+  if(cont.getAttribute("data-built") === "1") return;
+
+  for(var i=0;i<emergencies.length;i++){
+    (function(i){
+      var btn = document.createElement("button");
+      btn.className = "accordion-title";
+      btn.textContent = (i+1) + ". " + emergencies[i].t;
+      btn.onclick = function(){ toggleAcc(i); };
+
+      var div = document.createElement("div");
+      div.className = "accordion-content";
+      div.id = "acc" + i;
+      div.textContent = emergencies[i].d;
+
+      cont.appendChild(btn);
+      cont.appendChild(div);
+    })(i);
+  }
+  cont.setAttribute("data-built","1");
+}
+
+function toggleAcc(i){
+  var all = document.getElementsByClassName("accordion-content");
+  for(var j=0;j<all.length;j++){
+    all[j].style.display = "none";
+  }
+  var c = document.getElementById("acc"+i);
+  if(c) c.style.display = "block";
+}
+
+function toggleEmergencies(){
+  var card = document.getElementById("emergenciesCard");
+  if(card.classList.contains("hidden")) card.classList.remove("hidden");
+  else card.classList.add("hidden");
+}
+
+// خروج
+function logout(){
+  firebase.auth().signOut();
+  goHome();
+}
+</script>
 
 </body>
 </html>
