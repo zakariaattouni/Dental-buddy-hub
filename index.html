@@ -4,134 +4,28 @@
 <meta charset="UTF-8">
 <title>DS Assistant</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
-body {
-  font-family: Tahoma, Arial, sans-serif;
-  background: #e3edf7;
-  margin: 0;
-  padding: 16px;
-}
-
-/* Neumorphism cards */
-.card {
-  background: #e3edf7;
-  padding: 18px;
-  margin-bottom: 18px;
-  border-radius: 20px;
-  box-shadow:
-    8px 8px 16px #c2ccd8,
-    -8px -8px 16px #ffffff;
-}
-
-/* Titles */
-h2, h3 {
-  margin-top: 0;
-  color: #1e3a5f;
-}
-
-/* Buttons */
-button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 12px;
-  background: #1e88e5;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-  box-shadow:
-    4px 4px 10px #c2ccd8,
-    -4px -4px 10px #ffffff;
-}
-button:active {
-  box-shadow:
-    inset 4px 4px 10px #c2ccd8,
-    inset -4px -4px 10px #ffffff;
-}
-
-/* Inputs */
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 12px;
-  border: none;
-  background: #e3edf7;
-  box-shadow:
-    inset 4px 4px 10px #c2ccd8,
-    inset -4px -4px 10px #ffffff;
-}
-
-/* Lists */
-#studentsList {
-  max-height: 200px;
-  overflow-y: auto;
-  font-size: 14px;
-}
-
-/* Accordion for emergencies */
-.accordion-item {
-  margin-bottom: 10px;
-}
-.accordion-title {
-  width: 100%;
-  text-align: right;
-  background: #e3edf7;
-  color: #1e3a5f;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow:
-    4px 4px 10px #c2ccd8,
-    -4px -4px 10px #ffffff;
-}
-.accordion-title:active {
-  box-shadow:
-    inset 4px 4px 10px #c2ccd8,
-    inset -4px -4px 10px #ffffff;
-}
-.accordion-content {
-  margin-top: 6px;
-  padding: 10px;
-  border-radius: 12px;
-  background: #e3edf7;
-  box-shadow:
-    inset 4px 4px 10px #c2ccd8,
-    inset -4px -4px 10px #ffffff;
-  font-size: 13px;
-  display: none;
-}
-
-/* Utility */
-.hidden { display: none; }
-.small-note { font-size: 12px; color: #555; margin-top: 6px; }
+body{font-family:Tahoma,Arial,sans-serif;background:#e3edf7;margin:0;padding:16px}
+.card{background:#e3edf7;padding:18px;margin-bottom:18px;border-radius:20px;box-shadow:8px 8px 16px #c2ccd8,-8px -8px 16px #fff}
+h2,h3{margin-top:0;color:#1e3a5f}
+button{width:100%;padding:12px;margin-top:10px;border:none;border-radius:12px;background:#1e88e5;color:#fff;font-size:15px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
+button:active{box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
+input{width:100%;padding:10px;margin-top:8px;border-radius:12px;border:none;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
+#studentsList{max-height:200px;overflow-y:auto;font-size:14px}
+.accordion-item{margin-bottom:10px}
+.accordion-title{width:100%;text-align:right;background:#e3edf7;color:#1e3a5f;padding:10px;border-radius:12px;border:none;font-size:14px;cursor:pointer;box-shadow:4px 4px 10px #c2ccd8,-4px -4px 10px #fff}
+.accordion-title:active{box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff}
+.accordion-content{margin-top:6px;padding:10px;border-radius:12px;background:#e3edf7;box-shadow:inset 4px 4px 10px #c2ccd8,inset -4px -4px 10px #fff;font-size:13px;display:none}
+.hidden{display:none}
+.small-note{font-size:12px;color:#555;margin-top:6px}
 </style>
 </head>
-
 <body>
 
 <!-- مؤشر الاتصال -->
-<div id="statusBar" style="
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:15px;
-">
-  <div id="statusDot" style="
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    background:#aaa;
-    box-shadow:0 0 6px #999;
-  "></div>
-
-  <span id="statusText" style="font-size:14px;color:#444;">
-    جاري التحقق من الاتصال...
-  </span>
+<div id="statusBar" style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+  <div id="statusDot" style="width:14px;height:14px;border-radius:50%;background:#aaa;box-shadow:0 0 6px #999"></div>
+  <span id="statusText" style="font-size:14px;color:#444">جاري التحقق من الاتصال...</span>
 </div>
 
 <!-- الصفحة الرئيسية -->
@@ -152,23 +46,18 @@ input {
 
 <!-- لوحة المدير -->
 <div id="adminPanel" class="hidden">
-  <div class="card">
-    <h3>لوحة المدير</h3>
-  </div>
-
+  <div class="card"><h3>لوحة المدير</h3></div>
   <div class="card">
     <h3>إضافة طالب</h3>
     <input id="stName" placeholder="اسم الطالب">
     <input id="stPhone" placeholder="رقم الهاتف">
     <button onclick="addStudent()">إضافة الطالب</button>
   </div>
-
   <div class="card">
     <h3>قائمة الطلاب</h3>
     <div id="studentsList"></div>
     <button onclick="loadStudents()">تحديث القائمة</button>
   </div>
-
   <div class="card">
     <button onclick="goHome()">خروج من لوحة المدير</button>
   </div>
@@ -200,66 +89,61 @@ input {
     <h3>لوحة الطالب</h3>
     <button onclick="toggleEmergencies()">موسوعة حالات الطوارئ</button>
   </div>
-
   <div id="emergenciesCard" class="card hidden">
     <h3>حالات الطوارئ (50 حالة)</h3>
     <p class="small-note">اضغط على عنوان الحالة لعرض الوصف المختصر.</p>
     <div id="accordionContainer"></div>
   </div>
-
   <div class="card">
     <button onclick="studentLogout()">تسجيل الخروج</button>
   </div>
 </div>
 
-<!-- Firebase CDN -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-// إعدادات Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
-  authDomain: "diagnosis-6ea4b.firebaseapp.com",
-  databaseURL: "https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
-  projectId: "diagnosis-6ea4b",
-  storageBucket: "diagnosis-6ea4b.firebasestorage.app",
-  messagingSenderId: "1014263737561",
-  appId: "1:1014263737561:web:ca8affac416227be8862c8"
+// Firebase
+const firebaseConfig={
+  apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",
+  authDomain:"diagnosis-6ea4b.firebaseapp.com",
+  databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",
+  projectId:"diagnosis-6ea4b",
+  storageBucket:"diagnosis-6ea4b.firebasestorage.app",
+  messagingSenderId:"1014263737561",
+  appId:"1:1014263737561:web:ca8affac416227be8862c8"
 };
-
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const db=firebase.database();
 
 // مؤشر الاتصال
 function checkFirebaseConnection(){
-  const dot = document.getElementById("statusDot");
-  const text = document.getElementById("statusText");
-
-  db.ref(".info/connected").on("value", snap => {
-    if (snap.val() === true) {
-      dot.style.background = "#00c853";
-      text.textContent = "متصل بـ Firebase";
-    } else {
-      dot.style.background = "#d50000";
-      text.textContent = "غير متصل بـ Firebase";
+  const dot=document.getElementById("statusDot");
+  const text=document.getElementById("statusText");
+  db.ref(".info/connected").on("value",snap=>{
+    if(snap.val()===true){
+      dot.style.background="#00c853";
+      text.textContent="متصل بـ Firebase";
+    }else{
+      dot.style.background="#d50000";
+      text.textContent="غير متصل بـ Firebase";
     }
   });
 }
 checkFirebaseConnection();
 
-// عناصر DOM
-const homeDiv       = document.getElementById("home");
-const adminLoginDiv = document.getElementById("adminLogin");
-const adminPanel    = document.getElementById("adminPanel");
-const userLoginDiv  = document.getElementById("userLogin");
-const registerDiv   = document.getElementById("register");
-const studentPanel  = document.getElementById("studentPanel");
-const emergenciesCard = document.getElementById("emergenciesCard");
-const accordionContainer = document.getElementById("accordionContainer");
+// DOM
+const homeDiv=document.getElementById("home");
+const adminLoginDiv=document.getElementById("adminLogin");
+const adminPanel=document.getElementById("adminPanel");
+const userLoginDiv=document.getElementById("userLogin");
+const registerDiv=document.getElementById("register");
+const studentPanel=document.getElementById("studentPanel");
+const emergenciesCard=document.getElementById("emergenciesCard");
+const accordionContainer=document.getElementById("accordionContainer");
 
-// إخفاء/إظهار الصفحات
+// تنقل الصفحات
 function hideAll(){
   homeDiv.classList.add("hidden");
   adminLoginDiv.classList.add("hidden");
@@ -268,83 +152,55 @@ function hideAll(){
   registerDiv.classList.add("hidden");
   studentPanel.classList.add("hidden");
 }
-
-function goHome(){
-  hideAll();
-  homeDiv.classList.remove("hidden");
-}
-
-function showAdminLogin(){
-  hideAll();
-  adminLoginDiv.classList.remove("hidden");
-}
-
-function showUserLogin(){
-  hideAll();
-  userLoginDiv.classList.remove("hidden");
-}
-
-function showRegister(){
-  hideAll();
-  registerDiv.classList.remove("hidden");
-}
+function goHome(){hideAll();homeDiv.classList.remove("hidden");}
+function showAdminLogin(){hideAll();adminLoginDiv.classList.remove("hidden");}
+function showUserLogin(){hideAll();userLoginDiv.classList.remove("hidden");}
+function showRegister(){hideAll();registerDiv.classList.remove("hidden");}
 
 // دخول المدير
 function adminLogin(){
-  const pass = document.getElementById("adminPass").value;
-  if(pass === "salem1959"){
+  const pass=document.getElementById("adminPass").value;
+  if(pass==="salem1959"){
     hideAll();
     adminPanel.classList.remove("hidden");
     loadStudents();
-  } else {
-    alert("كلمة السر غير صحيحة");
-  }
+  }else alert("كلمة السر غير صحيحة");
 }
 
 // تسجيل طالب
 function registerUser(){
-  const name = document.getElementById("regName").value;
-  const email = document.getElementById("regEmail").value;
-  const pass = document.getElementById("regPass").value;
-
-  if(!name || !email || !pass){
-    alert("يرجى تعبئة جميع الحقول");
-    return;
-  }
-
-  firebase.auth().createUserWithEmailAndPassword(email, pass)
-    .then(cred => {
-      db.ref("DS-Assistant/users/" + cred.user.uid).set({
-        name: name,
-        email: email,
-        role: "student"
-      });
+  const name=regName.value;
+  const email=regEmail.value;
+  const pass=regPass.value;
+  if(!name||!email||!pass){alert("يرجى تعبئة جميع الحقول");return;}
+  firebase.auth().createUserWithEmailAndPassword(email,pass)
+    .then(cred=>{
+      db.ref("DS-Assistant/users/"+cred.user.uid).set({name,email,role:"student"});
       alert("تم التسجيل بنجاح");
       showUserLogin();
     })
-    .catch(err => alert(err.message));
+    .catch(err=>alert(err.message));
 }
 
 // دخول الطالب
 function loginUser(){
-  const email = document.getElementById("userEmail").value;
-  const pass  = document.getElementById("userPass").value;
-
-  firebase.auth().signInWithEmailAndPassword(email, pass)
-    .then(cred => {
-      db.ref("DS-Assistant/users/" + cred.user.uid).once("value", snap => {
-        const data = snap.val();
-        if(data && data.role === "student"){
+  const email=userEmail.value;
+  const pass=userPass.value;
+  firebase.auth().signInWithEmailAndPassword(email,pass)
+    .then(cred=>{
+      db.ref("DS-Assistant/users/"+cred.user.uid).once("value",snap=>{
+        const data=snap.val();
+        if(data&&data.role==="student"){
           hideAll();
           studentPanel.classList.remove("hidden");
           buildEmergenciesAccordion();
-        } else {
+        }else{
           alert("هذا الحساب ليس طالباً أو لم يتم ضبط الصلاحيات.");
           firebase.auth().signOut();
         }
       });
     })
-    .catch(err => alert(err.message));
+    .catch(err=>alert(err.message));
 }
 
 // خروج الطالب
@@ -352,42 +208,29 @@ function studentLogout(){
   firebase.auth().signOut().then(goHome);
 }
 
-// إضافة طالب (لوحة المدير)
+// إضافة طالب
 function addStudent(){
-  const name = document.getElementById("stName").value;
-  const phone = document.getElementById("stPhone").value;
-
-  if(!name || !phone){
-    alert("يرجى إدخال اسم ورقم الطالب");
-    return;
-  }
-
-  db.ref("DS-Assistant/students").push({
-    name: name,
-    phone: phone
-  });
-
+  const name=stName.value;
+  const phone=stPhone.value;
+  if(!name||!phone){alert("يرجى إدخال اسم ورقم الطالب");return;}
+  db.ref("DS-Assistant/students").push({name,phone});
   alert("تمت إضافة الطالب");
-  document.getElementById("stName").value = "";
-  document.getElementById("stPhone").value = "";
+  stName.value="";stPhone.value="";
   loadStudents();
 }
 
 // عرض الطلاب
 function loadStudents(){
-  const box = document.getElementById("studentsList");
-  box.innerHTML = "";
-
-  db.ref("DS-Assistant/students").once("value", snap => {
-    snap.forEach(child => {
-      const s = child.val();
-      const line = document.createElement("div");
-      line.textContent = "- " + (s.name || "") + " (" + (s.phone || "") + ")";
+  const box=document.getElementById("studentsList");
+  box.innerHTML="";
+  db.ref("DS-Assistant/students").once("value",snap=>{
+    snap.forEach(child=>{
+      const s=child.val();
+      const line=document.createElement("div");
+      line.textContent="- "+(s.name||"")+" ("+(s.phone||"")+")";
       box.appendChild(line);
     });
-    if(!box.innerHTML){
-      box.innerHTML = "<div class='small-note'>لا يوجد طلاب مسجلون بعد.</div>";
-    }
+    if(!box.innerHTML) box.innerHTML="<div class='small-note'>لا يوجد طلاب مسجلون بعد.</div>";
   });
 }
 
@@ -396,89 +239,83 @@ function toggleEmergencies(){
   emergenciesCard.classList.toggle("hidden");
 }
 
-// 50 حالة طوارئ
-const emergencies = [
-  {title:"صدمة تحسسية شديدة",desc:"تورم مفاجئ وصعوبة تنفس بعد تعرض لمادة مثيرة."},
-  {title:"هبوط ضغط الدم الحاد",desc:"دوار شديد مع برودة الأطراف وضعف عام."},
-  {title:"إغماء مفاجئ",desc:"فقدان وعي قصير بسبب نقص التروية الدماغية."},
-  {title:"نوبة قلبية",desc:"ألم صدري ضاغط ممتد للكتف أو الفك."},
-  {title:"سكتة دماغية",desc:"ضعف مفاجئ في أحد الأطراف أو اضطراب الكلام."},
-  {title:"توقف التنفس",desc:"انقطاع كامل لحركة الصدر والتنفس."},
-  {title:"توقف القلب",desc:"غياب النبض مع فقدان الوعي."},
-  {title:"نوبة ربو حادة",desc:"صفير وضيق نفس لا يتحسن بالبخاخ."},
-  {title:"نزيف أنفي شديد",desc:"نزيف مستمر لا يتوقف بالضغط."},
-  {title:"نزيف فموي بعد خلع سن",desc:"نزيف مستمر رغم الضغط بالشاش."},
-  {title:"انسداد مجرى الهواء بجسم غريب",desc:"سعال شديد أو اختناق مفاجئ."},
-  {title:"ارتفاع ضغط الدم الخطير",desc:"صداع نابض مع تشوش رؤية."},
-  {title:"انخفاض سكر الدم",desc:"رجفة وتعرق وجوع شديد."},
-  {title:"ارتفاع سكر الدم",desc:"عطش شديد وتبول متكرر."},
-  {title:"نوبة صرع",desc:"تشنجات وفقدان وعي مؤقت."},
-  {title:"ألم صدري غير مفسر",desc:"انزعاج صدري مع ضيق نفس."},
-  {title:"ألم بطني حاد",desc:"ألم مفاجئ قد يشير لالتهاب أو انسداد."},
-  {title:"تسمم غذائي",desc:"إقياء وإسهال بعد تناول طعام ملوث."},
-  {title:"تجفاف شديد",desc:"عطش شديد وجفاف الفم وهبوط ضغط."},
-  {title:"ضربة شمس",desc:"حرارة مرتفعة مع ارتباك وصداع."},
-  {title:"حروق حرارية",desc:"احمرار أو فقاعات بعد تعرض للحرارة."},
-  {title:"حروق كيميائية",desc:"ألم شديد بعد ملامسة مادة كاوية."},
-  {title:"حروق كهربائية",desc:"إصابة جلدية مع احتمال ضرر داخلي."},
-  {title:"كسر في أحد الأطراف",desc:"ألم وتورم وتشوه واضح."},
-  {title:"التواء مفصل",desc:"ألم وتورم بعد حركة خاطئة."},
-  {title:"جرح عميق",desc:"نزيف مع انفصال واضح في الجلد."},
-  {title:"عضة حيوان",desc:"جرح مع احتمال عدوى أو داء الكلب."},
-  {title:"لسعة نحلة شديدة",desc:"تورم موضعي أو رد فعل تحسسي."},
-  {title:"تسمم دوائي",desc:"أعراض غير طبيعية بعد تناول دواء."},
-  {title:"ابتلاع مادة سامة",desc:"غثيان أو ألم بطني بعد ابتلاع مادة خطرة."},
-  {title:"استنشاق دخان",desc:"سعال وضيق نفس بعد حريق."},
-  {title:"إصابة رأس",desc:"صداع أو دوار بعد ضربة قوية."},
-  {title:"ارتجاج دماغي",desc:"تشوش ودوار بعد إصابة الرأس."},
-  {title:"نزيف داخلي محتمل",desc:"شحوب وهبوط ضغط دون سبب واضح."},
-  {title:"ألم أسنان حاد",desc:"ألم نابض مع تورم لثة."},
-  {title:"خراج سني",desc:"تورم مؤلم مع حرارة موضعية."},
-  {title:"التهاب لثة حاد",desc:"نزيف واحمرار وألم عند المضغ."},
-  {title:"انكسار سن",desc:"كسر واضح مع ألم عند اللمس."},
-  {title:"خلع سن دائم",desc:"سقوط سن كامل يحتاج حفظه وإعادته."},
-  {title:"التهاب حلق شديد",desc:"ألم عند الבלع مع حرارة."},
-  {title:"انسداد أنفي حاد",desc:"صعوبة تنفس عبر الأنف."},
-  {title:"ألم أذن مفاجئ",desc:"ألم نابض مع احتمال التهاب."},
-  {title:"دوار شديد",desc:"إحساس بالدوران وعدم توازن."},
-  {title:"تجمد مفصل الفك",desc:"صعوبة فتح الفم بعد حركة خاطئة."},
-  {title:"تشنج عضلي حاد",desc:"ألم مفاجئ في العضلات."},
-  {title:"طفح جلدي مفاجئ",desc:"بقع حمراء مع حكة."},
-  {title:"حساسية دوائية",desc:"طفح أو تورم بعد تناول دواء."},
-  {title:"التهاب جيوب حاد",desc:"صداع وضغط في الوجه."},
-  {title:"جفاف العين الشديد",desc:"حرقة وإحساس بالرمل."},
-  {title:"ألم ظهر حاد",desc:"ألم مفاجئ بعد حمل أو حركة خاطئة."}
+// 50 حالة طوارئ (عنوان + جملة قصيرة)
+const emergencies=[
+  {t:"صدمة تحسسية شديدة",d:"تورم مفاجئ وصعوبة تنفس بعد تعرض لمادة مثيرة."},
+  {t:"هبوط ضغط الدم الحاد",d:"دوار شديد مع برودة الأطراف وضعف عام."},
+  {t:"إغماء مفاجئ",d:"فقدان وعي قصير بسبب نقص التروية الدماغية."},
+  {t:"نوبة قلبية",d:"ألم صدري ضاغط ممتد للكتف أو الفك."},
+  {t:"سكتة دماغية",d:"ضعف مفاجئ في أحد الأطراف أو اضطراب الكلام."},
+  {t:"توقف التنفس",d:"انقطاع كامل لحركة الصدر والتنفس."},
+  {t:"توقف القلب",d:"غياب النبض مع فقدان الوعي."},
+  {t:"نوبة ربو حادة",d:"صفير وضيق نفس لا يتحسن بالبخاخ."},
+  {t:"نزيف أنفي شديد",d:"نزيف مستمر لا يتوقف بالضغط."},
+  {t:"نزيف فموي بعد خلع سن",d:"نزيف مستمر رغم الضغط بالشاش."},
+  {t:"انسداد مجرى الهواء بجسم غريب",d:"سعال شديد أو اختناق مفاجئ."},
+  {t:"ارتفاع ضغط الدم الخطير",d:"صداع نابض مع تشوش رؤية."},
+  {t:"انخفاض سكر الدم",d:"رجفة وتعرق وجوع شديد."},
+  {t:"ارتفاع سكر الدم",d:"عطش شديد وتبول متكرر."},
+  {t:"نوبة صرع",d:"تشنجات وفقدان وعي مؤقت."},
+  {t:"ألم صدري غير مفسر",d:"انزعاج صدري مع ضيق نفس."},
+  {t:"ألم بطني حاد",d:"ألم مفاجئ قد يشير لالتهاب أو انسداد."},
+  {t:"تسمم غذائي",d:"إقياء وإسهال بعد تناول طعام ملوث."},
+  {t:"تجفاف شديد",d:"عطش شديد وجفاف الفم وهبوط ضغط."},
+  {t:"ضربة شمس",d:"حرارة مرتفعة مع ارتباك وصداع."},
+  {t:"حروق حرارية",d:"احمرار أو فقاعات بعد تعرض للحرارة."},
+  {t:"حروق كيميائية",d:"ألم شديد بعد ملامسة مادة كاوية."},
+  {t:"حروق كهربائية",d:"إصابة جلدية مع احتمال ضرر داخلي."},
+  {t:"كسر في أحد الأطراف",d:"ألم وتورم وتشوه واضح."},
+  {t:"التواء مفصل",d:"ألم وتورم بعد حركة خاطئة."},
+  {t:"جرح عميق",d:"نزيف مع انفصال واضح في الجلد."},
+  {t:"عضة حيوان",d:"جرح مع احتمال عدوى أو داء الكلب."},
+  {t:"لسعة نحلة شديدة",d:"تورم موضعي أو رد فعل تحسسي."},
+  {t:"تسمم دوائي",d:"أعراض غير طبيعية بعد تناول دواء."},
+  {t:"ابتلاع مادة سامة",d:"غثيان أو ألم بطني بعد ابتلاع مادة خطرة."},
+  {t:"استنشاق دخان",d:"سعال وضيق نفس بعد حريق."},
+  {t:"إصابة رأس",d:"صداع أو دوار بعد ضربة قوية."},
+  {t:"ارتجاج دماغي",d:"تشوش ودوار بعد إصابة الرأس."},
+  {t:"نزيف داخلي محتمل",d:"شحوب وهبوط ضغط دون سبب واضح."},
+  {t:"ألم أسنان حاد",d:"ألم نابض مع تورم لثة."},
+  {t:"خراج سني",d:"تورم مؤلم مع حرارة موضعية."},
+  {t:"التهاب لثة حاد",d:"نزيف واحمرار وألم عند المضغ."},
+  {t:"انكسار سن",d:"كسر واضح مع ألم عند اللمس."},
+  {t:"خلع سن دائم",d:"سقوط سن كامل يحتاج حفظه وإعادته."},
+  {t:"التهاب حلق شديد",d:"ألم عند البلع مع حرارة."},
+  {t:"انسداد أنفي حاد",d:"صعوبة تنفس عبر الأنف."},
+  {t:"ألم أذن مفاجئ",d:"ألم نابض مع احتمال التهاب."},
+  {t:"دوار شديد",d:"إحساس بالدوران وعدم توازن."},
+  {t:"تجمد مفصل الفك",d:"صعوبة فتح الفم بعد حركة خاطئة."},
+  {t:"تشنج عضلي حاد",d:"ألم مفاجئ في العضلات."},
+  {t:"طفح جلدي مفاجئ",d:"بقع حمراء مع حكة."},
+  {t:"حساسية دوائية",d:"طفح أو تورم بعد تناول دواء."},
+  {t:"التهاب جيوب حاد",d:"صداع وضغط في الوجه."},
+  {t:"جفاف العين الشديد",d:"حرقة وإحساس بالرمل."},
+  {t:"ألم ظهر حاد",d:"ألم مفاجئ بعد حمل أو حركة خاطئة."}
 ];
 
 // بناء الـ Accordion
 function buildEmergenciesAccordion(){
-  if(accordionContainer.dataset.built === "1") return;
-
-  accordionContainer.innerHTML = "";
-  emergencies.forEach((item, index) => {
-    const wrap = document.createElement("div");
-    wrap.className = "accordion-item";
-
-    const btn = document.createElement("button");
-    btn.className = "accordion-title";
-    btn.textContent = (index + 1) + ". " + item.title;
-
-    const content = document.createElement("div");
-    content.className = "accordion-content";
-    content.textContent = item.desc;
-
-    btn.addEventListener("click", () => {
-      const all = accordionContainer.querySelectorAll(".accordion-content");
-      all.forEach(c => c.style.display = "none");
-      content.style.display = (content.style.display === "block") ? "none" : "block";
+  if(accordionContainer.dataset.built==="1")return;
+  accordionContainer.innerHTML="";
+  emergencies.forEach((item,i)=>{
+    const wrap=document.createElement("div");
+    wrap.className="accordion-item";
+    const btn=document.createElement("button");
+    btn.className="accordion-title";
+    btn.textContent=(i+1)+". "+item.t;
+    const content=document.createElement("div");
+    content.className="accordion-content";
+    content.textContent=item.d;
+    btn.addEventListener("click",()=>{
+      const all=accordionContainer.querySelectorAll(".accordion-content");
+      all.forEach(c=>c.style.display="none");
+      content.style.display=(content.style.display==="block")?"none":"block";
     });
-
     wrap.appendChild(btn);
     wrap.appendChild(content);
     accordionContainer.appendChild(wrap);
   });
-
-  accordionContainer.dataset.built = "1";
+  accordionContainer.dataset.built="1";
 }
 </script>
 
