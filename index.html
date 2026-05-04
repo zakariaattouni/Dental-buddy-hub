@@ -1,337 +1,211 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>DS Assistant – Realtime</title><style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{background:#0f172a;color:#e5e7eb;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}
-.app{background:#020617;border-radius:18px;box-shadow:0 20px 60px rgba(15,23,42,.9);max-width:480px;width:100%;padding:18px;border:1px solid #1f2937}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.title{font-size:20px;font-weight:700;color:#e0f2fe}
-.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:#0f766e;color:#ecfeff}
-.tabs{display:flex;gap:6px;margin-bottom:10px}
-.tab{flex:1;padding:7px 0;border-radius:999px;border:1px solid #1f2937;font-size:12px;text-align:center;cursor:pointer;background:#020617;color:#9ca3af;transition:.2s}
-.tab.active{background:#0ea5e9;color:#e5f3ff;border-color:#38bdf8}
-.section{display:none;margin-top:6px}
-.section.active{display:block}
-.field{margin-bottom:8px}
-.label{font-size:11px;color:#9ca3af;margin-bottom:2px}
-.input{width:100%;padding:7px 9px;border-radius:10px;border:1px solid #1f2937;background:#020617;color:#e5e7eb;font-size:13px}
-.input:focus{outline:none;border-color:#0ea5e9;box-shadow:0 0 0 1px #0ea5e9}
-.btn{width:100%;padding:8px 0;border-radius:999px;border:none;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;transition:.2s}
-.btn-primary{background:#0ea5e9;color:#e0f2fe}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-.btn-ghost{background:transparent;color:#93c5fd;border:1px solid #1f2937}
-.small{font-size:11px;color:#9ca3af;margin-top:4px;text-align:center}
-.status{margin-top:6px;font-size:11px;padding:6px 8px;border-radius:10px;display:none}
-.status.ok{background:#022c22;color:#bbf7d0}
-.status.err{background:#450a0a;color:#fecaca}
-.card{margin-top:10px;padding:8px;border-radius:12px;background:#020617;border:1px solid #1f2937}
-.card-title{font-size:13px;font-weight:600;margin-bottom:4px;color:#e0f2fe}
-.card-body{font-size:12px;color:#9ca3af}
-.list{max-height:180px;overflow:auto;margin-top:6px}
-.item{padding:6px 7px;border-radius:10px;border:1px solid #1f2937;margin-bottom:4px;font-size:12px}
-.item strong{color:#e5e7eb}
-.chip{display:inline-block;font-size:10px;padding:2px 6px;border-radius:999px;background:#0f172a;color:#93c5fd;margin-left:4px}
-.badge-online{width:8px;height:8px;border-radius:999px;background:#22c55e;display:inline-block;margin-left:4px}
-.badge-offline{width:8px;height:8px;border-radius:999px;background:#ef4444;display:inline-block;margin-left:4px}
-</style></head><body>
-<div class="app">
-  <div class="header">
-    <div>
-      <div class="title">DS Assistant</div>
-      <div style="font-size:11px;color:#9ca3af;margin-top:2px">نظام طلاب الأسنان – Realtime Firebase</div>
-    </div>
-    <div class="badge">diagnosis-6ea4b</div>
-  </div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>DS Assistant</title>
+<style>
+    body { font-family: Tahoma, Arial; background:#e3f2fd; margin:0; padding:0; }
+    .header { background:#1565c0; color:#fff; padding:15px; text-align:center; font-size:20px; font-weight:bold; }
+    .container { padding:15px; }
+    .card { background:#fff; padding:15px; border-radius:15px; margin-bottom:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+    input, textarea { width:100%; padding:10px; margin-top:8px; border-radius:10px; border:1px solid #90a4ae; }
+    button { width:100%; padding:12px; border:none; border-radius:10px; margin-top:10px; font-size:16px; cursor:pointer; }
+    .btn-primary { background:#1e88e5; color:#fff; }
+    .btn-danger { background:#e53935; color:#fff; }
+    .btn-secondary { background:#90a4ae; color:#fff; }
+    .hidden { display:none; }
+    .tabs { display:flex; gap:5px; margin-bottom:10px; }
+    .tab-btn { flex:1; padding:10px; border:none; border-radius:10px; background:#bbdefb; }
+    .tab-btn.active { background:#1e88e5; color:#fff; font-weight:bold; }
+    .row { padding:10px; border-bottom:1px solid #e0e0e0; }
+    .title { font-weight:bold; color:#1565c0; }
+</style>
+</head>
 
-  <div style="font-size:11px;color:#9ca3af;margin-bottom:6px">
-    حالة الاتصال:
-    <span id="connDot" class="badge-offline"></span>
-    <span id="connText">غير متصل</span>
-  </div>
+<body>
 
-  <div class="tabs">
-    <button class="tab active" data-tab="student">دخول طالب</button>
-    <button class="tab" data-tab="register">تسجيل طالب</button>
-    <button class="tab" data-tab="admin">دخول المدير</button>
-  </div>
+<div class="header">DS Assistant — لوحة الإدارة</div>
 
-  <!-- دخول الطالب -->
-  <div id="section-student" class="section active">
-    <div class="field">
-      <div class="label">البريد الإلكتروني</div>
-      <input id="stuEmail" type="email" class="input" placeholder="student@example.com">
-    </div>
-    <div class="field">
-      <div class="label">كلمة المرور</div>
-      <input id="stuPass" type="password" class="input" placeholder="••••••••">
-    </div>
-    <button id="btnStuLogin" class="btn btn-primary">دخول الطالب</button>
-    <div id="stuStatus" class="status"></div>
+<div class="container">
 
-    <div id="studentPanel" class="card" style="display:none">
-      <div class="card-title">لوحة الطالب</div>
-      <div class="card-body">
-        <div>مرحبًا <span id="stuNameLabel"></span> <span class="chip">طالب</span></div>
-        <div style="margin-top:6px;font-size:11px;color:#9ca3af">يمكنك إضافة مرضى ومراجعة سجلك.</div>
-
-        <div class="field" style="margin-top:8px">
-          <div class="label">اسم المريض</div>
-          <input id="patName" class="input" placeholder="اسم المريض">
-        </div>
-        <div class="field">
-          <div class="label">التشخيص</div>
-          <input id="patDx" class="input" placeholder="مثال: Pulpitis, Caries, etc.">
-        </div>
-        <div class="field">
-          <div class="label">الخطة العلاجية</div>
-          <input id="patPlan" class="input" placeholder="مثال: RCT, Filling, Extraction">
-        </div>
-        <button id="btnAddPatient" class="btn btn-primary">إضافة مريض</button>
-        <div id="patStatus" class="status"></div>
-
-        <div class="card" style="margin-top:10px">
-          <div class="card-title">سجل مرضاي</div>
-          <div id="patientsList" class="list"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- تسجيل طالب -->
-  <div id="section-register" class="section">
-    <div class="field">
-      <div class="label">الاسم الكامل</div>
-      <input id="regName" class="input" placeholder="اسم الطالب">
-    </div>
-    <div class="field">
-      <div class="label">البريد الإلكتروني</div>
-      <input id="regEmail" type="email" class="input" placeholder="student@example.com">
-    </div>
-    <div class="field">
-      <div class="label">كلمة المرور</div>
-      <input id="regPass" type="password" class="input" placeholder="••••••••">
-    </div>
-    <button id="btnRegister" class="btn btn-primary">تسجيل طالب جديد</button>
-    <div class="small">سيظهر حسابك في لوحة المدير كـ "بانتظار التفعيل".</div>
-    <div id="regStatus" class="status"></div>
-  </div>
-
-  <!-- دخول المدير -->
-  <div id="section-admin" class="section">
-    <div class="field">
-      <div class="label">بريد المدير</div>
-      <input id="admEmail" type="email" class="input" placeholder="admin@example.com">
-    </div>
-    <div class="field">
-      <div class="label">كلمة المرور</div>
-      <input id="admPass" type="password" class="input" placeholder="••••••••">
-    </div>
-    <button id="btnAdmLogin" class="btn btn-primary">دخول المدير</button>
-    <div id="admStatus" class="status"></div>
-
-    <div id="adminPanel" class="card" style="display:none">
-      <div class="card-title">لوحة المدير</div>
-      <div class="card-body">
-        <div style="font-size:11px;color:#9ca3af">إدارة الطلاب وطلبات التفعيل.</div>
-        <div class="card" style="margin-top:8px">
-          <div class="card-title">طلاب بانتظار التفعيل</div>
-          <div id="pendingList" class="list"></div>
-        </div>
-        <div class="card" style="margin-top:8px">
-          <div class="card-title">كل الطلاب</div>
-          <div id="allStudentsList" class="list"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="small" style="margin-top:10px">مربوط بـ Firebase Realtime Database – diagnosis-6ea4b</div>
+<!-- شاشة دخول المدير -->
+<div id="loginScreen" class="card">
+    <h3>دخول المدير</h3>
+    <input type="password" id="adminPass" placeholder="كلمة السر">
+    <button class="btn-primary" onclick="loginAdmin()">دخول</button>
 </div>
 
-<!-- Firebase compat SDKs -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<!-- لوحة المدير -->
+<div id="adminPanel" class="hidden">
+
+    <div class="card">
+        <h3>مرحباً دكتور زكريا</h3>
+        <div class="tabs">
+            <button id="tabStudents" class="tab-btn active" onclick="showSection('students')">الطلاب</button>
+            <button id="tabCases" class="tab-btn" onclick="showSection('cases')">الحالات</button>
+            <button id="tabInfo" class="tab-btn" onclick="showSection('info')">معلومات</button>
+        </div>
+        <button class="btn-secondary" onclick="logout()">تسجيل خروج</button>
+    </div>
+
+    <!-- الطلاب -->
+    <div id="students" class="card">
+        <h3>إدارة الطلاب</h3>
+        <button class="btn-primary" onclick="loadStudents()">تحديث</button>
+        <div id="studentsList"></div>
+        <hr>
+        <h4>إضافة طالب</h4>
+        <input id="newStudentName" placeholder="اسم الطالب">
+        <button class="btn-primary" onclick="addStudent()">إضافة</button>
+    </div>
+
+    <!-- الحالات -->
+    <div id="cases" class="card hidden">
+        <h3>إدارة الحالات</h3>
+        <button class="btn-primary" onclick="loadCases()">تحديث</button>
+        <div id="casesList"></div>
+        <hr>
+        <h4>إضافة حالة</h4>
+        <input id="caseTitle" placeholder="عنوان الحالة">
+        <textarea id="caseDetails" placeholder="تفاصيل الحالة"></textarea>
+        <button class="btn-primary" onclick="addCase()">إضافة</button>
+    </div>
+
+    <!-- معلومات -->
+    <div id="info" class="card hidden">
+        <h3>معلومات التطبيق</h3>
+        <p>DS Assistant — نسخة محسّنة</p>
+        <p>المدير بكلمة سر مستقلة</p>
+        <p>الطلاب والحالات على Firebase Realtime Database</p>
+    </div>
+
+</div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
 <script>
-// Firebase config لمشروع diagnosis
-const firebaseConfig={apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",authDomain:"diagnosis-6ea4b.firebaseapp.com",databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",projectId:"diagnosis-6ea4b",storageBucket:"diagnosis-6ea4b.firebasestorage.app",messagingSenderId:"1014263737561",appId:"1:1014263737561:web:ca8affac416227be8862c8",measurementId:"G-RHHRFLZM2P"};
+// إعداد Firebase
+const firebaseConfig = {
+    apiKey: "YOUR_KEY",
+    authDomain: "YOUR_APP.firebaseapp.com",
+    databaseURL: "https://YOUR_APP-default-rtdb.firebaseio.com",
+    projectId: "YOUR_APP",
+    storageBucket: "YOUR_APP.appspot.com",
+    messagingSenderId: "000000000",
+    appId: "YOUR_APP_ID"
+};
 firebase.initializeApp(firebaseConfig);
-const auth=firebase.auth();
-const db=firebase.database();
 
-// تبويب الواجهات
-document.querySelectorAll(".tab").forEach(t=>{
-  t.onclick=()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    t.classList.add("active");
-    const id=t.dataset.tab;
-    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-    document.getElementById("section-"+id).classList.add("active");
-  };
-});
+const db = firebase.database();
 
-// حالة الاتصال
-const connDot=document.getElementById("connDot");
-const connText=document.getElementById("connText");
-function setConnState(ok){
-  if(ok){connDot.className="badge-online";connText.textContent="متصل بـ Firebase";}
-  else{connDot.className="badge-offline";connText.textContent="غير متصل";}
-}
-firebase.database().ref(".info/connected").on("value",snap=>{
-  setConnState(snap.val()===true);
-});
-
-// أدوات مساعدة
-function showStatus(el,msg,ok=true){
-  el.style.display="block";
-  el.className="status "+(ok?"ok":"err");
-  el.textContent=msg;
-}
-function clearStatus(el){el.style.display="none";}
-
-// تسجيل طالب جديد
-const regName=document.getElementById("regName");
-const regEmail=document.getElementById("regEmail");
-const regPass=document.getElementById("regPass");
-const regStatus=document.getElementById("regStatus");
-document.getElementById("btnRegister").onclick=async()=>{
-  clearStatus(regStatus);
-  const name=regName.value.trim();
-  const email=regEmail.value.trim();
-  const pass=regPass.value.trim();
-  if(!name||!email||!pass){showStatus(regStatus,"الرجاء تعبئة جميع الحقول",false);return;}
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(email,pass);
-    const uid=cred.user.uid;
-    await db.ref("students/"+uid).set({name,email,active:false,createdAt:Date.now()});
-    await auth.signOut();
-    regName.value=regEmail.value=regPass.value="";
-    showStatus(regStatus,"تم التسجيل بنجاح، بانتظار تفعيل المدير.",true);
-  }catch(e){showStatus(regStatus,"خطأ: "+e.message,false);}
-};
-
-// دخول الطالب
-const stuEmail=document.getElementById("stuEmail");
-const stuPass=document.getElementById("stuPass");
-const stuStatus=document.getElementById("stuStatus");
-const studentPanel=document.getElementById("studentPanel");
-const stuNameLabel=document.getElementById("stuNameLabel");
-const patName=document.getElementById("patName");
-const patDx=document.getElementById("patDx");
-const patPlan=document.getElementById("patPlan");
-const patStatus=document.getElementById("patStatus");
-const patientsList=document.getElementById("patientsList");
-let currentStudentUID=null;
-
-document.getElementById("btnStuLogin").onclick=async()=>{
-  clearStatus(stuStatus);
-  const email=stuEmail.value.trim();
-  const pass=stuPass.value.trim();
-  if(!email||!pass){showStatus(stuStatus,"الرجاء إدخال البريد وكلمة المرور",false);return;}
-  try{
-    const cred=await auth.signInWithEmailAndPassword(email,pass);
-    const uid=cred.user.uid;
-    const snap=await db.ref("students/"+uid).once("value");
-    if(!snap.exists()){showStatus(stuStatus,"الحساب غير موجود في سجل الطلاب.",false);await auth.signOut();return;}
-    const data=snap.val();
-    if(!data.active){showStatus(stuStatus,"حسابك غير مفعّل بعد. الرجاء مراجعة المدير.",false);await auth.signOut();return;}
-    currentStudentUID=uid;
-    stuNameLabel.textContent=data.name||email;
-    studentPanel.style.display="block";
-    showStatus(stuStatus,"تم تسجيل الدخول كطالب.",true);
-    loadPatients(uid);
-  }catch(e){showStatus(stuStatus,"خطأ: "+e.message,false);}
-};
-
-// إضافة مريض
-document.getElementById("btnAddPatient").onclick=async()=>{
-  clearStatus(patStatus);
-  if(!currentStudentUID){showStatus(patStatus,"يجب تسجيل الدخول كطالب أولًا.",false);return;}
-  const n=patName.value.trim(),d=patDx.value.trim(),p=patPlan.value.trim();
-  if(!n||!d||!p){showStatus(patStatus,"الرجاء تعبئة جميع بيانات المريض.",false);return;}
-  try{
-    const ref=db.ref("patients/"+currentStudentUID).push();
-    await ref.set({name:n,dx:d,plan:p,createdAt:Date.now()});
-    patName.value=patDx.value=patPlan.value="";
-    showStatus(patStatus,"تم إضافة المريض إلى سجلك.",true);
-    loadPatients(currentStudentUID);
-  }catch(e){showStatus(patStatus,"خطأ: "+e.message,false);}
-};
-
-function loadPatients(uid){
-  patientsList.innerHTML="";
-  db.ref("patients/"+uid).orderByChild("createdAt").on("value",snap=>{
-    patientsList.innerHTML="";
-    if(!snap.exists()){patientsList.innerHTML='<div class="small">لا يوجد مرضى بعد.</div>';return;}
-    const arr=[];
-    snap.forEach(ch=>arr.push({id:ch.key,...ch.val()}));
-    arr.sort((a,b)=>b.createdAt-a.createdAt);
-    arr.forEach(p=>{
-      const div=document.createElement("div");
-      div.className="item";
-      div.innerHTML="<strong>"+(p.name||"مريض")+"</strong><br><span>التشخيص: "+(p.dx||"-")+"</span><br><span>الخطة: "+(p.plan||"-")+"</span>";
-      patientsList.appendChild(div);
-    });
-  });
-}
+// كلمة سر المدير
+const ADMIN_PASSWORD = "salem1959";
 
 // دخول المدير
-const admEmail=document.getElementById("admEmail");
-const admPass=document.getElementById("admPass");
-const admStatus=document.getElementById("admStatus");
-const adminPanel=document.getElementById("adminPanel");
-const pendingList=document.getElementById("pendingList");
-const allStudentsList=document.getElementById("allStudentsList");
-
-// ملاحظة: هنا نفترض أن بريد المدير ثابت (يمكنك تغييره)
-const ADMIN_EMAIL="admin@ds-assistant.local";
-
-document.getElementById("btnAdmLogin").onclick=async()=>{
-  clearStatus(admStatus);
-  const email=admEmail.value.trim();
-  const pass=admPass.value.trim();
-  if(!email||!pass){showStatus(admStatus,"الرجاء إدخال البريد وكلمة المرور.",false);return;}
-  if(email!==ADMIN_EMAIL){showStatus(admStatus,"هذا البريد ليس بريد المدير المسموح.",false);return;}
-  try{
-    await auth.signInWithEmailAndPassword(email,pass);
-    adminPanel.style.display="block";
-    showStatus(admStatus,"تم دخول المدير بنجاح.",true);
-    loadStudentsForAdmin();
-  }catch(e){showStatus(admStatus,"خطأ: "+e.message,false);}
-};
-
-function loadStudentsForAdmin(){
-  pendingList.innerHTML="";allStudentsList.innerHTML="";
-  db.ref("students").on("value",snap=>{
-    pendingList.innerHTML="";allStudentsList.innerHTML="";
-    if(!snap.exists()){pendingList.innerHTML='<div class="small">لا يوجد طلاب مسجلون.</div>';return;}
-    snap.forEach(ch=>{
-      const s={uid:ch.key,...ch.val()};
-      const item=document.createElement("div");
-      item.className="item";
-      item.innerHTML="<strong>"+(s.name||s.email)+"</strong> <span class='chip'>"+(s.active?"مفعّل":"غير مفعّل")+"</span><br><span>"+(s.email||"")+"</span>";
-      allStudentsList.appendChild(item);
-      if(!s.active){
-        const p=document.createElement("div");
-        p.className="item";
-        p.innerHTML="<strong>"+(s.name||s.email)+"</strong><br><span>"+(s.email||"")+"</span><br>";
-        const btn=document.createElement("button");
-        btn.textContent="تفعيل الطالب";
-        btn.className="btn btn-primary";
-        btn.style.marginTop="4px";
-        btn.onclick=()=>activateStudent(s.uid);
-        p.appendChild(btn);
-        pendingList.appendChild(p);
-      }
-    });
-    if(!pendingList.innerHTML)pendingList.innerHTML='<div class="small">لا يوجد طلاب بانتظار التفعيل.</div>';
-  });
+function loginAdmin() {
+    if (document.getElementById("adminPass").value === ADMIN_PASSWORD) {
+        loginScreen.classList.add("hidden");
+        adminPanel.classList.remove("hidden");
+    } else alert("كلمة السر غير صحيحة");
 }
 
-async function activateStudent(uid){
-  try{
-    await db.ref("students/"+uid+"/active").set(true);
-    alert("تم تفعيل الطالب بنجاح.");
-  }catch(e){alert("خطأ في التفعيل: "+e.message);}
+// خروج
+function logout() {
+    adminPanel.classList.add("hidden");
+    loginScreen.classList.remove("hidden");
+    adminPass.value = "";
+}
+
+// تبويبات
+function showSection(id) {
+    students.classList.add("hidden");
+    cases.classList.add("hidden");
+    info.classList.add("hidden");
+
+    document.getElementById(id).classList.remove("hidden");
+
+    tabStudents.classList.remove("active");
+    tabCases.classList.remove("active");
+    tabInfo.classList.remove("active");
+
+    if (id === "students") tabStudents.classList.add("active");
+    if (id === "cases") tabCases.classList.add("active");
+    if (id === "info") tabInfo.classList.add("active");
+}
+
+// تحميل الطلاب
+function loadStudents() {
+    db.ref("students").once("value", snap => {
+        let data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id => {
+            html += `
+                <div class="row">
+                    <div class="title">${data[id].name}</div>
+                    <button class="btn-danger" onclick="deleteStudent('${id}')">حذف</button>
+                </div>`;
+        });
+        studentsList.innerHTML = html || "<p>لا يوجد طلاب.</p>";
+    });
+}
+
+// إضافة طالب
+function addStudent() {
+    let name = newStudentName.value.trim();
+    if (!name) return alert("أدخل اسم الطالب");
+    db.ref("students").push({ name });
+    newStudentName.value = "";
+    loadStudents();
+}
+
+// حذف طالب
+function deleteStudent(id) {
+    if (confirm("حذف الطالب؟")) {
+        db.ref("students/" + id).remove();
+        loadStudents();
+    }
+}
+
+// تحميل الحالات
+function loadCases() {
+    db.ref("cases").once("value", snap => {
+        let data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id => {
+            html += `
+                <div class="row">
+                    <div class="title">${data[id].title}</div>
+                    <div>${data[id].details}</div>
+                    <button class="btn-danger" onclick="deleteCase('${id}')">حذف</button>
+                </div>`;
+        });
+        casesList.innerHTML = html || "<p>لا توجد حالات.</p>";
+    });
+}
+
+// إضافة حالة
+function addCase() {
+    let title = caseTitle.value.trim();
+    let details = caseDetails.value.trim();
+    if (!title || !details) return alert("أدخل كل البيانات");
+    db.ref("cases").push({ title, details });
+    caseTitle.value = "";
+    caseDetails.value = "";
+    loadCases();
+}
+
+// حذف حالة
+function deleteCase(id) {
+    if (confirm("حذف الحالة؟")) {
+        db.ref("cases/" + id).remove();
+        loadCases();
+    }
 }
 </script>
-</body></html>
+
+</body>
+</html>
