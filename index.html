@@ -173,7 +173,6 @@
         border-right: 4px solid #fb8c00; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .emergency-result strong { color: #e65100; font-size: 14px; }
-
     /* ========== قسم الصيدلية والحاسبة (جديد) ========== */
     .pharma-section {
         background: #f1f8e9; border: 2px solid #81c784;
@@ -183,7 +182,6 @@
         background: #fff; border-radius: 10px; padding: 12px;
         margin-top: 10px; border: 1px dashed #4caf50; font-size: 13px;
     }
-
     /* ========== قسم ما يجب فعله - قائمة مهام شخصية ========== */
     .wtd-section {
         background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -509,7 +507,6 @@
         </div>
         <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>
     </div>
-
     <div id="dentalPharmaSection" class="pharma-section hidden">
         <h3>💊 حاسبة الصيدلية السريرية</h3>
         <div class="tabs">
@@ -532,7 +529,6 @@
             </div>
             <button class="btn-primary" onclick="calculateAnesthesia()">احسب الجرعة القصوى</button>
         </div>
-
         <div id="medicationCalc" class="hidden">
             <div class="form-group">
                 <label>اختر الدواء:</label>
@@ -543,10 +539,39 @@
                     <option value="ibu">Ibuprofen (إيبوبروفين)</option>
                     <option value="para">Paracetamol (باراسيتامول)</option>
                     <option value="clinda">Clindamycin (كليندامايسين)</option>
+                    <option value="metro">Metronidazole (ميترونيدازول)</option>
+                    <option value="doxy">Doxycycline (دوكسيسايكلين)</option>
+                    <option value="azithro">Azithromycin (أزيثرومايسين)</option>
+                    <option value="cipro">Ciprofloxacin (سيبروفلوكساسين)</option>
+                    <option value="moxi">Moxifloxacin (موكسيفلوكساسين)</option>
+                    <option value="clotri">Clotrimazole (كلوتريمازول)</option>
+                    <option value="nystatin">Nystatin (نايستاتين)</option>
+                    <option value="flucon">Fluconazole (فلوكونازول)</option>
+                    <option value="micon">Miconazole (ميكونازول)</option>
+                    <option value="chlorhex">Chlorhexidine (كلورهيكسيدين)</option>
+                    <option value="peroxide">Hydrogen Peroxide (بيروكسيد الهيدروجين)</option>
+                    <option value="fluoride">Sodium Fluoride (فلورايد الصوديوم)</option>
+                    <option value="potnit">Potassium Nitrate (نترات البوتاسيوم)</option>
+                    <option value="predni">Prednisolone (بريدنيزولون)</option>
+                    <option value="dexa">Dexamethasone (ديكساميثازون)</option>
+                    <option value="keto">Ketorolac (كيتورولاك)</option>
+                    <option value="naprox">Naproxen (نابروكسين)</option>
+                    <option value="diclof">Diclofenac (ديكلوفيناك)</option>
+                    <option value="codeine">Codeine (كودايين) ⚠️</option>
+                    <option value="tramadol">Tramadol (ترامادول)</option>
+                    <option value="pregaba">Pregabalin (بريجابالين)</option>
+                    <option value="gabapen">Gabapentin (جابابنتين)</option>
+                    <option value="midazolam">Midazolam (ميدازولام)</option>
+                    <option value="diazepam">Diazepam (ديازيبام)</option>
+                    <option value="alendro">Alendronate (أليندرونات)</option>
+                    <option value="risedro">Risedronate (رايزدرونات)</option>
+                    <option value="xylocaine">Lidocaine Spray (ليدوكائين رذاذ)</option>
+                    <option value="benzyd">Benzydamine (بنزيدامين)</option>
+                    <option value="triam">Triamcinolone (تريامسينولون)</option>
+                    <option value="beta">Betamethasone (بيتاميثازون)</option>
                 </select>
             </div>
         </div>
-
         <div id="pharmaResult" class="pharma-result-box hidden"></div>
         <button class="btn-secondary" onclick="hideDentalPharma()">إغلاق</button>
     </div>
@@ -940,7 +965,6 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
-
 // ===== 🔹 إدارة الصيدلية والحاسبة السريرية (جديد) 🔹 =====
 function showDentalPharma(){
     hideAddPatientForm(); 
@@ -996,11 +1020,41 @@ function showMedInfo(){
         case "ibu": info = "<strong>Ibuprofen:</strong><br>البالغين: 400mg كل 6-8 ساعات.<br>الحد الأقصى: 3200mg/day. تجنب لمرضى القرحة."; break;
         case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day."; break;
         case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات."; break;
+        case "metro": info = "<strong>Metronidazole:</strong><br>عدوى لاهوائية. الجرعة: 500mg كل 8 ساعات.<br>تجنب الكحول تماماً أثناء العلاج."; break;
+        case "doxy": info = "<strong>Doxycycline:</strong><br>عدوى دواعم السن. 100mg كل 12 ساعة أول يوم ثم 100mg/day.<br>تجنب التعرض للشمس."; break;
+        case "azithro": info = "<strong>Azithromycin:</strong><br>بديل للحساسية. 500mg يومياً لمدة 3 أيام.<br>يؤخذ قبل الأكل بساعة."; break;
+        case "cipro": info = "<strong>Ciprofloxacin:</strong><br>للعدوى الشديدة. 500mg كل 12 ساعة.<br>غير مفضل للأطفال والحوامل."; break;
+        case "moxi": info = "<strong>Moxifloxacin:</strong><br>خراجات سنية. 400mg يومياً.<br>قد يطيل فترة QT."; break;
+        case "clotri": info = "<strong>Clotrimazole:</strong><br>مضاد فطري موضعي للقلاع الفموي. قرص 10mg يذاب 5 مرات يومياً."; break;
+        case "nystatin": info = "<strong>Nystatin:</strong><br>معلق فموي لعلاج داء المبيضات. 1-2 مل 4 مرات يومياً."; break;
+        case "flucon": info = "<strong>Fluconazole:</strong><br>فطريات جهازية بالفم. 100-200mg يومياً لمدة 7-14 يوماً."; break;
+        case "micon": info = "<strong>Miconazole:</strong><br>جل فموي موضعي. يطبق على الآفات 4 مرات يومياً."; break;
+        case "chlorhex": info = "<strong>Chlorhexidine 0.12%:</strong><br>غسول فم مضاد للبلاك والتهاب اللثة. 10ml مرتين يومياً."; break;
+        case "peroxide": info = "<strong>Hydrogen Peroxide 1.5%:</strong><br>مطهر فموي مخفف. يستخدم كغسول لتنظيف الجروح."; break;
+        case "fluoride": info = "<strong>Sodium Fluoride:</strong><br>للوقاية من التسوس. جل 2% أو طلاء مهني كل 6 أشهر."; break;
+        case "potnit": info = "<strong>Potassium Nitrate 5%:</strong><br>معجون أسنان لتخفيف حساسية العاج. استخدام يومي."; break;
+        case "predni": info = "<strong>Prednisolone:</strong><br>للحالات الالتهابية الشديدة. 5-60mg يومياً تحت إشراف."; break;
+        case "dexa": info = "<strong>Dexamethasone:</strong><br>لتقليل وذمة ما بعد الجراحة. 4-8mg حقناً أو فموياً."; break;
+        case "keto": info = "<strong>Ketorolac:</strong><br>مسكن قوي. 10mg كل 6 ساعات لمدة لا تزيد عن 5 أيام."; break;
+        case "naprox": info = "<strong>Naproxen:</strong><br>مسكن ومضاد التهاب. 250-500mg كل 12 ساعة."; break;
+        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;
+        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة."; break;
+        case "tramadol": info = "<strong>Tramadol:</strong><br>ألم متوسط إلى شديد. 50-100mg كل 6 ساعات.<br>خطر الإدمان والتشنجات."; break;
+        case "pregaba": info = "<strong>Pregabalin:</strong><br>ألم عصبي (حرق الفم). 75-150mg يومياً."; break;
+        case "gabapen": info = "<strong>Gabapentin:</strong><br>ألم عصب ثلاثي التوائم. 300-900mg يومياً."; break;
+        case "midazolam": info = "<strong>Midazolam:</strong><br>مهدئ واعي. 0.05-0.1 mg/kg قبل الإجراءات."; break;
+        case "diazepam": info = "<strong>Diazepam:</strong><br>للقلق والتشنجات العضلية. 2-10mg حسب الحاجة."; break;
+        case "alendro": info = "<strong>Alendronate:</strong><br>لهشاشة العظام؛ حذر من نخر الفك. 70mg أسبوعياً."; break;
+        case "risedro": info = "<strong>Risedronate:</strong><br>مشابه للأليندرونات. 35mg أسبوعياً أو 150mg شهرياً."; break;
+        case "xylocaine": info = "<strong>Lidocaine Spray 10%:</strong><br>رذاذ مخدر موضعي للأغشية المخاطية.<br>يستخدم قبل الحقن الموضعي."; break;
+        case "benzyd": info = "<strong>Benzydamine:</strong><br>غسول أو رذاذ مضاد التهاب ومخدر لآلام الفم والحلق."; break;
+        case "triam": info = "<strong>Triamcinolone acetonide:</strong><br>معجون فموي للحزاز المسطح والآفات التقشرية. يوضع مرتين يومياً."; break;
+        case "beta": info = "<strong>Betamethasone:</strong><br>قرحات فموية رضحية. كريم موضعي للمنطقة المخاطية."; break;
+        default: info = "<strong>معلومات الدواء</strong><br>يرجى استشارة الطبيب قبل الاستخدام.";
     }
     resultBox.innerHTML = info;
     resultBox.classList.remove('hidden');
 }
-
 // ===== 🔹 قائمة المهام الشخصية (To-Do List) 🔹 =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
