@@ -8,7 +8,7 @@
     .header { background:#1565c0; color:#fff; padding:15px; text-align:center; font-size:22px; font-weight:bold; }
     .container { padding:15px; }
     .card { background:#fff; padding:20px; border-radius:15px; margin-bottom:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-    input, textarea { width:100%; padding:10px; margin-top:8px; border-radius:10px; border:1px solid #90a4ae; }
+    input, textarea { width:100%; padding:10px; margin-top:8px; border-radius:10px; border:1px solid #90a4ae; box-sizing:border-box; }
     button { width:100%; padding:12px; border:none; border-radius:10px; margin-top:10px; font-size:16px; cursor:pointer; }
     .btn-primary { background:#1e88e5; color:#fff; }
     .btn-danger { background:#e53935; color:#fff; }
@@ -19,71 +19,109 @@
     .tab-btn.active { background:#1e88e5; color:#fff; font-weight:bold; }
     .row { padding:10px; border-bottom:1px solid #e0e0e0; }
     .title { font-weight:bold; color:#1565c0; }
+    .small { font-size:13px; color:#555; }
 </style>
 </head>
 
 <body>
 
-<div class="header">DS Assistant — لوحة الإدارة</div>
+<div class="header">DS Assistant</div>
 
 <div class="container">
 
-<!-- شاشة دخول المدير -->
-<div id="loginScreen" class="card">
-    <h3>دخول المدير</h3>
-    <input type="password" id="adminPass" placeholder="كلمة السر">
-    <button class="btn-primary" onclick="loginAdmin()">دخول</button>
-</div>
+    <!-- اختيار نوع الدخول -->
+    <div class="card" id="roleChooser">
+        <h3>اختر نوع الدخول</h3>
+        <button class="btn-primary" onclick="showStudentLogin()">دخول طالب</button>
+        <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
+    </div>
 
-<!-- لوحة المدير -->
-<div id="adminPanel" class="hidden">
+    <!-- دخول الطالب -->
+    <div class="card hidden" id="studentLoginCard">
+        <h3>دخول الطالب</h3>
+        <input id="studentLoginName" placeholder="اسم الطالب">
+        <input id="studentLoginPass" type="password" placeholder="الرقم السري">
+        <button class="btn-primary" onclick="loginStudent()">دخول</button>
+        <button class="btn-secondary" onclick="showStudentRegister()">تسجيل طالب جديد</button>
+        <button class="btn-secondary" onclick="backToRole()">رجوع</button>
+    </div>
 
-    <div class="card">
-        <h3>مرحباً دكتور زكريا</h3>
-        <div class="tabs">
-            <button id="tabStudents" class="tab-btn active" onclick="showSection('students')">الطلاب</button>
-            <button id="tabCases" class="tab-btn" onclick="showSection('cases')">الحالات</button>
-            <button id="tabInfo" class="tab-btn" onclick="showSection('info')">معلومات</button>
+    <!-- تسجيل طالب جديد -->
+    <div class="card hidden" id="studentRegisterCard">
+        <h3>تسجيل طالب جديد</h3>
+        <input id="studentRegName" placeholder="اسم الطالب">
+        <input id="studentRegPass" type="password" placeholder="الرقم السري">
+        <button class="btn-primary" onclick="registerStudent()">تسجيل</button>
+        <button class="btn-secondary" onclick="backToStudentLogin()">رجوع</button>
+    </div>
+
+    <!-- واجهة الطالب بعد الدخول -->
+    <div class="card hidden" id="studentArea">
+        <h3>مرحباً <span id="studentNameLabel"></span></h3>
+        <p class="small">يمكنك استعراض الحالات المسجلة.</p>
+        <button class="btn-secondary" onclick="studentLogout()">خروج الطالب</button>
+        <hr>
+        <h4>الحالات</h4>
+        <div id="studentCasesList"></div>
+    </div>
+
+    <!-- دخول المدير -->
+    <div class="card hidden" id="adminLoginCard">
+        <h3>دخول المدير</h3>
+        <input type="password" id="adminPass" placeholder="كلمة السر">
+        <button class="btn-primary" onclick="loginAdmin()">دخول</button>
+        <button class="btn-secondary" onclick="backToRole()">رجوع</button>
+    </div>
+
+    <!-- لوحة المدير -->
+    <div id="adminPanel" class="hidden">
+
+        <div class="card">
+            <h3>لوحة المدير</h3>
+            <div class="tabs">
+                <button id="tabStudents" class="tab-btn active" onclick="showAdminSection('studentsAdmin')">الطلاب</button>
+                <button id="tabCases" class="tab-btn" onclick="showAdminSection('casesAdmin')">الحالات</button>
+                <button id="tabInfo" class="tab-btn" onclick="showAdminSection('infoAdmin')">معلومات</button>
+            </div>
+            <button class="btn-secondary" onclick="logoutAdmin()">تسجيل خروج المدير</button>
         </div>
-        <button class="btn-secondary" onclick="logout()">تسجيل خروج</button>
-    </div>
 
-    <!-- الطلاب -->
-    <div id="students" class="card">
-        <h3>إدارة الطلاب</h3>
-        <button class="btn-primary" onclick="loadStudents()">تحديث</button>
-        <div id="studentsList"></div>
-        <hr>
-        <h4>إضافة طالب</h4>
-        <input id="newStudentName" placeholder="اسم الطالب">
-        <button class="btn-primary" onclick="addStudent()">إضافة</button>
-    </div>
+        <!-- إدارة الطلاب -->
+        <div id="studentsAdmin" class="card">
+            <h3>إدارة الطلاب</h3>
+            <button class="btn-primary" onclick="loadStudents()">تحديث قائمة الطلاب</button>
+            <div id="studentsList"></div>
+        </div>
 
-    <!-- الحالات -->
-    <div id="cases" class="card hidden">
-        <h3>إدارة الحالات</h3>
-        <button class="btn-primary" onclick="loadCases()">تحديث</button>
-        <div id="casesList"></div>
-        <hr>
-        <h4>إضافة حالة</h4>
-        <input id="caseTitle" placeholder="عنوان الحالة">
-        <textarea id="caseDetails" placeholder="تفاصيل الحالة"></textarea>
-        <button class="btn-primary" onclick="addCase()">إضافة</button>
-    </div>
+        <!-- إدارة الحالات -->
+        <div id="casesAdmin" class="card hidden">
+            <h3>إدارة الحالات</h3>
+            <button class="btn-primary" onclick="loadCases()">تحديث قائمة الحالات</button>
+            <div id="casesList"></div>
+            <hr>
+            <h4>إضافة حالة جديدة</h4>
+            <input id="caseTitle" placeholder="عنوان الحالة">
+            <textarea id="caseDetails" placeholder="تفاصيل الحالة"></textarea>
+            <button class="btn-primary" onclick="addCase()">إضافة الحالة</button>
+        </div>
 
-    <!-- معلومات -->
-    <div id="info" class="card hidden">
-        <h3>معلومات التطبيق</h3>
-        <p>DS Assistant — نسخة كاملة</p>
-        <p>المدير بكلمة سر مستقلة</p>
-        <p>الطلاب والحالات على Firebase Realtime Database</p>
+        <!-- معلومات -->
+        <div id="infoAdmin" class="card hidden">
+            <h3>معلومات التطبيق</h3>
+            <p>DS Assistant — نسخة كاملة مع تسجيل الطلاب (اسم + رقم سري) والحالات ولوحة مدير.</p>
+            <p>المدير بكلمة سر داخلية: <b>salem1959</b> (لا علاقة لها بـ Firebase Auth).</p>
+            <p>البيانات محفوظة في Firebase Realtime Database:</p>
+            <ul>
+                <li>students/ : الطلاب (name, password)</li>
+                <li>cases/ : الحالات (title, details)</li>
+            </ul>
+        </div>
+
     </div>
 
 </div>
 
-</div>
-
-<!-- Firebase -->
+<!-- Firebase v8 -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -100,111 +138,243 @@ const firebaseConfig = {
   measurementId: "G-RHHRFLZM2P"
 };
 firebase.initializeApp(firebaseConfig);
-
 const db = firebase.database();
 
 // كلمة سر المدير
 const ADMIN_PASSWORD = "salem1959";
 
-// دخول المدير
-function loginAdmin() {
-    if (adminPass.value === ADMIN_PASSWORD) {
-        loginScreen.classList.add("hidden");
-        adminPanel.classList.remove("hidden");
-    } else alert("كلمة السر غير صحيحة");
-}
+// عناصر عامة
+const roleChooser      = document.getElementById("roleChooser");
+const studentLoginCard = document.getElementById("studentLoginCard");
+const studentRegisterCard = document.getElementById("studentRegisterCard");
+const studentArea      = document.getElementById("studentArea");
+const adminLoginCard   = document.getElementById("adminLoginCard");
+const adminPanel       = document.getElementById("adminPanel");
 
-// خروج
-function logout() {
+// إظهار/إخفاء الشاشات
+function showStudentLogin() {
+    roleChooser.classList.add("hidden");
+    adminLoginCard.classList.add("hidden");
+    studentRegisterCard.classList.add("hidden");
+    studentLoginCard.classList.remove("hidden");
+}
+function showStudentRegister() {
+    studentLoginCard.classList.add("hidden");
+    studentRegisterCard.classList.remove("hidden");
+}
+function backToStudentLogin() {
+    studentRegisterCard.classList.add("hidden");
+    studentLoginCard.classList.remove("hidden");
+}
+function showAdminLogin() {
+    roleChooser.classList.add("hidden");
+    studentLoginCard.classList.add("hidden");
+    adminLoginCard.classList.remove("hidden");
+}
+function backToRole() {
+    studentLoginCard.classList.add("hidden");
+    studentRegisterCard.classList.add("hidden");
+    adminLoginCard.classList.add("hidden");
+    studentArea.classList.add("hidden");
     adminPanel.classList.add("hidden");
-    loginScreen.classList.remove("hidden");
-    adminPass.value = "";
+    roleChooser.classList.remove("hidden");
 }
 
-// تبويبات
-function showSection(id) {
-    students.classList.add("hidden");
-    cases.classList.add("hidden");
-    info.classList.add("hidden");
-
-    document.getElementById(id).classList.remove("hidden");
-
-    tabStudents.classList.remove("active");
-    tabCases.classList.remove("active");
-    tabInfo.classList.remove("active");
-
-    if (id === "students") tabStudents.classList.add("active");
-    if (id === "cases") tabCases.classList.add("active");
-    if (id === "info") tabInfo.classList.add("active");
-}
-
-// تحميل الطلاب
-function loadStudents() {
-    db.ref("students").once("value", snap => {
-        let data = snap.val() || {};
-        let html = "";
-        Object.keys(data).forEach(id => {
-            html += `
-                <div class="row">
-                    <div class="title">${data[id].name}</div>
-                    <button class="btn-danger" onclick="deleteStudent('${id}')">حذف</button>
-                </div>`;
-        });
-        studentsList.innerHTML = html || "<p>لا يوجد طلاب.</p>";
+// تسجيل طالب جديد
+function registerStudent() {
+    const name = document.getElementById("studentRegName").value.trim();
+    const pass = document.getElementById("studentRegPass").value.trim();
+    if (!name || !pass) {
+        alert("أدخل اسم الطالب والرقم السري");
+        return;
+    }
+    db.ref("students").push({ name, password: pass }, err => {
+        if (err) alert("حدث خطأ أثناء التسجيل");
+        else {
+            alert("تم تسجيل الطالب بنجاح");
+            document.getElementById("studentRegName").value = "";
+            document.getElementById("studentRegPass").value = "";
+            backToStudentLogin();
+        }
     });
 }
 
-// إضافة طالب
-function addStudent() {
-    let name = newStudentName.value.trim();
-    if (!name) return alert("أدخل اسم الطالب");
-    db.ref("students").push({ name });
-    newStudentName.value = "";
-    loadStudents();
-}
+// دخول الطالب
+let currentStudentId = null;
+let currentStudentName = "";
 
-// حذف طالب
-function deleteStudent(id) {
-    if (confirm("حذف الطالب؟")) {
-        db.ref("students/" + id).remove();
-        loadStudents();
+function loginStudent() {
+    const name = document.getElementById("studentLoginName").value.trim();
+    const pass = document.getElementById("studentLoginPass").value.trim();
+    if (!name || !pass) {
+        alert("أدخل الاسم والرقم السري");
+        return;
     }
+    db.ref("students").orderByChild("name").equalTo(name).once("value", snap => {
+        const data = snap.val();
+        if (!data) {
+            alert("لا يوجد طالب بهذا الاسم");
+            return;
+        }
+        let found = false;
+        Object.keys(data).forEach(id => {
+            if (data[id].password === pass) {
+                found = true;
+                currentStudentId = id;
+                currentStudentName = data[id].name;
+            }
+        });
+        if (!found) {
+            alert("الرقم السري غير صحيح");
+            return;
+        }
+        // نجاح الدخول
+        studentLoginCard.classList.add("hidden");
+        roleChooser.classList.add("hidden");
+        document.getElementById("studentNameLabel").textContent = currentStudentName;
+        studentArea.classList.remove("hidden");
+        loadCasesForStudent();
+    });
 }
 
-// تحميل الحالات
-function loadCases() {
+// خروج الطالب
+function studentLogout() {
+    currentStudentId = null;
+    currentStudentName = "";
+    studentArea.classList.add("hidden");
+    roleChooser.classList.remove("hidden");
+    document.getElementById("studentLoginName").value = "";
+    document.getElementById("studentLoginPass").value = "";
+}
+
+// تحميل الحالات للطالب
+function loadCasesForStudent() {
+    const list = document.getElementById("studentCasesList");
+    list.innerHTML = "جاري التحميل...";
     db.ref("cases").once("value", snap => {
-        let data = snap.val() || {};
+        const data = snap.val() || {};
         let html = "";
         Object.keys(data).forEach(id => {
             html += `
                 <div class="row">
                     <div class="title">${data[id].title}</div>
-                    <div>${data[id].details}</div>
-                    <button class="btn-danger" onclick="deleteCase('${id}')">حذف</button>
-                </div>`;
+                    <div class="small">${data[id].details}</div>
+                </div>
+            `;
         });
-        casesList.innerHTML = html || "<p>لا توجد حالات.</p>";
+        list.innerHTML = html || "<p>لا توجد حالات حالياً.</p>";
     });
 }
 
-// إضافة حالة
-function addCase() {
-    let title = caseTitle.value.trim();
-    let details = caseDetails.value.trim();
-    if (!title || !details) return alert("أدخل كل البيانات");
-    db.ref("cases").push({ title, details });
-    caseTitle.value = "";
-    caseDetails.value = "";
-    loadCases();
+// دخول المدير
+function loginAdmin() {
+    const pass = document.getElementById("adminPass").value;
+    if (pass === ADMIN_PASSWORD) {
+        adminLoginCard.classList.add("hidden");
+        roleChooser.classList.add("hidden");
+        adminPanel.classList.remove("hidden");
+        showAdminSection('studentsAdmin');
+        loadStudents();
+        loadCases();
+    } else {
+        alert("كلمة السر غير صحيحة");
+    }
 }
 
-// حذف حالة
-function deleteCase(id) {
-    if (confirm("حذف الحالة؟")) {
-        db.ref("cases/" + id).remove();
-        loadCases();
+// خروج المدير
+function logoutAdmin() {
+    adminPanel.classList.add("hidden");
+    document.getElementById("adminPass").value = "";
+    roleChooser.classList.remove("hidden");
+}
+
+// تبويبات لوحة المدير
+function showAdminSection(id) {
+    document.getElementById("studentsAdmin").classList.add("hidden");
+    document.getElementById("casesAdmin").classList.add("hidden");
+    document.getElementById("infoAdmin").classList.add("hidden");
+    document.getElementById(id).classList.remove("hidden");
+
+    document.getElementById("tabStudents").classList.remove("active");
+    document.getElementById("tabCases").classList.remove("active");
+    document.getElementById("tabInfo").classList.remove("active");
+
+    if (id === "studentsAdmin") document.getElementById("tabStudents").classList.add("active");
+    if (id === "casesAdmin") document.getElementById("tabCases").classList.add("active");
+    if (id === "infoAdmin") document.getElementById("tabInfo").classList.add("active");
+}
+
+// إدارة الطلاب في لوحة المدير
+function loadStudents() {
+    const list = document.getElementById("studentsList");
+    list.innerHTML = "جاري التحميل...";
+    db.ref("students").once("value", snap => {
+        const data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id => {
+            html += `
+                <div class="row">
+                    <div class="title">${data[id].name}</div>
+                    <div class="small">رقم سري: ${data[id].password}</div>
+                    <button class="btn-danger" onclick="deleteStudent('${id}')">حذف</button>
+                </div>
+            `;
+        });
+        list.innerHTML = html || "<p>لا يوجد طلاب.</p>";
+    });
+}
+
+function deleteStudent(id) {
+    if (!confirm("هل تريد حذف هذا الطالب؟")) return;
+    db.ref("students/" + id).remove(err => {
+        if (err) alert("حدث خطأ أثناء الحذف");
+        else loadStudents();
+    });
+}
+
+// إدارة الحالات في لوحة المدير
+function loadCases() {
+    const list = document.getElementById("casesList");
+    list.innerHTML = "جاري التحميل...";
+    db.ref("cases").once("value", snap => {
+        const data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id => {
+            html += `
+                <div class="row">
+                    <div class="title">${data[id].title}</div>
+                    <div class="small">${data[id].details}</div>
+                    <button class="btn-danger" onclick="deleteCase('${id}')">حذف</button>
+                </div>
+            `;
+        });
+        list.innerHTML = html || "<p>لا توجد حالات.</p>";
+    });
+}
+
+function addCase() {
+    const title = document.getElementById("caseTitle").value.trim();
+    const details = document.getElementById("caseDetails").value.trim();
+    if (!title || !details) {
+        alert("أدخل عنوان الحالة والتفاصيل");
+        return;
     }
+    db.ref("cases").push({ title, details }, err => {
+        if (err) alert("حدث خطأ أثناء الإضافة");
+        else {
+            document.getElementById("caseTitle").value = "";
+            document.getElementById("caseDetails").value = "";
+            loadCases();
+        }
+    });
+}
+
+function deleteCase(id) {
+    if (!confirm("هل تريد حذف هذه الحالة؟")) return;
+    db.ref("cases/" + id).remove(err => {
+        if (err) alert("حدث خطأ أثناء الحذف");
+        else loadCases();
+    });
 }
 </script>
 
