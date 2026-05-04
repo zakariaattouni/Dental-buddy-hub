@@ -2,215 +2,205 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>DS Assistant – النسخة النهائية</title>
+<title>DS Assistant</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-    * { box-sizing:border-box; }
     body {
         margin:0;
         font-family: Tahoma, Arial;
         background: linear-gradient(135deg, #1e88e5, #42a5f5);
         min-height:100vh;
-        padding-top:70px;
-        padding-bottom:60px;
         display:flex;
         justify-content:center;
-        align-items:flex-start;
-    }
-
-    /* الهيدر */
-    header {
-        position:fixed;
-        top:0; left:0; right:0;
-        height:60px;
-        background:#0d47a1;
-        color:#fff;
-        display:flex;
         align-items:center;
-        justify-content:space-between;
-        padding:0 15px;
-        font-size:18px;
-        font-weight:bold;
-        box-shadow:0 2px 8px rgba(0,0,0,0.3);
-        z-index:10;
+        padding:20px;
+        box-sizing:border-box;
     }
-
-    .header-left {
-        display:flex;
-        align-items:center;
-        gap:10px;
-    }
-
-    .app-icon {
-        width:32px;
-        height:32px;
-        background:#fff;
-        border-radius:8px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:18px;
-        color:#0d47a1;
-        font-weight:bold;
-    }
-
-    /* مؤشر الاتصال */
-    .wifi {
-        width:18px;
-        height:18px;
-        border-radius:50%;
-        background:#ccc;
-    }
-
-    footer {
-        position:fixed;
-        bottom:0; left:0; right:0;
-        height:50px;
-        background:#0d47a1;
-        color:#bbdefb;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:12px;
-        box-shadow:0 -2px 8px rgba(0,0,0,0.3);
-        z-index:10;
-    }
-
     .card {
         width:100%;
         max-width:420px;
         background:#fff;
-        padding:22px;
+        padding:25px;
         border-radius:20px;
-        box-shadow:0 10px 25px rgba(0,0,0,0.2);
-        animation:fadeIn 0.4s ease;
-        margin:10px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.15);
+        animation: fadeIn 0.4s ease;
     }
-
     @keyframes fadeIn {
         from { opacity:0; transform:translateY(20px); }
         to   { opacity:1; transform:translateY(0); }
     }
-
     h2 {
         margin:0 0 15px;
         text-align:center;
         color:#1565c0;
         font-size:22px;
     }
-
     h3 {
-        margin:10px 0;
         color:#1565c0;
+        margin:15px 0 10px;
         font-size:18px;
     }
-
-    input, textarea {
+    input, select, textarea {
         width:100%;
-        padding:11px;
+        padding:12px;
         margin-top:8px;
+        margin-bottom:8px;
         border-radius:12px;
         border:1px solid #b0bec5;
-        font-size:14px;
+        font-size:15px;        box-sizing:border-box;
     }
-
     button {
         width:100%;
-        padding:11px;
+        padding:12px;
         margin-top:10px;
+        margin-bottom:5px;
         border:none;
         border-radius:12px;
-        font-size:15px;
+        font-size:16px;
         cursor:pointer;
         font-weight:bold;
+        transition:0.2s;
     }
-
+    button:hover { opacity:0.9; }
     .btn-primary { background:#1e88e5; color:#fff; }
     .btn-secondary { background:#90a4ae; color:#fff; }
     .btn-danger { background:#e53935; color:#fff; }
-    .btn-warning { background:#f9a825; color:#fff; }
-
+    .btn-success { background:#43a047; color:#fff; }
+    .btn-warning { background:#fb8c00; color:#fff; }
     .hidden { display:none; }
-
-    .row {
-        background:#f5f5f5;
-        padding:10px;
-        border-radius:12px;
-        margin-top:8px;
-    }
-
     .title {
         font-weight:bold;
         color:#1565c0;
-        margin-bottom:4px;
+        margin-bottom:5px;
     }
-
-    .badge {
-        display:inline-block;
-        padding:2px 8px;
-        border-radius:10px;
-        font-size:11px;
-        color:#fff;
-        margin-left:5px;
+    .row {
+        background:#f5f5f5;
+        padding:12px;
+        border-radius:12px;
+        margin-bottom:10px;
+        font-size:14px;
     }
-    .badge-pending { background:#f9a825; }
-    .badge-approved { background:#43a047; }
-    .badge-rejected { background:#e53935; }
-
     .tabs {
         display:flex;
         gap:5px;
         margin-bottom:10px;
-        margin-top:5px;
     }
-
     .tab-btn {
         flex:1;
-        padding:8px;
+        padding:10px;
         border:none;
         border-radius:10px;
         background:#bbdefb;
-        font-size:13px;
         font-weight:bold;
+        font-size:13px;
     }
-
     .tab-btn.active {
         background:#1e88e5;
-        color:#fff;
+        color:#fff;    }
+    /* أزرار صفحة الطالب الجديدة */
+    .student-actions {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+        margin:15px 0;
     }
-
-    .small {
-        font-size:12px;
-        color:#607d8b;
+    .action-btn {
+        padding:15px 10px;
+        font-size:14px;
+        border-radius:15px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:5px;
     }
-
-    .log-item {
-        font-size:12px;
-        background:#eceff1;
-        padding:6px;
+    .action-btn span.icon { font-size:20px; }
+    /* قسم What To Do العريض */
+    .wtd-section {
+        background:linear-gradient(135deg, #e3f2fd, #bbdefb);
+        border-radius:15px;
+        padding:15px;
+        margin-top:15px;
+        border:2px solid #90caf9;
+    }
+    .wtd-title {
+        font-weight:bold;
+        color:#0d47a1;
+        margin-bottom:10px;
+        text-align:center;
+        font-size:16px;
+    }
+    .wtd-content {
+        background:#fff;
+        border-radius:10px;
+        padding:12px;
+        min-height:80px;
+        font-size:14px;
+        line-height:1.6;
+        color:#333;
+    }
+    /* نموذج إضافة مريض */
+    .form-group { margin:8px 0; }
+    .form-group label {
+        display:block;
+        font-weight:bold;
+        color:#1565c0;
+        font-size:14px;
+        margin-bottom:4px;    }
+    /* قائمة المرضى */
+    .patient-item {
+        background:#fff;
+        border-right:4px solid #43a047;
+        padding:10px;
         border-radius:8px;
-        margin-top:4px;
+        margin-bottom:8px;
+        box-shadow:0 2px 5px rgba(0,0,0,0.05);
     }
-</style>
-</head>
-
+    .patient-name { font-weight:bold; color:#1565c0; }
+    .patient-info { font-size:13px; color:#555; margin-top:4px; }
+    /* المساعد الذكي */
+    .emergency-grid {
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:8px;
+        max-height:200px;
+        overflow-y:auto;
+        margin-bottom:10px;
+    }
+    .emergency-btn {
+        padding:8px;
+        font-size:12px;
+        background:#ffe0b2;
+        color:#e65100;
+        border:1px solid #ffb74d;
+        border-radius:8px;
+        cursor:pointer;
+        text-align:center;
+    }
+    .emergency-btn:hover { background:#ffb74d; color:#fff; }
+    .emergency-result {
+        background:#fff3e0;
+        border-radius:10px;
+        padding:12px;
+        margin-top:10px;
+        font-size:14px;
+        line-height:1.6;
+        border-right:3px solid #fb8c00;
+    }
+    /* تمرير */
+    .scrollable {
+        max-height:300px;
+        overflow-y:auto;
+        padding-right:5px;
+    }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-thumb { background:#90a4ae; border-radius:3px; }
+</style></head>
 <body>
 
-<!-- الهيدر -->
-<header>
-    <div class="header-left">
-        <div class="app-icon">📘🎧</div>
-        DS Assistant
-    </div>
-    <div id="wifiIndicator" class="wifi"></div>
-</header>
-
-<!-- شاشة اختيار الدور -->
+<!-- اختيار الدور -->
 <div class="card" id="roleCard">
-    <h2>DS Assistant</h2>
+    <h2>🩺 DS Assistant</h2>
     <button class="btn-primary" onclick="showStudentLogin()">دخول الطالب</button>
-    <button class="btn-secondary" onclick="showSubscription()">طلب اشتراك جديد</button>
     <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
 </div>
 
@@ -220,24 +210,109 @@
     <input id="studentLoginName" placeholder="اسم الطالب">
     <input id="studentLoginPass" type="password" placeholder="الرقم السري">
     <button class="btn-primary" onclick="loginStudent()">دخول</button>
-    <button class="btn-secondary" onclick="showSubscription()">طلب اشتراك جديد</button>
+    <button class="btn-secondary" onclick="showStudentRegister()">تسجيل طالب جديد</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
 
-<!-- طلب اشتراك -->
-<div class="card hidden" id="subscriptionCard">
-    <h2>طلب اشتراك</h2>
-    <input id="subName" placeholder="الاسم الكامل">
-    <input id="subPass" type="password" placeholder="الرقم السري">
-    <button class="btn-primary" onclick="sendSubscription()">إرسال الطلب</button>
-    <button class="btn-secondary" onclick="backToRole()">رجوع</button>
+<!-- تسجيل طالب -->
+<div class="card hidden" id="studentRegisterCard">
+    <h2>تسجيل طالب</h2>
+    <input id="studentRegName" placeholder="اسم الطالب">
+    <input id="studentRegPass" type="password" placeholder="الرقم السري">
+    <button class="btn-primary" onclick="registerStudent()">تسجيل</button>
+    <button class="btn-secondary" onclick="backToStudentLogin()">رجوع</button>
 </div>
 
-<!-- واجهة الطالب بعد التفعيل -->
+<!-- واجهة الطالب -->
 <div class="card hidden" id="studentArea">
-    <h2>مرحباً <span id="studentNameLabel"></span></h2>
-    <p class="small">تم تفعيل اشتراكك بنجاح.</p>
+    <h2>👋 مرحباً <span id="studentNameLabel"></span></h2>
     <button class="btn-secondary" onclick="studentLogout()">خروج</button>
+    <hr>
+    
+    <!-- الأزرار الجديدة المطلوبة -->
+    <div class="student-actions">
+        <button class="btn-primary action-btn" onclick="showAddPatientForm()">
+            <span class="icon">➕</span>أضف مريض
+        </button>
+        <button class="btn-success action-btn" onclick="showActivePatients()">
+            <span class="icon">📋</span>سجل المرضى
+        </button>
+        <button class="btn-warning action-btn" onclick="showSmartAssistant()">
+            <span class="icon">🤖</span>المساعد الذكي
+        </button>
+        <button class="btn-secondary action-btn" onclick="showCasesTab()">
+            <span class="icon">📚</span>الحالات
+        </button>
+    </div>    
+    <!-- نموذج إضافة مريض -->
+    <div id="addPatientSection" class="hidden">
+        <h3>➕ إضافة مريض جديد</h3>
+        <div class="form-group">
+            <label>اسم المريض *</label>
+            <input id="patientName" placeholder="أدخل اسم المريض">
+        </div>
+        <div class="form-group">
+            <label>العمر *</label>
+            <input id="patientAge" type="number" placeholder="أدخل العمر" min="1" max="120">
+        </div>
+        <div class="form-group">
+            <label>الجنس *</label>
+            <select id="patientGender">
+                <option value="">اختر الجنس</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>التشخيص *</label>
+            <input id="patientDiagnosis" placeholder="أدخل التشخيص">
+        </div>
+        <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input id="patientPhone" type="tel" placeholder="05XXXXXXXX">
+        </div>
+        <button class="btn-primary" onclick="savePatient()">💾 حفظ المريض</button>
+        <button class="btn-secondary" onclick="hideAddPatientForm()">إلغاء</button>
+    </div>
+    
+    <!-- سجل المرضى المفعلين -->
+    <div id="activePatientsSection" class="hidden">
+        <h3>📋 سجل المرضى المفعلين</h3>
+        <button class="btn-primary" onclick="loadActivePatients()">🔄 تحديث</button>
+        <div id="patientsList" class="scrollable"></div>
+        <button class="btn-secondary" onclick="hideActivePatients()">إغلاق</button>
+    </div>
+    
+    <!-- المساعد الذكي -->
+    <div id="smartAssistantSection" class="hidden">
+        <h3>🤖 المساعد الذكي للطوارئ</h3>
+        <p style="font-size:13px;color:#666;margin-bottom:10px;">اختر حالة الطوارئ لعرض الإجراء المناسب:</p>
+        <div id="emergencyGrid" class="emergency-grid"></div>
+        <div id="emergencyResult" class="emergency-result hidden">
+            <strong id="emergencyTitle"></strong>
+            <p id="emergencyAction" style="margin:8px 0 0;"></p>
+        </div>
+        <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>    </div>
+    
+    <!-- قسم What To Do العريض -->
+    <div class="wtd-section">
+        <div class="wtd-title">📝 What To Do - خطوات الإسعاف الأولي</div>
+        <div class="wtd-content" id="wtdContent">
+            اختر حالة من المساعد الذكي أو أضف مريضاً جديداً لعرض الإرشادات المناسبة.
+            <br><br>
+            💡 <strong>تذكير:</strong> في جميع حالات الطوارئ:
+            <br>1️⃣ حافظ على هدوئك
+            <br>2️⃣ افحص التنفس والوعي
+            <br>3️⃣ اتصل بالإسعاف 997
+            <br>4️⃣ قدم المساعدة ضمن حدود معرفتك
+        </div>
+    </div>
+    
+    <!-- الحالات (الأصلي) -->
+    <div id="studentCasesTab">
+        <h3>📚 الحالات التعليمية</h3>
+        <div id="studentCasesList"></div>
+    </div>
 </div>
 
 <!-- دخول المدير -->
@@ -250,57 +325,52 @@
 
 <!-- لوحة المدير -->
 <div class="card hidden" id="adminPanel">
-    <h2>لوحة المدير</h2>
-
+    <h2>⚙️ لوحة المدير</h2>
     <div class="tabs">
-        <button id="tabRequests" class="tab-btn active" onclick="showAdminSection('requestsSection')">طلبات الاشتراك</button>
-        <button id="tabStudents" class="tab-btn" onclick="showAdminSection('studentsSection')">الطلاب</button>
-        <button id="tabStats" class="tab-btn" onclick="showAdminSection('statsSection')">الإحصائيات</button>
-        <button id="tabSettings" class="tab-btn" onclick="showAdminSection('settingsSection')">الإعدادات</button>
-        <button id="tabLogs" class="tab-btn" onclick="showAdminSection('logsSection')">السجل</button>
+        <button id="tabStudents" class="tab-btn active" onclick="showAdminSection('studentsAdmin')">الطلاب</button>
+        <button id="tabCases" class="tab-btn" onclick="showAdminSection('casesAdmin')">الحالات</button>
+        <button id="tabPatients" class="tab-btn" onclick="showAdminSection('patientsAdmin')">المرضى</button>
+        <button id="tabInfo" class="tab-btn" onclick="showAdminSection('infoAdmin')">معلومات</button>
     </div>
-
-    <button class="btn-secondary" onclick="logoutAdmin()">تسجيل خروج</button>
-
-    <!-- طلبات -->
-    <div id="requestsSection">
-        <h3>طلبات الاشتراك</h3>
-        <button class="btn-primary" onclick="loadRequests()">تحديث</button>
-        <div id="requestsList"></div>
-    </div>
-
+    <button class="btn-secondary" onclick="logoutAdmin()">خروج</button>
+    
     <!-- الطلاب -->
-    <div id="studentsSection" class="hidden">
-        <h3>الطلاب المفعلون</h3>
-        <button class="btn-primary" onclick="loadApprovedStudents()">تحديث</button>
+    <div id="studentsAdmin">
+        <h3 style="color:#1565c0;">الطلاب</h3>
+        <button class="btn-primary" onclick="loadStudents()">تحديث</button>
         <div id="studentsList"></div>
     </div>
-
-    <!-- الإحصائيات -->
-    <div id="statsSection" class="hidden">
-        <h3>الإحصائيات</h3>
-        <div id="statsContent" class="small"></div>
+    
+    <!-- الحالات -->    <div id="casesAdmin" class="hidden">
+        <h3 style="color:#1565c0;">الحالات التعليمية</h3>
+        <button class="btn-primary" onclick="loadCases()">تحديث</button>
+        <div id="casesList"></div>
+        <hr>
+        <input id="caseTitle" placeholder="عنوان الحالة">
+        <textarea id="caseDetails" placeholder="تفاصيل الحالة" style="width:100%;height:80px;margin-top:10px;border-radius:12px;border:1px solid #b0bec5;padding:10px;"></textarea>
+        <button class="btn-primary" onclick="addCase()">إضافة</button>
     </div>
-
-    <!-- الإعدادات -->
-    <div id="settingsSection" class="hidden">
-        <h3>إعدادات المدير</h3>
-        <p class="small">كلمة السر الحالية: <b>salem1959</b></p>
+    
+    <!-- المرضى (جديد للمدير) -->
+    <div id="patientsAdmin" class="hidden">
+        <h3 style="color:#1565c0;">سجل جميع المرضى</h3>
+        <button class="btn-primary" onclick="loadAllPatients()">تحديث</button>
+        <div id="allPatientsList"></div>
     </div>
-
-    <!-- السجل -->
-    <div id="logsSection" class="hidden">
-        <h3>سجل النشاط</h3>
-        <div id="logsList" class="small"></div>
+    
+    <!-- معلومات -->
+    <div id="infoAdmin" class="hidden">
+        <h3 style="color:#1565c0;">معلومات النظام</h3>
+        <p>✅ نسخة محسّنة — تصميم موبايل حديث</p>
+        <p>🔐 دخول إدارة بكلمة سر: <b>salem1959</b></p>
+        <p>💾 البيانات محفوظة في Firebase Realtime Database</p>
+        <p>🤖 المساعد الذكي يحتوي على 50 حالة طوارئ</p>
     </div>
 </div>
-
-<footer>DS Assistant – نسخة نهائية</footer>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 <script>
 // إعداد Firebase
 const firebaseConfig = {
@@ -315,167 +385,352 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// مؤشر الاتصال
-function checkConnection(){
-    const wifi = document.getElementById("wifiIndicator");
-    db.ref(".info/connected").on("value", snap=>{
-        wifi.style.background = snap.val() ? "#43a047" : "#e53935";
-    });
-}
-checkConnection();
-
 // كلمة سر المدير
 const ADMIN_PASSWORD = "salem1959";
 
-// سجل النشاط
-let logs = [];
-function addLog(text){
-    const time = new Date().toLocaleTimeString();
-    logs.unshift(time + " - " + text);
-    renderLogs();
-}
-function renderLogs(){
-    const box = document.getElementById("logsList");
-    box.innerHTML = logs.map(l=>`<div class="log-item">${l}</div>`).join("") || "لا يوجد نشاط.";
-}
+// 50 حالة طوارئ مع الإجراءات
+const emergencyCases = [
+    {id:1,title:"نوبة قلبية",action:"🔹 اجلس المريض بوضعية نصف جلوس\n🔹 فك الملابس الضيقة\n🔹 أعطِ أسبرين 325مغ إذا لم يكن لديه حساسية\n🔹 اتصل بالإسعاف فوراً 997"},    {id:2,title:"سكتة دماغية",action:"🔹 تذكر FAST: وجه، ذراع، كلام، وقت\n🔹 لا تعطِ طعام أو شراب\n🔹 اجعل المريض مستلقياً على جنبه\n🔹 اتصل بالإسعاف فوراً"},
+    {id:3,title:"اختناق",action:"🔹 شجّع على السعال إذا كان قادراً\n🔹 اضرب بين الكتفين 5 مرات\n🔹 قم بمناورة هيمليخ 5 مرات\n🔹 كرر حتى يخرج الجسم الغريب"},
+    {id:4,title:"نزيف شديد",action:"🔹 اضغط مباشرة على الجرح بقطعة قماش نظيفة\n🔹 ارفع العضو المصاب فوق مستوى القلب\n🔹 لا تزيل الضمادة إذا تشبعت، أضف أخرى فوقها\n🔹 اتصل بالإسعاف"},
+    {id:5,title:"حروق",action:"🔹 برّد الحرق بماء جارٍ بارد 10-20 دقيقة\n🔹 لا تضع ثلج أو زبدة أو معجون أسنان\n🔹 غطِّ الحرق بضمادة معقمة غير لاصقة\n🔹 للحروق الشديدة: اتصل بالإسعاف"},
+    {id:6,title:"كسر عظم",action:"🔹 لا تحرك العضو المكسور\n🔹 ثبّت العضو بجبيرة مؤقتة إن أمكن\n🔹 ضع كمادة باردة لتقليل التورم\n🔹 اتصل بالإسعاف للنقل الآمن"},
+    {id:7,title:"تسمم",action:"🔹 لا تُحدِث تقيؤاً إلا بتوجيه طبي\n🔹 احفظ عبوة المادة السامة لعرضها على الطبيب\n🔹 اتصل بمركز السموم أو الإسعاف 997\n🔹 إذا كان المريض فاقد الوعي: وضعية الإفاقة"},
+    {id:8,title:"صدمة كهربائية",action:"🔹 افصل مصدر الكهرباء أولاً قبل لمس المصاب\n🔹 افحص التنفس والنبض، ابدأ بالإنعاش إذا لزم\n🔹 غطِّ الحروق بضمادة جافة ونظيفة\n🔹 اتصل بالإسعاف"},
+    {id:9,title:"غرق",action:"🔹 أخرج المصاب من الماء بأمان\n🔹 افحص التنفس، ابدأ بالإنعاش القلبي الرئوي إذا توقف التنفس\n🔹 دفّئ المصاب ببطانية جافة\n🔹 اتصل بالإسعاف حتى لو بدا المصاب بخير"},
+    {id:10,title:"ضربة شمس",action:"🔹 انقل المصاب لمكان مظلل وبارد\n🔹 خفّض حرارة الجسم بماء فاتر ومراوح\n🔹 أعطِ سوائل إذا كان واعياً\n🔹 اتصل بالإسعاف إذا كانت الحرارة >40°م"},
+    {id:11,title:"نوبة صرع",action:"🔹 أبعد الأشياء الخطرة عن المريض\n🔹 لا تضع شيئاً في فم المريض\n🔹 ضع شيئاً ناعماً تحت رأسه\n🔹 بعد النوبة: وضعية الإفاقة واتصل بالإسعاف إذا استمرت >5 دقائق"},
+    {id:12,title:"حساسية مفرطة",action:"🔹 اسأل عن حاقن إبينيفرين (إبينفرين) وساعده في استخدامه\n🔹 اجعل المريض مستلقياً مع رفع الساقين\n🔹 لا تعطِ أي شيء عن طريق الفم إذا كان لديه صعوبة في البلع\n🔹 اتصل بالإسعاف فوراً"},
+    {id:13,title:"انخفاض سكر الدم",action:"🔹 إذا كان واعياً: أعطِ 15غ سكر سريع (عصير، عسل، أقراص جلوكوز)\n🔹 انتظر 15 دقيقة وكرر إذا لزم\n🔹 إذا كان فاقد الوعي: لا تعطِ أي شيء عن طريق الفم، اتصل بالإسعاف"},
+    {id:14,title:"ارتفاع ضغط طارئ",action:"🔹 اجلس المريض في وضعية مريحة وهادئة\n🔹 شجّعه على التنفس بعمق وبطء\n🔹 لا تعطِ أدوية إضافية دون استشارة طبية\n🔹 اتصل بالإسعاف إذا كان الضغط >180/120 مع أعراض"},
+    {id:15,title:"ألم صدري",action:"🔹 اجلس المريض واطلب منه الراحة التامة\n🔹 اسأل عن تاريخ أمراض القلب وأدويتهم\n🔹 أعطِ أسبرين 325مغ إذا لم يكن لديه موانع\n🔹 اتصل بالإسعاف فوراً"},
+    {id:16,title:"صعوبة تنفس",action:"🔹 ساعد المريض على الجلوس بوضعية مريحة للتنفس\n🔹 اسأل عن أدوية الربو وساعده في استخدامها\n🔹 فك الملابس الضيقة حول الصدر والرقبة\n🔹 اتصل بالإسعاف إذا لم يتحسن خلال دقائق"},
+    {id:17,title:"إغماء",action:"🔹 افحص الاستجابة والتنفس فوراً\n🔹 إذا كان يتنفس: وضعية الإفاقة (على الجانب)\n🔹 إذا لا يتنفس: ابدأ الإنعاش القلبي الرئوي فوراً\n🔹 اتصل بالإسعاف في جميع الحالات"},
+    {id:18,title:"لدغة ثعبان",action:"🔹 هدّئ المصاب واطلب منه عدم الحركة لإبطاء انتشار السم\n🔹 اغسل الجرح بالماء والصابون بلطف\n🔹 لا تمتص السم ولا تضع عاصبة مشددة جداً\n🔹 اتصل بالإسعاف وحاول وصف شكل الثعبان"},
+    {id:19,title:"عضة حيوان",action:"🔹 اغسل الجرح جيداً بالماء والصابون 10-15 دقيقة\n🔹 غطِّ الجرح بضمادة نظيفة ومعقمة\n🔹 اتصل بالطبيب لتقييم الحاجة لمصل الكزاز أو داء الكلب"},
+    {id:20,title:"جرح عميق",action:"🔹 اضغط مباشرة على الجرح لوقف النزيف\n🔹 لا تحاول إزالة الأجسام الغريبة العالقة بعمق\n🔹 غطِّ الجرح بضمادة معقمة وثبّتها برفق\n🔹 اتصل بالإسعاف أو توجه لأقرب طوارئ"},
+    {id:21,title:"ارتجاج دماغي",action:"🔹 أرح المصاب تماماً ولا تسمح له بالعودة للنشاط فوراً\n🔹 راقب الأعراض: صداع، غثيان، تشوش، فقدان ذاكرة\n🔹 لا تعطِ مسكنات دون استشارة طبية قد تخفي الأعراض\n🔹 راجع الطبيب خلال 24 ساعة"},
+    {id:22,title:"تجمّد الأطراف",action:"🔹 انقل المصاب لمكان دافئ وجاف فوراً\n🔹 دفّئ المنطقة المصابة بماء دافئ (ليس ساخن) أو بحرارة الجسم\n🔹 لا تفرك المنطقة المتجمدة ولا تستخدم مصدر حرارة مباشر قوي"},
+    {id:23,title:"نزيف أنفي",action:"🔹 اجلس المصاب وأمل رأسه للأمام قليلاً (ليس للخلف)\n🔹 اضغط على جانبي الأنف بلطف لمدة 10-15 دقيقة متواصلة\n🔹 ضع كمادة باردة على جسر الأنف"},
+    {id:24,title:"التواء كاحل",action:"🔹 تذكر RICE: راحة، ثلج، ضغط، رفع\n🔹 طبّق كمادة باردة 15-20 دقيقة كل ساعتين أول 24 ساعة\n🔹 اربط الكاحل برباط ضاغط مرن (ليس مشدداً جداً)\n🔹 ارفع القدم فوق مستوى القلب"},
+    {id:25,title:"حساسية جلدية",action:"🔹 اغسل المنطقة المصابة بماء بارد وصابون لطيف لتخفيف المادة المسببة للحساسية"},
+    {id:26,title:"تشنج عضلي",action:"🔹 مدّد العضلة المصابة برفق وثبّتها في وضعية التمدد 15-30 ثانية"},
+    {id:27,title:"دوخة مفاجئة",action:"🔹 اجلس أو استلقِ فوراً لمنع السقوط، ارفع الساقين قليلاً"},
+    {id:28,title:"غثيان وقيء",action:"🔹 اجلس المصاب بوضعية مائلة للأمام، أعطِ رشفات صغيرة من ماء أو محلول معالجة الجفاف"},
+    {id:29,title:"إسهال حاد",action:"🔹 شجّع على شرب سوائل كثيرة لمنع الجفاف، تجنب الأكل الدسم والحليب"},
+    {id:30,title:"إمساك شديد",action:"🔹 شجّع على شرب الماء والألياف، تجنب الملينات القوية دون استشارة طبية"},
+    {id:31,title:"ألم بطن حاد",action:"🔹 لا تعطِ طعام أو شراب، لا تستخدم مسكنات قد تخفي الأعراض، اتصل بالطبيب فوراً"},
+    {id:32,title:"حمى عالية",action:"🔹 خفّض الحرارة بكمادات ماء فاتر على الجبين والإبطين، أعطِ خافض حرارة مناسب للعمر"},
+    {id:33,title:"طفح جلدي مفاجئ",action:"🔹 لاحظ شكل ومكان الطفح، تجنب الحك، راجع الطبيب إذا رافقه حمى أو صعوبة تنفس"},
+    {id:34,title:"التهاب عين",action:"🔹 اغسل العين بماء نظيف، لا تفرك، غطِّ العين بضمادة نظيفة وراجع الطبيب"},
+    {id:35,title:"جسم غريب في العين",action:"🔹 لا تفرك العين، حاول غسلها بماء نظيف، إذا لم يخرج راجع الطوارئ فوراً"},
+    {id:36,title:"ألم أسنان شديد",action:"🔹 مضمضة بماء دافئ وملح، ضع كمادة باردة على الخد، تجنب وضع الأسبرين مباشرة على اللثة"},
+    {id:37,title:"خلع مفصل",action:"🔹 لا تحاول إعادة المفصل لمكانه، ثبّته في وضعية مريحة، ضع كمادة باردة، اتصل بالإسعاف"},
+    {id:38,title:"إصابة ظهر",action:"🔹 لا تحرك المصاب، ثبّت الرأس والرقبة والظهر في خط مستقيم، اتصل بالإسعاف فوراً"},
+    {id:39,title:"إصابة رقبة",action:"🔹 لا تحرك رأس أو رقبة المصاب، ثبّتهما بيديك حتى وصول الإسعاف، راقب التنفس"},
+    {id:40,title:"نزيف داخلي مشتبه",action:"🔹 اجعل المصاب مستلقياً مع رفع الساقين، غطّه للحفاظ على الحرارة، لا تعطِ أي شيء عن طريق الفم، اتصل بالإسعاف"},
+    {id:41,title:"صدمة (شوك)",action:"🔹 اجعل المصاب مستلقياً، ارفع الساقين 30سم، غطّه ببطانية، راقب التنفس، اتصل بالإسعاف فوراً"},
+    {id:42,title:"توقف قلب",action:"🔹 ابدأ الإنعاش القلبي الرئوي فوراً: 30 ضغطة صدرية ثم 2 نفخات، استخدم مزيل الرجفان إن توفر، استمر حتى وصول المساعدة"},
+    {id:43,title:"توقف تنفس",action:"🔹 افحص مجرى الهواء، قم بإمالة الرأس ورفع الذقن، ابدأ التنفس الإنقاذي 2 نفخات كل 5 ثواني، اتصل بالإسعاف"},
+    {id:44,title:"ابتلاع جسم غريب",action:"🔹 إذا كان المصاب يسعل بقوة: شجّعه على الاستمرار، إذا لم يستطع التنفس: اضرب بين الكتفين ثم مناورة هيمليخ"},
+    {id:45,title:"حروق كيميائية",action:"🔹 اغسل المنطقة المصابة بماء جارٍ بارد لمدة 20 دقيقة على الأقل، أزل الملابس الملوثة بحذر، اتصل بالإسعاف"},
+    {id:46,title:"حروق كهربائية داخلية",action:"🔹 حتى لو كانت الحروق الخارجية بسيطة، اتصل بالإسعاف فوراً لاحتمال إصابة الأعضاء الداخلية"},
+    {id:47,title:"لدغة حشرة سامة",action:"🔹 اغسل المنطقة بالماء والصابون، ضع كمادة باردة، راقب علامات الحساسية، اتصل بالطبيب إذا ساءت الأعراض"},
+    {id:48,title:"قرصة عقرب",action:"🔹 اغسل المنطقة، ضع كمادة باردة، لا تقطع أو تمتص السم، راقب الأعراض، اتصل بالإسعاف فوراً"},
+    {id:49,title:"تعرض لإشعاع",action:"🔹 ابتعد عن مصدر الإشعاع فوراً، أزل الملابس الملوثة، اغسل الجسم بالماء والصابون، اتصل بالطوارئ المتخصصة"},
+    {id:50,title:"حالة نفسية طارئة",action:"🔹 حافظ على هدوئك، تحدّث بصوت هادئ، لا تترك المصاب وحده إذا كان خطراً على نفسه، اتصل بالطوارئ النفسية أو الإسعاف"}
+];
+// متغيرات عامة
+let currentStudentName = "";
 
-// إظهار/إخفاء
-function hideAll(){
-    ["roleCard","studentLoginCard","subscriptionCard","studentArea","adminLoginCard","adminPanel"]
-    .forEach(id=>document.getElementById(id).classList.add("hidden"));
-}
-function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
+// إظهار الشاشات
 function showStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
-function showSubscription(){ hideAll(); subscriptionCard.classList.remove("hidden"); }
+function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }
 function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
-
-// إرسال طلب اشتراك
-function sendSubscription(){
-    const name = subName.value.trim();
-    const pass = subPass.value.trim();
-    if(!name || !pass){ alert("أدخل البيانات"); return; }
-    db.ref("requests").push({name, password:pass, status:"pending"});
-    addLog("طلب اشتراك جديد: " + name);
-    alert("تم إرسال الطلب");
-    backToRole();
+function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
+function backToStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
+function hideAll(){
+    roleCard.classList.add("hidden");
+    studentLoginCard.classList.add("hidden");
+    studentRegisterCard.classList.add("hidden");
+    studentArea.classList.add("hidden");
+    adminLoginCard.classList.add("hidden");
+    adminPanel.classList.add("hidden");
 }
 
-// دخول الطالب
+// ==================== إدارة الطالب ====================
+function registerStudent(){
+    let name = studentRegName.value.trim();
+    let pass = studentRegPass.value.trim();
+    if(!name || !pass){ alert("أدخل الاسم والرقم السري"); return; }
+    db.ref("students").push({name, password:pass});
+    alert("✅ تم التسجيل بنجاح");
+    studentRegName.value = "";
+    studentRegPass.value = "";
+    backToStudentLogin();
+}
+
 function loginStudent(){
-    const name = studentLoginName.value.trim();
-    const pass = studentLoginPass.value.trim();
-    db.ref("requests").orderByChild("name").equalTo(name).once("value", snap=>{
-        const data = snap.val();
-        if(!data){ alert("لا يوجد طلب بهذا الاسم"); return; }
+    let name = studentLoginName.value.trim();
+    let pass = studentLoginPass.value.trim();
+    if(!name || !pass){ alert("أدخل البيانات"); return; }
+    db.ref("students").orderByChild("name").equalTo(name).once("value", snap=>{
+        let data = snap.val();
+        if(!data){ alert("❌ الاسم غير موجود"); return; }
         let ok = false;
         Object.keys(data).forEach(id=>{
-            if(data[id].password===pass && data[id].status==="approved") ok = true;
+            if(data[id].password === pass){ ok = true; currentStudentName = name; }
         });
-        if(!ok){ alert("الطلب غير مفعل أو الرقم السري خطأ"); return; }
+        if(!ok){ alert("❌ الرقم السري غير صحيح"); return; }
         hideAll();
-        studentNameLabel.textContent = name;
+        studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
+        loadCasesForStudent();
+        initializeSmartAssistant();
     });
 }
-function studentLogout(){ backToRole(); }
-
-// دخول المدير
-function loginAdmin(){
-    if(adminPass.value===ADMIN_PASSWORD){
-        hideAll();
-        adminPanel.classList.remove("hidden");
-        addLog("دخول المدير");
-        showAdminSection('requestsSection');
-        loadRequests();
-        updateStats();
-    } else alert("كلمة السر غير صحيحة");
-}
-function logoutAdmin(){ addLog("خروج المدير"); backToRole(); }
-
-// تبويبات المدير
-function showAdminSection(id){
-    ["requestsSection","studentsSection","statsSection","settingsSection","logsSection"]
-    .forEach(s=>document.getElementById(s).classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-
-    ["tabRequests","tabStudents","tabStats","tabSettings","tabLogs"]
-    .forEach(t=>document.getElementById(t).classList.remove("active"));
-    document.getElementById("tab"+id.replace("Section","")).classList.add("active");
+function studentLogout(){
+    hideAll();
+    roleCard.classList.remove("hidden");
+    // إعادة تعيين الأقسام
+    hideAddPatientForm(); hideActivePatients(); hideSmartAssistant();
+    document.getElementById('studentCasesTab').classList.remove('hidden');
 }
 
-// تحميل الطلبات
-function loadRequests(){
-    requestsList.innerHTML = "جاري التحميل...";
-    db.ref("requests").once("value", snap=>{
-        const data = snap.val() || {};
+// تحميل الحالات التعليمية للطالب
+function loadCasesForStudent(){
+    studentCasesList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
+    db.ref("cases").once("value", snap=>{
+        let data = snap.val() || {};
         let html = "";
         Object.keys(data).forEach(id=>{
-            const r = data[id];
-            let badge = r.status==="approved" ? "badge-approved" :
-                        r.status==="rejected" ? "badge-rejected" : "badge-pending";
-            let text = r.status==="approved" ? "مفعل" :
-                       r.status==="rejected" ? "مرقن" : "قيد المراجعة";
+            html += `<div class="row"><div class="title">📌 ${data[id].title}</div><div style="margin-top:5px">${data[id].details}</div></div>`;
+        });
+        studentCasesList.innerHTML = html || "<p style='color:#666'>لا توجد حالات تعليمية حالياً</p>";
+    });
+}
+
+function showCasesTab(){
+    hideAddPatientForm(); hideActivePatients(); hideSmartAssistant();
+    document.getElementById('studentCasesTab').classList.remove('hidden');
+}
+
+// ==================== إدارة المرضى ====================
+function showAddPatientForm(){
+    hideActivePatients(); hideSmartAssistant();
+    document.getElementById('studentCasesTab').classList.add('hidden');
+    document.getElementById('addPatientSection').classList.remove('hidden');
+}
+function hideAddPatientForm(){
+    document.getElementById('addPatientSection').classList.add('hidden');
+    document.getElementById('studentCasesTab').classList.remove('hidden');
+    // تفريغ الحقول
+    ['patientName','patientAge','patientGender','patientDiagnosis','patientPhone'].forEach(id=>{
+        document.getElementById(id).value = '';
+    });
+}
+
+function savePatient(){
+    const name = document.getElementById('patientName').value.trim();
+    const age = document.getElementById('patientAge').value.trim();
+    const gender = document.getElementById('patientGender').value;
+    const diagnosis = document.getElementById('patientDiagnosis').value.trim();
+    const phone = document.getElementById('patientPhone').value.trim();
+    
+    if(!name || !age || !gender || !diagnosis){        alert("⚠️ يرجى تعبئة الحقول المطلوبة (*)");
+        return;
+    }
+    
+    const patient = {
+        name, age, gender, diagnosis, phone,
+        addedBy: currentStudentName,
+        date: new Date().toLocaleDateString('ar-SA'),
+        active: true
+    };
+    
+    db.ref("patients").push(patient).then(()=>{
+        alert("✅ تم حفظ بيانات المريض بنجاح");
+        hideAddPatientForm();
+    }).catch(err=>{
+        alert("❌ خطأ في الحفظ: " + err.message);
+    });
+}
+
+function showActivePatients(){
+    hideAddPatientForm(); hideSmartAssistant();
+    document.getElementById('studentCasesTab').classList.add('hidden');
+    document.getElementById('activePatientsSection').classList.remove('hidden');
+    loadActivePatients();
+}
+function hideActivePatients(){
+    document.getElementById('activePatientsSection').classList.add('hidden');
+    document.getElementById('studentCasesTab').classList.remove('hidden');
+}
+
+function loadActivePatients(){
+    const list = document.getElementById('patientsList');
+    list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
+    
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{
+        let data = snap.val();
+        if(!data){
+            list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>";
+            return;
+        }
+        let html = "";
+        Object.values(data).forEach(p=>{
             html += `
-            <div class="row">
-                <div class="title">${r.name} <span class="badge ${badge}">${text}</span></div>
-                <div class="small">رقم سري: ${r.password}</div>
-                <button class="btn-primary" onclick="setRequestStatus('${id}','approved')">تفعيل</button>
-                <button class="btn-warning" onclick="setRequestStatus('${id}','rejected')">ترقين</button>
-                <button class="btn-danger" onclick="deleteRequest('${id}')">حذف</button>
+            <div class="patient-item">
+                <div class="patient-name">👤 ${p.name}</div>
+                <div class="patient-info">
+                    🎂 ${p.age} سنة | ${p.gender}<br>
+                    🩺 ${p.diagnosis}<br>
+                    📱 ${p.phone || 'غير متاح'}<br>
+                    📅 ${p.date} | 👨‍⚕️ أضافه: ${p.addedBy}                </div>
             </div>`;
         });
-        requestsList.innerHTML = html || "لا توجد طلبات";
-        updateStats();
+        list.innerHTML = html;
     });
 }
-function setRequestStatus(id, status){
-    db.ref("requests/"+id+"/status").set(status);
-    addLog("تغيير حالة طلب: "+id+" → "+status);
-    loadRequests();
-}
-function deleteRequest(id){
-    if(!confirm("حذف نهائي؟")) return;
-    db.ref("requests/"+id).remove();
-    addLog("حذف طلب: "+id);
-    loadRequests();
+
+// ==================== المساعد الذكي (50 حالة طوارئ) ====================
+function initializeSmartAssistant(){
+    const grid = document.getElementById('emergencyGrid');
+    grid.innerHTML = '';
+    emergencyCases.forEach(e=>{
+        const btn = document.createElement('button');
+        btn.className = 'emergency-btn';
+        btn.textContent = e.title;
+        btn.onclick = ()=>showEmergencyAction(e);
+        grid.appendChild(btn);
+    });
 }
 
-// الطلاب المفعلون
-function loadApprovedStudents(){
-    studentsList.innerHTML = "جاري التحميل...";
-    db.ref("requests").orderByChild("status").equalTo("approved").once("value", snap=>{
-        const data = snap.val() || {};
+function showSmartAssistant(){
+    hideAddPatientForm(); hideActivePatients();
+    document.getElementById('studentCasesTab').classList.add('hidden');
+    document.getElementById('smartAssistantSection').classList.remove('hidden');
+    document.getElementById('emergencyResult').classList.add('hidden');
+}
+function hideSmartAssistant(){
+    document.getElementById('smartAssistantSection').classList.add('hidden');
+    document.getElementById('studentCasesTab').classList.remove('hidden');
+}
+
+function showEmergencyAction(emergency){
+    document.getElementById('emergencyTitle').textContent = `🚨 ${emergency.title}`;
+    document.getElementById('emergencyAction').textContent = emergency.action;
+    document.getElementById('emergencyResult').classList.remove('hidden');
+    // تحديث قسم What To Do
+    document.getElementById('wtdContent').innerHTML = 
+        `<strong>📋 إجراء طارئ: ${emergency.title}</strong><br><br>` + 
+        emergency.action.replace(/\n/g, '<br>');
+}
+
+// ==================== إدارة المدير ====================
+function loginAdmin(){
+    if(adminPass.value === ADMIN_PASSWORD){
+        hideAll();
+        adminPanel.classList.remove("hidden");
+        showAdminSection('studentsAdmin');
+        loadStudents();
+    } else alert("❌ كلمة السر غير صحيحة");
+}function logoutAdmin(){
+    hideAll();
+    roleCard.classList.remove("hidden");
+}
+
+function showAdminSection(id){
+    ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>{
+        document.getElementById(sid).classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>{
+        document.getElementById(tid).classList.remove('active');
+    });
+    const activeTab = id.replace('Admin','');
+    document.getElementById('tab'+activeTab).classList.add('active');
+    
+    if(id==='patientsAdmin') loadAllPatients();
+}
+
+// إدارة الطلاب
+function loadStudents(){
+    studentsList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
+    db.ref("students").once("value", snap=>{
+        let data = snap.val() || {};
         let html = "";
         Object.keys(data).forEach(id=>{
-            html += `<div class="row"><div class="title">${data[id].name}</div></div>`;
+            html += `
+            <div class="row">
+                <div class="title">👨‍🎓 ${data[id].name}</div>
+                <div style="font-size:13px;color:#555">الرقم السري: ${data[id].password}</div>
+                <button class="btn-danger" style="margin-top:8px" onclick="deleteStudent('${id}')">🗑️ حذف</button>
+            </div>`;
         });
-        studentsList.innerHTML = html || "لا يوجد طلاب";
+        studentsList.innerHTML = html || "<p style='color:#666'>لا يوجد طلاب مسجلين</p>";
     });
 }
+function deleteStudent(id){
+    if(confirm("⚠️ هل أنت متأكد من حذف هذا الطالب؟")){
+        db.ref("students/"+id).remove().then(()=>loadStudents());
+    }
+}
 
-// الإحصائيات
-function updateStats(){
-    db.ref("requests").once("value", snap=>{
-        const data = snap.val() || {};
-        let total=0, pending=0, approved=0, rejected=0;
+// إدارة الحالات التعليمية
+function loadCases(){
+    casesList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
+    db.ref("cases").once("value", snap=>{
+        let data = snap.val() || {};
+        let html = "";
         Object.keys(data).forEach(id=>{
-            total++;
-            if(data[id].status==="pending") pending++;
-            if(data[id].status==="approved") approved++;
-            if(data[id].status==="rejected") rejected++;
+            html += `            <div class="row">
+                <div class="title">📌 ${data[id].title}</div>
+                <div style="margin-top:5px;font-size:14px">${data[id].details}</div>
+                <button class="btn-danger" style="margin-top:8px" onclick="deleteCase('${id}')">🗑️ حذف</button>
+            </div>`;
         });
-        statsContent.innerHTML = `
-            <p>إجمالي الطلبات: <b>${total}</b></p>
-            <p>قيد المراجعة: <b>${pending}</b></p>
-            <p>مفعلون: <b>${approved}</b></p>
-            <p>مرقنون: <b>${rejected}</b></p>
-        `;
+        casesList.innerHTML = html || "<p style='color:#666'>لا توجد حالات</p>";
     });
 }
+function addCase(){
+    let title = caseTitle.value.trim();
+    let details = caseDetails.value.trim();
+    if(!title || !details){ alert("⚠️ أدخل البيانات"); return; }
+    db.ref("cases").push({title, details});
+    caseTitle.value = ""; caseDetails.value = "";
+    loadCases();
+    alert("✅ تمت إضافة الحالة");
+}
+function deleteCase(id){
+    if(confirm("⚠️ حذف هذه الحالة؟")){
+        db.ref("cases/"+id).remove().then(()=>loadCases());
+    }
+}
 
-// بدء الجلسة
-addLog("بدء جلسة جديدة");
+// إدارة المرضى (للمدير)
+function loadAllPatients(){
+    const list = document.getElementById('allPatientsList');
+    list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
+    db.ref("patients").once("value", snap=>{
+        let data = snap.val();
+        if(!data){
+            list.innerHTML = "<p style='color:#666'>لا يوجد مرضى مسجلين</p>";
+            return;
+        }
+        let html = "";
+        Object.values(data).forEach(p=>{
+            html += `
+            <div class="row">
+                <div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div>
+                <div style="font-size:13px;color:#555;margin-top:5px">
+                    ${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>
+                    📱 ${p.phone||'-' } | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}
+                </div>
+            </div>`;
+        });
+        list.innerHTML = html;
+    });
+}
 </script>
-
-</body>
-</html>
+</body></html>
