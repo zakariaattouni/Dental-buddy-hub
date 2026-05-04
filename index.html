@@ -3,42 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
-
-<!-- ========== أيقونات التطبيق لإضافتها إلى سطح المكتب (بدون ظهورها في الصفحة) ========== -->
-<!-- أيقونة عامة للمتصفحات -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M28 38 L50 26 L72 38 L50 50 Z'/%3E%3Crect x='28' y='38' width='44' height='14' fill='%23ffffff'/%3E%3Cpolygon points='50,58 28,46 28,60 50,72 72,60 72,46' fill='%23ffffff'/%3E%3Crect x='45' y='72' width='10' height='12' fill='%23ffffff'/%3E%3Ccircle cx='50' cy='78' r='4' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M58 48 L62 44 L58 40 L54 44 Z'/%3E%3C/svg%3E">
-<!-- أيقونات خاصة بأجهزة Apple (iOS / iPadOS) -->
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ccircle cx='90' cy='90' r='90' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M50 68 L90 46 L130 68 L90 90 Z'/%3E%3Crect x='50' y='68' width='80' height='26' fill='%23ffffff'/%3E%3Cpolygon points='90,104 50,84 50,108 90,128 130,108 130,84' fill='%23ffffff'/%3E%3Crect x='81' y='128' width='18' height='22' fill='%23ffffff'/%3E%3Ccircle cx='90' cy='138' r='6' fill='%231e88e5'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 152 152'%3E%3Ccircle cx='76' cy='76' r='76' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M42 56 L76 38 L110 56 L76 74 Z'/%3E%3Crect x='42' y='56' width='68' height='22' fill='%23ffffff'/%3E%3Cpolygon points='76,88 42,70 42,90 76,108 110,90 110,70' fill='%23ffffff'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" sizes="120x120" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M32 46 L60 30 L88 46 L60 62 Z'/%3E%3Crect x='32' y='46' width='56' height='18' fill='%23ffffff'/%3E%3Cpolygon points='60,76 32,60 32,78 60,94 88,78 88,60' fill='%23ffffff'/%3E%3C/svg%3E">
-
-<!-- أيقونات Android/Chrome متعددة الأحجام -->
-<link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M52 72 L96 50 L140 72 L96 94 Z'/%3E%3Crect x='52' y='72' width='88' height='28' fill='%23ffffff'/%3E%3Cpolygon points='96,110 52,90 52,114 96,134 140,114 140,90' fill='%23ffffff'/%3E%3Crect x='85' y='134' width='22' height='26' fill='%23ffffff'/%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="96x96" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='48' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M26 36 L48 24 L70 36 L48 48 Z'/%3E%3Crect x='26' y='36' width='44' height='14' fill='%23ffffff'/%3E%3Cpolygon points='48,58 26,46 26,60 48,72 70,60 70,46' fill='%23ffffff'/%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M8 12 L16 7 L24 12 L16 17 Z'/%3E%3Crect x='8' y='12' width='16' height='5' fill='%23ffffff'/%3E%3Cpolygon points='16,20 8,14 8,21 16,27 24,21 24,14' fill='%23ffffff'/%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M4 6 L8 3 L12 6 L8 9 Z'/%3E%3Crect x='4' y='6' width='8' height='3' fill='%23ffffff'/%3E%3Cpolygon points='8,11 4,8 4,12 8,15 12,12 12,8' fill='%23ffffff'/%3E%3C/svg%3E">
-
-<!-- بيان تطبيق الويب (Web App Manifest) لدعم إضافة الصفحة إلى الشاشة الرئيسية مع أيقونات -->
-<link rel="manifest" href="data:application/json;charset=utf-8,{
-  \"name\": \"مساعد طالب الأسنان\",
-  \"short_name\": \"طبيب الأسنان\",
-  \"description\": \"تطبيق متكامل لإدارة المرضى وطوارئ العيادة والمهام اليومية لطلاب طب الأسنان\",
-  \"start_url\": \".\",
-  \"display\": \"standalone\",
-  \"theme_color\": \"#1e88e5\",
-  \"background_color\": \"#42a5f5\",
-  \"icons\": [
-    { \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M52 72 L96 50 L140 72 L96 94 Z'/%3E%3Crect x='52' y='72' width='88' height='28' fill='%23ffffff'/%3E%3Cpolygon points='96,110 52,90 52,114 96,134 140,114 140,90' fill='%23ffffff'/%3E%3Crect x='85' y='134' width='22' height='26' fill='%23ffffff'/%3E%3C/svg%3E\", \"sizes\": \"192x192\", \"type\": \"image/svg+xml\" },
-    { \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M128 192 L256 128 L384 192 L256 256 Z'/%3E%3Crect x='128' y='192' width='256' height='72' fill='%23ffffff'/%3E%3Cpolygon points='256,296 128,248 128,280 256,344 384,280 384,248' fill='%23ffffff'/%3E%3Crect x='224' y='344' width='64' height='72' fill='%23ffffff'/%3E%3C/svg%3E\", \"sizes\": \"512x512\", \"type\": \"image/svg+xml\" }
-  ]
-}">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="طبيب الأسنان">
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1e88e5">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<link rel="manifest" href="data:application/manifest+json,{
+  %22name%22:%22مساعد%20طالب%20الأسنان%22,
+  %22short_name%22:%22DS%20Assistant%22,
+  %22start_url%22:%22.%22,
+  %22display%22:%22standalone%22,
+  %22background_color%22:%22%231e88e5%22,
+  %22theme_color%22:%22%231e88e5%22,
+  %22icons%22:[{
+    %22src%22:%22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%231e88e5'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle'%3E👨‍🎓%3C/text%3E%3C/svg%3E%22,
+    %22sizes%22:%22192x192%22,
+    %22type%22:%22image/svg+xml%22
+  }]
+}">
 <style>
     /* ========== إعدادات عامة ========== */
     * {
@@ -55,6 +34,7 @@
         align-items: center;
         padding: 10px;
     }
+    /* ========== الهيدر ========== */
     .app-header {
         width: 100%;
         max-width: 420px;
@@ -67,18 +47,18 @@
         align-items: center;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    .app-title {
-        font-size: 18px;
+    .app-title {        font-size: 18px;
         font-weight: bold;
         display: flex;
         align-items: center;
         gap: 8px;
     }
+    .app-title span.icon { font-size: 22px; }
+    /* مؤشر فايربيس */
     .firebase-status {
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 12px;
+        gap: 6px;        font-size: 12px;
         background: rgba(255,255,255,0.15);
         padding: 5px 10px;
         border-radius: 20px;
@@ -98,6 +78,7 @@
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.6; transform: scale(0.9); }
     }
+    /* ========== البطاقات ========== */
     .card {
         width: 100%;
         max-width: 420px;
@@ -115,16 +96,14 @@
     h2 { margin: 0 0 10px; text-align: center; color: #1565c0; font-size: 20px; }
     h3 { color: #1565c0; margin: 15px 0 10px; font-size: 17px; }
     input, select, textarea {
-        width: 100%;
-        padding: 11px;
+        width: 100%;        padding: 11px;
         margin: 6px 0;
         border-radius: 12px;
         border: 1px solid #b0bec5;
         font-size: 14px;
         box-sizing: border-box;
     }
-    button {
-        width: 100%;
+    button {        width: 100%;
         padding: 11px;
         margin: 8px 0;
         border: none;
@@ -135,6 +114,7 @@
         transition: 0.2s;
     }
     button:hover { opacity: 0.92; transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
     .btn-primary { background: #1e88e5; color: #fff; }
     .btn-secondary { background: #90a4ae; color: #fff; }
     .btn-danger { background: #e53935; color: #fff; }
@@ -145,39 +125,30 @@
     .hidden { display: none !important; }
     .title { font-weight: bold; color: #1565c0; margin-bottom: 5px; font-size: 15px; }
     .row { background: #f5f5f5; padding: 12px; border-radius: 12px; margin: 8px 0; font-size: 14px; }
+    /* التبويبات */
     .tabs { display: flex; gap: 4px; margin: 10px 0; flex-wrap: wrap; }
     .tab-btn {
         flex: 1; min-width: 70px; padding: 9px 6px; border: none;
         border-radius: 10px; background: #bbdefb; font-weight: bold; font-size: 12px;
     }
     .tab-btn.active { background: #1e88e5; color: #fff; }
+    /* أزرار الطالب */
     .student-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
     .action-btn {
         padding: 12px 8px; font-size: 13px; border-radius: 14px;
         display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 70px;
     }
+    .action-btn span.icon { font-size: 18px; }
+    /* نموذج المريض */
     .form-group { margin: 6px 0; }
     .form-group label { display: block; font-weight: bold; color: #1565c0; font-size: 13px; margin-bottom: 3px; }
+    /* قائمة المرضى */
     .patient-item {
         background: #fff; border-right: 4px solid #43a047;
-        padding: 10px; border-radius: 8px; margin: 6px 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        position: relative;
-    }
+        padding: 10px; border-radius: 8px; margin: 6px 0;        box-shadow: 0 2px 5px rgba(0,0,0,0.05);    }
     .patient-name { font-weight: bold; color: #1565c0; font-size: 14px; }
     .patient-info { font-size: 12px; color: #555; margin-top: 4px; line-height: 1.5; }
-    .delete-patient-btn {
-        margin-top: 8px;
-        padding: 5px 10px;
-        font-size: 11px;
-        width: auto;
-        background: #e53935;
-        color: white;
-        border-radius: 20px;
-        display: inline-block;
-        cursor: pointer;
-        text-align: center;
-    }
+    /* ========== شريط التمرير للحالات الطارئة ========== */
     .emergency-slider {
         position: relative; background: #fff3e0; border-radius: 15px;
         padding: 12px; margin: 10px 0; border: 2px solid #ffb74d; min-height: 180px;
@@ -185,55 +156,120 @@
     .slider-track {
         display: flex; overflow-x: auto; gap: 10px;
         padding: 5px 2px 15px; scroll-behavior: smooth;
-        scrollbar-width: thin;
+        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
     }
+    .slider-track::-webkit-scrollbar { height: 6px; }
+    .slider-track::-webkit-scrollbar-track { background: #ffe0b2; border-radius: 3px; }
+    .slider-track::-webkit-scrollbar-thumb { background: #fb8c00; border-radius: 3px; }
     .emergency-card {
-        min-width: 140px; background: #fff;
+        min-width: 140px; max-width: 140px; background: #fff;
         border-radius: 12px; padding: 12px 10px; text-align: center;
-        cursor: pointer; border: 2px solid #ffe0b2; flex-shrink: 0;
+        cursor: pointer; border: 2px solid #ffe0b2; transition: 0.2s; flex-shrink: 0;
+    }
+    .emergency-card:hover, .emergency-card.active {
+        border-color: #fb8c00; background: #fff8e1; transform: translateY(-3px);
     }
     .emergency-card .icon { font-size: 24px; margin-bottom: 5px; }
+    .emergency-card .name { font-size: 12px; font-weight: bold; color: #e65100; }
     .slider-nav { display: flex; justify-content: center; gap: 15px; margin-top: 8px; }
     .slider-nav button {
         width: 36px; height: 36px; padding: 0; border-radius: 50%;
-        font-size: 18px; background: #ffb74d; margin: 0;
+        font-size: 18px; background: #ffb74d; color: #fff; margin: 0;
     }
     .emergency-result {
         background: #fff; border-radius: 12px; padding: 12px; margin-top: 10px;
-        font-size: 13px; border-right: 4px solid #fb8c00;
+        font-size: 13px; line-height: 1.7; color: #333;
+        border-right: 4px solid #fb8c00; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
+    .emergency-result strong { color: #e65100; font-size: 14px; }
+    /* ========== قسم ما يجب فعله - قائمة مهام شخصية ========== */
     .wtd-section {
         background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
         border-radius: 15px; padding: 14px; margin: 12px 0;
         border: 2px solid #81c784;
     }
-    .wtd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .wtd-add-btn { width: auto; padding: 6px 14px; background: #43a047; color: #fff; border-radius: 20px; margin: 0; }
-    .wtd-form { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .wtd-header {        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+    }
+    .wtd-title {
+        font-weight: bold; color: #1b5e20; font-size: 15px;
+        display: flex; align-items: center; gap: 6px;
+    }    .wtd-add-btn {
+        width: auto; padding: 6px 14px; font-size: 13px;
+        background: #43a047; color: #fff; border-radius: 20px; margin: 0;
+    }
+    .wtd-form {
+        background: #fff; border-radius: 12px; padding: 12px;
+        margin-bottom: 10px; border: 1px solid #a5d6a7;
+    }
     .wtd-form-row { display: flex; gap: 6px; flex-wrap: wrap; }
-    .wtd-form-row input, .wtd-form-row select { flex: 1; margin: 4px 0; padding: 8px; }
+    .wtd-form-row input, .wtd-form-row select {
+        flex: 1; min-width: 100px; margin: 4px 0; padding: 8px; font-size: 13px;
+    }
+    .wtd-form-actions { display: flex; gap: 6px; margin-top: 8px; }
+    .wtd-form-actions button { margin: 0; flex: 1; }
     .tasks-list { max-height: 200px; overflow-y: auto; }
     .task-item {
         background: #fff; border-radius: 10px; padding: 10px;
         margin: 6px 0; border-right: 4px solid #66bb6a;
-        display: flex; justify-content: space-between; gap: 8px;
+        display: flex; justify-content: space-between; align-items: flex-start;
+        gap: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
-    .task-text { font-size: 14px; }
+    .task-content { flex: 1; }
+    .task-text { font-size: 14px; color: #333; font-weight: 500; }
     .task-meta { font-size: 11px; color: #666; margin-top: 4px; }
+    .task-meta .priority {
+        display: inline-block; padding: 2px 6px; border-radius: 4px;
+        font-size: 10px; font-weight: bold; margin-left: 5px;
+    }
     .priority.high { background: #ffcdd2; color: #c62828; }
-    .task-actions { display: flex; gap: 4px; }
-    .task-actions button { width: 28px; height: 28px; border-radius: 50%; margin: 0; }
+    .priority.medium { background: #fff9c4; color: #f57f17; }
+    .priority.low { background: #c8e6c9; color: #2e7d32; }
+    .task-done .task-text { text-decoration: line-through; color: #999; }
+    .task-actions { display: flex; flex-direction: column; gap: 4px; }
+    .task-actions button {
+        width: 28px; height: 28px; padding: 0; margin: 0;
+        border-radius: 50%; font-size: 14px; display: flex;
+        align-items: center; justify-content: center;
+    }
+    /* ========== صندوق الترحيب المشوق ========== */
     .welcome-box {
-        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);        border: 2px solid #90caf9;
         border-radius: 16px;
         padding: 18px 15px;
         margin: 15px 0;
         text-align: center;
+        font-size: 16px;
+        line-height: 1.8;
         color: #0d47a1;
         font-weight: 600;
+        box-shadow: 0 4px 10px rgba(30,136,229,0.15);        animation: fadeInUp 0.6s ease;
     }
-    .scrollable { max-height: 280px; overflow-y: auto; }
-    .empty-msg { text-align: center; color: #666; padding: 15px; background: #f9f9f9; border-radius: 10px; }
+    .welcome-box .highlight {
+        color: #1e88e5;
+        font-size: 18px;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .welcome-box .emoji-row {
+        font-size: 14px;
+        margin-top: 8px;
+        opacity: 0.85;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    /* التمرير العام */
+    .scrollable { max-height: 280px; overflow-y: auto; padding-right: 4px; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-thumb { background: #90a4ae; border-radius: 3px; }
+    .empty-msg {
+        text-align: center; color: #666; font-size: 13px;
+        padding: 15px; background: #f9f9f9; border-radius: 10px;
+    }
+    /* ========== شريط الطلاب الأفقي ========== */
     .students-slider-wrapper {
         display: flex;
         align-items: center;
@@ -244,8 +280,21 @@
         padding: 8px 5px;
     }
     .slider-nav-btn {
-        width: 36px; height: 36px; padding: 0; border-radius: 50%;
-        background: #1e88e5; color: white; font-size: 20px; margin: 0; flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 50%;
+        background: #1e88e5;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+        flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        transition: 0.2s;
+    }    .slider-nav-btn:hover {
+        background: #0d47a1;
+        transform: scale(1.02);
     }
     .students-slider-track {
         display: flex;
@@ -254,49 +303,168 @@
         padding: 8px 4px 12px;
         scroll-behavior: smooth;
         flex: 1;
+        scrollbar-width: thin;
+        scrollbar-color: #42a5f5 #bbdefb;
+    }
+    .students-slider-track::-webkit-scrollbar {
+        height: 6px;
+    }
+    .students-slider-track::-webkit-scrollbar-track {
+        background: #bbdefb;
+        border-radius: 4px;
+    }
+    .students-slider-track::-webkit-scrollbar-thumb {
+        background: #1e88e5;
+        border-radius: 4px;
     }
     .student-card {
         min-width: 210px;
+        max-width: 210px;
         background: white;
         border-radius: 20px;
         padding: 14px 12px;
         box-shadow: 0 6px 14px rgba(0,0,0,0.1);
         border-right: 5px solid #1e88e5;
+        transition: all 0.2s;
         flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
     }
-    .student-name-status { display: flex; justify-content: space-between; margin-bottom: 10px; }
-    .student-badge { font-size: 11px; padding: 3px 8px; border-radius: 30px; background: #e3f2fd; }
-    .student-badge.active { background: #c8e6c9; color: #2e7d32; }
-    .student-pass { font-size: 12px; background: #f5f5f5; padding: 4px 8px; border-radius: 12px; margin: 10px 0; text-align: center; }
-    .student-actions-horiz { display: flex; gap: 8px; margin-top: 6px; justify-content: center; }
-    .student-actions-horiz button { margin: 0; padding: 6px 8px; font-size: 12px; width: auto; border-radius: 30px; }
+    .student-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+    }
+    .student-name-status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }    .student-name {
+        font-weight: bold;
+        font-size: 16px;
+        color: #0d47a1;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .student-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 30px;
+        background: #e3f2fd;
+        color: #1565c0;
+    }
+    .student-badge.active {
+        background: #c8e6c9;
+        color: #2e7d32;
+    }
+    .student-badge.waiting {
+        background: #fff3e0;
+        color: #ef6c00;
+    }
+    .student-pass {
+        font-size: 12px;
+        color: #455a64;
+        background: #f5f5f5;
+        padding: 4px 8px;
+        border-radius: 12px;
+        margin: 10px 0;
+        text-align: center;
+        word-break: break-word;
+    }
+    .student-actions-horiz {
+        display: flex;
+        gap: 8px;
+        margin-top: 6px;
+        justify-content: center;
+    }
+    .student-actions-horiz button {
+        margin: 0;
+        padding: 6px 8px;
+        font-size: 12px;
+        width: auto;
+        flex: 1;
+        border-radius: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;    }
+    /* ========== الفوتر ========== */
     .app-footer {
         width: 100%; max-width: 420px; background: #0d47a1;
         color: #fff; text-align: center; padding: 10px 15px;
         border-radius: 0 0 15px 15px; font-size: 12px;
-        margin-bottom: 15px;
+        margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+    }
+    .app-footer strong { color: #ffcc80; }
+    
+    /* ========== أيقونة طالب الطبيب بعد الإضافة للشاشة الرئيسية ========== */
+    .installed-badge {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #43a047, #66bb6a);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: bold;
+        display: none;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        z-index: 9999;
+        animation: slideDown 0.4s ease;
+    }
+    .installed-badge.show {
+        display: flex;
+    }
+    .installed-badge .student-icon {
+        font-size: 20px;
+        animation: bounce 1.5s infinite;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translate(-50%, -30px); }
+        to   { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
     }
 </style>
 </head>
 <body>
+<!-- أيقونة طالب الطبيب تظهر بعد الإضافة للشاشة الرئيسية -->
+<div class="installed-badge" id="installedBadge">
+    <span class="student-icon">👨‍🎓🎓</span>    <span>تمت الإضافة للشاشة الرئيسية ✓</span>
+</div>
+
+<!-- الهيدر -->
 <div class="app-header">
-    <div class="app-title"><span class="icon">🦷</span> مساعد طالب الأسنان</div>
+    <div class="app-title">
+        <span class="icon">🦷</span> مساعد طالب الأسنان
+    </div>
     <div class="firebase-status" id="firebaseIndicator">
         <div class="status-dot" id="firebaseDot"></div>
         <span id="firebaseText">جاري الاتصال...</span>
     </div>
 </div>
+<!-- اختيار الدور -->
 <div class="card" id="roleCard">
     <h2>🩺 DS Assistant</h2>
     <div class="welcome-box">
         <span class="highlight">🌟 رفيقك السريري الذكي</span>
-        دليلك المتكامل لإدارة مرضاك، التعامل الآمن مع طوارئ العيادة، وتنظيم يومك الدراسي بذكاء.
+        دليلك المتكامل لإدارة مرضاك، التعامل الآمن مع طوارئ العيادة، وتنظيم يومك الدراسي بذكاء وسهولة.
         <br>🚀 خطوة واثقة نحو التميز في طب الأسنان!
         <div class="emoji-row">📋 سجل المرضى | 🚨 طوارئ العيادة | 📝 قائمة مهامك</div>
     </div>
     <button class="btn-primary" onclick="showStudentLogin()">دخول الطالب</button>
     <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
 </div>
+<!-- دخول الطالب -->
 <div class="card hidden" id="studentLoginCard">
     <h2>دخول الطالب</h2>
     <input id="studentLoginName" placeholder="اسم الطالب">
@@ -305,6 +473,7 @@
     <button class="btn-secondary" onclick="showStudentRegister()">تسجيل طالب جديد</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
+<!-- تسجيل طالب -->
 <div class="card hidden" id="studentRegisterCard">
     <h2>تسجيل طالب</h2>
     <input id="studentRegName" placeholder="اسم الطالب">
@@ -314,74 +483,165 @@
 </div>
 <!-- واجهة الطالب -->
 <div class="card hidden" id="studentArea">
-    <h2>👋 مرحباً <span id="studentNameLabel"></span></h2>
-    <button class="btn-secondary" onclick="studentLogout()">خروج</button>
+    <h2>👋 مرحباً <span id="studentNameLabel"></span></h2>    <button class="btn-secondary" onclick="studentLogout()">خروج</button>
     <hr style="margin:12px 0;">
+    
     <div class="student-actions">
-        <button class="btn-primary action-btn" onclick="showAddPatientForm()"><span class="icon">➕</span>أضف مريض</button>
-        <button class="btn-success action-btn" onclick="showActivePatients()"><span class="icon">📋</span>سجل المرضى</button>
-        <button class="btn-warning action-btn" onclick="showSmartAssistant()"><span class="icon">🤖</span>طوارئ العيادة</button>
-        <button class="btn-dental action-btn" onclick="focusTodoList()"><span class="icon">📋</span>قائمة المهام</button>
+        <button class="btn-primary action-btn" onclick="showAddPatientForm()">
+            <span class="icon">➕</span>أضف مريض        </button>
+        <button class="btn-success action-btn" onclick="showActivePatients()">
+            <span class="icon">📋</span>سجل المرضى
+        </button>
+        <button class="btn-warning action-btn" onclick="showSmartAssistant()">
+            <span class="icon">🤖</span>طوارئ العيادة
+        </button>
+        <button class="btn-dental action-btn" onclick="focusTodoList()">
+            <span class="icon">📋</span>قائمة المهام
+        </button>
     </div>
+    
+    <!-- نموذج إضافة مريض -->
     <div id="addPatientSection" class="hidden">
         <h3>➕ إضافة مريض جديد</h3>
-        <div class="form-group"><label>اسم المريض *</label><input id="patientName"></div>
-        <div class="form-group"><label>العمر *</label><input id="patientAge" type="number"></div>
-        <div class="form-group"><label>الجنس *</label><select id="patientGender"><option>ذكر</option><option>أنثى</option></select></div>
-        <div class="form-group"><label>التشخيص *</label><input id="patientDiagnosis"></div>
-        <div class="form-group"><label>الهاتف</label><input id="patientPhone"></div>
-        <button class="btn-primary" onclick="savePatient()">💾 حفظ</button>
+        <div class="form-group">
+            <label>اسم المريض *</label>
+            <input id="patientName" placeholder="أدخل اسم المريض">
+        </div>
+        <div class="form-group">
+            <label>العمر *</label>
+            <input id="patientAge" type="number" placeholder="أدخل العمر" min="1" max="120">
+        </div>
+        <div class="form-group">
+            <label>الجنس *</label>
+            <select id="patientGender">
+                <option value="">اختر الجنس</option>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>التشخيص / الإجراء *</label>
+            <input id="patientDiagnosis" placeholder="مثال: خلع ضرس، حشو عصب...">
+        </div>
+        <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input id="patientPhone" type="tel" placeholder="05XXXXXXXX">
+        </div>
+        <button class="btn-primary" onclick="savePatient()">💾 حفظ المريض</button>
         <button class="btn-secondary" onclick="hideAddPatientForm()">إلغاء</button>
     </div>
-    <div id="activePatientsSection" class="hidden">
-        <h3>📋 سجل مرضاك</h3>
-        <button class="btn-primary" onclick="loadActivePatients()">تحديث</button>
+    
+    <!-- سجل المرضى المفعلين -->    <div id="activePatientsSection" class="hidden">
+        <h3>📋 سجل المرضى المفعلين</h3>
+        <button class="btn-primary" onclick="loadActivePatients()">🔄 تحديث</button>
         <div id="patientsList" class="scrollable"></div>
         <button class="btn-secondary" onclick="hideActivePatients()">إغلاق</button>
     </div>
+        <!-- المساعد الذكي - طوارئ العيادة -->
     <div id="smartAssistantSection" class="hidden">
-        <h3>🚨 طوارئ العيادة</h3>
-        <div class="emergency-slider"><div class="slider-track" id="emergencyTrack"></div><div class="slider-nav"><button onclick="scrollEmergency(-1)">◀</button><button onclick="scrollEmergency(1)">▶</button></div></div>
-        <div id="emergencyResult" class="emergency-result hidden"><strong id="emergencyTitle"></strong><p id="emergencyAction"></p></div>
+        <h3>🚨 طوارئ عيادة الأسنان</h3>
+        <p style="font-size:12px;color:#666;margin:5px 0 10px;">اسحب ← أو → للتنقل بين الحالات:</p>
+        <div class="emergency-slider">
+            <div class="slider-track" id="emergencyTrack"></div>
+            <div class="slider-nav">
+                <button onclick="scrollEmergency(-1)">◀</button>
+                <button onclick="scrollEmergency(1)">▶</button>
+            </div>
+        </div>
+        <div id="emergencyResult" class="emergency-result hidden">
+            <strong id="emergencyTitle"></strong>
+            <p id="emergencyAction" style="margin:6px 0 0;"></p>
+        </div>
         <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>
     </div>
+    
+    <!-- قسم ما يجب فعله (To-Do List) -->
     <div class="wtd-section" id="todoListSection">
-        <div class="wtd-header"><div class="wtd-title">📝 ما يجب فعله (قائمة مهامي)</div><button class="wtd-add-btn" onclick="toggleTaskForm()">➕ مهمة جديدة</button></div>
+        <div class="wtd-header">
+            <div class="wtd-title">📝 ما يجب فعله (قائمة مهامي)</div>
+            <button class="wtd-add-btn" onclick="toggleTaskForm()">➕ مهمة جديدة</button>
+        </div>
         <div id="taskForm" class="wtd-form hidden">
             <input type="hidden" id="taskId">
-            <div class="wtd-form-row"><input id="taskText" placeholder="وصف المهمة"></div>
-            <div class="wtd-form-row"><input id="taskDate" type="date"><input id="taskTime" type="time"></div>
-            <div class="wtd-form-row"><select id="taskPriority"><option value="low">🟢 منخفضة</option><option value="medium" selected>🟡 متوسطة</option><option value="high">🔴 عالية</option></select></div>
-            <div class="wtd-form-actions"><button class="btn-success" onclick="saveTask()">حفظ</button><button class="btn-secondary" onclick="toggleTaskForm()">إلغاء</button></div>
+            <div class="wtd-form-row">
+                <input id="taskText" placeholder="وصف المهمة (مثال: مراجعة حالة المريض أحمد)">
+            </div>
+            <div class="wtd-form-row">
+                <input id="taskDate" type="date">
+                <input id="taskTime" type="time">
+            </div>
+            <div class="wtd-form-row">
+                <select id="taskPriority">
+                    <option value="low">🟢 أولوية منخفضة</option>
+                    <option value="medium" selected>🟡 أولوية متوسطة</option>
+                    <option value="high">🔴 أولوية عالية</option>
+                </select>
+            </div>
+            <div class="wtd-form-actions">
+                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
+                <button class="btn-secondary" onclick="toggleTaskForm()">إلغاء</button>            </div>
         </div>
-        <div id="tasksList" class="tasks-list"><div class="empty-msg">لا توجد مهام</div></div>
+        <div id="tasksList" class="tasks-list">
+            <div class="empty-msg">📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>
+        </div>
     </div>
 </div>
-<div class="card hidden" id="adminLoginCard">
+<!-- دخول المدير --><div class="card hidden" id="adminLoginCard">
     <h2>دخول المدير</h2>
     <input id="adminPass" type="password" placeholder="كلمة السر">
     <button class="btn-primary" onclick="loginAdmin()">دخول</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
+<!-- لوحة المدير -->
 <div class="card hidden" id="adminPanel">
     <h2>⚙️ لوحة المدير</h2>
     <div class="tabs">
-        <button class="tab-btn active" onclick="showAdminSection('studentsAdmin')">الطلاب</button>
-        <button class="tab-btn" onclick="showAdminSection('casesAdmin')">الحالات</button>
-        <button class="tab-btn" onclick="showAdminSection('patientsAdmin')">المرضى</button>
-        <button class="tab-btn" onclick="showAdminSection('infoAdmin')">معلومات</button>
+        <button id="tabStudents" class="tab-btn active" onclick="showAdminSection('studentsAdmin')">الطلاب</button>
+        <button id="tabCases" class="tab-btn" onclick="showAdminSection('casesAdmin')">الحالات</button>
+        <button id="tabPatients" class="tab-btn" onclick="showAdminSection('patientsAdmin')">المرضى</button>
+        <button id="tabInfo" class="tab-btn" onclick="showAdminSection('infoAdmin')">معلومات</button>
     </div>
     <button class="btn-secondary" onclick="logoutAdmin()">خروج</button>
+    
+    <!-- قسم الطلاب المعدل ليصبح شريط تمرير أفقي -->
     <div id="studentsAdmin">
-        <h3>الطلاب</h3>
-        <button class="btn-primary" onclick="loadStudents()">تحديث</button>
-        <div class="students-slider-wrapper"><button class="slider-nav-btn" onclick="scrollStudents(-1)">◀</button><div id="studentsList" class="students-slider-track"></div><button class="slider-nav-btn" onclick="scrollStudents(1)">▶</button></div>
+        <h3 style="color:#1565c0;">الطلاب</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+            <button class="btn-primary" style="flex:1;" onclick="loadStudents()">🔄 تحديث</button>
+        </div>
+        <!-- شريط التمرير الأفقي مع أزرار تنقل -->
+        <div class="students-slider-wrapper">
+            <button class="slider-nav-btn" onclick="scrollStudents(-1)">◀</button>
+            <div id="studentsList" class="students-slider-track"></div>
+            <button class="slider-nav-btn" onclick="scrollStudents(1)">▶</button>
+        </div>
     </div>
-    <div id="casesAdmin" class="hidden"><h3>الحالات التعليمية</h3><button class="btn-primary" onclick="loadCases()">تحديث</button><div id="casesList"></div><hr><input id="caseTitle" placeholder="العنوان"><textarea id="caseDetails" placeholder="التفاصيل"></textarea><button class="btn-primary" onclick="addCase()">إضافة</button></div>
-    <div id="patientsAdmin" class="hidden"><h3>جميع المرضى</h3><button class="btn-primary" onclick="loadAllPatients()">تحديث</button><div id="allPatientsList"></div></div>
-    <div id="infoAdmin" class="hidden"><h3>معلومات</h3><p>كلمة مدير: salem1959</p><p>Firebase Realtime DB</p><p>50 حالة طوارئ كاملة</p></div>
+    
+    <div id="casesAdmin" class="hidden">
+        <h3 style="color:#1565c0;">الحالات التعليمية</h3>
+        <button class="btn-primary" onclick="loadCases()">تحديث</button>
+        <div id="casesList"></div>
+        <hr>
+        <input id="caseTitle" placeholder="عنوان الحالة">
+        <textarea id="caseDetails" placeholder="تفاصيل الحالة" style="width:100%;height:80px;margin-top:10px;border-radius:12px;border:1px solid #b0bec5;padding:10px;"></textarea>
+        <button class="btn-primary" onclick="addCase()">إضافة</button>
+    </div>
+    <div id="patientsAdmin" class="hidden">
+        <h3 style="color:#1565c0;">سجل جميع المرضى</h3>
+        <button class="btn-primary" onclick="loadAllPatients()">تحديث</button>        <div id="allPatientsList"></div>
+    </div>
+    <div id="infoAdmin" class="hidden">
+        <h3 style="color:#1565c0;">معلومات النظام</h3>
+        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
+        <p>🔐 دخول إدارة: <b>salem1959</b></p>
+        <p>💾 Firebase Realtime Database</p>
+        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>    </div>
 </div>
-<div class="app-footer">تطوير <strong>الدكتور زكريا محمد عطوني</strong> 🦷</div>
+<!-- الفوتر -->
+<div class="app-footer">
+    تصميم وتطوير <strong>الدكتور زكريا محمد عطوني</strong> 🦷
+</div>
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
@@ -396,9 +656,72 @@ const firebaseConfig = {
   appId: "1:1014263737561:web:ca8affac416227be8862c8"
 };
 let db;
-try { firebase.initializeApp(firebaseConfig); db = firebase.database(); } catch(e) { console.error(e); }
+const firebaseDot = document.getElementById('firebaseDot');
+const firebaseText = document.getElementById('firebaseText');
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    db.ref('.info/connected').on('value', function(snap) {
+        if (snap.val() === true) {
+            firebaseDot.className = 'status-dot';
+            firebaseText.textContent = 'متصل ✓';
+        } else {
+            firebaseDot.className = 'status-dot error';
+            firebaseText.textContent = 'غير متصل';
+        }
+    });
+} catch (e) {    firebaseDot.className = 'status-dot error';
+    firebaseText.textContent = 'خطأ في الاتصال';
+    console.error('Firebase Error:', e);
+}
 const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
+
+// ===== أيقونة طالب الطبيب بعد الإضافة للشاشة الرئيسية =====
+let deferredPrompt;
+const installedBadge = document.getElementById('installedBadge');
+
+// الاستماع لحدث beforeinstallprompt لعرض زر التثبيت
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;    // يمكن عرض زر تثبيت مخصص هنا إذا رغبت
+});
+
+// الاستماع لحدث appinstalled لإظهار الأيقونة
+window.addEventListener('appinstalled', () => {
+    showInstalledBadge();
+    deferredPrompt = null;
+});
+
+// إظهار الأيقونة عند تحميل الصفحة إذا كان التطبيق مثبتاً
+window.addEventListener('load', () => {
+    if (window.matchMedia('(display-mode: standalone)').matches || 
+        window.navigator.standalone === true ||
+        document.referrer.includes('android-app://')) {
+        showInstalledBadge();
+    }
+});
+
+function showInstalledBadge() {
+    installedBadge.classList.add('show');
+    // إخفاء الأيقونة تلقائياً بعد 5 ثوانٍ
+    setTimeout(() => {
+        installedBadge.classList.remove('show');
+    }, 5000);
+}
+
+// دالة للتثبيت اليدوي إذا كان المدعوم
+function installApp() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('وافق المستخدم على التثبيت');
+            }
+            deferredPrompt = null;
+        });
+    }
+}
 
 // ===== 50 حالة طوارئ خاصة بطب الأسنان (كاملة) =====
 const dentalEmergencies = [
@@ -410,8 +733,7 @@ const dentalEmergencies = [
     {id:6,title:"حساسية للمخدر",icon:"⚠️",action:"🔹 توقف فوراً عند ظهور طفح أو تورم، إبينيفرين للحالات الشديدة + إسعاف"},
     {id:7,title:"ابتلاع جسم غريب",icon:"😰",action:"🔹 شجّع على السعال، مناورة هيمليخ إذا لم يتنفس، أشعة صدر لتأكيد الموقع"},
     {id:8,title:"استنشاق جسم غريب",icon:"🌬️",action:"🔹 طارئ خطير! اتصل بالإسعاف فوراً، إنعاش قلبي رئوي إذا توقف التنفس"},
-    {id:9,title:"صدمة وعائية (إغماء)",icon:"😵",action:"🔹 اجعل المريض مستلقياً مع رفع الساقين، فك الملابس الضيقة، تهوية جيدة"},
-    {id:10,title:"نزيف لثة أثناء تنظيف",icon:"🪥",action:"🔹 ضغط لطيف بشاش مبلل بماء بارد أو محلول ملح دافئ"},
+    {id:9,title:"صدمة وعائية (إغماء)",icon:"😵",action:"🔹 اجعل المريض مستلقياً مع رفع الساقين، فك الملابس الضيقة، تهوية جيدة"},    {id:10,title:"نزيف لثة أثناء تنظيف",icon:"🪥",action:"🔹 ضغط لطيف بشاش مبلل بماء بارد أو محلول ملح دافئ"},
     {id:11,title:"ألم مفصل الفك",icon:"🦴",action:"🔹 كمادة دافئة، تجنب فتح الفم واسعاً، مضاد التهاب"},
     {id:12,title:"جرح في اللسان",icon:"👅",action:"🔹 ضغط مباشر بشاش معقم، غرز إذا كان الجرح عميقاً خلال 6-8 ساعات"},
     {id:13,title:"خلع سن بالخطأ",icon:"🦷",action:"🔹 لا تمسك السن من الجذر، ضعه في حليب وأرسل المريض فوراً"},
@@ -453,200 +775,296 @@ const dentalEmergencies = [
     {id:49,title:"خلع مفصل الفك",icon:"🔓",action:"🔹 فم مفتوح ولا يغلق: ثبّت الفك، أحل لجراح فم"},
     {id:50,title:"ألم غير سني المنشأ",icon:"❓",action:"🔹 إذا الفحوصات سلبية: فكّر في أسباب: جيوب، أذن، قلب"}
 ];
-
-// ===== دوال التنقل =====
-function showStudentLogin(){ hideAll(); document.getElementById('studentLoginCard').classList.remove('hidden'); }
-function showStudentRegister(){ hideAll(); document.getElementById('studentRegisterCard').classList.remove('hidden'); }
-function showAdminLogin(){ hideAll(); document.getElementById('adminLoginCard').classList.remove('hidden'); }
-function backToRole(){ hideAll(); document.getElementById('roleCard').classList.remove('hidden'); }
-function backToStudentLogin(){ hideAll(); document.getElementById('studentLoginCard').classList.remove('hidden'); }
+// ===== دوال التنقل بين الشاشات =====
+function showStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
+function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }
+function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
+function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
+function backToStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
 function hideAll(){
-    const ids=['roleCard','studentLoginCard','studentRegisterCard','studentArea','adminLoginCard','adminPanel'];
-    ids.forEach(id=>document.getElementById(id).classList.add('hidden'));
+    const elements = [roleCard, studentLoginCard, studentRegisterCard, studentArea, adminLoginCard, adminPanel];    elements.forEach(el => el.classList.add("hidden"));
 }
+// ===== إدارة الطالب =====
 function registerStudent(){
-    let name=document.getElementById('studentRegName').value.trim();
-    let pass=document.getElementById('studentRegPass').value.trim();
-    if(!name||!pass){ alert("أدخل الاسم والرقم"); return; }
-    db.ref("students").push({name,password:pass,status:"قيد الانتظار"});
-    alert("تم إرسال الطلب، بانتظار التفعيل");
-    document.getElementById('studentRegName').value='';
-    document.getElementById('studentRegPass').value='';
+    let name = studentRegName.value.trim();
+    let pass = studentRegPass.value.trim();
+    if(!name || !pass){ alert("أدخل الاسم والرقم السري"); return; }
+    db.ref("students").push({name, password:pass, status:"قيد الانتظار"});
+    alert("✅ تم إرسال طلب التسجيل. بانتظار تفعيل المدير.");
+    studentRegName.value = studentRegPass.value = "";
     backToStudentLogin();
 }
 function loginStudent(){
-    let name=document.getElementById('studentLoginName').value.trim();
-    let pass=document.getElementById('studentLoginPass').value.trim();
-    if(!name||!pass){ alert("أدخل البيانات"); return; }
+    let name = studentLoginName.value.trim();
+    let pass = studentLoginPass.value.trim();
+    if(!name || !pass){ alert("أدخل البيانات"); return; }
     db.ref("students").orderByChild("name").equalTo(name).once("value", snap=>{
-        let data=snap.val();
-        if(!data){ alert("اسم غير موجود"); return; }
-        let ok=false, status="";
-        Object.keys(data).forEach(id=>{ if(data[id].password===pass){ ok=true; currentStudentName=name; status=data[id].status; } });
-        if(!ok){ alert("رقم سري خاطئ"); return; }
-        if(status!=="مفعّل"){ alert("الحساب غير مفعّل بعد"); return; }
+        let data = snap.val();
+        if(!data){ alert("الاسم غير موجود"); return; }
+        let ok = false;
+        let studentStatus = "غير موجود";
+        Object.keys(data).forEach(id=>{ 
+            if(data[id].password === pass){ 
+                ok = true; 
+                currentStudentName = name; 
+                studentStatus = data[id].status;            } 
+        });
+        if(!ok){ alert("الرقم السري غير صحيح"); return; }
+        if(studentStatus !== "مفعّل"){ 
+            alert("⚠️ حسابك قيد المراجعة أو غير مفعّل من قبل المدير. يرجى الانتظار حتى يتم التفعيل."); 
+            return; 
+        }
         hideAll();
-        document.getElementById('studentNameLabel').innerText=currentStudentName;
-        document.getElementById('studentArea').classList.remove('hidden');
+        studentNameLabel.textContent = currentStudentName;
+        studentArea.classList.remove("hidden");
         initEmergencySlider();
         loadTasks();
     });
 }
-function studentLogout(){ hideAll(); document.getElementById('roleCard').classList.remove('hidden'); currentStudentName=""; }
+function studentLogout(){
+    hideAll(); 
+    roleCard.classList.remove("hidden");
+    hideAddPatientForm(); 
+    hideActivePatients(); 
+    hideSmartAssistant();
+    currentStudentName = "";
+}
+// وظيفة التركيز على قائمة المهام (To-Do List)
 function focusTodoList(){
-    hideAddPatientForm(); hideActivePatients(); hideSmartAssistant();
-    const todo=document.getElementById('todoListSection');
-    if(todo){ todo.scrollIntoView({ behavior:'smooth', block:'start' }); todo.style.boxShadow='0 0 0 3px #43a047'; setTimeout(()=>todo.style.boxShadow='',1500); }
-}
-function showAddPatientForm(){ hideActivePatients(); hideSmartAssistant(); document.getElementById('addPatientSection').classList.remove('hidden'); }
-function hideAddPatientForm(){ document.getElementById('addPatientSection').classList.add('hidden'); document.getElementById('patientName').value=''; document.getElementById('patientAge').value=''; document.getElementById('patientGender').value='ذكر'; document.getElementById('patientDiagnosis').value=''; document.getElementById('patientPhone').value=''; }
-function savePatient(){
-    let name=document.getElementById('patientName').value.trim();
-    let age=document.getElementById('patientAge').value.trim();
-    let gender=document.getElementById('patientGender').value;
-    let diagnosis=document.getElementById('patientDiagnosis').value.trim();
-    let phone=document.getElementById('patientPhone').value.trim();
-    if(!name||!age||!gender||!diagnosis){ alert("أكمل الحقول المطلوبة"); return; }
-    db.ref("patients").push({name,age,gender,diagnosis,phone, addedBy:currentStudentName, date:new Date().toLocaleDateString('ar-SA'), active:true});
-    alert("تم حفظ المريض");
-    hideAddPatientForm();
-}
-function showActivePatients(){ hideAddPatientForm(); hideSmartAssistant(); document.getElementById('activePatientsSection').classList.remove('hidden'); loadActivePatients(); }
-function hideActivePatients(){ document.getElementById('activePatientsSection').classList.add('hidden'); }
-function loadActivePatients(){
-    let list=document.getElementById('patientsList');
-    list.innerHTML="<p>جار التحميل...</p>";
-    db.ref("patients").orderByChild("addedBy").equalTo(currentStudentName).once("value", snap=>{
-        let data=snap.val();
-        if(!data){ list.innerHTML="<p>لا يوجد مرضى مسجلين</p>"; return; }
-        let html="";
-        Object.keys(data).forEach(id=>{
-            let p=data[id];
-            html+=`<div class="patient-item"><div class="patient-name">👤 ${p.name}</div><div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>🦷 ${p.diagnosis}<br>📱 ${p.phone||'-'} | 📅 ${p.date}</div><div class="delete-patient-btn" onclick="deletePatient('${id}')">🗑️ حذف المريض</div></div>`;
-        });
-        list.innerHTML=html;
-    });
-}
-function deletePatient(patientId){
-    if(confirm("هل أنت متأكد من حذف هذا المريض نهائياً؟")){
-        db.ref("patients/"+patientId).remove().then(()=>{ alert("تم الحذف"); loadActivePatients(); });
+    // إخفاء الأقسام الأخرى وإظهار قسم المهام فقط إن أردت، لكن الأفضل التمرير إليه    hideAddPatientForm();
+    hideActivePatients();
+    hideSmartAssistant();
+    const todoSection = document.getElementById('todoListSection');
+    if(todoSection){
+        todoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        todoSection.style.transition = '0.3s';
+        todoSection.style.boxShadow = '0 0 0 3px #43a047';
+        setTimeout(() => { todoSection.style.boxShadow = ''; }, 1500);
     }
 }
+// ===== إدارة المرضى =====
+function showAddPatientForm(){
+    hideActivePatients(); 
+    hideSmartAssistant();
+    document.getElementById('addPatientSection').classList.remove('hidden');
+}
+function hideAddPatientForm(){
+    document.getElementById('addPatientSection').classList.add('hidden');
+    document.getElementById('patientName').value = '';
+    document.getElementById('patientAge').value = '';
+    document.getElementById('patientGender').value = '';
+    document.getElementById('patientDiagnosis').value = '';
+    document.getElementById('patientPhone').value = '';
+}
+function savePatient(){
+    const name = document.getElementById('patientName').value.trim();
+    const age = document.getElementById('patientAge').value.trim();
+    const gender = document.getElementById('patientGender').value;
+    const diagnosis = document.getElementById('patientDiagnosis').value.trim();
+    const phone = document.getElementById('patientPhone').value.trim();
+    
+    if(!name || !age || !gender || !diagnosis){ 
+        alert("أكمل الحقول المطلوبة (*)"); 
+        return; 
+    }
+    db.ref("patients").push({
+        name, age, gender, diagnosis, phone,
+        addedBy: currentStudentName,
+        date: new Date().toLocaleDateString('ar-SA'),
+        active: true
+    });
+    alert("✅ تم الحفظ"); 
+    hideAddPatientForm();
+}
+function showActivePatients(){
+    hideAddPatientForm(); 
+    hideSmartAssistant();
+    document.getElementById('activePatientsSection').classList.remove('hidden');
+    loadActivePatients();}
+function hideActivePatients(){
+    document.getElementById('activePatientsSection').classList.add('hidden');
+}
+function loadActivePatients(){
+    const list = document.getElementById('patientsList');
+    list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{        let data = snap.val();
+        if(!data){ 
+            list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>"; 
+            return; 
+        }
+        let html = "";
+        Object.values(data).forEach(p=>{
+            html += `<div class="patient-item">
+                <div class="patient-name">👤 ${p.name}</div>
+                <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
+                🦷 ${p.diagnosis}<br>
+                📱 ${p.phone || 'غير متاح'}<br>
+                📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div>
+            </div>`;
+        });
+        list.innerHTML = html;
+    });
+}
+// ===== شريط تمرير طوارئ الأسنان =====
 function initEmergencySlider(){
-    let track=document.getElementById('emergencyTrack');
-    track.innerHTML='';
+    const track = document.getElementById('emergencyTrack');
+    track.innerHTML = '';
     dentalEmergencies.forEach(e=>{
-        let card=document.createElement('div');
-        card.className='emergency-card';
-        card.innerHTML=`<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;
-        card.onclick=()=>showDentalEmergency(e,card);
+        const card = document.createElement('div');
+        card.className = 'emergency-card';
+        card.innerHTML = `<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;
+        card.onclick = ()=> showDentalEmergency(e, card);
         track.appendChild(card);
     });
 }
-function scrollEmergency(dir){ document.getElementById('emergencyTrack').scrollBy({left:dir*150, behavior:'smooth'}); }
-function showSmartAssistant(){ hideAddPatientForm(); hideActivePatients(); document.getElementById('smartAssistantSection').classList.remove('hidden'); document.getElementById('emergencyResult').classList.add('hidden'); }
-function hideSmartAssistant(){ document.getElementById('smartAssistantSection').classList.add('hidden'); }
-function showDentalEmergency(emergency,card){
+function scrollEmergency(direction){
+    const track = document.getElementById('emergencyTrack');
+    track.scrollBy({ left: direction * 150, behavior: 'smooth' });
+}
+function showSmartAssistant(){
+    hideAddPatientForm(); 
+    hideActivePatients();
+    document.getElementById('smartAssistantSection').classList.remove('hidden');
+    document.getElementById('emergencyResult').classList.add('hidden');
+}
+function hideSmartAssistant(){
+    document.getElementById('smartAssistantSection').classList.add('hidden');
+}function showDentalEmergency(emergency, cardEl){
     document.querySelectorAll('.emergency-card').forEach(c=>c.classList.remove('active'));
-    if(card) card.classList.add('active');
-    document.getElementById('emergencyTitle').innerText=`🚨 ${emergency.title}`;
-    document.getElementById('emergencyAction').innerHTML=emergency.action.replace(/\n/g,'<br>');
+    if(cardEl) cardEl.classList.add('active');
+    document.getElementById('emergencyTitle').textContent = `🚨 ${emergency.title}`;
+    document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
-function toggleTaskForm(taskId){
-    let form=document.getElementById('taskForm');
-    if(form.classList.contains('hidden')) form.classList.remove('hidden');
-    else form.classList.add('hidden');
-    if(taskId){
-        db.ref(`tasks/${taskId}`).once("value", snap=>{
-            let t=snap.val();
-            if(t){ document.getElementById('taskId').value=taskId; document.getElementById('taskText').value=t.text; document.getElementById('taskDate').value=t.date||''; document.getElementById('taskTime').value=t.time||''; document.getElementById('taskPriority').value=t.priority||'medium'; }
-        });
-    } else { document.getElementById('taskId').value=''; document.getElementById('taskText').value=''; document.getElementById('taskDate').value=''; document.getElementById('taskTime').value=''; document.getElementById('taskPriority').value='medium'; }
+// ===== 🔹 قائمة المهام الشخصية (To-Do List) 🔹 =====
+function toggleTaskForm(taskId = null){
+    const form = document.getElementById('taskForm');
+    const isHidden = form.classList.contains('hidden');
+    if(isHidden){
+        form.classList.remove('hidden');
+        if(!taskId){
+            document.getElementById('taskId').value = '';
+            document.getElementById('taskText').value = '';
+            document.getElementById('taskDate').value = '';
+            document.getElementById('taskTime').value = '';
+            document.getElementById('taskPriority').value = 'medium';
+        }
+        document.getElementById('taskText').focus();
+    } else {
+        form.classList.add('hidden');
+    }
 }
 function saveTask(){
-    let id=document.getElementById('taskId').value;
-    let text=document.getElementById('taskText').value.trim();
-    if(!text){ alert("أدخل وصف المهمة"); return; }
-    let data={ text, date:document.getElementById('taskDate').value, time:document.getElementById('taskTime').value, priority:document.getElementById('taskPriority').value, student:currentStudentName, done:false, createdAt:new Date().toISOString() };
-    if(id) db.ref(`tasks/${id}`).update(data).then(()=>{ alert("تم التحديث"); toggleTaskForm(); loadTasks(); });
-    else db.ref("tasks").push(data).then(()=>{ alert("تمت الإضافة"); toggleTaskForm(); loadTasks(); });
+    const taskId = document.getElementById('taskId').value;
+    const text = document.getElementById('taskText').value.trim();
+    const date = document.getElementById('taskDate').value;
+    const time = document.getElementById('taskTime').value;
+    const priority = document.getElementById('taskPriority').value;
+    if(!text){ alert("⚠️ اكتب وصف المهمة"); return; }
+    const taskData = { text, date, time, priority, student: currentStudentName, done: false, createdAt: new Date().toISOString() };
+    if(taskId){
+        db.ref(`tasks/${taskId}`).update(taskData).then(()=>{ alert("✅ تم تحديث المهمة"); toggleTaskForm(); loadTasks(); });
+    } else {
+        db.ref("tasks").push(taskData).then(()=>{ alert("✅ تمت إضافة المهمة"); toggleTaskForm(); loadTasks(); });
+    }
 }
 function loadTasks(){
     if(!currentStudentName) return;
-    let list=document.getElementById('tasksList');
-    list.innerHTML="<p>جاري التحميل...</p>";
+    const list = document.getElementById('tasksList');
+    list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
     db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value", snap=>{
-        let data=snap.val();
-        if(!data){ list.innerHTML="<div class='empty-msg'>لا توجد مهام</div>"; return; }
-        let tasks=Object.entries(data).map(([id,t])=>({id,...t}));
-        tasks.sort((a,b)=>{ if(a.done!=b.done) return a.done?1:-1; const pri={high:0,medium:1,low:2}; return pri[a.priority]-pri[b.priority]; });
-        let html="";
-        tasks.forEach(t=>{
-            html+=`<div class="task-item"><div><div class="task-text">${t.text}</div><div class="task-meta">${t.date||''} ${t.time||''} <span class="priority ${t.priority}">${t.priority}</span></div></div><div class="task-actions"><button onclick="toggleTaskDone('${t.id}',${!t.done})">${t.done?'↩️':'✅'}</button><button onclick="editTask('${t.id}')">✏️</button><button onclick="deleteTask('${t.id}')">🗑️</button></div></div>`;
+        let data = snap.val();
+        if(!data){ list.innerHTML = "<div class='empty-msg'>📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>"; return; }
+        let tasks = Object.entries(data).map(([id, t])=>({id, ...t}));
+        tasks.sort((a,b)=>{ if(a.done !== b.done) return a.done ? 1 : -1; const pri = {high:0, medium:1, low:2}; if(pri[a.priority] !== pri[b.priority]) return pri[a.priority] - pri[b.priority]; return new Date(a.date||0) - new Date(b.date||0); });
+        let html = "";
+        tasks.forEach(t=>{            const dateStr = t.date ? new Date(t.date).toLocaleDateString('ar-SA') : '';
+            const timeStr = t.time ? t.time : '';
+            const priorityLabel = t.priority==='high' ? '🔴 عالية' : t.priority==='medium' ? '🟡 متوسطة' : '🟢 منخفضة';
+            html += `<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}<span class="priority ${t.priority}">${priorityLabel}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button></div></div>`;
         });
-        list.innerHTML=html;
+        list.innerHTML = html;
     });
 }
-function toggleTaskDone(id,newStatus){ db.ref(`tasks/${id}`).update({done:newStatus}).then(()=>loadTasks()); }
-function editTask(id){ toggleTaskForm(id); }
-function deleteTask(id){ if(confirm("حذف المهمة؟")) db.ref(`tasks/${id}`).remove().then(()=>loadTasks()); }
-function loginAdmin(){
-    if(document.getElementById('adminPass').value===ADMIN_PASSWORD){ hideAll(); document.getElementById('adminPanel').classList.remove('hidden'); showAdminSection('studentsAdmin'); loadStudents(); }
-    else alert("كلمة سر خاطئة");
+function toggleTaskDone(taskId, newStatus){ db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>loadTasks()); }
+function editTask(taskId){
+    db.ref(`tasks/${taskId}`).once("value", snap=>{
+        const t = snap.val();
+        if(!t) return;
+        document.getElementById('taskId').value = taskId;
+        document.getElementById('taskText').value = t.text;
+        document.getElementById('taskDate').value = t.date || '';
+        document.getElementById('taskTime').value = t.time || '';
+        document.getElementById('taskPriority').value = t.priority || 'medium';
+        toggleTaskForm(taskId);
+    });
 }
-function logoutAdmin(){ hideAll(); document.getElementById('roleCard').classList.remove('hidden'); }
-function showAdminSection(section){
-    ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(s=>document.getElementById(s).classList.add('hidden'));
-    document.getElementById(section).classList.remove('hidden');
-    if(section==='patientsAdmin') loadAllPatients();
+function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>loadTasks()); } }
+// ===== إدارة المدير =====
+function loginAdmin(){
+    if(adminPass.value === ADMIN_PASSWORD){
+        hideAll(); 
+        adminPanel.classList.remove("hidden");
+        showAdminSection('studentsAdmin'); 
+        loadStudents();
+    } else alert("كلمة السر غير صحيحة");
+}
+function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
+function showAdminSection(id){
+    ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>document.getElementById(sid).classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');    
+    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>document.getElementById(tid).classList.remove('active'));
+    document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
+    if(id==='patientsAdmin') loadAllPatients();
 }
 function loadStudents(){
-    let container=document.getElementById('studentsList');
-    container.innerHTML="<div>جاري التحميل...</div>";
+    const container = document.getElementById('studentsList');
+    container.innerHTML = "<div style='padding:10px; color:#666;'>جاري التحميل...</div>";
     db.ref("students").once("value", snap=>{
-        let data=snap.val()||{};
-        if(Object.keys(data).length===0){ container.innerHTML="<div>لا يوجد طلاب</div>"; return; }
-        let html="";
+        let data = snap.val() || {};
+        if(Object.keys(data).length === 0){ container.innerHTML = "<div class='empty-msg' style='min-width:200px;'>📭 لا يوجد طلاب مسجلين</div>"; return; }
+        let html = "";
         Object.keys(data).forEach(id=>{
-            let s=data[id];
-            let isActive=s.status==="مفعّل";
-            html+=`<div class="student-card"><div class="student-name-status"><div>👨‍🎓 ${s.name}</div><div class="student-badge ${isActive?'active':'waiting'}">${s.status||'قيد الانتظار'}</div></div><div class="student-pass">🔑 ${s.password}</div><div class="student-actions-horiz">${isActive?'<button class="btn-warning" onclick="suspendStudent(\''+id+'\')">ترقين</button>':'<button class="btn-success" onclick="activateStudent(\''+id+'\')">تفعيل</button>'}<button class="btn-danger" onclick="deleteStudent(\''+id+'\')">حذف</button></div></div>`;
+            let student = data[id];
+            let statusText = (student.status === "مفعّل") ? "مفعّل" : (student.status === "مرقّن" ? "مرقّن" : "قيد الانتظار");
+            let statusClass = (student.status === "مفعّل") ? "active" : "waiting";            let isActive = (student.status === "مفعّل");
+            html += `<div class="student-card"><div class="student-name-status"><div class="student-name">👨‍🎓 ${escapeHtml(student.name)}</div><div class="student-badge ${statusClass}">${statusText}</div></div><div class="student-pass">🔑 الرقم السري: ${escapeHtml(student.password)}</div><div class="student-actions-horiz">${isActive ? '<button class="btn-warning" onclick="suspendStudent(\''+id+'\')" title="ترقين">🔒 ترقين</button>' : '<button class="btn-success" onclick="activateStudent(\''+id+'\')" title="تفعيل">✅ تفعيل</button>'}<button class="btn-danger" onclick="deleteStudent(\''+id+'\')" title="حذف">🗑️ حذف</button></div></div>`;
         });
-        container.innerHTML=html;
+        container.innerHTML = html;
     });
 }
-function scrollStudents(dir){ document.getElementById('studentsList').scrollBy({left:dir*180, behavior:'smooth'}); }
-function activateStudent(id){ if(confirm("تفعيل؟")) db.ref("students/"+id).update({status:"مفعّل"}).then(loadStudents); }
-function suspendStudent(id){ if(confirm("ترقين؟")) db.ref("students/"+id).update({status:"مرقّن"}).then(loadStudents); }
-function deleteStudent(id){ if(confirm("حذف نهائي؟")) db.ref("students/"+id).remove().then(loadStudents); }
+function scrollStudents(direction){ const track = document.getElementById('studentsList'); if(track) track.scrollBy({ left: direction * 180, behavior: 'smooth' }); }
+function activateStudent(id){ if(confirm("✅ تفعيل هذا الطالب؟")){ db.ref("students/"+id).update({status:"مفعّل"}).then(()=>loadStudents()); } }
+function suspendStudent(id){ if(confirm("🔒 ترقين هذا الطالب؟")){ db.ref("students/"+id).update({status:"مرقّن"}).then(()=>loadStudents()); } }
+function deleteStudent(id){ if(confirm("⚠️ حذف الطالب نهائياً؟")){ db.ref("students/"+id).remove().then(()=>loadStudents()); } }
 function loadCases(){
-    let cont=document.getElementById('casesList');
-    cont.innerHTML="جار التحميل...";
+    casesList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
     db.ref("cases").once("value", snap=>{
-        let data=snap.val()||{};
-        let html="";
-        Object.keys(data).forEach(id=>{ html+=`<div class="row"><div class="title">📌 ${data[id].title}</div><div>${data[id].details}</div><button class="btn-danger" onclick="deleteCase('${id}')">حذف</button></div>`; });
-        cont.innerHTML=html||"<p>لا توجد حالات</p>";
+        let data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id=>{ html += `<div class="row"><div class="title">📌 ${data[id].title}</div><div style="margin-top:5px;font-size:14px">${data[id].details}</div><button class="btn-danger" style="margin-top:8px" onclick="deleteCase('${id}')">🗑️ حذف</button></div>`; });
+        casesList.innerHTML = html || "<p style='color:#666'>لا توجد حالات</p>";
     });
 }
 function addCase(){
-    let title=document.getElementById('caseTitle').value.trim(), details=document.getElementById('caseDetails').value.trim();
-    if(!title||!details){ alert("املأ الحقول"); return; }
-    db.ref("cases").push({title,details}).then(()=>{ loadCases(); document.getElementById('caseTitle').value=''; document.getElementById('caseDetails').value=''; alert("تمت الإضافة"); });
+    let title = caseTitle.value.trim(), details = caseDetails.value.trim();
+    if(!title || !details){ alert("أدخل البيانات"); return; }
+    db.ref("cases").push({title, details});
+    caseTitle.value = ""; caseDetails.value = ""; loadCases(); alert("✅ تمت الإضافة");
 }
-function deleteCase(id){ if(confirm("حذف؟")) db.ref("cases/"+id).remove().then(loadCases); }
+function deleteCase(id){ if(confirm("حذف الحالة؟")){ db.ref("cases/"+id).remove().then(loadCases); } }
 function loadAllPatients(){
-    let list=document.getElementById('allPatientsList');
-    list.innerHTML="جار التحميل...";
+    const list = document.getElementById('allPatientsList');
+    list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";    
     db.ref("patients").once("value", snap=>{
-        let data=snap.val();
-        if(!data){ list.innerHTML="<p>لا يوجد مرضى</p>"; return; }
-        let html="";
-        Object.values(data).forEach(p=>{ html+=`<div class="row"><div class="title">👤 ${p.name} ${p.active?'مفعل':'غير مفعل'}</div><div>${p.age} سنة | ${p.gender}<br>${p.diagnosis}<br>${p.phone||'-'} | ${p.addedBy}</div></div>`; });
-        list.innerHTML=html;
+        let data = snap.val();
+        if(!data){ list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; return; }
+        let html = "";
+        Object.values(data).forEach(p=>{ html += `<div class="row"><div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div><div style="font-size:13px;color:#555;margin-top:5px">${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>📱 ${p.phone||'-'} | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div></div>`; });
+        list.innerHTML = html;
     });
 }
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&'; if(m === '<') return '<'; if(m === '>') return '>'; return m; }); }
 </script>
 </body>
 </html>
