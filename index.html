@@ -2,30 +2,61 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>DS Assistant</title>
+<title>DS Assistant – النسخة النهائية</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+    * { box-sizing:border-box; }
     body {
         margin:0;
         font-family: Tahoma, Arial;
         background: linear-gradient(135deg, #1e88e5, #42a5f5);
         min-height:100vh;
+        padding-top:60px;
+        padding-bottom:60px;
         display:flex;
         justify-content:center;
         align-items:center;
-        padding:20px;
-        box-sizing:border-box;
+    }
+
+    header {
+        position:fixed;
+        top:0; left:0; right:0;
+        height:60px;
+        background:#0d47a1;
+        color:#fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:18px;
+        font-weight:bold;
+        box-shadow:0 2px 8px rgba(0,0,0,0.3);
+        z-index:10;
+    }
+
+    footer {
+        position:fixed;
+        bottom:0; left:0; right:0;
+        height:50px;
+        background:#0d47a1;
+        color:#bbdefb;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-size:12px;
+        box-shadow:0 -2px 8px rgba(0,0,0,0.3);
+        z-index:10;
     }
 
     .card {
         width:100%;
-        max-width:380px;
+        max-width:420px;
         background:#fff;
-        padding:25px;
+        padding:22px;
         border-radius:20px;
-        box-shadow:0 10px 25px rgba(0,0,0,0.15);
-        animation: fadeIn 0.4s ease;
+        box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        animation:fadeIn 0.4s ease;
+        margin:0 10px;
     }
 
     @keyframes fadeIn {
@@ -40,23 +71,30 @@
         font-size:22px;
     }
 
-    input {
+    h3 {
+        margin:10px 0;
+        color:#1565c0;
+        font-size:18px;
+    }
+
+    input, textarea, select {
         width:100%;
-        padding:12px;
-        margin-top:10px;
+        padding:11px;
+        margin-top:8px;
         border-radius:12px;
         border:1px solid #b0bec5;
-        font-size:15px;
-        box-sizing:border-box;
+        font-size:14px;
     }
+
+    textarea { resize:vertical; min-height:70px; }
 
     button {
         width:100%;
-        padding:12px;
-        margin-top:12px;
+        padding:11px;
+        margin-top:10px;
         border:none;
         border-radius:12px;
-        font-size:16px;
+        font-size:15px;
         cursor:pointer;
         font-weight:bold;
     }
@@ -64,34 +102,49 @@
     .btn-primary { background:#1e88e5; color:#fff; }
     .btn-secondary { background:#90a4ae; color:#fff; }
     .btn-danger { background:#e53935; color:#fff; }
+    .btn-warning { background:#f9a825; color:#fff; }
 
     .hidden { display:none; }
+
+    .row {
+        background:#f5f5f5;
+        padding:10px;
+        border-radius:12px;
+        margin-top:8px;
+    }
 
     .title {
         font-weight:bold;
         color:#1565c0;
-        margin-bottom:5px;
+        margin-bottom:4px;
     }
 
-    .row {
-        background:#f5f5f5;
-        padding:12px;
-        border-radius:12px;
-        margin-bottom:10px;
+    .badge {
+        display:inline-block;
+        padding:2px 8px;
+        border-radius:10px;
+        font-size:11px;
+        color:#fff;
+        margin-left:5px;
     }
+    .badge-pending { background:#f9a825; }
+    .badge-approved { background:#43a047; }
+    .badge-rejected { background:#e53935; }
 
     .tabs {
         display:flex;
         gap:5px;
         margin-bottom:10px;
+        margin-top:5px;
     }
 
     .tab-btn {
         flex:1;
-        padding:10px;
+        padding:8px;
         border:none;
         border-radius:10px;
         background:#bbdefb;
+        font-size:13px;
         font-weight:bold;
     }
 
@@ -99,15 +152,31 @@
         background:#1e88e5;
         color:#fff;
     }
+
+    .small {
+        font-size:12px;
+        color:#607d8b;
+    }
+
+    .log-item {
+        font-size:12px;
+        background:#eceff1;
+        padding:6px;
+        border-radius:8px;
+        margin-top:4px;
+    }
 </style>
 </head>
 
 <body>
 
-<!-- اختيار الدور -->
+<header>DS Assistant – نظام طلب الاشتراك</header>
+
+<!-- شاشة اختيار الدور -->
 <div class="card" id="roleCard">
     <h2>DS Assistant</h2>
     <button class="btn-primary" onclick="showStudentLogin()">دخول الطالب</button>
+    <button class="btn-secondary" onclick="showSubscription()">طلب اشتراك جديد</button>
     <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
 </div>
 
@@ -117,26 +186,29 @@
     <input id="studentLoginName" placeholder="اسم الطالب">
     <input id="studentLoginPass" type="password" placeholder="الرقم السري">
     <button class="btn-primary" onclick="loginStudent()">دخول</button>
-    <button class="btn-secondary" onclick="showStudentRegister()">تسجيل طالب جديد</button>
+    <p class="small">إذا لم تكن مفعلًا بعد، أرسل طلب اشتراك جديد.</p>
+    <button class="btn-secondary" onclick="showSubscription()">طلب اشتراك جديد</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
 
-<!-- تسجيل طالب -->
-<div class="card hidden" id="studentRegisterCard">
-    <h2>تسجيل طالب</h2>
-    <input id="studentRegName" placeholder="اسم الطالب">
-    <input id="studentRegPass" type="password" placeholder="الرقم السري">
-    <button class="btn-primary" onclick="registerStudent()">تسجيل</button>
-    <button class="btn-secondary" onclick="backToStudentLogin()">رجوع</button>
+<!-- طلب اشتراك جديد -->
+<div class="card hidden" id="subscriptionCard">
+    <h2>طلب اشتراك</h2>
+    <input id="subName" placeholder="الاسم الكامل">
+    <input id="subPass" type="password" placeholder="الرقم السري الذي ستستخدمه لاحقًا للدخول">
+    <button class="btn-primary" onclick="sendSubscription()">إرسال الطلب</button>
+    <p class="small">سيقوم المدير بمراجعة طلبك وتفعيله أو ترقينه.</p>
+    <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
 
-<!-- واجهة الطالب -->
+<!-- واجهة الطالب بعد التفعيل -->
 <div class="card hidden" id="studentArea">
     <h2>مرحباً <span id="studentNameLabel"></span></h2>
+    <p class="small">تم تفعيل اشتراكك. يمكنك استخدام التطبيق.</p>
     <button class="btn-secondary" onclick="studentLogout()">خروج</button>
     <hr>
-    <h3 style="color:#1565c0;">الحالات</h3>
-    <div id="studentCasesList"></div>
+    <h3>محتوى الطالب</h3>
+    <p class="small">هنا يمكن لاحقًا إضافة الحالات أو المحتوى التعليمي الذي تريده للطلاب.</p>
 </div>
 
 <!-- دخول المدير -->
@@ -147,44 +219,56 @@
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
 
-<!-- لوحة المدير -->
+<!-- لوحة المدير الموسعة -->
 <div class="card hidden" id="adminPanel">
     <h2>لوحة المدير</h2>
 
     <div class="tabs">
-        <button id="tabStudents" class="tab-btn active" onclick="showAdminSection('studentsAdmin')">الطلاب</button>
-        <button id="tabCases" class="tab-btn" onclick="showAdminSection('casesAdmin')">الحالات</button>
-        <button id="tabInfo" class="tab-btn" onclick="showAdminSection('infoAdmin')">معلومات</button>
+        <button id="tabRequests" class="tab-btn active" onclick="showAdminSection('requestsSection')">طلبات الاشتراك</button>
+        <button id="tabStudents" class="tab-btn" onclick="showAdminSection('studentsSection')">الطلاب المفعلون</button>
+        <button id="tabStats" class="tab-btn" onclick="showAdminSection('statsSection')">الإحصائيات</button>
+        <button id="tabSettings" class="tab-btn" onclick="showAdminSection('settingsSection')">الإعدادات</button>
+        <button id="tabLogs" class="tab-btn" onclick="showAdminSection('logsSection')">سجل النشاط</button>
     </div>
 
-    <button class="btn-secondary" onclick="logoutAdmin()">خروج</button>
+    <button class="btn-secondary" onclick="logoutAdmin()">تسجيل خروج المدير</button>
 
-    <!-- الطلاب -->
-    <div id="studentsAdmin">
-        <h3 style="color:#1565c0;">الطلاب</h3>
-        <button class="btn-primary" onclick="loadStudents()">تحديث</button>
+    <!-- طلبات الاشتراك -->
+    <div id="requestsSection">
+        <h3>طلبات الاشتراك</h3>
+        <button class="btn-primary" onclick="loadRequests()">تحديث الطلبات</button>
+        <div id="requestsList"></div>
+    </div>
+
+    <!-- الطلاب المفعلون -->
+    <div id="studentsSection" class="hidden">
+        <h3>الطلاب المفعلون</h3>
+        <button class="btn-primary" onclick="loadApprovedStudents()">تحديث القائمة</button>
         <div id="studentsList"></div>
     </div>
 
-    <!-- الحالات -->
-    <div id="casesAdmin" class="hidden">
-        <h3 style="color:#1565c0;">الحالات</h3>
-        <button class="btn-primary" onclick="loadCases()">تحديث</button>
-        <div id="casesList"></div>
-        <hr>
-        <input id="caseTitle" placeholder="عنوان الحالة">
-        <textarea id="caseDetails" placeholder="تفاصيل الحالة" style="width:100%;height:80px;margin-top:10px;border-radius:12px;border:1px solid #b0bec5;padding:10px;"></textarea>
-        <button class="btn-primary" onclick="addCase()">إضافة</button>
+    <!-- الإحصائيات -->
+    <div id="statsSection" class="hidden">
+        <h3>الإحصائيات</h3>
+        <div id="statsContent" class="small"></div>
     </div>
 
-    <!-- معلومات -->
-    <div id="infoAdmin" class="hidden">
-        <h3 style="color:#1565c0;">معلومات</h3>
-        <p>نسخة محسّنة — تصميم موبايل حديث</p>
-        <p>دخول إدارة بكلمة سر: <b>salem1959</b></p>
-        <p>البيانات محفوظة في Firebase Realtime Database</p>
+    <!-- الإعدادات -->
+    <div id="settingsSection" class="hidden">
+        <h3>إعدادات المدير</h3>
+        <p class="small">كلمة سر المدير الحالية ثابتة داخل الكود:</p>
+        <p><b>salem1959</b></p>
+        <p class="small">يمكن لاحقًا ربط هذه الصفحة بإعدادات أكثر (تغيير كلمة السر، إعدادات الواجهة، إلخ).</p>
+    </div>
+
+    <!-- سجل النشاط (جلسة المدير الحالية فقط) -->
+    <div id="logsSection" class="hidden">
+        <h3>سجل النشاط</h3>
+        <div id="logsList" class="small"></div>
     </div>
 </div>
+
+<footer>DS Assistant – نسخة طلب الاشتراك + لوحة مدير موسعة – إعداد: د. زكريا</footer>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -207,169 +291,244 @@ const db = firebase.database();
 // كلمة سر المدير
 const ADMIN_PASSWORD = "salem1959";
 
-// إظهار الشاشات
-function showStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
-function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }
-function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
-function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
-function backToStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
+// سجل النشاط (في الجلسة فقط)
+let logs = [];
+function addLog(text){
+    const time = new Date().toLocaleTimeString();
+    logs.unshift(time + " - " + text);
+    renderLogs();
+}
+function renderLogs(){
+    const box = document.getElementById("logsList");
+    if(!logs.length){ box.innerHTML = "لا يوجد نشاط بعد."; return; }
+    box.innerHTML = logs.map(l=>`<div class="log-item">${l}</div>`).join("");
+}
 
+// إظهار/إخفاء الشاشات العامة
 function hideAll(){
-    roleCard.classList.add("hidden");
-    studentLoginCard.classList.add("hidden");
-    studentRegisterCard.classList.add("hidden");
-    studentArea.classList.add("hidden");
-    adminLoginCard.classList.add("hidden");
-    adminPanel.classList.add("hidden");
+    document.getElementById("roleCard").classList.add("hidden");
+    document.getElementById("studentLoginCard").classList.add("hidden");
+    document.getElementById("subscriptionCard").classList.add("hidden");
+    document.getElementById("studentArea").classList.add("hidden");
+    document.getElementById("adminLoginCard").classList.add("hidden");
+    document.getElementById("adminPanel").classList.add("hidden");
 }
 
-// تسجيل طالب
-function registerStudent(){
-    let name = studentRegName.value.trim();
-    let pass = studentRegPass.value.trim();
-    if(!name || !pass){ alert("أدخل الاسم والرقم السري"); return; }
-    db.ref("students").push({name, password:pass});
-    alert("تم التسجيل");
-    backToStudentLogin();
+function backToRole(){
+    hideAll();
+    document.getElementById("roleCard").classList.remove("hidden");
 }
 
-// دخول طالب
-let currentStudentName = "";
+function showStudentLogin(){
+    hideAll();
+    document.getElementById("studentLoginCard").classList.remove("hidden");
+}
+
+function showSubscription(){
+    hideAll();
+    document.getElementById("subscriptionCard").classList.remove("hidden");
+}
+
+function showAdminLogin(){
+    hideAll();
+    document.getElementById("adminLoginCard").classList.remove("hidden");
+}
+
+// طلب اشتراك جديد
+function sendSubscription(){
+    const name = document.getElementById("subName").value.trim();
+    const pass = document.getElementById("subPass").value.trim();
+    if(!name || !pass){
+        alert("أدخل الاسم والرقم السري.");
+        return;
+    }
+    const ref = db.ref("requests").push();
+    ref.set({ name, password: pass, status: "pending" }, err=>{
+        if(err) alert("حدث خطأ أثناء إرسال الطلب.");
+        else {
+            addLog("تم استلام طلب اشتراك جديد: " + name);
+            alert("تم إرسال طلبك. انتظر تفعيل المدير.");
+            document.getElementById("subName").value = "";
+            document.getElementById("subPass").value = "";
+            backToRole();
+        }
+    });
+}
+
+// دخول الطالب (بعد التفعيل)
 function loginStudent(){
-    let name = studentLoginName.value.trim();
-    let pass = studentLoginPass.value.trim();
-    if(!name || !pass){ alert("أدخل البيانات"); return; }
-
-    db.ref("students").orderByChild("name").equalTo(name).once("value", snap=>{
-        let data = snap.val();
-        if(!data){ alert("الاسم غير موجود"); return; }
-
+    const name = document.getElementById("studentLoginName").value.trim();
+    const pass = document.getElementById("studentLoginPass").value.trim();
+    if(!name || !pass){
+        alert("أدخل الاسم والرقم السري.");
+        return;
+    }
+    db.ref("requests").orderByChild("name").equalTo(name).once("value", snap=>{
+        const data = snap.val();
+        if(!data){
+            alert("لا يوجد طلب بهذا الاسم.");
+            return;
+        }
         let ok = false;
         Object.keys(data).forEach(id=>{
-            if(data[id].password === pass){
+            const r = data[id];
+            if(r.password === pass && r.status === "approved"){
                 ok = true;
-                currentStudentName = name;
             }
         });
-
-        if(!ok){ alert("الرقم السري غير صحيح"); return; }
-
+        if(!ok){
+            alert("إما أن الطلب غير مفعل بعد، أو أن الرقم السري غير صحيح.");
+            return;
+        }
         hideAll();
-        studentNameLabel.textContent = currentStudentName;
-        studentArea.classList.remove("hidden");
-        loadCasesForStudent();
+        document.getElementById("studentNameLabel").textContent = name;
+        document.getElementById("studentArea").classList.remove("hidden");
     });
 }
 
 function studentLogout(){
     hideAll();
-    roleCard.classList.remove("hidden");
-}
-
-// تحميل الحالات للطالب
-function loadCasesForStudent(){
-    studentCasesList.innerHTML = "";
-    db.ref("cases").once("value", snap=>{
-        let data = snap.val() || {};
-        let html = "";
-        Object.keys(data).forEach(id=>{
-            html += `<div class="row"><div class="title">${data[id].title}</div>${data[id].details}</div>`;
-        });
-        studentCasesList.innerHTML = html || "لا توجد حالات";
-    });
+    document.getElementById("roleCard").classList.remove("hidden");
 }
 
 // دخول المدير
 function loginAdmin(){
-    if(adminPass.value === ADMIN_PASSWORD){
+    const pass = document.getElementById("adminPass").value;
+    if(pass === ADMIN_PASSWORD){
         hideAll();
-        adminPanel.classList.remove("hidden");
-        showAdminSection('studentsAdmin');
-        loadStudents();
-    } else alert("كلمة السر غير صحيحة");
+        document.getElementById("adminPanel").classList.remove("hidden");
+        document.getElementById("adminPass").value = "";
+        addLog("دخول المدير.");
+        showAdminSection('requestsSection');
+        loadRequests();
+        updateStats();
+    } else {
+        alert("كلمة السر غير صحيحة.");
+    }
 }
 
 function logoutAdmin(){
+    addLog("خروج المدير.");
     hideAll();
-    roleCard.classList.remove("hidden");
+    document.getElementById("roleCard").classList.remove("hidden");
 }
 
-// تبويبات المدير
+// تبويبات لوحة المدير
 function showAdminSection(id){
-    studentsAdmin.classList.add("hidden");
-    casesAdmin.classList.add("hidden");
-    infoAdmin.classList.add("hidden");
-
+    const sections = ["requestsSection","studentsSection","statsSection","settingsSection","logsSection"];
+    sections.forEach(s=>{
+        document.getElementById(s).classList.add("hidden");
+    });
     document.getElementById(id).classList.remove("hidden");
 
-    tabStudents.classList.remove("active");
-    tabCases.classList.remove("active");
-    tabInfo.classList.remove("active");
+    document.getElementById("tabRequests").classList.remove("active");
+    document.getElementById("tabStudents").classList.remove("active");
+    document.getElementById("tabStats").classList.remove("active");
+    document.getElementById("tabSettings").classList.remove("active");
+    document.getElementById("tabLogs").classList.remove("active");
 
-    if(id==="studentsAdmin") tabStudents.classList.add("active");
-    if(id==="casesAdmin") tabCases.classList.add("active");
-    if(id==="infoAdmin") tabInfo.classList.add("active");
+    if(id==="requestsSection") document.getElementById("tabRequests").classList.add("active");
+    if(id==="studentsSection") document.getElementById("tabStudents").classList.add("active");
+    if(id==="statsSection") document.getElementById("tabStats").classList.add("active");
+    if(id==="settingsSection") document.getElementById("tabSettings").classList.add("active");
+    if(id==="logsSection") document.getElementById("tabLogs").classList.add("active");
 }
 
-// إدارة الطلاب
-function loadStudents(){
-    studentsList.innerHTML = "";
-    db.ref("students").once("value", snap=>{
-        let data = snap.val() || {};
+// تحميل طلبات الاشتراك
+function loadRequests(){
+    const box = document.getElementById("requestsList");
+    box.innerHTML = "جاري التحميل...";
+    db.ref("requests").once("value", snap=>{
+        const data = snap.val() || {};
         let html = "";
         Object.keys(data).forEach(id=>{
+            const r = data[id];
+            let badgeClass = "badge-pending";
+            let badgeText = "قيد المراجعة";
+            if(r.status === "approved"){ badgeClass="badge-approved"; badgeText="مفعل"; }
+            if(r.status === "rejected"){ badgeClass="badge-rejected"; badgeText="مرقن"; }
             html += `
             <div class="row">
-                <div class="title">${data[id].name}</div>
-                <div>رقم سري: ${data[id].password}</div>
-                <button class="btn-danger" onclick="deleteStudent('${id}')">حذف</button>
+                <div class="title">${r.name}
+                    <span class="badge ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="small">رقم سري: ${r.password}</div>
+                <div style="margin-top:6px;">
+                    <button class="btn-primary" onclick="setRequestStatus('${id}','approved')">تفعيل</button>
+                    <button class="btn-warning" onclick="setRequestStatus('${id}','rejected')">ترقين</button>
+                    <button class="btn-danger" onclick="deleteRequest('${id}')">حذف</button>
+                </div>
             </div>`;
         });
-        studentsList.innerHTML = html || "لا يوجد طلاب";
+        box.innerHTML = html || "لا توجد طلبات حالياً.";
+        updateStats();
     });
 }
 
-function deleteStudent(id){
-    if(confirm("حذف الطالب؟")){
-        db.ref("students/"+id).remove();
-        loadStudents();
-    }
-}
-
-// إدارة الحالات
-function loadCases(){
-    casesList.innerHTML = "";
-    db.ref("cases").once("value", snap=>{
-        let data = snap.val() || {};
-        let html = "";
-        Object.keys(data).forEach(id=>{
-            html += `
-            <div class="row">
-                <div class="title">${data[id].title}</div>
-                <div>${data[id].details}</div>
-                <button class="btn-danger" onclick="deleteCase('${id}')">حذف</button>
-            </div>`;
-        });
-        casesList.innerHTML = html || "لا توجد حالات";
+function setRequestStatus(id, status){
+    db.ref("requests/"+id+"/status").set(status, err=>{
+        if(err) alert("حدث خطأ.");
+        else {
+            addLog("تغيير حالة طلب: " + id + " إلى " + status);
+            loadRequests();
+        }
     });
 }
 
-function addCase(){
-    let title = caseTitle.value.trim();
-    let details = caseDetails.value.trim();
-    if(!title || !details){ alert("أدخل البيانات"); return; }
-    db.ref("cases").push({title, details});
-    caseTitle.value = "";
-    caseDetails.value = "";
-    loadCases();
+function deleteRequest(id){
+    if(!confirm("هل تريد حذف هذا الطلب نهائياً؟")) return;
+    db.ref("requests/"+id).remove(err=>{
+        if(err) alert("حدث خطأ أثناء الحذف.");
+        else {
+            addLog("حذف طلب: " + id);
+            loadRequests();
+        }
+    });
 }
 
-function deleteCase(id){
-    if(confirm("حذف الحالة؟")){
-        db.ref("cases/"+id).remove();
-        loadCases();
-    }
+// الطلاب المفعلون
+function loadApprovedStudents(){
+    const box = document.getElementById("studentsList");
+    box.innerHTML = "جاري التحميل...";
+    db.ref("requests").orderByChild("status").equalTo("approved").once("value", snap=>{
+        const data = snap.val() || {};
+        let html = "";
+        Object.keys(data).forEach(id=>{
+            const r = data[id];
+            html += `
+            <div class="row">
+                <div class="title">${r.name}</div>
+                <div class="small">رقم سري: ${r.password}</div>
+            </div>`;
+        });
+        box.innerHTML = html || "لا يوجد طلاب مفعلون.";
+    });
 }
+
+// الإحصائيات
+function updateStats(){
+    const box = document.getElementById("statsContent");
+    db.ref("requests").once("value", snap=>{
+        const data = snap.val() || {};
+        let total = 0, pending=0, approved=0, rejected=0;
+        Object.keys(data).forEach(id=>{
+            total++;
+            const s = data[id].status || "pending";
+            if(s==="pending") pending++;
+            if(s==="approved") approved++;
+            if(s==="rejected") rejected++;
+        });
+        box.innerHTML = `
+            <p>إجمالي الطلبات: <b>${total}</b></p>
+            <p>قيد المراجعة: <b>${pending}</b></p>
+            <p>مفعلون: <b>${approved}</b></p>
+            <p>مرقنون: <b>${rejected}</b></p>
+        `;
+    });
+}
+
+// عند فتح الصفحة لأول مرة
+addLog("بدء جلسة جديدة للتطبيق.");
 </script>
 
 </body>
