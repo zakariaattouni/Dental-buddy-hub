@@ -3,7 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ========== أيقونات التطبيق لإضافتها إلى سطح المكتب (بدون ظهورها في الصفحة) ========== -->
+<!-- أيقونة عامة للمتصفحات -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M28 38 L50 26 L72 38 L50 50 Z'/%3E%3Crect x='28' y='38' width='44' height='14' fill='%23ffffff'/%3E%3Cpolygon points='50,58 28,46 28,60 50,72 72,60 72,46' fill='%23ffffff'/%3E%3Crect x='45' y='72' width='10' height='12' fill='%23ffffff'/%3E%3Ccircle cx='50' cy='78' r='4' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M58 48 L62 44 L58 40 L54 44 Z'/%3E%3C/svg%3E">
+<!-- أيقونات خاصة بأجهزة Apple (iOS / iPadOS) -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Ccircle cx='90' cy='90' r='90' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M50 68 L90 46 L130 68 L90 90 Z'/%3E%3Crect x='50' y='68' width='80' height='26' fill='%23ffffff'/%3E%3Cpolygon points='90,104 50,84 50,108 90,128 130,108 130,84' fill='%23ffffff'/%3E%3Crect x='81' y='128' width='18' height='22' fill='%23ffffff'/%3E%3Ccircle cx='90' cy='138' r='6' fill='%231e88e5'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="152x152" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 152 152'%3E%3Ccircle cx='76' cy='76' r='76' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M42 56 L76 38 L110 56 L76 74 Z'/%3E%3Crect x='42' y='56' width='68' height='22' fill='%23ffffff'/%3E%3Cpolygon points='76,88 42,70 42,90 76,108 110,90 110,70' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" sizes="120x120" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M32 46 L60 30 L88 46 L60 62 Z'/%3E%3Crect x='32' y='46' width='56' height='18' fill='%23ffffff'/%3E%3Cpolygon points='60,76 32,60 32,78 60,94 88,78 88,60' fill='%23ffffff'/%3E%3C/svg%3E">
+
+<!-- أيقونات Android/Chrome متعددة الأحجام -->
+<link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M52 72 L96 50 L140 72 L96 94 Z'/%3E%3Crect x='52' y='72' width='88' height='28' fill='%23ffffff'/%3E%3Cpolygon points='96,110 52,90 52,114 96,134 140,114 140,90' fill='%23ffffff'/%3E%3Crect x='85' y='134' width='22' height='26' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="96x96" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Ccircle cx='48' cy='48' r='48' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M26 36 L48 24 L70 36 L48 48 Z'/%3E%3Crect x='26' y='36' width='44' height='14' fill='%23ffffff'/%3E%3Cpolygon points='48,58 26,46 26,60 48,72 70,60 70,46' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M8 12 L16 7 L24 12 L16 17 Z'/%3E%3Crect x='8' y='12' width='16' height='5' fill='%23ffffff'/%3E%3Cpolygon points='16,20 8,14 8,21 16,27 24,21 24,14' fill='%23ffffff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M4 6 L8 3 L12 6 L8 9 Z'/%3E%3Crect x='4' y='6' width='8' height='3' fill='%23ffffff'/%3E%3Cpolygon points='8,11 4,8 4,12 8,15 12,12 12,8' fill='%23ffffff'/%3E%3C/svg%3E">
+
+<!-- بيان تطبيق الويب (Web App Manifest) لدعم إضافة الصفحة إلى الشاشة الرئيسية مع أيقونات -->
+<link rel="manifest" href="data:application/json;charset=utf-8,{
+  \"name\": \"مساعد طالب الأسنان\",
+  \"short_name\": \"طبيب الأسنان\",
+  \"description\": \"تطبيق متكامل لإدارة المرضى وطوارئ العيادة والمهام اليومية لطلاب طب الأسنان\",
+  \"start_url\": \".\",
+  \"display\": \"standalone\",
+  \"theme_color\": \"#1e88e5\",
+  \"background_color\": \"#42a5f5\",
+  \"icons\": [
+    { \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Ccircle cx='96' cy='96' r='96' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M52 72 L96 50 L140 72 L96 94 Z'/%3E%3Crect x='52' y='72' width='88' height='28' fill='%23ffffff'/%3E%3Cpolygon points='96,110 52,90 52,114 96,134 140,114 140,90' fill='%23ffffff'/%3E%3Crect x='85' y='134' width='22' height='26' fill='%23ffffff'/%3E%3C/svg%3E\", \"sizes\": \"192x192\", \"type\": \"image/svg+xml\" },
+    { \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='256' fill='%231e88e5'/%3E%3Cpath fill='%23ffffff' d='M128 192 L256 128 L384 192 L256 256 Z'/%3E%3Crect x='128' y='192' width='256' height='72' fill='%23ffffff'/%3E%3Cpolygon points='256,296 128,248 128,280 256,344 384,280 384,248' fill='%23ffffff'/%3E%3Crect x='224' y='344' width='64' height='72' fill='%23ffffff'/%3E%3C/svg%3E\", \"sizes\": \"512x512\", \"type\": \"image/svg+xml\" }
+  ]
+}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="طبيب الأسنان">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1e88e5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <style>
     /* ========== إعدادات عامة ========== */
     * {
