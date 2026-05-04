@@ -368,7 +368,7 @@
         </div>
         <div class="form-group">
             <label>العمر *</label>
-            <input id="patientAge" type="number" placeholder="أدخل العمر" min="1" max="120">
+            <input id="studentAge" type="number" placeholder="أدخل العمر" min="1" max="120">
         </div>
         <div class="form-group">
             <label>الجنس *</label>
@@ -615,8 +615,9 @@ function registerStudent(){
     let name = studentRegName.value.trim();
     let pass = studentRegPass.value.trim();
     if(!name || !pass){ alert("أدخل الاسم والرقم السري"); return; }
-    db.ref("students").push({name, password:pass});
-    alert("✅ تم التسجيل");
+    // ✅ إضافة حالة الطالب كـ "قيد الانتظار" تلقائياً عند التسجيل
+    db.ref("students").push({name, password:pass, status:"قيد الانتظار"});
+    alert("✅ تم إرسال طلب التسجيل. بانتظار تفعيل المدير.");
     studentRegName.value = studentRegPass.value = "";
     backToStudentLogin();
 }
@@ -629,13 +630,20 @@ function loginStudent(){
         let data = snap.val();
         if(!data){ alert("الاسم غير موجود"); return; }
         let ok = false;
+        let studentStatus = "غير موجود";
         Object.keys(data).forEach(id=>{ 
             if(data[id].password === pass){ 
                 ok = true; 
                 currentStudentName = name; 
-            } 
+                studentStatus = data[id].status;            } 
         });
-        if(!ok){ alert("الرقم السري غير صحيح"); return; }        hideAll();
+        if(!ok){ alert("الرقم السري غير صحيح"); return; }
+        // ✅ التحقق من حالة التفعيل قبل السماح بالدخول
+        if(studentStatus !== "مفعّل"){ 
+            alert("⚠️ حسابك قيد المراجعة أو غير مفعّل من قبل المدير. يرجى الانتظار حتى يتم التفعيل."); 
+            return; 
+        }
+        hideAll();
         studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
         loadCasesForStudent();
@@ -676,15 +684,15 @@ function showCasesTab(){
 // ===== إدارة المرضى =====
 function showAddPatientForm(){
     hideActivePatients(); 
-    hideSmartAssistant();
-    document.getElementById('studentCasesTab').classList.add('hidden');
+    hideSmartAssistant();    document.getElementById('studentCasesTab').classList.add('hidden');
     document.getElementById('addPatientSection').classList.remove('hidden');
 }
 
 function hideAddPatientForm(){
     document.getElementById('addPatientSection').classList.add('hidden');
     document.getElementById('studentCasesTab').classList.remove('hidden');
-    ['patientName','patientAge','patientGender','patientDiagnosis','patientPhone'].forEach(id=>{        document.getElementById(id).value = '';
+    ['patientName','patientAge','patientGender','patientDiagnosis','patientPhone'].forEach(id=>{
+        document.getElementById(id).value = '';
     });
 }
 
@@ -725,15 +733,15 @@ function hideActivePatients(){
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{
-        let data = snap.val();
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{        let data = snap.val();
         if(!data){ 
             list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>"; 
             return; 
         }
         let html = "";
         Object.values(data).forEach(p=>{
-            html += `<div class="patient-item">                <div class="patient-name">👤 ${p.name}</div>
+            html += `<div class="patient-item">
+                <div class="patient-name">👤 ${p.name}</div>
                 <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
                 🦷 ${p.diagnosis}<br>
                 📱 ${p.phone || 'غير متاح'}<br>
@@ -774,7 +782,6 @@ function hideSmartAssistant(){
     document.getElementById('smartAssistantSection').classList.add('hidden');
     document.getElementById('studentCasesTab').classList.remove('hidden');
 }
-
 function showDentalEmergency(emergency, cardEl){
     document.querySelectorAll('.emergency-card').forEach(c=>c.classList.remove('active'));
     if(cardEl) cardEl.classList.add('active');
@@ -782,6 +789,7 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
+
 // ===== 🔹 قائمة المهام الشخصية (ما يجب فعله) 🔹 =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
@@ -823,8 +831,7 @@ function saveTask(){
             alert("✅ تم تحديث المهمة");
             toggleTaskForm();
             loadTasks();
-        });
-    } else {
+        });    } else {
         db.ref("tasks").push(taskData).then(()=>{
             alert("✅ تمت إضافة المهمة");
             toggleTaskForm();
@@ -832,6 +839,7 @@ function saveTask(){
         });
     }
 }
+
 function loadTasks(){
     if(!currentStudentName) return;
     const list = document.getElementById('tasksList');
@@ -872,8 +880,7 @@ function loadTasks(){
                     <button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button>
                     <button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button>
                 </div>
-            </div>`;
-        });
+            </div>`;        });
         list.innerHTML = html;
     });
 }
@@ -881,6 +888,7 @@ function loadTasks(){
 function toggleTaskDone(taskId, newStatus){
     db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>loadTasks());
 }
+
 function editTask(taskId){
     db.ref(`tasks/${taskId}`).once("value", snap=>{
         const t = snap.val();
@@ -921,36 +929,68 @@ function showAdminSection(id){
     ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>{
         document.getElementById(sid).classList.add('hidden');
     });
-    document.getElementById(id).classList.remove('hidden');
-    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>{
+    document.getElementById(id).classList.remove('hidden');    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>{
         document.getElementById(tid).classList.remove('active');
     });
     document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
     
     if(id==='patientsAdmin') loadAllPatients();
 }
+
+// ✅ دالة تحديث قائمة الطلاب مع أزرار: تفعيل، ترقين، حذف
 function loadStudents(){
     studentsList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
     db.ref("students").once("value", snap=>{
         let data = snap.val() || {};
         let html = "";
         Object.keys(data).forEach(id=>{
+            let statusBadge = "";
+            let actionBtns = "";
+            let currentStatus = data[id].status || "قيد الانتظار";
+            
+            if(currentStatus === "مفعّل"){
+                statusBadge = '<span style="color:#43a047;font-weight:bold;font-size:12px">● مفعّل</span>';
+                actionBtns = `
+                    <button class="btn-warning" style="margin-top:8px" onclick="suspendStudent('${id}')">🔒 ترقين</button>
+                    <button class="btn-danger" style="margin-top:8px" onclick="deleteStudent('${id}')">🗑️ حذف</button>`;
+            } else {
+                statusBadge = '<span style="color:#fb8c00;font-weight:bold;font-size:12px">● قيد الانتظار/مرقّن</span>';
+                actionBtns = `
+                    <button class="btn-success" style="margin-top:8px" onclick="activateStudent('${id}')">✅ تفعيل</button>
+                    <button class="btn-danger" style="margin-top:8px" onclick="deleteStudent('${id}')">🗑️ حذف</button>`;
+            }
+            
             html += `<div class="row">
-                <div class="title">👨‍🎓 ${data[id].name}</div>
+                <div class="title">👨‍🎓 ${data[id].name} ${statusBadge}</div>
                 <div style="font-size:13px;color:#555">الرقم السري: ${data[id].password}</div>
-                <button class="btn-danger" style="margin-top:8px" onclick="deleteStudent('${id}')">🗑️ حذف</button>
+                ${actionBtns}
             </div>`;
         });
-        studentsList.innerHTML = html || "<p style='color:#666'>لا يوجد طلاب</p>";
+        studentsList.innerHTML = html || "<p style='color:#666'>لا يوجد طلاب مسجلين</p>";
     });
 }
 
+// ✅ دالة تفعيل الطالب
+function activateStudent(id){
+    if(confirm("✅ هل أنت متأكد من تفعيل هذا الطالب؟")){
+        db.ref("students/"+id).update({status:"مفعّل"}).then(()=>loadStudents());
+    }
+}
+
+// ✅ دالة ترقين (إيقاف مؤقت) الطالب
+function suspendStudent(id){    if(confirm("🔒 هل أنت متأكد من ترقين هذا الطالب؟")){
+        db.ref("students/"+id).update({status:"مرقّن"}).then(()=>loadStudents());
+    }
+}
+
+// ✅ دالة حذف الطالب (موجودة سابقاً، محفوظة كما هي)
 function deleteStudent(id){ 
-    if(confirm("حذف الطالب؟")){ 
+    if(confirm("⚠️ هل أنت متأكد من حذف هذا الطالب نهائياً؟")){ 
         db.ref("students/"+id).remove().then(loadStudents); 
     } 
 }
 
+// ===== إدارة الحالات التعليمية =====
 function loadCases(){
     casesList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
     db.ref("cases").once("value", snap=>{
@@ -978,15 +1018,16 @@ function addCase(){
     alert("✅ تمت الإضافة");
 }
 
-function deleteCase(id){     if(confirm("حذف الحالة؟")){ 
+function deleteCase(id){ 
+    if(confirm("حذف الحالة؟")){ 
         db.ref("cases/"+id).remove().then(loadCases); 
     } 
 }
 
+// ===== إدارة المرضى (للمدير) =====
 function loadAllPatients(){
     const list = document.getElementById('allPatientsList');
-    list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
-    db.ref("patients").once("value", snap=>{
+    list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";    db.ref("patients").once("value", snap=>{
         let data = snap.val();
         if(!data){ 
             list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; 
