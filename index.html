@@ -260,7 +260,7 @@
         text-align: center; color: #666; font-size: 13px;
         padding: 15px; background: #f9f9f9; border-radius: 10px;
     }
-    /* ========== شريط الطلاب الأفقي (جديد مع الحفاظ على كل شيء) ========== */
+    /* ========== شريط الطلاب الأفقي ========== */
     .students-slider-wrapper {
         display: flex;
         align-items: center;
@@ -409,13 +409,11 @@
 <!-- اختيار الدور -->
 <div class="card" id="roleCard">
     <h2>🩺 DS Assistant</h2>
-    
-    <!-- النص الترحيبي الجديد -->
     <div class="welcome-box">
         <span class="highlight">🌟 رفيقك السريري الذكي</span>
         دليلك المتكامل لإدارة مرضاك، التعامل الآمن مع طوارئ العيادة، وتنظيم يومك الدراسي بذكاء وسهولة.
         <br>🚀 خطوة واثقة نحو التميز في طب الأسنان!
-        <div class="emoji-row">📋 سجل المرضى | 🚨 طوارئ العيادة | 📝 مهامك اليومية</div>
+        <div class="emoji-row">📋 سجل المرضى | 🚨 طوارئ العيادة | 📝 قائمة مهامك</div>
     </div>
     <button class="btn-primary" onclick="showStudentLogin()">دخول الطالب</button>
     <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
@@ -452,8 +450,8 @@
         <button class="btn-warning action-btn" onclick="showSmartAssistant()">
             <span class="icon">🤖</span>طوارئ العيادة
         </button>
-        <button class="btn-dental action-btn" onclick="showCasesTab()">
-            <span class="icon">📚</span>الحالات
+        <button class="btn-dental action-btn" onclick="focusTodoList()">
+            <span class="icon">📋</span>قائمة المهام
         </button>
     </div>
     
@@ -513,10 +511,10 @@
         <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>
     </div>
     
-    <!-- قسم ما يجب فعله -->
-    <div class="wtd-section">
+    <!-- قسم ما يجب فعله (To-Do List) -->
+    <div class="wtd-section" id="todoListSection">
         <div class="wtd-header">
-            <div class="wtd-title">📝 ما يجب فعله</div>
+            <div class="wtd-title">📝 ما يجب فعله (قائمة مهامي)</div>
             <button class="wtd-add-btn" onclick="toggleTaskForm()">➕ مهمة جديدة</button>
         </div>
         <div id="taskForm" class="wtd-form hidden">
@@ -542,12 +540,6 @@
         <div id="tasksList" class="tasks-list">
             <div class="empty-msg">📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>
         </div>
-    </div>
-    
-    <!-- الحالات التعليمية -->
-    <div id="studentCasesTab">
-        <h3>📚 الحالات التعليمية</h3>
-        <div id="studentCasesList"></div>
     </div>
 </div>
 <!-- دخول المدير -->
@@ -738,7 +730,6 @@ function loginStudent(){
         hideAll();
         studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
-        loadCasesForStudent();
         initEmergencySlider();
         loadTasks();
     });
@@ -749,38 +740,35 @@ function studentLogout(){
     hideAddPatientForm(); 
     hideActivePatients(); 
     hideSmartAssistant();
-    document.getElementById('studentCasesTab').classList.remove('hidden');
     currentStudentName = "";
 }
-function loadCasesForStudent(){
-    studentCasesList.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    db.ref("cases").once("value", snap=>{
-        let data = snap.val() || {};
-        let html = "";
-        Object.keys(data).forEach(id=>{
-            html += `<div class="row"><div class="title">📌 ${data[id].title}</div><div style="margin-top:5px">${data[id].details}</div></div>`;
-        });
-        studentCasesList.innerHTML = html || "<p style='color:#666;text-align:center'>لا توجد حالات</p>";
-    });
-}
-function showCasesTab(){
-    hideAddPatientForm(); 
-    hideActivePatients(); 
+// وظيفة التركيز على قائمة المهام (To-Do List)
+function focusTodoList(){
+    // إخفاء الأقسام الأخرى وإظهار قسم المهام فقط إن أردت، لكن الأفضل التمرير إليه
+    hideAddPatientForm();
+    hideActivePatients();
     hideSmartAssistant();
-    document.getElementById('studentCasesTab').classList.remove('hidden');
+    const todoSection = document.getElementById('todoListSection');
+    if(todoSection){
+        todoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        todoSection.style.transition = '0.3s';
+        todoSection.style.boxShadow = '0 0 0 3px #43a047';
+        setTimeout(() => { todoSection.style.boxShadow = ''; }, 1500);
+    }
 }
 // ===== إدارة المرضى =====
 function showAddPatientForm(){
     hideActivePatients(); 
-    hideSmartAssistant();    document.getElementById('studentCasesTab').classList.add('hidden');
+    hideSmartAssistant();
     document.getElementById('addPatientSection').classList.remove('hidden');
 }
 function hideAddPatientForm(){
     document.getElementById('addPatientSection').classList.add('hidden');
-    document.getElementById('studentCasesTab').classList.remove('hidden');
-    ['patientName','patientAge','patientGender','patientDiagnosis','patientPhone'].forEach(id=>{
-        document.getElementById(id).value = '';
-    });
+    document.getElementById('patientName').value = '';
+    document.getElementById('patientAge').value = '';
+    document.getElementById('patientGender').value = '';
+    document.getElementById('patientDiagnosis').value = '';
+    document.getElementById('patientPhone').value = '';
 }
 function savePatient(){
     const name = document.getElementById('patientName').value.trim();
@@ -805,13 +793,11 @@ function savePatient(){
 function showActivePatients(){
     hideAddPatientForm(); 
     hideSmartAssistant();
-    document.getElementById('studentCasesTab').classList.add('hidden');
     document.getElementById('activePatientsSection').classList.remove('hidden');
     loadActivePatients();
 }
 function hideActivePatients(){
     document.getElementById('activePatientsSection').classList.add('hidden');
-    document.getElementById('studentCasesTab').classList.remove('hidden');
 }
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
@@ -853,13 +839,11 @@ function scrollEmergency(direction){
 function showSmartAssistant(){
     hideAddPatientForm(); 
     hideActivePatients();
-    document.getElementById('studentCasesTab').classList.add('hidden');
     document.getElementById('smartAssistantSection').classList.remove('hidden');
     document.getElementById('emergencyResult').classList.add('hidden');
 }
 function hideSmartAssistant(){
     document.getElementById('smartAssistantSection').classList.add('hidden');
-    document.getElementById('studentCasesTab').classList.remove('hidden');
 }
 function showDentalEmergency(emergency, cardEl){
     document.querySelectorAll('.emergency-card').forEach(c=>c.classList.remove('active'));
@@ -868,11 +852,10 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
-// ===== 🔹 قائمة المهام الشخصية (ما يجب فعله) 🔹 =====
+// ===== 🔹 قائمة المهام الشخصية (To-Do List) 🔹 =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
     const isHidden = form.classList.contains('hidden');
-    
     if(isHidden){
         form.classList.remove('hidden');
         if(!taskId){
@@ -893,76 +876,34 @@ function saveTask(){
     const date = document.getElementById('taskDate').value;
     const time = document.getElementById('taskTime').value;
     const priority = document.getElementById('taskPriority').value;
-    
     if(!text){ alert("⚠️ اكتب وصف المهمة"); return; }
-    
-    const taskData = {
-        text, date, time, priority,
-        student: currentStudentName,
-        done: false,
-        createdAt: new Date().toISOString()
-    };
-    
+    const taskData = { text, date, time, priority, student: currentStudentName, done: false, createdAt: new Date().toISOString() };
     if(taskId){
-        db.ref(`tasks/${taskId}`).update(taskData).then(()=>{
-            alert("✅ تم تحديث المهمة");
-            toggleTaskForm();
-            loadTasks();
-        });    } else {
-        db.ref("tasks").push(taskData).then(()=>{
-            alert("✅ تمت إضافة المهمة");
-            toggleTaskForm();
-            loadTasks();
-        });
+        db.ref(`tasks/${taskId}`).update(taskData).then(()=>{ alert("✅ تم تحديث المهمة"); toggleTaskForm(); loadTasks(); });
+    } else {
+        db.ref("tasks").push(taskData).then(()=>{ alert("✅ تمت إضافة المهمة"); toggleTaskForm(); loadTasks(); });
     }
 }
 function loadTasks(){
     if(!currentStudentName) return;
     const list = document.getElementById('tasksList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    
     db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value", snap=>{
         let data = snap.val();
-        if(!data){
-            list.innerHTML = "<div class='empty-msg'>📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>";
-            return;
-        }
-        
+        if(!data){ list.innerHTML = "<div class='empty-msg'>📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>"; return; }
         let tasks = Object.entries(data).map(([id, t])=>({id, ...t}));
-        tasks.sort((a,b)=>{
-            if(a.done !== b.done) return a.done ? 1 : -1;
-            const pri = {high:0, medium:1, low:2};
-            if(pri[a.priority] !== pri[b.priority]) return pri[a.priority] - pri[b.priority];
-            return new Date(a.date||0) - new Date(b.date||0);
-        });
-        
+        tasks.sort((a,b)=>{ if(a.done !== b.done) return a.done ? 1 : -1; const pri = {high:0, medium:1, low:2}; if(pri[a.priority] !== pri[b.priority]) return pri[a.priority] - pri[b.priority]; return new Date(a.date||0) - new Date(b.date||0); });
         let html = "";
         tasks.forEach(t=>{
             const dateStr = t.date ? new Date(t.date).toLocaleDateString('ar-SA') : '';
             const timeStr = t.time ? t.time : '';
             const priorityLabel = t.priority==='high' ? '🔴 عالية' : t.priority==='medium' ? '🟡 متوسطة' : '🟢 منخفضة';
-            
-            html += `
-            <div class="task-item ${t.done?'task-done':''}" id="task-${t.id}">
-                <div class="task-content">
-                    <div class="task-text">${t.text}</div>
-                    <div class="task-meta">
-                        ${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}
-                        <span class="priority ${t.priority}">${priorityLabel}</span>
-                    </div>
-                </div>
-                <div class="task-actions">
-                    <button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button>
-                    <button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button>
-                    <button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button>
-                </div>
-            </div>`;        });
+            html += `<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}<span class="priority ${t.priority}">${priorityLabel}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button></div></div>`;
+        });
         list.innerHTML = html;
     });
 }
-function toggleTaskDone(taskId, newStatus){
-    db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>loadTasks());
-}
+function toggleTaskDone(taskId, newStatus){ db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>loadTasks()); }
 function editTask(taskId){
     db.ref(`tasks/${taskId}`).once("value", snap=>{
         const t = snap.val();
@@ -975,11 +916,7 @@ function editTask(taskId){
         toggleTaskForm(taskId);
     });
 }
-function deleteTask(taskId){
-    if(confirm("⚠️ حذف هذه المهمة؟")){
-        db.ref(`tasks/${taskId}`).remove().then(()=>loadTasks());
-    }
-}
+function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>loadTasks()); } }
 // ===== إدارة المدير =====
 function loginAdmin(){
     if(adminPass.value === ADMIN_PASSWORD){
@@ -987,151 +924,65 @@ function loginAdmin(){
         adminPanel.classList.remove("hidden");
         showAdminSection('studentsAdmin'); 
         loadStudents();
-    } else {
-        alert("كلمة السر غير صحيحة");
-    }
+    } else alert("كلمة السر غير صحيحة");
 }
-function logoutAdmin(){ 
-    hideAll(); 
-    roleCard.classList.remove("hidden"); 
-}
+function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
 function showAdminSection(id){
-    ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>{
-        document.getElementById(sid).classList.add('hidden');
-    });
+    ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>document.getElementById(sid).classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');    
-    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>{
-        document.getElementById(tid).classList.remove('active');
-    });
+    ['tabStudents','tabCases','tabPatients','tabInfo'].forEach(tid=>document.getElementById(tid).classList.remove('active'));
     document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
-    
     if(id==='patientsAdmin') loadAllPatients();
 }
-// ✅ دالة تحديث قائمة الطلاب بشكل أفقي مع أزرار: تفعيل، ترقين، حذف (محفوظة كاملة)
 function loadStudents(){
     const container = document.getElementById('studentsList');
     container.innerHTML = "<div style='padding:10px; color:#666;'>جاري التحميل...</div>";
     db.ref("students").once("value", snap=>{
         let data = snap.val() || {};
-        if(Object.keys(data).length === 0){
-            container.innerHTML = "<div class='empty-msg' style='min-width:200px;'>📭 لا يوجد طلاب مسجلين</div>";
-            return;
-        }
+        if(Object.keys(data).length === 0){ container.innerHTML = "<div class='empty-msg' style='min-width:200px;'>📭 لا يوجد طلاب مسجلين</div>"; return; }
         let html = "";
         Object.keys(data).forEach(id=>{
             let student = data[id];
             let statusText = (student.status === "مفعّل") ? "مفعّل" : (student.status === "مرقّن" ? "مرقّن" : "قيد الانتظار");
             let statusClass = (student.status === "مفعّل") ? "active" : "waiting";
             let isActive = (student.status === "مفعّل");
-            
-            html += `
-                <div class="student-card">
-                    <div class="student-name-status">
-                        <div class="student-name">👨‍🎓 ${escapeHtml(student.name)}</div>
-                        <div class="student-badge ${statusClass}">${statusText}</div>
-                    </div>
-                    <div class="student-pass">🔑 الرقم السري: ${escapeHtml(student.password)}</div>
-                    <div class="student-actions-horiz">
-                        ${isActive ? 
-                            `<button class="btn-warning" onclick="suspendStudent('${id}')" title="ترقين">🔒 ترقين</button>` :
-                            `<button class="btn-success" onclick="activateStudent('${id}')" title="تفعيل">✅ تفعيل</button>`
-                        }
-                        <button class="btn-danger" onclick="deleteStudent('${id}')" title="حذف">🗑️ حذف</button>
-                    </div>
-                </div>
-            `;
+            html += `<div class="student-card"><div class="student-name-status"><div class="student-name">👨‍🎓 ${escapeHtml(student.name)}</div><div class="student-badge ${statusClass}">${statusText}</div></div><div class="student-pass">🔑 الرقم السري: ${escapeHtml(student.password)}</div><div class="student-actions-horiz">${isActive ? '<button class="btn-warning" onclick="suspendStudent(\''+id+'\')" title="ترقين">🔒 ترقين</button>' : '<button class="btn-success" onclick="activateStudent(\''+id+'\')" title="تفعيل">✅ تفعيل</button>'}<button class="btn-danger" onclick="deleteStudent(\''+id+'\')" title="حذف">🗑️ حذف</button></div></div>`;
         });
         container.innerHTML = html;
     });
 }
-// تمرير أفقي لقائمة الطلاب
-function scrollStudents(direction){
-    const track = document.getElementById('studentsList');
-    if(track){
-        track.scrollBy({ left: direction * 180, behavior: 'smooth' });
-    }
-}
-// ✅ دالة تفعيل الطالب
-function activateStudent(id){
-    if(confirm("✅ هل أنت متأكد من تفعيل هذا الطالب؟")){
-        db.ref("students/"+id).update({status:"مفعّل"}).then(()=>loadStudents());
-    }
-}
-// ✅ دالة ترقين (إيقاف مؤقت) الطالب
-function suspendStudent(id){    
-    if(confirm("🔒 هل أنت متأكد من ترقين هذا الطالب؟")){
-        db.ref("students/"+id).update({status:"مرقّن"}).then(()=>loadStudents());
-    }
-}
-// ✅ دالة حذف الطالب
-function deleteStudent(id){ 
-    if(confirm("⚠️ هل أنت متأكد من حذف هذا الطالب نهائياً؟")){ 
-        db.ref("students/"+id).remove().then(loadStudents); 
-    } 
-}
-// ===== إدارة الحالات التعليمية =====
+function scrollStudents(direction){ const track = document.getElementById('studentsList'); if(track) track.scrollBy({ left: direction * 180, behavior: 'smooth' }); }
+function activateStudent(id){ if(confirm("✅ تفعيل هذا الطالب؟")){ db.ref("students/"+id).update({status:"مفعّل"}).then(()=>loadStudents()); } }
+function suspendStudent(id){ if(confirm("🔒 ترقين هذا الطالب؟")){ db.ref("students/"+id).update({status:"مرقّن"}).then(()=>loadStudents()); } }
+function deleteStudent(id){ if(confirm("⚠️ حذف الطالب نهائياً؟")){ db.ref("students/"+id).remove().then(()=>loadStudents()); } }
 function loadCases(){
     casesList.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";
     db.ref("cases").once("value", snap=>{
         let data = snap.val() || {};
         let html = "";
-        Object.keys(data).forEach(id=>{
-            html += `<div class="row">
-                <div class="title">📌 ${data[id].title}</div>
-                <div style="margin-top:5px;font-size:14px">${data[id].details}</div>
-                <button class="btn-danger" style="margin-top:8px" onclick="deleteCase('${id}')">🗑️ حذف</button>
-            </div>`;
-        });
+        Object.keys(data).forEach(id=>{ html += `<div class="row"><div class="title">📌 ${data[id].title}</div><div style="margin-top:5px;font-size:14px">${data[id].details}</div><button class="btn-danger" style="margin-top:8px" onclick="deleteCase('${id}')">🗑️ حذف</button></div>`; });
         casesList.innerHTML = html || "<p style='color:#666'>لا توجد حالات</p>";
     });
 }
 function addCase(){
-    let title = caseTitle.value.trim();
-    let details = caseDetails.value.trim();
+    let title = caseTitle.value.trim(), details = caseDetails.value.trim();
     if(!title || !details){ alert("أدخل البيانات"); return; }
     db.ref("cases").push({title, details});
-    caseTitle.value = ""; 
-    caseDetails.value = ""; 
-    loadCases(); 
-    alert("✅ تمت الإضافة");
+    caseTitle.value = ""; caseDetails.value = ""; loadCases(); alert("✅ تمت الإضافة");
 }
-function deleteCase(id){ 
-    if(confirm("حذف الحالة؟")){ 
-        db.ref("cases/"+id).remove().then(loadCases); 
-    } 
-}
-// ===== إدارة المرضى (للمدير) =====
+function deleteCase(id){ if(confirm("حذف الحالة؟")){ db.ref("cases/"+id).remove().then(loadCases); } }
 function loadAllPatients(){
     const list = document.getElementById('allPatientsList');
     list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";    
     db.ref("patients").once("value", snap=>{
         let data = snap.val();
-        if(!data){ 
-            list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; 
-            return; 
-        }
+        if(!data){ list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; return; }
         let html = "";
-        Object.values(data).forEach(p=>{
-            html += `<div class="row">
-                <div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div>
-                <div style="font-size:13px;color:#555;margin-top:5px">
-                    ${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>
-                    📱 ${p.phone||'-'} | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}
-                </div>
-            </div>`;
-        });
+        Object.values(data).forEach(p=>{ html += `<div class="row"><div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div><div style="font-size:13px;color:#555;margin-top:5px">${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>📱 ${p.phone||'-'} | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div></div>`; });
         list.innerHTML = html;
     });
 }
-function escapeHtml(str) {
-    if(!str) return '';
-    return str.replace(/[&<>]/g, function(m){
-        if(m === '&') return '&amp;';
-        if(m === '<') return '&lt;';
-        if(m === '>') return '&gt;';
-        return m;
-    });
-}
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
 </script>
 </body>
 </html>
