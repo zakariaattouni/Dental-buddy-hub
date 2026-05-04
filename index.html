@@ -1,940 +1,337 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>مساعد طالب الأسنان</title>
-<style>
-body{margin:0;padding:0;font-family:Tahoma,Arial;background:#F5F8FC;color:#123;}
-.topbar{height:56px;background:#0F4C81;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 10px;box-shadow:0 2px 6px rgba(0,0,0,.2);font-size:14px;}
-.home-icon{font-size:22px;cursor:pointer;}
-.topbar-center{font-weight:bold;}
-.topbar-right{display:flex;align-items:center;gap:6px;font-size:11px;}
-.status-dot{width:9px;height:9px;border-radius:50%;background:#aaa;}
-.status-dot.online{background:#3CCB5A;}
-.status-dot.offline{background:#F44336;}
-.container{width:90%;margin:20px auto;}
-.btn{width:100%;padding:12px;border:none;border-radius:10px;font-size:15px;cursor:pointer;margin-top:10px;}
-.btn-main{background:#0F4C81;color:#fff;}
-.btn-sec{background:#E0E6F0;color:#123;}
-input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #C3D0E6;font-size:14px;margin:6px 0;background:#fff;box-sizing:border-box;}
-textarea{min-height:70px;resize:vertical;}
-h2{margin:10px 0;}
-.card{background:#fff;padding:16px;border-radius:12px;border:1px solid #D5E0F0;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer;transition:.2s;}
-.card:hover{transform:scale(1.01);}
-.card-title{font-size:16px;font-weight:bold;margin-bottom:4px;color:#123;}
-.card-desc{font-size:13px;color:#555;margin-bottom:8px;}
-footer{position:fixed;bottom:0;left:0;width:100%;background:#0F4C81;color:#eee;padding:8px 10px;text-align:center;font-size:11px;line-height:1.5;}
-.hidden{display:none;}
-.section-title{text-align:center;font-weight:bold;margin:10px 0 18px;color:#0F4C81;}
-.case-title{font-size:20px;font-weight:bold;margin-bottom:12px;text-align:center;color:#0F4C81;}
-.case-card{background:#fff;padding:14px;border-radius:10px;border:1px solid #D5E0F0;margin-bottom:10px;}
-.case-card-title{font-size:14px;font-weight:bold;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#0F4C81;}
-.case-text{font-size:13px;line-height:1.7;color:#222;}
-.search-box{width:100%;padding:10px;border-radius:10px;border:1px solid #C3D0E6;font-size:14px;margin-bottom:10px;}
-/* لوحة المدير */
-#adminSection{height:calc(100vh - 56px - 46px);}
-.admin-layout{display:flex;height:100%;}
-.admin-sidebar{width:220px;background:#0F4C81;color:#fff;display:flex;flex-direction:column;padding:14px 10px;box-sizing:border-box;}
-.admin-logo{font-size:16px;font-weight:bold;margin-bottom:16px;text-align:center;}
-.admin-menu button{width:100%;margin:4px 0;padding:9px;border:none;border-radius:8px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;text-align:right;cursor:pointer;}
-.admin-menu button.active{background:#F4C542;color:#123;}
-.admin-main{flex:1;padding:12px;overflow-y:auto;background:#F5F8FC;}
-.admin-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px;}
-.admin-card{background:#fff;border-radius:10px;border:1px solid #D5E0F0;padding:10px;font-size:13px;}
-.admin-card-title{font-size:12px;color:#555;margin-bottom:4px;}
-.admin-card-value{font-size:18px;font-weight:bold;color:#0F4C81;}
-.table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #D5E0F0;}
-.table th,.table td{padding:8px;border-bottom:1px solid #E3ECF8;text-align:right;}
-.table th{background:#EDF3FB;font-weight:bold;color:#345;}
-/* موسوعة الطوارئ – تخطيط جانبي */
-.em-layout{display:flex;gap:10px;}
-.em-sidebar{width:200px;background:#E4ECF8;border-radius:10px;padding:8px;box-sizing:border-box;}
-.em-sidebar-toggle{display:none;margin-bottom:8px;}
-.em-group-btn{width:100%;padding:8px;border:none;border-radius:8px;background:#D0DCF2;color:#123;font-size:13px;text-align:right;cursor:pointer;margin-bottom:4px;}
-.em-group-btn.active{background:#0F4C81;color:#fff;}
-.em-main{flex:1;}
-/* صفحة الطالب */
-.student-btn{margin-top:8px;}
-.accordion{margin-top:10px;}
-.accordion-header{background:#E0E6F0;padding:10px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;}
-.accordion-body{margin-top:6px;display:none;}
-.accordion-body .card{cursor:default;}
-/* مرضى الطالب */
-.badge{display:inline-block;padding:2px 6px;border-radius:6px;font-size:11px;background:#E0E6F0;color:#123;}
-@media(max-width:768px){
-  .admin-layout{flex-direction:column;}
-  .admin-sidebar{width:100%;flex-direction:row;overflow-x:auto;}
-  .admin-menu{display:flex;gap:6px;flex:1;}
-  .admin-menu button{white-space:nowrap;}
-  .em-layout{flex-direction:column;}
-  .em-sidebar{width:100%;display:none;}
-  .em-sidebar-toggle{display:block;}
-}
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="home-icon" onclick="goHome()">🏠</div>
-  <div id="topbarTitle" class="topbar-center">مساعد طالب الأسنان</div>
-  <div class="topbar-right">
-    <span id="firebaseStatusText">Firebase: غير متصل</span>
-    <div id="firebaseStatusDot" class="status-dot offline"></div>
-  </div>
-</div>
-
-<!-- شاشة البداية -->
-<div id="mainLogin" class="container">
-  <h2 class="section-title">اختر نوع الدخول</h2>
-  <button class="btn btn-main" onclick="showSection('adminLogin')">دخول كمدير</button>
-  <button class="btn btn-sec" onclick="showSection('studentLogin')">دخول كطالب</button>
-</div>
-
-<!-- دخول المدير -->
-<div id="adminLogin" class="container hidden">
-  <h2 class="section-title">دخول المدير</h2>
-  <label>كلمة السر</label>
-  <input id="adminPass" type="password" placeholder="كلمة السر">
-  <button class="btn btn-main" onclick="loginAdmin()">دخول</button>
-  <button class="btn btn-sec" onclick="showSection('mainLogin')">رجوع</button>
-</div>
-
-<!-- دخول الطالب -->
-<div id="studentLogin" class="container hidden">
-  <h2 class="section-title">دخول الطالب</h2>
-  <label>البريد الإلكتروني</label>
-  <input id="loginEmail" type="email" placeholder="example@mail.com">
-  <label>كلمة المرور</label>
-  <input id="loginPassword" type="password" placeholder="كلمة السر">
-  <button class="btn btn-main" onclick="loginStudent()">دخول</button>
-  <button class="btn btn-sec" onclick="showSection('registerSection')">إنشاء حساب جديد</button>
-  <button class="btn btn-sec" onclick="showSection('mainLogin')">رجوع</button>
-  <div id="loginMessage" style="margin-top:8px;font-size:12px;color:#C62828;"></div>
-</div>
-
-<!-- تسجيل طالب -->
-<div id="registerSection" class="container hidden">
-  <h2 class="section-title">تسجيل طالب جديد</h2>
-  <label>الاسم الكامل</label>
-  <input id="regName" type="text">
-  <label>البريد الإلكتروني</label>
-  <input id="regEmail" type="email">
-  <label>كلمة المرور</label>
-  <input id="regPassword" type="password" placeholder="كلمة السر">
-  <button class="btn btn-main" onclick="registerStudent()">تسجيل</button>
-  <button class="btn btn-sec" onclick="showSection('studentLogin')">رجوع</button>
-  <div style="margin-top:8px;font-size:12px;color:#555;">بعد التسجيل، يجب تفعيل حسابك من قبل المدير قبل أن تتمكن من الدخول.</div>
-</div>
-
-<!-- لوحة الطالب -->
-<div id="studentSection" class="container hidden">
-  <h2 class="section-title">لوحة الطالب</h2>
-  <div id="studentWelcome" style="font-size:13px;color:#555;margin-bottom:10px;"></div>
-  <button class="btn btn-main student-btn" onclick="openEmergency()">مساعدي الذكي (الطوارئ السنية)</button>
-  <button class="btn btn-sec student-btn" onclick="showSection('addPatientSection')">أضف مريض</button>
-  <button class="btn btn-sec student-btn" onclick="loadMyPatients()">سجل مرضاي</button>
-
-  <div class="accordion">
-    <div class="accordion-header" onclick="toggleStudentCases()">
-      <span>الحالات (منزلق)</span>
-      <span id="studentCasesArrow">▼</span>
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>DS Assistant – Realtime</title><style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:#0f172a;color:#e5e7eb;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:10px}
+.app{background:#020617;border-radius:18px;box-shadow:0 20px 60px rgba(15,23,42,.9);max-width:480px;width:100%;padding:18px;border:1px solid #1f2937}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.title{font-size:20px;font-weight:700;color:#e0f2fe}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:#0f766e;color:#ecfeff}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tab{flex:1;padding:7px 0;border-radius:999px;border:1px solid #1f2937;font-size:12px;text-align:center;cursor:pointer;background:#020617;color:#9ca3af;transition:.2s}
+.tab.active{background:#0ea5e9;color:#e5f3ff;border-color:#38bdf8}
+.section{display:none;margin-top:6px}
+.section.active{display:block}
+.field{margin-bottom:8px}
+.label{font-size:11px;color:#9ca3af;margin-bottom:2px}
+.input{width:100%;padding:7px 9px;border-radius:10px;border:1px solid #1f2937;background:#020617;color:#e5e7eb;font-size:13px}
+.input:focus{outline:none;border-color:#0ea5e9;box-shadow:0 0 0 1px #0ea5e9}
+.btn{width:100%;padding:8px 0;border-radius:999px;border:none;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;transition:.2s}
+.btn-primary{background:#0ea5e9;color:#e0f2fe}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-ghost{background:transparent;color:#93c5fd;border:1px solid #1f2937}
+.small{font-size:11px;color:#9ca3af;margin-top:4px;text-align:center}
+.status{margin-top:6px;font-size:11px;padding:6px 8px;border-radius:10px;display:none}
+.status.ok{background:#022c22;color:#bbf7d0}
+.status.err{background:#450a0a;color:#fecaca}
+.card{margin-top:10px;padding:8px;border-radius:12px;background:#020617;border:1px solid #1f2937}
+.card-title{font-size:13px;font-weight:600;margin-bottom:4px;color:#e0f2fe}
+.card-body{font-size:12px;color:#9ca3af}
+.list{max-height:180px;overflow:auto;margin-top:6px}
+.item{padding:6px 7px;border-radius:10px;border:1px solid #1f2937;margin-bottom:4px;font-size:12px}
+.item strong{color:#e5e7eb}
+.chip{display:inline-block;font-size:10px;padding:2px 6px;border-radius:999px;background:#0f172a;color:#93c5fd;margin-left:4px}
+.badge-online{width:8px;height:8px;border-radius:999px;background:#22c55e;display:inline-block;margin-left:4px}
+.badge-offline{width:8px;height:8px;border-radius:999px;background:#ef4444;display:inline-block;margin-left:4px}
+</style></head><body>
+<div class="app">
+  <div class="header">
+    <div>
+      <div class="title">DS Assistant</div>
+      <div style="font-size:11px;color:#9ca3af;margin-top:2px">نظام طلاب الأسنان – Realtime Firebase</div>
     </div>
-    <div id="studentCasesBody" class="accordion-body">
-      <div class="card">
-        <div class="card-title">حالات الطوارئ السنية</div>
-        <div class="card-desc">يمكنك مراجعة الحالات الطارئة بالتفصيل من خلال زر "مساعدي الذكي".</div>
-      </div>
-      <div class="card">
-        <div class="card-title">حالات مرضاك</div>
-        <div class="card-desc">سجل مرضاك يحتوي على بيانات المرضى الذين أضفتهم من خلال "أضف مريض".</div>
-      </div>
-    </div>
+    <div class="badge">diagnosis-6ea4b</div>
   </div>
 
-  <button class="btn btn-sec student-btn" onclick="logout()">تسجيل الخروج</button>
-</div>
+  <div style="font-size:11px;color:#9ca3af;margin-bottom:6px">
+    حالة الاتصال:
+    <span id="connDot" class="badge-offline"></span>
+    <span id="connText">غير متصل</span>
+  </div>
 
-<!-- إضافة مريض -->
-<div id="addPatientSection" class="container hidden">
-  <h2 class="section-title">إضافة مريض جديد</h2>
-  <label>اسم المريض</label>
-  <input id="patName" type="text">
-  <label>العمر</label>
-  <input id="patAge" type="number" min="0" max="120">
-  <label>الجنس</label>
-  <select id="patGender">
-    <option value="">اختر</option>
-    <option value="ذكر">ذكر</option>
-    <option value="أنثى">أنثى</option>
-  </select>
-  <label>هاتف المريض</label>
-  <input id="patPhone" type="tel">
-  <label>التشخيص</label>
-  <textarea id="patDiagnosis"></textarea>
-  <button class="btn btn-main" onclick="savePatient()">حفظ المريض</button>
-  <button class="btn btn-sec" onclick="showSection('studentSection')">رجوع</button>
-  <div id="patMessage" style="margin-top:8px;font-size:12px;"></div>
-</div>
+  <div class="tabs">
+    <button class="tab active" data-tab="student">دخول طالب</button>
+    <button class="tab" data-tab="register">تسجيل طالب</button>
+    <button class="tab" data-tab="admin">دخول المدير</button>
+  </div>
 
-<!-- سجل مرضاي -->
-<div id="myPatientsSection" class="container hidden">
-  <h2 class="section-title">سجل مرضاي</h2>
-  <div id="myPatientsList"></div>
-  <button class="btn btn-sec" onclick="showSection('studentSection')">رجوع</button>
-</div>
-
-<!-- لوحة المدير المتقدمة -->
-<div id="adminSection" class="hidden">
-  <div class="admin-layout">
-    <div class="admin-sidebar">
-      <div class="admin-logo">لوحة المدير</div>
-      <div class="admin-menu">
-        <button id="btnAdminHome" class="active" onclick="showAdminPage('home')">الرئيسية</button>
-        <button id="btnAdminPending" onclick="showAdminPage('pending')">طلبات التفعيل</button>
-        <button id="btnAdminStudents" onclick="showAdminPage('students')">الطلاب</button>
-        <button id="btnAdminSettings" onclick="showAdminPage('settings')">الإعدادات</button>
-        <button onclick="logout()">خروج</button>
-      </div>
+  <!-- دخول الطالب -->
+  <div id="section-student" class="section active">
+    <div class="field">
+      <div class="label">البريد الإلكتروني</div>
+      <input id="stuEmail" type="email" class="input" placeholder="student@example.com">
     </div>
-    <div class="admin-main">
-      <!-- صفحة رئيسية -->
-      <div id="adminHomePage">
-        <h2 style="margin:6px 0 10px;">نظرة عامة</h2>
-        <div class="admin-cards">
-          <div class="admin-card">
-            <div class="admin-card-title">عدد الطلاب المسجلين</div>
-            <div id="statStudents" class="admin-card-value">0</div>
-          </div>
-          <div class="admin-card">
-            <div class="admin-card-title">عدد حالات الطوارئ السنية</div>
-            <div id="statCases" class="admin-card-value">40</div>
-          </div>
-          <div class="admin-card">
-            <div class="admin-card-title">آخر نوع دخول</div>
-            <div id="statLastLogin" class="admin-card-value">—</div>
-          </div>
-          <div class="admin-card">
-            <div class="admin-card-title">حالة اتصال Firebase</div>
-            <div id="statFirebase" class="admin-card-value">غير متصل</div>
-          </div>
+    <div class="field">
+      <div class="label">كلمة المرور</div>
+      <input id="stuPass" type="password" class="input" placeholder="••••••••">
+    </div>
+    <button id="btnStuLogin" class="btn btn-primary">دخول الطالب</button>
+    <div id="stuStatus" class="status"></div>
+
+    <div id="studentPanel" class="card" style="display:none">
+      <div class="card-title">لوحة الطالب</div>
+      <div class="card-body">
+        <div>مرحبًا <span id="stuNameLabel"></span> <span class="chip">طالب</span></div>
+        <div style="margin-top:6px;font-size:11px;color:#9ca3af">يمكنك إضافة مرضى ومراجعة سجلك.</div>
+
+        <div class="field" style="margin-top:8px">
+          <div class="label">اسم المريض</div>
+          <input id="patName" class="input" placeholder="اسم المريض">
         </div>
-        <p style="font-size:13px;color:#555;">هذه اللوحة مخصصة لإدارة الطلاب وتفعيل حساباتهم. موسوعة الطوارئ السنية متاحة من حساب الطالب.</p>
-      </div>
-
-      <!-- طلبات التفعيل -->
-      <div id="adminPendingPage" class="hidden">
-        <h2 style="margin:6px 0 10px;">طلبات التفعيل</h2>
-        <table class="table">
-          <thead><tr><th>الاسم</th><th>البريد</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-          <tbody id="pendingTableBody"></tbody>
-        </table>
-        <p style="font-size:12px;color:#777;margin-top:6px;">يمكنك تفعيل حساب الطالب ليتمكن من الدخول، أو حذفه نهائيًا.</p>
-      </div>
-
-      <!-- إدارة الطلاب -->
-      <div id="adminStudentsPage" class="hidden">
-        <h2 style="margin:6px 0 10px;">إدارة الطلاب</h2>
-        <table class="table">
-          <thead><tr><th>الاسم</th><th>البريد</th><th>مفعل؟</th><th>إجراءات</th></tr></thead>
-          <tbody id="studentsTableBody"></tbody>
-        </table>
-      </div>
-
-      <!-- إعدادات المدير -->
-      <div id="adminSettingsPage" class="hidden">
-        <h2 style="margin:6px 0 10px;">إعدادات المدير</h2>
-        <div class="card" style="cursor:default;">
-          <div class="card-title">معلومات الدخول</div>
-          <div class="card-desc">
-            كلمة سر المدير الحالية:
-            <span style="background:#F4C542;color:#123;padding:2px 6px;border-radius:6px;font-size:11px;">salem1959</span>
-          </div>
-          <div style="font-size:12px;color:#777;">يمكن في نسخة لاحقة إضافة خيار تغيير كلمة السر من داخل التطبيق.</div>
+        <div class="field">
+          <div class="label">التشخيص</div>
+          <input id="patDx" class="input" placeholder="مثال: Pulpitis, Caries, etc.">
         </div>
-        <div class="card" style="cursor:default;">
-          <div class="card-title">إعدادات Firebase</div>
-          <div class="card-desc" style="font-size:12px;">
-            تأكد من تعديل بيانات <code>firebaseConfig</code> في الكود ووضع مفاتيح مشروعك الحقيقي.
-          </div>
+        <div class="field">
+          <div class="label">الخطة العلاجية</div>
+          <input id="patPlan" class="input" placeholder="مثال: RCT, Filling, Extraction">
+        </div>
+        <button id="btnAddPatient" class="btn btn-primary">إضافة مريض</button>
+        <div id="patStatus" class="status"></div>
+
+        <div class="card" style="margin-top:10px">
+          <div class="card-title">سجل مرضاي</div>
+          <div id="patientsList" class="list"></div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- موسوعة الطوارئ السنية (للطلاب فقط) -->
-<div id="emergencySection" class="container hidden">
-  <h2 class="section-title">موسوعة الطوارئ السنية في العيادة</h2>
-  <button class="btn btn-sec em-sidebar-toggle" onclick="toggleEmSidebar()">إظهار / إخفاء المجموعات</button>
-  <input id="search" class="search-box" type="text" placeholder="ابحث في كل الحالات..." oninput="searchCases()">
-  <div class="em-layout">
-    <div id="emSidebar" class="em-sidebar">
-      <button class="em-group-btn active" onclick="selectGroup('loss')">طوارئ فقدان الوعي</button>
-      <button class="em-group-btn" onclick="selectGroup('cardio')">طوارئ قلبية وتنفسية</button>
-      <button class="em-group-btn" onclick="selectGroup('anesthesia')">طوارئ التخدير الموضعي</button>
-      <button class="em-group-btn" onclick="selectGroup('procedure')">طوارئ أثناء الإجراءات السنية</button>
-      <button class="em-group-btn" onclick="selectGroup('patient')">طوارئ مرتبطة بالمريض</button>
-      <button class="em-group-btn" onclick="selectGroup('surgical')">طوارئ جراحية</button>
+  <!-- تسجيل طالب -->
+  <div id="section-register" class="section">
+    <div class="field">
+      <div class="label">الاسم الكامل</div>
+      <input id="regName" class="input" placeholder="اسم الطالب">
     </div>
-    <div class="em-main">
-      <div id="casesList"></div>
+    <div class="field">
+      <div class="label">البريد الإلكتروني</div>
+      <input id="regEmail" type="email" class="input" placeholder="student@example.com">
+    </div>
+    <div class="field">
+      <div class="label">كلمة المرور</div>
+      <input id="regPass" type="password" class="input" placeholder="••••••••">
+    </div>
+    <button id="btnRegister" class="btn btn-primary">تسجيل طالب جديد</button>
+    <div class="small">سيظهر حسابك في لوحة المدير كـ "بانتظار التفعيل".</div>
+    <div id="regStatus" class="status"></div>
+  </div>
+
+  <!-- دخول المدير -->
+  <div id="section-admin" class="section">
+    <div class="field">
+      <div class="label">بريد المدير</div>
+      <input id="admEmail" type="email" class="input" placeholder="admin@example.com">
+    </div>
+    <div class="field">
+      <div class="label">كلمة المرور</div>
+      <input id="admPass" type="password" class="input" placeholder="••••••••">
+    </div>
+    <button id="btnAdmLogin" class="btn btn-primary">دخول المدير</button>
+    <div id="admStatus" class="status"></div>
+
+    <div id="adminPanel" class="card" style="display:none">
+      <div class="card-title">لوحة المدير</div>
+      <div class="card-body">
+        <div style="font-size:11px;color:#9ca3af">إدارة الطلاب وطلبات التفعيل.</div>
+        <div class="card" style="margin-top:8px">
+          <div class="card-title">طلاب بانتظار التفعيل</div>
+          <div id="pendingList" class="list"></div>
+        </div>
+        <div class="card" style="margin-top:8px">
+          <div class="card-title">كل الطلاب</div>
+          <div id="allStudentsList" class="list"></div>
+        </div>
+      </div>
     </div>
   </div>
-  <button class="btn btn-sec" onclick="backFromEmergency()">رجوع</button>
+
+  <div class="small" style="margin-top:10px">مربوط بـ Firebase Realtime Database – diagnosis-6ea4b</div>
 </div>
 
-<!-- صفحة الحالة -->
-<div id="caseSection" class="container hidden">
-  <h2 class="section-title">تفاصيل الحالة الطارئة</h2>
-  <div id="caseTitle" class="case-title"></div>
-  <div class="case-card"><div class="case-card-title"><span>📘</span><span>التعريف</span></div><div id="caseDefinition" class="case-text"></div></div>
-  <div class="case-card"><div class="case-card-title"><span>⚠️</span><span>الأسباب</span></div><div id="caseCauses" class="case-text"></div></div>
-  <div class="case-card"><div class="case-card-title"><span>🩺</span><span>العلامات والأعراض</span></div><div id="caseSigns" class="case-text"></div></div>
-  <div class="case-card"><div class="case-card-title"><span>⛑️</span><span>الإسعافات داخل العيادة</span></div><div id="caseAid" class="case-text"></div></div>
-  <div class="case-card"><div class="case-card-title"><span>📝</span><span>متى نحول للطوارئ</span></div><div id="caseNotes" class="case-text"></div></div>
-  <button class="btn btn-sec" onclick="showSection('emergencySection')">رجوع</button>
-</div>
-
-<footer>الإصدار 1.1 — جميع الحقوق محفوظة © 2026<br>تصميم وتطوير الدكتور زكريا محمد عطوني</footer>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+<!-- Firebase compat SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <script>
-// ضع هنا إعدادات مشروعك الحقيقي من Firebase Console
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+// Firebase config لمشروع diagnosis
+const firebaseConfig={apiKey:"AIzaSyCb9VELSLmljq9IKmLZFfJgT3zvq9q22HE",authDomain:"diagnosis-6ea4b.firebaseapp.com",databaseURL:"https://diagnosis-6ea4b-default-rtdb.firebaseio.com",projectId:"diagnosis-6ea4b",storageBucket:"diagnosis-6ea4b.firebasestorage.app",messagingSenderId:"1014263737561",appId:"1:1014263737561:web:ca8affac416227be8862c8",measurementId:"G-RHHRFLZM2P"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.database();
+
+// تبويب الواجهات
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    const id=t.dataset.tab;
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    document.getElementById("section-"+id).classList.add("active");
+  };
+});
+
+// حالة الاتصال
+const connDot=document.getElementById("connDot");
+const connText=document.getElementById("connText");
+function setConnState(ok){
+  if(ok){connDot.className="badge-online";connText.textContent="متصل بـ Firebase";}
+  else{connDot.className="badge-offline";connText.textContent="غير متصل";}
+}
+firebase.database().ref(".info/connected").on("value",snap=>{
+  setConnState(snap.val()===true);
+});
+
+// أدوات مساعدة
+function showStatus(el,msg,ok=true){
+  el.style.display="block";
+  el.className="status "+(ok?"ok":"err");
+  el.textContent=msg;
+}
+function clearStatus(el){el.style.display="none";}
+
+// تسجيل طالب جديد
+const regName=document.getElementById("regName");
+const regEmail=document.getElementById("regEmail");
+const regPass=document.getElementById("regPass");
+const regStatus=document.getElementById("regStatus");
+document.getElementById("btnRegister").onclick=async()=>{
+  clearStatus(regStatus);
+  const name=regName.value.trim();
+  const email=regEmail.value.trim();
+  const pass=regPass.value.trim();
+  if(!name||!email||!pass){showStatus(regStatus,"الرجاء تعبئة جميع الحقول",false);return;}
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    const uid=cred.user.uid;
+    await db.ref("students/"+uid).set({name,email,active:false,createdAt:Date.now()});
+    await auth.signOut();
+    regName.value=regEmail.value=regPass.value="";
+    showStatus(regStatus,"تم التسجيل بنجاح، بانتظار تفعيل المدير.",true);
+  }catch(e){showStatus(regStatus,"خطأ: "+e.message,false);}
 };
 
-let app,auth,db,currentUser=null,lastLoginType="—";
-
-// حالات الطوارئ السنية (كما هي من النسخة السابقة)
-const emergencyCases=[/* نفس الـ 40 حالة كما في النسخة السابقة */];
-
-// لأجل الاختصار، أضع هنا نفس المصفوفة كاملة:
-Object.assign(emergencyCases, JSON.parse(JSON.stringify([
-  /* المجموعة 1 — طوارئ فقدان الوعي (loss) */
-  {id:1,group:"loss",name:"الإغماء الوعائي المبهمي",definition:"أكثر طوارئ العيادة السنية شيوعًا، يحدث بسبب هبوط مفاجئ في ضغط الدم نتيجة خوف أو ألم أو وقوف طويل.",causes:"الخوف من العلاج، رؤية الدم، الألم، الوقوف المفاجئ، الجو الحار داخل العيادة.",signs:"دوار، تعرق بارد، شحوب، غثيان، ثم فقدان وعي قصير مع نبض بطيء وضغط منخفض.",first_aid:"إيقاف الإجراء فورًا، وضع المريض مستلقيًا مع رفع الساقين، إرخاء الملابس الضيقة، تهوية المكان، يمكن استخدام أمونيا استنشاقية إن توفرت.",notes:"إذا لم يستعد وعيه خلال دقائق أو تكرر الإغماء يجب تقييمه في الطوارئ."},
-  {id:2,group:"loss",name:"هبوط الضغط المفاجئ",definition:"انخفاض ملحوظ في ضغط الدم أثناء الجلسة السنية، قد يكون مرتبطًا بأدوية أو حالة مرضية.",causes:"أدوية خافضة للضغط، تجفاف، نزف، وقوف مفاجئ بعد الاستلقاء.",signs:"دوخة، تعب، تشوش، أحيانًا إغماء، نبض سريع وضعيف.",first_aid:"إيقاف الإجراء، وضع المريض مستلقيًا، رفع الساقين، مراقبة العلامات الحيوية إن أمكن، إعطاء سوائل فموية إذا كان واعيًا.",notes:"إذا استمر الهبوط أو ترافق مع ألم صدري أو ضيق نفس → تحويل للطوارئ."},
-  {id:3,group:"loss",name:"فرط التهوية (Hyperventilation)",definition:"تنفس سريع وعميق غالبًا بسبب القلق، يؤدي إلى نقص ثاني أكسيد الكربون وحدوث أعراض مزعجة.",causes:"الخوف الشديد من العلاج، نوبة هلع، توتر قبل أو أثناء الإجراء.",signs:"تنفس سريع، وخز في الأطراف، دوار، شعور بالاختناق رغم أن الأكسجين طبيعي.",first_aid:"طمأنة المريض، إيقاف الإجراء، تدريبه على التنفس البطيء عبر الأنف والزفير من الفم، يمكن جعله يتنفس في كيس ورقي لفترة قصيرة.",notes:"إذا لم يتحسن أو ظهرت أعراض أخرى غير مفسرة يجب تقييمه طبيًا."},
-  {id:4,group:"loss",name:"نقص سكر الدم",definition:"انخفاض مستوى السكر في الدم عند مريض سكري أو صائم، قد يحدث أثناء الجلسة السنية.",causes:"تأخير الوجبة، جرعة زائدة من الإنسولين أو أدوية السكر، صيام طويل قبل الموعد.",signs:"رجفان، تعرق، جوع شديد، صداع، تشوش، وقد يتطور لفقدان وعي.",first_aid:"إذا كان واعيًا: إعطاء سكر سريع الامتصاص (عصير، قطعة سكر)، إيقاف الإجراء، مراقبته حتى يتحسن.",notes:"إذا فقد الوعي أو لم يستطع البلع → طوارئ فورية ونقل للمستشفى."},
-  {id:5,group:"loss",name:"فرط سكر الدم",definition:"ارتفاع مستوى السكر في الدم، غالبًا لا يكون حادًا في العيادة لكنه قد يظهر بأعراض عامة.",causes:"إهمال جرعات الدواء، تناول وجبات كبيرة، عدوى مزمنة.",signs:"عطش، كثرة تبول، تعب، جفاف فم، أحيانًا رائحة أستون.",first_aid:"إيقاف الإجراءات غير الضرورية، نصح المريض بمراجعة طبيبه، تأجيل المعالجات الطويلة.",notes:"إذا ظهرت علامات حماض كيتوني (غثيان، قيء، ألم بطني، تنفس عميق) → طوارئ."},
-  {id:6,group:"loss",name:"نوبة صرع",definition:"تفريغ كهربائي غير طبيعي في الدماغ يؤدي إلى تشنجات وفقدان وعي.",causes:"صرع معروف، إيقاف مفاجئ للدواء، محفزات مثل قلة النوم أو التوتر.",signs:"تشنجات عامة، فقدان وعي، عض اللسان أحيانًا، رغوة بالفم.",first_aid:"إبعاد الأدوات الحادة، عدم محاولة تقييد المريض، عدم وضع شيء في فمه، بعد انتهاء النوبة يوضع على جانبه.",notes:"إذا استمرت النوبة أكثر من 5 دقائق أو تكررت → طوارئ."},
-  {id:7,group:"loss",name:"توقف التنفس",definition:"انعدام حركة الهواء داخل وخارج الرئتين، حالة مهددة للحياة.",causes:"تثبيط تنفسي دوائي، انسداد مجرى الهواء، توقف قلب.",signs:"لا حركة صدر، لا نفس محسوس، زرقة، فقدان وعي.",first_aid:"فحص النبض والتنفس، البدء بتنفس إنقاذي والإنعاش القلبي الرئوي حسب البروتوكول.",notes:"يجب استدعاء الإسعاف فورًا واستخدام جهاز الصدمات إن توفر."},
-  {id:8,group:"loss",name:"انسداد مجرى الهواء بجسم غريب",definition:"دخول أداة أو مادة إلى مجرى الهواء أثناء العلاج السني.",causes:"سقوط أداة صغيرة، سن، تاج، أو قطعة قطن في البلعوم الخلفي.",signs:"سعال شديد، اختناق، عدم القدرة على الكلام، زرقة إذا كان الانسداد كاملاً.",first_aid:"إذا كان المريض واعيًا ويسعل بفعالية يترك ليسعل، إذا كان الانسداد شديدًا تطبق مناورة هيمليك، وإذا فقد الوعي يبدأ الإنعاش.",notes:"يجب نقل المريض للطوارئ لتقييم مكان الجسم الغريب بالأشعة."},
-  /* المجموعة 2 — طوارئ قلبية وتنفسية (cardio) */
-  {id:9,group:"cardio",name:"ألم صدري حاد (ذبحة)",definition:"ألم ضاغط في الصدر قد يشير إلى ذبحة صدرية عند مريض قلبي.",causes:"مرض شرايين تاجية، جهد زائد، توتر شديد.",signs:"ألم ضاغط في منتصف الصدر، قد يمتد للذراع أو الفك، تعرق، ضيق نفس.",first_aid:"إيقاف الإجراء فورًا، وضع المريض في وضع نصف جلوس، إعطاؤه دواءه المعتاد (مثل النيتروغليسرين) إن كان موصوفًا له.",notes:"إذا لم يتحسن الألم خلال دقائق أو كان أول مرة يحدث → طوارئ."},
-  {id:10,group:"cardio",name:"احتشاء عضلة القلب",definition:"انقطاع تروية جزء من عضلة القلب، حالة مهددة للحياة.",causes:"انسداد حاد في أحد الشرايين التاجية.",signs:"ألم صدري شديد مستمر، تعرق غزير، غثيان، ضيق نفس، شعور بالموت الوشيك.",first_aid:"إيقاف كل شيء، استدعاء الإسعاف فورًا، وضع المريض في وضع مريح، عدم تركه وحيدًا.",notes:"لا تُجرى أي معالجة سنية في هذه الحالة، الأولوية لإنقاذ الحياة."},
-  {id:11,group:"cardio",name:"أزمة ربو حادة",definition:"تضيق مفاجئ في الشعب الهوائية عند مريض ربو أثناء وجوده في العيادة.",causes:"روائح قوية، قلق، عدوى تنفسية سابقة.",signs:"صفير، ضيق نفس، سعال، صعوبة في الكلام.",first_aid:"إيقاف الإجراء، مساعدة المريض على استخدام بخاخه الموسع، الجلوس في وضع مريح، تهوية المكان.",notes:"إذا لم يتحسن أو ساءت الأعراض → طوارئ."},
-  {id:12,group:"cardio",name:"صدمة تأقية (Anaphylaxis)",definition:"تفاعل تحسسي شديد مهدد للحياة، قد يحدث بعد دواء أو مادة في العيادة.",causes:"مخدر موضعي، مضاد حيوي، لاتكس، مواد حشو.",signs:"طفح جلدي عام، تورم وجه ولسان، صعوبة تنفس، هبوط ضغط، تسارع نبض.",first_aid:"إيقاف التعرض للمادة، استدعاء الإسعاف فورًا، إعطاء إبينفرين عضلي إن كان متوفرًا وبالجرعة الصحيحة.",notes:"يجب تجهيز عيادة الأسنان لمثل هذه الحالة ضمن حقيبة الطوارئ."},
-  {id:13,group:"cardio",name:"تفاعل تحسسي متوسط",definition:"تحسس أقل شدة من التأق، غالبًا موضعي أو جلدي.",causes:"أدوية، لاتكس، مواد حشو، مضمضات.",signs:"حكة، طفح جلدي موضعي أو عام، تورم بسيط في الشفاه أو الوجه.",first_aid:"إيقاف المادة المسببة، إعطاء مضاد هيستامين فموي إن كان مسموحًا، مراقبة تطور الأعراض.",notes:"إذا بدأ التورم يزداد أو ظهرت صعوبة تنفس → التعامل كصدمة تأقية."},
-  /* المجموعة 3 — طوارئ التخدير الموضعي (anesthesia) */
-  {id:14,group:"anesthesia",name:"سمية ليدوكائين",definition:"ارتفاع مستوى المخدر الموضعي في الدم إلى درجة سامة.",causes:"حقن جرعة زائدة، حقن داخل وعاء دموي بالخطأ.",signs:"تنميل حول الفم، طنين أذن، دوار، تشنجات، اضطراب وعي.",first_aid:"إيقاف الحقن فورًا، دعم التنفس والدورة الدموية، استدعاء الإسعاف عند الأعراض المتقدمة.",notes:"الالتزام بالجرعة القصوى حسب وزن المريض يقلل احتمال السمية."},
-  {id:15,group:"anesthesia",name:"حقن داخل وعاء دموي",definition:"دخول المخدر الموضعي مباشرة إلى وعاء دموي.",causes:"عدم سحب المكبس قبل الحقن، تشريح وعائي غير متوقع.",signs:"دوار مفاجئ، خفقان، طعم معدني، أحيانًا أعراض سمية سريعة.",first_aid:"إيقاف الحقن فورًا، مراقبة المريض، دعم التنفس، استدعاء المساعدة عند الحاجة.",notes:"السحب قبل الحقن خطوة أساسية لتقليل هذا الخطر."},
-  {id:16,group:"anesthesia",name:"شلل وجهي مؤقت",definition:"شلل عابر في عضلات الوجه بعد التخدير.",causes:"انتشار المخدر إلى العصب الوجهي قرب الغدة النكفية.",signs:"عدم القدرة على إغلاق العين، ارتخاء زاوية الفم في نفس الجهة.",first_aid:"طمأنة المريض أن الحالة مؤقتة، حماية العين من الجفاف، انتظار زوال تأثير المخدر.",notes:"يجب شرح السبب للمريض لتجنب القلق."},
-  {id:17,group:"anesthesia",name:"كسر الإبرة",definition:"انكسار إبرة التخدير داخل النسج.",causes:"ثني الإبرة قبل الحقن، حركة مفاجئة للمريض، استخدام إبرة رفيعة جدًا.",signs:"اختفاء جزء من الإبرة داخل النسج، ألم موضعي.",first_aid:"عدم محاولة البحث العشوائي، إحالة المريض لجراح فم ووجه وفكين لإزالتها.",notes:"استخدام إبر جيدة وعدم ثنيها يقلل احتمال الكسر."},
-  {id:18,group:"anesthesia",name:"ألم عصبي بعد الحقن",definition:"ألم أو تنميل مستمر بعد التخدير بسبب أذية عصبية بسيطة.",causes:"إصابة العصب مباشرة بالإبرة، حقن تحت ضغط عالٍ.",signs:"ألم حارق، تنميل أو خدر في منطقة التعصيب.",first_aid:"طمأنة المريض، وصف مسكنات خفيفة، المتابعة، إحالة لاختصاصي إذا استمر طويلًا.",notes:"معظم الحالات تتحسن تلقائيًا خلال أسابيع."},
-  /* المجموعة 4 — طوارئ أثناء الإجراءات السنية (procedure) */
-  {id:19,group:"procedure",name:"ابتلاع أداة",definition:"دخول أداة سنية صغيرة إلى الجهاز الهضمي.",causes:"سقوط أداة أو سن أو تاج في البلعوم الخلفي دون حائل.",signs:"سعال بسيط ثم زواله، أحيانًا شعور بجسم غريب في الحلق.",first_aid:"طمأنة المريض، توثيق الحادثة، إحالة لتقييم بالأشعة إذا كان هناك شك بمكان الجسم.",notes:"معظم الأجسام الصغيرة تمر عبر الجهاز الهضمي دون مشكلة، لكن يجب التوثيق."},
-  {id:20,group:"procedure",name:"استنشاق أداة",definition:"دخول أداة إلى الجهاز التنفسي بدلاً من الهضمي.",causes:"سقوط أداة صغيرة في البلعوم مع شهيق مفاجئ.",signs:"سعال شديد، ضيق نفس، أحيانًا صفير أو زرقة.",first_aid:"اعتبارها حالة طارئة، استدعاء الإسعاف، عدم محاولة إخراجها يدويًا.",notes:"يحتاج المريض لتنظير قصبي لاستخراج الجسم."},
-  {id:21,group:"procedure",name:"نزف بعد القلع",definition:"استمرار النزف من مكان القلع أكثر من المتوقع.",causes:"اضطرابات تخثر، أدوية مميعة، عدم التزام بالتعليمات.",signs:"نزف مستمر أو متكرر من مكان القلع، بلع دم.",first_aid:"وضع شاش معقم والضغط عليه لمدة 20–30 دقيقة، تجنب المضمضة القوية، رفع الرأس.",notes:"إذا لم يتوقف النزف أو كان المريض مميعًا للدم → تقييم في الطوارئ."},
-  {id:22,group:"procedure",name:"التهاب سنخي (Dry Socket)",definition:"ألم شديد بعد القلع بسبب فقدان الخثرة الدموية من الحفرة.",causes:"التدخين، المضمضة العنيفة، رض جراحي شديد.",signs:"ألم نابض بعد 2–3 أيام من القلع، رائحة فم كريهة، حفرة فارغة.",first_aid:"تنظيف لطيف، وضع ضماد دوائي موضعي، مسكنات، متابعة.",notes:"ليست حالة مهددة للحياة لكنها مزعجة جدًا للمريض."},
-  {id:23,group:"procedure",name:"تورم سريع بعد القلع",definition:"زيادة سريعة في حجم النسج بعد القلع.",causes:"نزف تحت النسج، عدوى حادة، تحسس.",signs:"تورم مؤلم، أحيانًا احمرار وحرارة موضعية.",first_aid:"تقييم السبب، كمادات باردة في الساعات الأولى، وصف مضاد حيوي عند الشك بالعدوى.",notes:"إذا ترافق مع صعوبة تنفس أو بلع → طوارئ."},
-  {id:24,group:"procedure",name:"خلع مفصل الفك (TMJ)",definition:"خروج رأس اللقمة من الحفرة المفصلية أثناء فتح الفم.",causes:"فتح فم مفرط أثناء العلاج، تاريخ سابق لخلع.",signs:"عدم القدرة على إغلاق الفم، ألم أمام الأذن، كلام غير واضح.",first_aid:"طمأنة المريض، إحالة عاجلة لطبيب قادر على رد المفصل.",notes:"يجب تجنب فتح الفم المفرط في الجلسات اللاحقة."},
-  {id:25,group:"procedure",name:"كسر أداة داخل القناة",definition:"انكسار أداة معالجة لبية داخل القناة الجذرية.",causes:"استخدام أداة قديمة، قوة زائدة، انحناء قناة شديد.",signs:"لا أعراض فورية غالبًا، لكن قد يؤثر على نجاح المعالجة.",first_aid:"شرح الحالة للمريض، تقييم إمكانية الإزالة أو التجاوز، إحالة لاختصاصي عند الحاجة.",notes:"ليست طارئة حياتية لكنها مهمة من ناحية علاجية وقانونية."},
-  {id:26,group:"procedure",name:"ألم شديد أثناء التحضير",definition:"ألم حاد أثناء تحضير السن رغم التخدير.",causes:"تخدير غير كافٍ، التهاب لب حاد، قلق زائد.",signs:"ألم حاد عند الحفر، انزعاج شديد من المريض.",first_aid:"إيقاف التحضير، تعزيز التخدير أو تغيير التقنية، تأجيل الإجراء إذا لزم.",notes:"يجب عدم الإصرار على المتابعة مع ألم غير محتمل."},
-  {id:27,group:"procedure",name:"كسر سن أثناء العلاج",definition:"انكسار جزء من السن خلال المعالجة.",causes:"سن ضعيف، حشوات كبيرة قديمة، قوة زائدة.",signs:"ألم مفاجئ، تغير شكل السن، حواف حادة.",first_aid:"تنعيم الحواف الحادة، شرح الحالة للمريض، وضع خطة ترميم أو تاج.",notes:"توثيق الحالة مهم لتجنب سوء الفهم."},
-  {id:28,group:"procedure",name:"انكسار تاج مؤقت",definition:"انفصال أو كسر التاج المؤقت قبل التثبيت النهائي.",causes:"عض قوي، لصق ضعيف، تصميم غير مناسب.",signs:"حساسية، ألم خفيف، انزعاج من الشكل.",first_aid:"إعادة تثبيت التاج المؤقت أو صنع آخر، نصح المريض بتجنب الأطعمة القاسية.",notes:"ليست طارئة خطيرة لكنها مزعجة للمريض."},
-  /* المجموعة 5 — طوارئ مرتبطة بالمريض (patient) */
-  {id:29,group:"patient",name:"نوبة هلع",definition:"خوف شديد مفاجئ مع أعراض جسدية مزعجة داخل العيادة.",causes:"تجارب سابقة سيئة، رهاب من طبيب الأسنان، توتر عام.",signs:"خفقان، تعرق، ضيق نفس، شعور بالموت الوشيك، فرط تهوية.",first_aid:"إيقاف الإجراء، طمأنة المريض، التحدث بهدوء، تدريبه على التنفس البطيء، يمكن تأجيل الجلسة.",notes:"قد يحتاج المريض لدعم نفسي أو مهدئات خفيفة بوصفة طبية لاحقًا."},
-  {id:30,group:"patient",name:"ارتفاع ضغط مفاجئ",definition:"ارتفاع ملحوظ في ضغط الدم أثناء الجلسة.",causes:"توتر، ألم، عدم التزام بالعلاج الدوائي.",signs:"صداع، دوار، طنين، أحيانًا نزيف أنفي.",first_aid:"إيقاف الإجراء، تهدئة المريض، قياس الضغط إن أمكن، تأجيل المعالجات غير الضرورية.",notes:"إذا كان الضغط مرتفعًا جدًا مع أعراض عصبية أو صدرية → طوارئ."},
-  {id:31,group:"patient",name:"نزيف لثوي غير متوقع",definition:"نزف غزير من اللثة أثناء تنظيف أو علاج بسيط.",causes:"التهاب لثوي شديد، أدوية مميعة، اضطرابات تخثر.",signs:"نزف مستمر من اللثة، صعوبة إيقافه.",first_aid:"الضغط الموضعي بقطن أو شاش، استخدام مواد موضعية موقفة للنزف، تقييم الأدوية.",notes:"إذا شككت باضطراب تخثر غير معروف يجب إحالة المريض للفحص."},
-  {id:32,group:"patient",name:"رد فعل دوائي غير متوقع",definition:"استجابة غير عادية لدواء مستخدم في العيادة.",causes:"حساسية غير معروفة، تداخلات دوائية.",signs:"دوار، غثيان، طفح، أحيانًا أعراض أشد.",first_aid:"إيقاف الدواء، مراقبة المريض، التعامل حسب شدة الأعراض (تحسس بسيط أو تأق).",notes:"توثيق الدواء المسبب مهم جدًا في ملف المريض."},
-  {id:33,group:"patient",name:"قيء مفاجئ أثناء العلاج",definition:"حدوث قيء أثناء وجود أدوات في الفم.",causes:"منعكس قيء قوي، بلع دم أو مواد، قلق.",signs:"غثيان، قيء، انزعاج شديد.",first_aid:"إبعاد الأدوات بسرعة، إمالة رأس المريض للأمام، تنظيف الفم، تهدئته.",notes:"يمكن استخدام حواجز مطاطية وتقنيات تقلل منعكس القيء في الجلسات القادمة."},
-  {id:34,group:"patient",name:"حساسية لاتكس",definition:"تحسس من القفازات أو المواد المحتوية على لاتكس.",causes:"تعرض متكرر للاتكس، استعداد تحسسي.",signs:"حكة، احمرار في الجلد، طفح في مناطق التماس.",first_aid:"إزالة مصدر اللاتكس، غسل المنطقة، استخدام قفازات خالية من اللاتكس لاحقًا.",notes:"إذا ظهرت أعراض عامة (ضيق نفس، تورم) → تعامل كتحسس شديد."},
-  {id:35,group:"patient",name:"حساسية مواد طب الأسنان",definition:"تحسس من مواد مثل الإيوجينول أو الراتنجات.",causes:"تماس مباشر مع الأغشية أو الجلد، استعداد تحسسي.",signs:"حرقان موضعي، احمرار، أحيانًا تقرح بسيط.",first_aid:"إزالة المادة المسببة، شطف المنطقة جيدًا، استخدام مواد بديلة لاحقًا.",notes:"يجب تدوين المادة المسببة في ملف المريض."},
-  /* المجموعة 6 — طوارئ جراحية (surgical) */
-  {id:36,group:"surgical",name:"نزف شديد بعد جراحة",definition:"نزف مستمر أو غزير بعد إجراء جراحي فموي.",causes:"اضطرابات تخثر، أدوية مميعة، إغلاق غير كافٍ.",signs:"نزف لا يتوقف بالضغط البسيط، بلع دم، دوار.",first_aid:"ضغط قوي بشاش معقم، خياطة إضافية إن أمكن، استخدام مواد موقفة للنزف.",notes:"إذا لم يضبط النزف أو ظهرت علامات صدمة → طوارئ."},
-  {id:37,group:"surgical",name:"عدوى حادة بعد القلع",definition:"التهاب حاد في مكان القلع بعد أيام من الإجراء.",causes:"بقايا نسج ملتهبة، نظافة فموية سيئة.",signs:"ألم متزايد، تورم، احمرار، أحيانًا حرارة عامة.",first_aid:"تنظيف لطيف، وصف مضاد حيوي مناسب، مسكنات، متابعة.",notes:"إذا امتد التورم للعنق أو سبب صعوبة بلع أو تنفس → طوارئ."},
-  {id:38,group:"surgical",name:"التهاب نسيج خلوي (Cellulitis)",definition:"انتشار عدوى من سن أو منطقة فموية إلى النسج الرخوة.",causes:"خراج سني مهمل، عدوى غير معالجة.",signs:"تورم منتشر، ألم، احمرار، حرارة موضعية، صعوبة فتح الفم أحيانًا.",first_aid:"مضاد حيوي مناسب، تقييم الحاجة لتصريف، متابعة لصيقة.",notes:"إذا ترافق مع صعوبة تنفس أو بلع أو حمى عالية → إحالة عاجلة."},
-  {id:39,group:"surgical",name:"خراج ينتشر بسرعة",definition:"خراج فموي أو وجهي يتوسع بسرعة خلال ساعات.",causes:"عدوى حادة في سن أو نسج داعمة.",signs:"تورم مؤلم، حرارة، صعوبة فتح الفم، أحيانًا صعوبة بلع.",first_aid:"فتح وتصريف عند الإمكان، مضاد حيوي، تقييم عام.",notes:"الانتشار نحو المساحات العميقة في العنق حالة خطيرة تستدعي طوارئ."},
-  {id:40,group:"surgical",name:"ألم شديد بعد الزرع السني",definition:"ألم غير طبيعي بعد عملية زرع سن.",causes:"ضغط زائد على العظم، عدوى، فشل أولي في الاندماج.",signs:"ألم مستمر لا يتحسن، تورم، أحيانًا نزف أو إفراز.",first_aid:"تقييم سريري وشعاعي، مسكنات، مضاد حيوي عند الشك بعدوى، تخفيف الحمل على الزرعة.",notes:"إذا كان الألم شديدًا مع علامات عدوى عامة يجب تقييمه بشكل عاجل."}
-])));
-
-// تهيئة Firebase
-try{
-  app=firebase.initializeApp(firebaseConfig);
-  auth=firebase.auth();
-  db=firebase.firestore();
-  setFirebaseStatus(true);
-  document.getElementById("statFirebase").innerText="متصل";
-}catch(e){
-  console.error(e);
-  setFirebaseStatus(false);
-}
-
-// مراقبة الاتصال (تقريبي)
-window.addEventListener("online",()=>setFirebaseStatus(true));
-window.addEventListener("offline",()=>setFirebaseStatus(false));
-
-function setFirebaseStatus(online){
-  const dot=document.getElementById("firebaseStatusDot");
-  const txt=document.getElementById("firebaseStatusText");
-  if(!dot||!txt)return;
-  if(online){
-    dot.classList.remove("offline");
-    dot.classList.add("online");
-    txt.textContent="Firebase: متصل";
-  }else{
-    dot.classList.remove("online");
-    dot.classList.add("offline");
-    txt.textContent="Firebase: غير متصل";
-  }
-}
-
-// دخول المدير (محلي)
-function loginAdmin(){
-  const pass=document.getElementById("adminPass").value.trim();
-  if(pass==="salem1959"){
-    currentUser={type:"admin",name:"المدير"};
-    lastLoginType="مدير";
-    openAdminDashboard();
-  }else alert("كلمة السر غير صحيحة");
-}
-
-// تسجيل طالب (Firebase Auth + Firestore)
-async function registerStudent(){
-  const n=document.getElementById("regName").value.trim();
-  const e=document.getElementById("regEmail").value.trim();
-  const p=document.getElementById("regPassword").value.trim();
-  if(!n||!e||!p){alert("املأ جميع الحقول");return;}
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(e,p);
-    const uid=cred.user.uid;
-    await db.collection("users").doc(uid).set({
-      name:n,email:e,type:"student",active:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    await auth.signOut();
-    alert("تم التسجيل بنجاح. حسابك بانتظار التفعيل من المدير.");
-    showSection("studentLogin");
-  }catch(err){
-    console.error(err);
-    alert("حدث خطأ أثناء التسجيل: "+err.message);
-  }
-}
-
 // دخول الطالب
-async function loginStudent(){
-  const e=document.getElementById("loginEmail").value.trim();
-  const p=document.getElementById("loginPassword").value.trim();
-  const msg=document.getElementById("loginMessage");
-  msg.textContent="";
-  if(!e||!p){msg.textContent="الرجاء إدخال البريد وكلمة السر";return;}
+const stuEmail=document.getElementById("stuEmail");
+const stuPass=document.getElementById("stuPass");
+const stuStatus=document.getElementById("stuStatus");
+const studentPanel=document.getElementById("studentPanel");
+const stuNameLabel=document.getElementById("stuNameLabel");
+const patName=document.getElementById("patName");
+const patDx=document.getElementById("patDx");
+const patPlan=document.getElementById("patPlan");
+const patStatus=document.getElementById("patStatus");
+const patientsList=document.getElementById("patientsList");
+let currentStudentUID=null;
+
+document.getElementById("btnStuLogin").onclick=async()=>{
+  clearStatus(stuStatus);
+  const email=stuEmail.value.trim();
+  const pass=stuPass.value.trim();
+  if(!email||!pass){showStatus(stuStatus,"الرجاء إدخال البريد وكلمة المرور",false);return;}
   try{
-    const cred=await auth.signInWithEmailAndPassword(e,p);
+    const cred=await auth.signInWithEmailAndPassword(email,pass);
     const uid=cred.user.uid;
-    const doc=await db.collection("users").doc(uid).get();
-    if(!doc.exists){
-      msg.textContent="لا يوجد ملف طالب مرتبط بهذا الحساب.";
-      await auth.signOut();
-      return;
-    }
-    const data=doc.data();
-    if(data.type!=="student"){
-      msg.textContent="هذا الحساب ليس حساب طالب.";
-      await auth.signOut();
-      return;
-    }
-    if(!data.active){
-      msg.textContent="حسابك بانتظار التفعيل من المدير.";
-      await auth.signOut();
-      return;
-    }
-    currentUser={uid, ...data};
-    lastLoginType="طالب";
-    document.getElementById("topbarTitle").innerText="لوحة الطالب";
-    document.getElementById("studentWelcome").textContent="مرحبًا "+(data.name||"طالب")+"، يمكنك استخدام مساعدك الذكي وإدارة مرضاك.";
-    showSection("studentSection");
-  }catch(err){
-    console.error(err);
-    msg.textContent="فشل الدخول: "+err.message;
-  }
-}
+    const snap=await db.ref("students/"+uid).once("value");
+    if(!snap.exists()){showStatus(stuStatus,"الحساب غير موجود في سجل الطلاب.",false);await auth.signOut();return;}
+    const data=snap.val();
+    if(!data.active){showStatus(stuStatus,"حسابك غير مفعّل بعد. الرجاء مراجعة المدير.",false);await auth.signOut();return;}
+    currentStudentUID=uid;
+    stuNameLabel.textContent=data.name||email;
+    studentPanel.style.display="block";
+    showStatus(stuStatus,"تم تسجيل الدخول كطالب.",true);
+    loadPatients(uid);
+  }catch(e){showStatus(stuStatus,"خطأ: "+e.message,false);}
+};
 
-// لوحة المدير
-function openAdminDashboard(){
-  document.getElementById("topbarTitle").innerText="لوحة المدير";
-  showOnly("adminSection");
-  updateAdminStats();
-  loadPendingStudents();
-  loadAllStudents();
-  showAdminPage('home');
-}
-
-// إحصائيات المدير
-async function updateAdminStats(){
+// إضافة مريض
+document.getElementById("btnAddPatient").onclick=async()=>{
+  clearStatus(patStatus);
+  if(!currentStudentUID){showStatus(patStatus,"يجب تسجيل الدخول كطالب أولًا.",false);return;}
+  const n=patName.value.trim(),d=patDx.value.trim(),p=patPlan.value.trim();
+  if(!n||!d||!p){showStatus(patStatus,"الرجاء تعبئة جميع بيانات المريض.",false);return;}
   try{
-    const snap=await db.collection("users").where("type","==","student").get();
-    document.getElementById("statStudents").innerText=snap.size;
-  }catch(e){
-   .",first_aid:"إذا كان واعيًا: إعطاء سكر سريع الامتصاص (عصير، قطعة سكر)، إيقاف الإجراء، مراقبته حتى يتحسن.",notes:"إذا فقد الوعي أو لم يستطع البلع → طوارئ فورية ونقل للمستشفى."},
-  {id:5,group:"loss",name:"فرط سكر الدم",definition:"ارتفاع مستوى السكر في الدم، غالبًا لا يكون حادًا في العيادة لكنه قد يظهر بأعراض عامة.",causes:"إهمال جرعات الدواء، تناول وجبات كبيرة، عدوى مزمنة.",signs:"عطش، كثرة تبول، تعب، جفاف فم، أحيانًا رائحة أستون.",first_aid:"إيقاف الإجراءات غير الضرورية، نصح المريض بمراجعة طبيبه، تأجيل المعالجات الطويلة.",notes:"إذا ظهرت علامات حماض كيتوني (غثيان، قيء، ألم بطني، تنفس عميق) → طوارئ."},
-  {id:6,group:"loss",name:"نوبة صرع",definition:"تفريغ كهربائي غير طبيعي في الدماغ يؤدي إلى تشنجات وفقدان وعي.",causes:"صرع معروف، إيقاف مفاجئ للدواء، محفزات مثل قلة النوم أو التوتر.",signs:"تشنجات عامة، فقدان وعي، عض اللسان أحيانًا، رغوة بالفم.",first_aid:"إبعاد الأدوات الحادة، عدم محاولة تقييد المريض، عدم وضع شيء في فمه، بعد انتهاء النوبة يوضع على جانبه.",notes:"إذا استمرت النوبة أكثر من 5 دقائق أو تكررت → طوارئ."},
-  {id:7,group:"loss",name:"توقف التنفس",definition:"انعدام حركة الهواء داخل وخارج الرئتين، حالة مهددة للحياة.",causes:"تثبيط تنفسي دوائي، انسداد مجرى الهواء، توقف قلب.",signs:"لا حركة صدر، لا نفس محسوس، زرقة، فقدان وعي.",first_aid:"فحص النبض والتنفس، البدء بتنفس إنقاذي والإنعاش القلبي الرئوي حسب البروتوكول.",notes:"يجب استدعاء الإسعاف فورًا واستخدام جهاز الصدمات إن توفر."},
-  {id:8,group:"loss",name:"انسداد مجرى الهواء بجسم غريب",definition:"دخول أداة أو مادة إلى مجرى الهواء أثناء العلاج السني.",causes:"سقوط أداة صغيرة، سن، تاج، أو قطعة قطن في البلعوم الخلفي.",signs:"سعال شديد، اختناق، عدم القدرة على الكلام، زرقة إذا كان الانسداد كاملاً.",first_aid:"إذا كان المريض واعيًا ويسعل بفعالية يترك ليسعل، إذا كان الانسداد شديدًا تطبق مناورة هيمليك، وإذا فقد الوعي يبدأ الإنعاش.",notes:"يجب نقل المريض للطوارئ لتقييم مكان الجسم الغريب بالأشعة."},
-  /* المجموعة 2 — طوارئ قلبية وتنفسية (cardio) */
-  {id:9,group:"cardio",name:"ألم صدري حاد (ذبحة)",definition:"ألم ضاغط في الصدر قد يشير إلى ذبحة صدرية عند مريض قلبي.",causes:"مرض شرايين تاجية، جهد زائد، توتر شديد.",signs:"ألم ضاغط في منتصف الصدر، قد يمتد للذراع أو الفك، تعرق، ضيق نفس.",first_aid:"إيقاف الإجراء فورًا، وضع المريض في وضع نصف جلوس، إعطاؤه دواءه المعتاد (مثل النيتروغليسرين) إن كان موصوفًا له.",notes:"إذا لم يتحسن الألم خلال دقائق أو كان أول مرة يحدث → طوارئ."},
-  {id:10,group:"cardio",name:"احتشاء عضلة القلب",definition:"انقطاع تروية جزء من عضلة القلب، حالة مهددة للحياة.",causes:"انسداد حاد في أحد الشرايينور بالموت الوشيك.",first_aid:"إيقاف كل شيء، استدعاء الإسعاف فورًا، وضع المريض في وضع مريح، عدم تركه وحيدًا.",notes:"لا تُجرى أي معالجة سنية في هذه الحالة، الأولوية لإنقاذ الحياة."},
-  {id:11,group:"cardio",name:"أزمة ربو حادة",definition:"تضيق مفاجئ في الشعب الهوائية عند مريض ربو أثناء وجوده في العيادة.",causes:"روائح قوية، قلق، عدوى تنفسية سابقة.",signs:"صفير، ضيق نفس، سعال، صعوبة في الكلام.",first_aid:"إيقاف الإجراء، مساعدة المريض على استخدام بخاخه الموسع، الجلوس في وضع مريح، تهوية المكان.",notes:"إذا لم يتحسن أو ساءت الأعراض → طوارئ."},
-  {id:12,group:"cardio",name:"صدمة تأقية (Anaphylaxis)",definition:"تفاعل تحسسي شديد مهدد للحياة، قد يحدث بعد دواء أو مادة في العيادة.",causes:"مخدر موضعي، مضاد حيوي، لاتكس، مواد حشو.",signs:"طفح جلدي عام، تورم وجه ولسان، صعوبة تنفس، هبوط ضغط، تسارع نبض.",first_aid:"إيقاف التعرض للمادة، استدعاء الإسعاف فورًا، إعطاء إبينفرين عضلي إن كان متوفرًا وبالجرعة الصحيحة.",notes:"يجب تجهيز عيادة الأسنان لمثل هذه الحالة ضمن حقيبة الطوارئ."},
-  {id:13,group:"cardio",name:"تفاعل تحسسي متوسط",definition:"تحسس أقل شدة من التأق، غالبًا موضعي أو جلدي.",causes:"أدوية، لاتكس، مواد حشو، مضمضات.",signs:"حكة، طفح جلدي موضعي أو عام، تورم بسيط في الشفاه أو الوجه.",first_aid:"إيقاف المادة المسببة، إعطاء مضاد هيستامين فموي إن كان مسموحًا، مراقبة تطور الأعراض.",notes:"إذا بدأ التورم يزداد أو ظهرت صعوبة تنفس → التعامل كصدمة تأقية."},
-  /* المجموعة 3 — طوارئ التخدير الموضعي (anesthesia) */
-  {id:14,group:"anesthesia",name:"سمية ليدوكائين",definition:"ارتفاع مستوى المخدر الموضعي في الدم إلى درجة سامة.",causes:"حقن جرعة زائدة، حقن داخل وعاء دموي بالخطأ.",signs:"تنميل حول الفم، طنين أذن، دوار، تشنجات، اضطراب وعي.",first_aid:"إيقاف الحقن فورًا، دعم التنفس والدورة الدموية، استدعاء الإسعاف عند الأعراض المتقدمة.",notes:"الالتزام بالجرعة القصوى حسب وزن المريض يقلل احتمال السمية."},
-  {id:15,group:"anesthesia",name:"حقن داخل وعاء دموي",definition:"دخول المخدر الموضعي مباشرة إلى وعاء دموي.",causes:"عدم سحب المكبس قبل الحقن، تشريح وعائي غير متوقع.",signs:"دوار مفاجئ، خفقان، طعم معدني، أحيانًا أعراض سمية سريعة.",first_aid:"إيقاف الحقن فورًا، مراقبة المريض، دعم التنفس، استدعاء المساعدة عند الحاجة.",notes:"السحب قبل الحقن خطوة أساسية لتقليل هذا الخطر."},
-  {id:16,group:"anesthesia",name:"شلل وجهي مؤقت",definition:"شلل عابر في عضلات الوجه بعد التخدير.",causes:"انتشار المخدر إلى العصب الوجهي قرب الغدة النكفية.",signs:"عدمهة.",first_aid:"طمأنة المريض أن الحالة مؤقتة، حماية العين من الجفاف، انتظار زوال تأثير المخدر.",notes:"يجب شرح السبب للمريض لتجنب القلق."},
-  {id:17,group:"anesthesia",name:"كسر الإبرة",definition:"انكسار إبرة التخدير داخل النسج.",causes:"ثني الإبرة قبل الحقن، حركة مفاجئة للمريض، استخدام إبرة رفيعة جدًا.",signs:"اختفاء جزء من الإبرة داخل النسج، ألم موضعي.",first_aid:"عدم محاولة البحث العشوائي، إحالة المريض لجراح فم ووجه وفكين لإزالتها.",notes:"استخدام إبر جيدة وعدم ثنيها يقلل احتمال الكسر."},
-  {id:18,group:"anesthesia",name:"ألم عصبي بعد الحقن",definition:"ألم أو تنميل مستمر بعد التخدير بسبب أذية عصبية بسيطة.",causes:"إصابة العصب مباشرة بالإبرة، حقن تحت ضغط عالٍ.",signs:"ألم حارق، تنميل أو خدر في منطقة التعصيب.",first_aid:"طمأنة المريض، وصف مسكنات خفيفة، المتابعة، إحالة لاختصاصي إذا استمر طويلًا.",notes:"معظم الحالات تتحسن تلقائيًا خلال أسابيع."},
-  /* المجموعة 4 — طوارئ أثناء الإجراءات السنية (procedure) */
-  {id:19,group:"procedure",name:"ابتلاع أداة",definition:"دخول أداة سنية صغيرة إلى الجهاز الهضمي.",causes:"سقوط أداة أو سن أو تاج في البلعوم الخلفي دون حائل.",signs:"سعال بسيط ثم زواله، أحيانًا شعور بجسم غريب في الحلق.",first_aid:"طمأنة المريض، توثيق الحادثة، إحالة لتقييم بالأشعة إذا كان هناك شك بمكان الجسم.",notes:"معظم الأجسام الصغيرة تمر عبر الجهاز الهضمي دون مشكلة، لكن يجب التوثيق."},
-  {id:20,group:"procedure",name:"استنشاق أداة",definition:"دخول أداة إلى الجهاز التنفسي بدلاً من الهضمي.",causes:"سقوط أداة صغيرة في البلعوم مع شهيق مفاجئ.",signs:"سعال شديد، ضيق نفس، أحيانًا صفير أو زرقة.",first_aid:"اعتبارها حالة طارئة، استدعاء الإسعاف، عدم محاولة إخراجها يدويًا.",notes:"يحتاج المريض لتنظير قصبي لاستخراج الجسم."},
-  {id:21,group:"procedure",name:"نزف بعد القلع",definition:"استمرار النزف من مكان القلع أكثر من المتوقع.",causes:"اضطرابات تخثر، أدوية مميعة، عدم التزام بالتعليمات.",signs:"نزف مستمر أو متكرر من مكان القلع، بلع دم.",first_aid:"وضع شاش معقم والضغط عليه لمدة 20–30 دقيقة، تجنب المضمضة القوية، رفع الرأس.",notes:"إذا لم يتوقف النزف أو كان المريض مميعًا للدم → تقييم في الطوارئ."},
-  {id:22,group:"procedure",name:"التهاب سنخي (Dry Socket)",definition:"ألم شديد بعد القنيفة، رض جراحي شديد.",signs:"ألم نابض بعد 2–3 أيام من القلع، رائحة فم كريهة، حفرة فارغة.",first_aid:"تنظيف لطيف، وضع ضماد دوائي موضعي، مسكنات، متابعة.",notes:"ليست حالة مهددة للحياة لكنها مزعجة جدًا للمريض."},
-  {id:23,group:"procedure",name:"تورم سريع بعد القلع",definition:"زيادة سريعة في حجم النسج بعد القلع.",causes:"نزف تحت النسج، عدوى حادة، تحسس.",signs:"تورم مؤلم، أحيانًا احمرار وحرارة موضعية.",first_aid:"تقييم السبب، كمادات باردة في الساعات الأولى، وصف مضاد حيوي عند الشك بالعدوى.",notes:"إذا ترافق مع صعوبة تنفس أو بلع → طوارئ."},
-  {id:24,group:"procedure",name:"خلع مفصل الفك (TMJ)",definition:"خروج رأس اللقمة من الحفرة المفصلية أثناء فتح الفم.",causes:"فتح فم مفرط أثناء العلاج، تاريخ سابق لخلع.",signs:"عدم القدرة على إغلاق الفم، ألم أمام الأذن، كلام غير واضح.",first_aid:"طمأنة المريض، إحالة عاجلة لطبيب قادر على رد المفصل.",notes:"يجب تجنب فتح الفم المفرط في الجلسات اللاحقة."},
-  {id:25,group:"procedure",name:"كسر أداة داخل القناة",definition:"انكسار أداة معالجة لبية داخل القناة الجذرية.",causes:"استخدام أداة قديمة، قوة زائدة، انحناء قناة شديد.",signs:"لا أعراض فورية غالبًا، لكن قد يؤثر على نجاح المعالجة.",first_aid:"شرح الحالة للمريض، تقييم إمكانية الإزالة أو التجاوز، إحالة لاختصاصي عند الحاجة.",notes:"ليست طارئة حياتية لكنها مهمة من ناحية علاجية وقانونية."},
-  {id:26,group:"procedure",name:"ألم شديد أثناء التحضير",definition:"ألم حاد أثناء تحضير السن رغم التخدير.",causes:"تخدير غير كافٍ، التهاب لب حاد، قلق زائد.",signs:"ألم حاد عند الحفر، انزعاج شديد من المريض.",first_aid:"إيقاف التحضير، تعزيز التخدير أو تغيير التقنية، تأجيل الإجراء إذا لزم.",notes:"يجب عدم الإصرار على المتابعة مع ألم غير محتمل."},
-  {id:27,group:"procedure",name:"كسر سن أثناء العلاج",definition:"انكسار جزء من السن خلال المعالجة.",causes:"سن ضعيف، حشوات كبيرة قديمة، قوة زائدة.",signs:"ألم مفاجئ، تغير شكل السن، حواف حادة.",first_aid:"تنعيم الحواف الح:"procedure",name:"انكسار تاج مؤقت",definition:"انفصال أو كسر التاج المؤقت قبل التثبيت النهائي.",causes:"عض قوي، لصق ضعيف، تصميم غير مناسب.",signs:"حساسية، ألم خفيف، انزعاج من الشكل.",first_aid:"إعادة تثبيت التاج المؤقت أو صنع آخر، نصح المريض بتجنب الأطعمة القاسية.",notes:"ليست طارئة خطيرة لكنها مزعجة للمريض."},
-  /* المجموعة 5 — طوارئ مرتبطة بالمريض (patient) */
-  {id:29,group:"patient",name:"نوبة هلع",definition:"خوف شديد مفاجئ مع أعراض جسدية مزعجة داخل العيادة.",causes:"تجارب سابقة سيئة، رهاب من طبيب الأسنان، توتر عام.",signs:"خفقان، تعرق، ضيق نفس، شعور بالموت الوشيك، فرط تهوية.",first_aid:"إيقاف الإجراء، طمأنة المريض، التحدث بهدوء، تدريبه على التنفس البطيء، يمكن تأجيل الجلسة.",notes:"قد يحتاج المريض لدعم نفسي أو مهدئات خفيفة بوصفة طبية لاحقًا."},
-  {id:30,group:"patient",name:"ارتفاع ضغط مفاجئ",definition:"ارتفاع ملحوظ في ضغط الدم أثناء الجلسة.",causes:"توتر، ألم، عدم التزام بالعلاج الدوائي.",signs:"صداع، دوار، طنين، أحيانًا نزيف أنفي.",first_aid:"إيقاف الإجراء، تهدئة المريض، قياس الضغط إن أمكن، تأجيل المعالجات غير الضرورية.",notes:"إذا كان الضغط مرتفعًا جدًا مع أعراض عصبية أو صدرية → طوارئ."},
-  {id:31,group:"patient",name:"نزيف لثوي غير متوقع",definition:"نزف غزير من اللثة أثناء تنظيف أو علاج بسيط.",causes:"التهاب لثوي شديد، أدوية مميعة، اضطرابات تخثر.",signs:"نزف مستمر من اللثة، صعوبة إيقافه.",first_aid:"الضغط الموضعي بقطن أو شاش، استخدام مواد موضعية موقفة للنزف، تقييم الأدوية.",notes:"إذا شككت باضطراب تخثر غير معروف يجب إحالة المريض للفحص."},
-  {id:32,group:"patient",name:"رد فعل دوائي غير متوقع",definition:"استجابة غير عادية لدواء مستخدم في العيادة.",causes:"حساسية غير معروفة، تداخلات دوائية.",signs:"دوار، غثيان، طفح، أحيانًا أعراض أشد.",first_aid:"إيقاف الدواء، مراقبة المريض، التعامل حسب شدة الأعراض (تحسس بسيط أو تأق).",notes:"توثيق الدواء المسبب مهم جدًا في ملف المريض."},
-  {id:33,group:"patient",name:"قيء مفاجئ أثناء العلاج",definition:"حدوث قيء أثناء وجود أدوات في الفم.",causes:"منعكس قيء قوي،يان، قيء، انزعاج شديد.",first_aid:"إبعاد الأدوات بسرعة، إمالة رأس المريض للأمام، تنظيف الفم، تهدئته.",notes:"يمكن استخدام حواجز مطاطية وتقنيات تقلل منعكس القيء في الجلسات القادمة."},
-  {id:34,group:"patient",name:"حساسية لاتكس",definition:"تحسس من القفازات أو المواد المحتوية على لاتكس.",causes:"تعرض متكرر للاتكس، استعداد تحسسي.",signs:"حكة، احمرار في الجلد، طفح في مناطق التماس.",first_aid:"إزالة مصدر اللاتكس، غسل المنطقة، استخدام قفازات خالية من اللاتكس لاحقًا.",notes:"إذا ظهرت أعراض عامة (ضيق نفس، تورم) → تعامل كتحسس شديد."},
-  {id:35,group:"patient",name:"حساسية مواد طب الأسنان",definition:"تحسس من مواد مثل الإيوجينول أو الراتنجات.",causes:"تماس مباشر مع الأغشية أو الجلد، استعداد تحسسي.",signs:"حرقان موضعي، احمرار، أحيانًا تقرح بسيط.",first_aid:"إزالة المادة المسببة، شطف المنطقة جيدًا، استخدام مواد بديلة لاحقًا.",notes:"يجب تدوين المادة المسببة في ملف المريض."},
-  /* المجموعة 6 — طوارئ جراحية (surgical) */
-  {id:36,group:"surgical",name:"نزف شديد بعد جراحة",definition:"نزف مستمر أو غزير بعد إجراء جراحي فموي.",causes:"اضطرابات تخثر، أدوية مميعة، إغلاق غير كافٍ.",signs:"نزف لا يتوقف بالضغط البسيط، بلع دم، دوار.",first_aid:"ضغط قوي بشاش معقم، خياطة إضافية إن أمكن، استخدام مواد موقفة للنزف.",notes:"إذا لم يضبط النزف أو ظهرت علامات صدمة → طوارئ."},
-  {id:37,group:"surgical",name:"عدوى حادة بعد القلع",definition:"التهاب حاد في مكان القلع بعد أيام من الإجراء.",causes:"بقايا نسج ملتهبة، نظافة فموية سيئة.",signs:"ألم متزايد، تورم، احمرار، أحيانًا حرارة عامة.",first_aid:"تنظيف لطيف، وصف مضاد حيوي مناسب، مسكنات، متابعة.",notes:"إذا امتد التورم للعنق أو سبب صعوبة بلع أو تنفس → طوارئ."},
-  {id:38,group:"surgical",name:"التهاب ن إلى النسج الرخوة.",causes:"خراج سني مهمل، عدوى غير معالجة.",signs:"تورم منتشر، ألم، احمرار، حرارة موضعية، صعوبة فتح الفم أحيانًا.",first_aid:"مضاد حيوي مناسب، تقييم الحاجة لتصريف، متابعة لصيقة.",notes:"إذا ترافق مع صعوبة تنفس أو بلع أو حمى عالية → إحالة عاجلة."},
-  {id:39,group:"surgical",name:"خراج ينتشر بسرعة",definition:"خراج فموي أو وجهي يتوسع بسرعة خلال ساعات.",causes:"عدوى حادة في سن أو نسج داعمة.",signs:"تورم مؤلم، حرارة، صعوبة فتح الفم، أحيانًا صعوبة بلع.",first_aid:"فتح وتصريف عند الإمكان، مضاد حيوي، تقييم عام.",notes:"الانتشار نحو المساحات العميقة في العنق حالة خطيرة تستدعي طوارئ."},
-  {id:40,group:"surgical",name:"ألم شديد بعد الزرع السني",definition:"ألم غير طبيعي بعد عملية زرع سن.",causes:"ضغط زائد على العظم، عدوى، فشل أولي في الاندماج.",signs:"ألم مستمر لا يتحسن، تورم، أحيانًا نزف أو إفراز.",first_aid:"تقييم سريري وشعاعي، مسكنات، مضاد حيوي عند الشك بعدوى، تخفيف الحمل على الزرعة.",notes:"إذا كان الألم شديدًا مع علامات عدوى عامة يجب تقييمه بشكل عاجل."}
-])));
+    const ref=db.ref("patients/"+currentStudentUID).push();
+    await ref.set({name:n,dx:d,plan:p,createdAt:Date.now()});
+    patName.value=patDx.value=patPlan.value="";
+    showStatus(patStatus,"تم إضافة المريض إلى سجلك.",true);
+    loadPatients(currentStudentUID);
+  }catch(e){showStatus(patStatus,"خطأ: "+e.message,false);}
+};
 
-// تهيئة Firebase
-try{
-  app=firebase.initializeApp(firebaseConfig);
-  auth=firebase.auth();
-  db=firebase.firestore();
-  setFirebaseStatus(true);
-  document.getElementById("statFirebase").innerText="متصل";
-}catch(e){
-  console.error(e);
-  setFirebaseStatus(false);
-}
-
-// مراقبة الاتصال (تقريبي)
-window.addEventListener("online",()=>setFirebaseStatus(true));
-window.addEventListener("offline",()=>setFirebaseStatus(false));
-
-function setFirebaseStatus(onlinefirebaseStatusText");
-  if(!dot||!txt)return;
-  if(online){
-    dot.classList.remove("offline");
-    dot.classList.add("online");
-    txt.textContent="Firebase: متصل";
-  }else{
-    dot.classList.remove("online");
-    dot.classList.add("offline");
-    txt.textContent="Firebase: غير متصل";
-  }
-}
-
-// دخول المدير (محلي)
-function loginAdmin(){
-  const pass=document.getElementById("adminPass").value.trim();
-  if(pass==="salem1959"){
-    currentUser={type:"admin",name:"المدير"};
-    lastLoginType="مدير";
-    openAdminDashboard();
-  }else alert("كلمة السر غير صحيحة");
-}
-
-// تسجيل طالب (Firebase Auth + Firestore)
-async function registerStudent(){
-  const n=document.getElementById("regName").value.trim();
-  const e=document.getElementById("regEmail").value.trim();
-  const p=document.getElementById("regPassword").value.trim();
-  if(!n||!e||!p){alert("املأ جميع الحقول");return;}
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(e,p);
-    const uid=cred.user.uid;
-    await db.collection("users").doc(uid).set({
-      name:n,email:e,type:"student",active:false,createdAt:firebase.firestore.FieldValue.serverTimestamp()
+function loadPatients(uid){
+  patientsList.innerHTML="";
+  db.ref("patients/"+uid).orderByChild("createdAt").on("value",snap=>{
+    patientsList.innerHTML="";
+    if(!snap.exists()){patientsList.innerHTML='<div class="small">لا يوجد مرضى بعد.</div>';return;}
+    const arr=[];
+    snap.forEach(ch=>arr.push({id:ch.key,...ch.val()}));
+    arr.sort((a,b)=>b.createdAt-a.createdAt);
+    arr.forEach(p=>{
+      const div=document.createElement("div");
+      div.className="item";
+      div.innerHTML="<strong>"+(p.name||"مريض")+"</strong><br><span>التشخيص: "+(p.dx||"-")+"</span><br><span>الخطة: "+(p.plan||"-")+"</span>";
+      patientsList.appendChild(div);
     });
-    await auth.signOut();
-    alert("تم التسجيل بنجاح. حسابك بانتظار التفعيل من المدير.");
-    showSection("studentLogin");
-  }catch(err){
-    console.error(err);
-    alert("حدث خطأ أثناء التسجيل: "+err.message);
-  }
+  });
 }
 
-// دخول الطالب
-async function loginStudent(){
-  const e=document.getElementById("loginEmail").value.trim();
-  const p=document.getElementById("loginPassword").value.trim();
-  const msg=document.getElementById("loginMessage");
-  msg.textContent="";
-  if(!e||!p){msg.textContent="الرجاء إدخال البريد وكلمة السر";return;}
+// دخول المدير
+const admEmail=document.getElementById("admEmail");
+const admPass=document.getElementById("admPass");
+const admStatus=document.getElementById("admStatus");
+const adminPanel=document.getElementById("adminPanel");
+const pendingList=document.getElementById("pendingList");
+const allStudentsList=document.getElementById("allStudentsList");
+
+// ملاحظة: هنا نفترض أن بريد المدير ثابت (يمكنك تغييره)
+const ADMIN_EMAIL="admin@ds-assistant.local";
+
+document.getElementById("btnAdmLogin").onclick=async()=>{
+  clearStatus(admStatus);
+  const email=admEmail.value.trim();
+  const pass=admPass.value.trim();
+  if(!email||!pass){showStatus(admStatus,"الرجاء إدخال البريد وكلمة المرور.",false);return;}
+  if(email!==ADMIN_EMAIL){showStatus(admStatus,"هذا البريد ليس بريد المدير المسموح.",false);return;}
   try{
-    const cred=await auth.signInWithEmailAndPassword(e,p);
-    const uid=cred.user.uid;
-    const doc=await db.collection("users").doc(uid).get();
-    if(!doc.exists){
-      msg.textContent="لا يوجد ملف طالب مرتبط بهذا الحساب.";
-      await auth.signOut();
-      return;
-    }
-    const data=doc.data();
-    if(data.type!=="student"){
-      msg.textContent="هذا الحساب ليس حساب طالب.";
-      await auth.signOut();
-      return;
-    }
-    if(!data.active){
-      msg.textContent="حسابك بانتظار التفعيل من المدير.";
-      await auth.signOut();
-      return;
-    }
-    currentUser={uid, ...data};
-    lastLoginType="طالب";
-    document.getElementById("topbarTitle").innerText="لوحة الطالب";
-    document.getElementById("studentWelcome").textContent="مرحبًا "+(data.name||"طالب")+"، يمكنك استخدام مساعدك الذكي وإدارة مرضاك.";
-    showSection("studentSection");
-  }catch(err){
-    console.error(err);
-    msg.textContent="فشل الدخول: "+err.message;
-  }
-}
+    await auth.signInWithEmailAndPassword(email,pass);
+    adminPanel.style.display="block";
+    showStatus(admStatus,"تم دخول المدير بنجاح.",true);
+    loadStudentsForAdmin();
+  }catch(e){showStatus(admStatus,"خطأ: "+e.message,false);}
+};
 
-// لوحة المدير
-function openAdminDashboard(){
-  document.getElementById("topbarTitle").innerText="لوحة المدير";
-  showOnly("adminSection");
-  updateAdminStats();
-  loadPendingStudents();
-  loadAllStudents();
-  showAdminPage('home');
-}
-
-// إحصائيات المدير
-async function updateAdminStats(){
-  try{
-    const snap=await db.collection("users").where("type","==","student").get();
-    document.getElementById("statStudents").innerText=snap.size;
-  }catch(e){
-    document.getElementById("statStudents").innerText="—";
-  }
-  document.getElementById("statCases").innerText=emergencyCases.length;
-  document.getElementById("statLastLogin").innerText=lastLoginType;
-}
-
-// طلبات التفعيل
-async function loadPendingStudents(){
-  const body=document.getElementById("pendingTableBody");
-  body.innerHTML="";
-  try{
-    const snap=await db.collection("users").where("type","==","student").where("active","==",false).get();
-    if(snap.empty){
-      body.innerHTML='<tr><td colspan="4" style="text-align:center;color:#777;">لا توجد طلبات تفعيل حالية</td></tr>';
-      return;
-    }
-    snap.forEach(doc=>{
-      const d=doc.data();
-      body.innerHTML+=`<tr>
-        <td>${d.name||""}</td>
-        <td>${d.email||""}</td>
-        <td><span class="badge">بانتظار التفعيل</span></td>
-        <td>
-          <button style="font-size:11px;padding:4px 8px;border:none;border-radius:6px;background:#4CAF50;color:#fff;cursor:pointer;margin-left:4px;" onclick="activateStudent('${doc.id}')">تفعيل</button>
-          <button style="font-size:11px;padding:4px 8px;border:none;border-radius:6px;background:#F44336;color:#fff;cursor:pointer;" onclick="deleteStudent('${doc.id}')">حذف</button>
-        </td>
-      </tr>`;
+function loadStudentsForAdmin(){
+  pendingList.innerHTML="";allStudentsList.innerHTML="";
+  db.ref("students").on("value",snap=>{
+    pendingList.innerHTML="";allStudentsList.innerHTML="";
+    if(!snap.exists()){pendingList.innerHTML='<div class="small">لا يوجد طلاب مسجلون.</div>';return;}
+    snap.forEach(ch=>{
+      const s={uid:ch.key,...ch.val()};
+      const item=document.createElement("div");
+      item.className="item";
+      item.innerHTML="<strong>"+(s.name||s.email)+"</strong> <span class='chip'>"+(s.active?"مفعّل":"غير مفعّل")+"</span><br><span>"+(s.email||"")+"</span>";
+      allStudentsList.appendChild(item);
+      if(!s.active){
+        const p=document.createElement("div");
+        p.className="item";
+        p.innerHTML="<strong>"+(s.name||s.email)+"</strong><br><span>"+(s.email||"")+"</span><br>";
+        const btn=document.createElement("button");
+        btn.textContent="تفعيل الطالب";
+        btn.className="btn btn-primary";
+        btn.style.marginTop="4px";
+        btn.onclick=()=>activateStudent(s.uid);
+        p.appendChild(btn);
+        pendingList.appendChild(p);
+      }
     });
-  }catch(e){
-    console.error(e);
-    body.innerHTML='<tr><td colspan="4" style="text-align:center;color:#777;">خطأ في تحميل البيانات</td></tr>';
-  }
-}
-
-// كل الطلاب
-async function loadAllStudents(){
-  const body=document.getElementById("studentsTableBody");
-  body.innerHTML="";
-  try{
-    const snap=await db.collection("users").where("type","==","student").get();
-    if(snap.empty){
-      body.innerHTML='<tr><td colspan="4" style="text-align:center;color:#777;">لا يوجد طلاب مسجلون بعد</td></tr>';
-      return;
-    }
-    snap.forEach(doc=>{
-      const d=doc.data();
-      body.innerHTML+=`<tr>
-        <td>${d.name||""}</td>
-        <td>${d.email||""}</td>
-        <td>${d.active?'<span class="badge" style="background:#C8E6C9;">مفعل</span>':'<span class="badge" style="background:#FFCDD2;">غير مفعل</span>'}</td>
-        <td>
-          ${!d.active?`<button style="font-size:11px;padding:4px 8px;border:none;border-radius:6px;background:#4CAF50;color:#fff;cursor:pointer;margin-left:4px;" onclick="activateStudent('${doc.id}')">تفعيل</button>`:""}
-          <button style="font-size:11px;padding:4px 8px;border:none;border-radius:6px;background:#F44336;color:#fff;cursor:pointer;" onclick="deleteStudent('${doc.id}')">حذف</button>
-        </td>
-      </tr>`;
-    });
-  }catch(e){
-    console.error(e);
-    body.innerHTML='<tr><td colspan="4" style="text-align:center;color:#777;">خطأ في تحميل البيانات</td></tr>';
-  }
+    if(!pendingList.innerHTML)pendingList.innerHTML='<div class="small">لا يوجد طلاب بانتظار التفعيل.</div>';
+  });
 }
 
 async function activateStudent(uid){
-  if(!confirm("تأكيد تفعيل هذا الطالب؟"))return;
   try{
-    await db.collection("users").doc(uid).update({active:true});
-    loadPendingStudents();
-    loadAllStudents();
-    updateAdminStats();
-  }catch(e){console.error(e);alert("فشل التفعيل");}
-}
-
-async function deleteStudent(uid){
-  if(!confirm("هل تريد حذف هذا الطالب نهائيًا؟"))return;
-  try{
-    await db.collection("users").doc(uid).delete();
-    loadPendingStudents();
-    loadAllStudents();
-    updateAdminStats();
-  }catch(e){console.error(e);alert("فشل الحذف");}
-}
-
-// فتح صفحة داخل لوحة المدير
-function showAdminPage(page){
-  ["adminHomePage","adminPendingPage","adminStudentsPage","adminSettingsPage"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-  if(page==="home")document.getElementById("adminHomePage").classList.remove("hidden");
-  if(page==="pending")document.getElementById("adminPendingPage").classList.remove("hidden");
-  if(page==="students")document.getElementById("adminStudentsPage").classList.remove("hidden");
-  if(page==="settings")document.getElementById("adminSettingsPage").classList.remove("hidden");
-  ["btnAdminHome","btnAdminPending","btnAdminStudents","btnAdminSettings"].forEach(id=>document.getElementById(id).classList.remove("active"));
-  if(page==="home")document.getElementById("btnAdminHome").classList.add("active");
-  if(page==="pending")document.getElementById("btnAdminPending").classList.add("active");
-  if(page==="students")document.getElementById("btnAdminStudents").classList.add("active");
-  if(page==="settings")document.getElementById("btnAdminSettings").classList.add("active");
-}
-
-// موسوعة الطوارئ (طالب فقط)
-let currentGroup="loss";
-
-function openEmergency(){
-  document.getElementById("topbarTitle").innerText="مساعدي الذكي — الطوارئ السنية";
-  document.getElementById("search").value="";
-  currentGroup="loss";
-  highlightGroupButton();
-  loadCasesByGroup();
-  showSection("emergencySection");
-}
-
-function toggleEmSidebar(){
-  const sb=document.getElementById("emSidebar");
-  if(sb.style.display==="block")sb.style.display="none";else sb.style.display="block";
-}
-
-function selectGroup(group){
-  currentGroup=group;
-  document.getElementById("search").value="";
-  highlightGroupButton();
-  loadCasesByGroup();
-}
-
-function highlightGroupButton(){
-  const btns=document.querySelectorAll(".em-group-btn");
-  btns.forEach(b=>b.classList.remove("active"));
-  if(currentGroup==="loss")btns[0].classList.add("active");
-  if(currentGroup==="cardio")btns[1].classList.add("active");
-  if(currentGroup==="anesthesia")btns[2].classList.add("active");
-  if(currentGroup==="procedure")btns[3].classList.add("active");
-  if(currentGroup==="patient")btns[4].classList.add("active");
-  if(currentGroup==="surgical")btns[5].classList.add("active");
-}
-
-function loadCasesByGroup(){
-  const list=document.getElementById("casesList");
-  list.innerHTML="";
-  emergencyCases.filter(c=>c.group===currentGroup).forEach(c=>{
-    list.innerHTML+=`<div class="card" onclick="openCase(${c.id})">
-      <div class="card-title">${c.name}</div>
-      <div class="card-desc">${c.definition}</div>
-    </div>`;
-  });
-}
-
-function searchCases(){
-  const q=document.getElementById("search").value.trim();
-  const list=document.getElementById("casesList");
-  list.innerHTML="";
-  if(!q){
-    loadCasesByGroup();
-    return;
-  }
-  emergencyCases.filter(c=>c.name.includes(q)||c.definition.includes(q)||c.causes.includes(q))
-  .forEach(c=>{
-    list.innerHTML+=`<div class="card" onclick="openCase(${c.id})">
-      <div class="card-title">${c.name}</div>
-      <div class="card-desc">${c.definition}</div>
-    </div>`;
-  });
-}
-
-function openCase(id){
-  const c=emergencyCases.find(x=>x.id===id);
-  if(!c)return;
-  document.getElementById("caseTitle").innerText=c.name;
-  document.getElementById("caseDefinition").innerText=c.definition;
-  document.getElementById("caseCauses").innerText=c.causes;
-  document.getElementById("caseSigns").innerText=c.signs;
-  document.getElementById("caseAid").innerText=c.first_aid;
-  document.getElementById("caseNotes").innerText=c.notes;
-  document.getElementById("topbarTitle").innerText="تفاصيل الحالة";
-  showSection("caseSection");
-}
-
-function backFromEmergency(){
-  if(currentUser&&currentUser.type==="student"){
-    document.getElementById("topbarTitle").innerText="لوحة الطالب";
-    showSection("studentSection");
-  }else{
-    document.getElementById("topbarTitle").innerText="مساعد طالب الأسنان";
-    showSection("mainLogin");
-  }
-}
-
-// Accordion الحالات في صفحة الطالب
-function toggleStudentCases(){
-  const body=document.getElementById("studentCasesBody");
-  const arrow=document.getElementById("studentCasesArrow");
-  if(body.style.display==="block"){
-    body.style.display="none";
-    arrow.textContent="▼";
-  }else{
-    body.style.display="block";
-    arrow.textContent="▲";
-  }
-}
-
-// حفظ مريض في Firestore
-async function savePatient(){
-  if(!currentUser||currentUser.type!=="student"){
-    document.getElementById("patMessage").textContent="يجب أن تكون مسجلاً كطالب.";
-    return;
-  }
-  const name=document.getElementById("patName").value.trim();
-  const age=document.getElementById("patAge").value.trim();
-  const gender=document.getElementById("patGender").value;
-  const phone=document.getElementById("patPhone").value.trim();
-  const diag=document.getElementById("patDiagnosis").value.trim();
-  const msg=document.getElementById("patMessage");
-  msg.style.color="#C62828";
-  msg.textContent="";
-  if(!name||!age||!gender){
-    msg.textContent="الاسم والعمر والجنس حقول أساسية.";
-    return;
-  }
-  try{
-    await db.collection("patients").add({
-      owner:currentUser.uid,
-      name,age,gender,phone,diagnosis:diag,
-      createdAt:firebase.firestore.FieldValue.serverTimestamp()
-    });
-    msg.style.color="#2E7D32";
-    msg.textContent="تم حفظ المريض بنجاح.";
-    document.getElementById("patName").value="";
-    document.getElementById("patAge").value="";
-    document.getElementById("patGender").value="";
-    document.getElementById("patPhone").value="";
-    document.getElementById("patDiagnosis").value="";
-  }catch(e){
-    console.error(e);
-    msg.textContent="فشل حفظ المريض: "+e.message;
-  }
-}
-
-// تحميل مرضاي
-async function loadMyPatients(){
-  if(!currentUser||currentUser.type!=="student"){
-    alert("يجب أن تكون مسجلاً كطالب.");
-    return;
-  }
-  const list=document.getElementById("myPatientsList");
-  list.innerHTML="";
-  try{
-    const snap=await db.collection("patients").where("owner","==",currentUser.uid).orderBy("createdAt","desc").get();
-    if(snap.empty){
-      list.innerHTML='<div style="font-size:13px;color:#777;">لا يوجد مرضى مسجلون بعد.</div>';
-    }else{
-      snap.forEach(doc=>{
-        const d=doc.data();
-        list.innerHTML+=`<div class="card" style="cursor:default;">
-          <div class="card-title">${d.name||""}</div>
-          <div class="card-desc">
-            العمر: ${d.age||"-"} — الجنس: ${d.gender||"-"}<br>
-            الهاتف: ${d.phone||"-"}<br>
-            التشخيص: ${d.diagnosis||"-"}
-          </div>
-        </div>`;
-      });
-    }
-    showSection("myPatientsSection");
-  }catch(e){
-    console.error(e);
-    list.innerHTML='<div style="font-size:13px;color:#777;">خطأ في تحميل المرضى.</div>';
-    showSection("myPatientsSection");
-  }
-}
-
-// عرض قسم عام
-function showSection(id){
-  ["mainLogin","adminLogin","studentLogin","registerSection","studentSection","adminSection","emergencySection","caseSection","addPatientSection","myPatientsSection"]
-  .forEach(s=>{const el=document.getElementById(s);if(el)el.classList.add("hidden");});
-  const t=document.getElementById(id);if(t)t.classList.remove("hidden");
-}
-function showOnly(id){
-  ["mainLogin","adminLogin","studentLogin","registerSection","studentSection","adminSection","emergencySection","caseSection","addPatientSection","myPatientsSection"]
-  .forEach(s=>{const el=document.getElementById(s);if(el)el.classList.add("hidden");});
-  document.getElementById(id).classList.remove("hidden");
-}
-
-// خروج
-async function logout(){
-  try{await auth.signOut();}catch(e){}
-  currentUser=null;
-  lastLoginType="—";
-  document.getElementById("topbarTitle").innerText="مساعد طالب الأسنان";
-  showSection("mainLogin");
-}
-
-// زر البيت
-function goHome(){
-  if(currentUser&&currentUser.type==="student"){document.getElementById("topbarTitle").innerText="لوحة الطالب";showSection("studentSection");}
-  else if(currentUser&&currentUser.type==="admin"){openAdminDashboard();}
-  else{document.getElementById("topbarTitle").innerText="مساعد طالب الأسنان";showSection("mainLogin");}
+    await db.ref("students/"+uid+"/active").set(true);
+    alert("تم تفعيل الطالب بنجاح.");
+  }catch(e){alert("خطأ في التفعيل: "+e.message);}
 }
 </script>
-
-</body>
-</html>
+</body></html>
