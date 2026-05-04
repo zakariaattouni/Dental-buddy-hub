@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ========== إضافات PWA والأيقونة ========== -->
 <link rel="manifest" id="pwaManifest">
 <meta name="theme-color" content="#1e88e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="مساعد طالب">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='120' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='120' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E">
 <style>
     /* ========== إعدادات عامة ========== */
     * {
@@ -174,6 +173,17 @@
         border-right: 4px solid #fb8c00; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .emergency-result strong { color: #e65100; font-size: 14px; }
+
+    /* ========== قسم الصيدلية والحاسبة (جديد) ========== */
+    .pharma-section {
+        background: #f1f8e9; border: 2px solid #81c784;
+        border-radius: 15px; padding: 15px; margin: 12px 0;
+    }
+    .pharma-result-box {
+        background: #fff; border-radius: 10px; padding: 12px;
+        margin-top: 10px; border: 1px dashed #4caf50; font-size: 13px;
+    }
+
     /* ========== قسم ما يجب فعله - قائمة مهام شخصية ========== */
     .wtd-section {
         background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -394,7 +404,6 @@
 </style>
 </head>
 <body>
-<!-- الهيدر -->
 <div class="app-header">
     <div class="app-title">
         <span class="icon">🦷</span> مساعد طالب الأسنان
@@ -404,7 +413,6 @@
         <span id="firebaseText">جاري الاتصال...</span>
     </div>
 </div>
-<!-- اختيار الدور -->
 <div class="card" id="roleCard">
     <h2>🩺 DS Assistant</h2>
     <div class="welcome-box">
@@ -416,7 +424,6 @@
     <button class="btn-primary" onclick="showStudentLogin()">دخول الطالب</button>
     <button class="btn-secondary" onclick="showAdminLogin()">دخول المدير</button>
 </div>
-<!-- دخول الطالب -->
 <div class="card hidden" id="studentLoginCard">
     <h2>دخول الطالب</h2>
     <input id="studentLoginName" placeholder="اسم الطالب">
@@ -425,7 +432,6 @@
     <button class="btn-secondary" onclick="showStudentRegister()">تسجيل طالب جديد</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
-<!-- تسجيل طالب -->
 <div class="card hidden" id="studentRegisterCard">
     <h2>تسجيل طالب</h2>
     <input id="studentRegName" placeholder="اسم الطالب">
@@ -433,7 +439,6 @@
     <button class="btn-primary" onclick="registerStudent()">تسجيل</button>
     <button class="btn-secondary" onclick="backToStudentLogin()">رجوع</button>
 </div>
-<!-- واجهة الطالب -->
 <div class="card hidden" id="studentArea">
     <h2>👋 مرحباً <span id="studentNameLabel"></span></h2>    <button class="btn-secondary" onclick="studentLogout()">خروج</button>
     <hr style="margin:12px 0;">
@@ -445,14 +450,13 @@
             <span class="icon">📋</span>سجل المرضى
         </button>
         <button class="btn-warning action-btn" onclick="showSmartAssistant()">
-            <span class="icon">🤖</span>طوارئ العيادة
+            <span class="icon">🚨</span>طوارئ العيادة
         </button>
-        <button class="btn-dental action-btn" onclick="focusTodoList()">
-            <span class="icon">📋</span>قائمة المهام
+        <button class="btn-dental action-btn" onclick="showDentalPharma()">
+            <span class="icon">💊</span>حاسبة الصيدلية
         </button>
     </div>
     
-    <!-- نموذج إضافة مريض -->
     <div id="addPatientSection" class="hidden">
         <h3>➕ إضافة مريض جديد</h3>
         <div class="form-group">
@@ -483,13 +487,12 @@
         <button class="btn-secondary" onclick="hideAddPatientForm()">إلغاء</button>
     </div>
     
-    <!-- سجل المرضى المفعلين -->    <div id="activePatientsSection" class="hidden">
+    <div id="activePatientsSection" class="hidden">
         <h3>📋 سجل المرضى المفعلين</h3>
         <button class="btn-primary" onclick="loadActivePatients()">🔄 تحديث</button>
         <div id="patientsList" class="scrollable"></div>
         <button class="btn-secondary" onclick="hideActivePatients()">إغلاق</button>
     </div>    
-    <!-- المساعد الذكي - طوارئ العيادة -->
     <div id="smartAssistantSection" class="hidden">
         <h3>🚨 طوارئ عيادة الأسنان</h3>
         <p style="font-size:12px;color:#666;margin:5px 0 10px;">اسحب ← أو → للتنقل بين الحالات:</p>
@@ -506,8 +509,48 @@
         </div>
         <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>
     </div>
+
+    <div id="dentalPharmaSection" class="pharma-section hidden">
+        <h3>💊 حاسبة الصيدلية السريرية</h3>
+        <div class="tabs">
+            <button class="tab-btn active" id="pharmaTabAnesthesia" onclick="switchPharmaTab('anesthesia')">التخدير</button>
+            <button class="tab-btn" id="pharmaTabMedication" onclick="switchPharmaTab('medication')">الأدوية</button>
+        </div>
+        
+        <div id="anesthesiaCalc">
+            <div class="form-group">
+                <label>وزن المريض (كجم):</label>
+                <input type="number" id="calcWeight" placeholder="أدخل الوزن">
+            </div>
+            <div class="form-group">
+                <label>نوع المخدر (Lidocaine 2%):</label>
+                <select id="calcAnesthesiaType">
+                    <option value="4.4">ليدوكائين (مع/بدون فازو) - 4.4 mg/kg</option>
+                    <option value="7">أرتيكائين (مع فازو) - 7.0 mg/kg</option>
+                    <option value="6.6">مبيفاكائين - 6.6 mg/kg</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="calculateAnesthesia()">احسب الجرعة القصوى</button>
+        </div>
+
+        <div id="medicationCalc" class="hidden">
+            <div class="form-group">
+                <label>اختر الدواء:</label>
+                <select id="medType" onchange="showMedInfo()">
+                    <option value="">-- اختر دواء --</option>
+                    <option value="amox">Amoxicillin (أموكسيسيلين)</option>
+                    <option value="aug">Augmentin (أوجمنتين)</option>
+                    <option value="ibu">Ibuprofen (إيبوبروفين)</option>
+                    <option value="para">Paracetamol (باراسيتامول)</option>
+                    <option value="clinda">Clindamycin (كليندامايسين)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="pharmaResult" class="pharma-result-box hidden"></div>
+        <button class="btn-secondary" onclick="hideDentalPharma()">إغلاق</button>
+    </div>
     
-    <!-- قسم ما يجب فعله (To-Do List) -->
     <div class="wtd-section" id="todoListSection">
         <div class="wtd-header">
             <div class="wtd-title">📝 ما يجب فعله (قائمة مهامي)</div>
@@ -537,14 +580,12 @@
             <div class="empty-msg">📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>
         </div>
     </div>
-</div><!-- دخول المدير -->
-<div class="card hidden" id="adminLoginCard">
+</div><div class="card hidden" id="adminLoginCard">
     <h2>دخول المدير</h2>
     <input id="adminPass" type="password" placeholder="كلمة السر">
     <button class="btn-primary" onclick="loginAdmin()">دخول</button>
     <button class="btn-secondary" onclick="backToRole()">رجوع</button>
 </div>
-<!-- لوحة المدير -->
 <div class="card hidden" id="adminPanel">
     <h2>⚙️ لوحة المدير</h2>
     <div class="tabs">
@@ -555,13 +596,11 @@
     </div>
     <button class="btn-secondary" onclick="logoutAdmin()">خروج</button>
     
-    <!-- قسم الطلاب المعدل ليصبح شريط تمرير أفقي -->
     <div id="studentsAdmin">
         <h3 style="color:#1565c0;">الطلاب</h3>
         <div style="display: flex; gap: 8px; margin-bottom: 12px;">
             <button class="btn-primary" style="flex:1;" onclick="loadStudents()">🔄 تحديث</button>
         </div>
-        <!-- شريط التمرير الأفقي مع أزرار تنقل -->
         <div class="students-slider-wrapper">
             <button class="slider-nav-btn" onclick="scrollStudents(-1)">◀</button>
             <div id="studentsList" class="students-slider-track"></div>
@@ -589,11 +628,9 @@
         <p>💾 Firebase Realtime Database</p>        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
     </div>
 </div>
-<!-- الفوتر -->
 <div class="app-footer">
     تصميم وتطوير <strong>الدكتور زكريا محمد عطوني</strong> 🦷
 </div>
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <script>
@@ -628,10 +665,9 @@ try {
 }
 const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
-
 // ========== 🎓 إضافات أيقونة التخرج وشارة المهام (PWA & Badging) ==========
 function createPWAManifest() {
-    const graduationCapIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
+    const graduationCapIcon = "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
     const manifest = {
         name: "مساعد طالب الأسنان",
         short_name: "مساعد طالب",
@@ -649,7 +685,6 @@ function createPWAManifest() {
     const manifestLink = document.getElementById('pwaManifest');
     if(manifestLink) manifestLink.href = manifestURL;
 }
-
 async function updateAppBadge() {
     if (!currentStudentName || !db) return;
     if ('setAppBadge' in navigator) {
@@ -666,7 +701,6 @@ async function updateAppBadge() {
         } catch (e) { console.log('Badge API error:', e); }
     }
 }
-
 function registerMinimalServiceWorker() {
     if ('serviceWorker' in navigator) {
         const swContent = `
@@ -679,13 +713,11 @@ function registerMinimalServiceWorker() {
         navigator.serviceWorker.register(swURL).catch(err => console.log('Service Worker registration failed:', err));
     }
 }
-
 // تهيئة ميزات PWA بعد تحميل فايربيس
 setTimeout(() => {
     createPWAManifest();
     registerMinimalServiceWorker();
 }, 1500);// ========== نهاية إضافات الأيقونة والشارة ==========
-
 // ===== 50 حالة طوارئ خاصة بطب الأسنان (كاملة) =====
 const dentalEmergencies = [
     {id:1,title:"نزيف بعد خلع",icon:"🩸",action:"🔹 اضغط بقطعة شاش معقمة على مكان الخلع لمدة 20-30 دقيقة متواصلة\n🔹 اطلب من المريض عدم المضمضة أو البصق أو استخدام الشفاطة\n🔹 تجنب المشروبات الساخنة والطعام الصلب أول 24 ساعة"},
@@ -792,6 +824,7 @@ function studentLogout(){
     hideAddPatientForm(); 
     hideActivePatients(); 
     hideSmartAssistant();
+    hideDentalPharma();
     currentStudentName = "";
     // مسح الشارة عند الخروج
     if ('clearAppBadge' in navigator) navigator.clearAppBadge();
@@ -814,6 +847,7 @@ function focusTodoList(){
 function showAddPatientForm(){
     hideActivePatients(); 
     hideSmartAssistant();
+    hideDentalPharma();
     document.getElementById('addPatientSection').classList.remove('hidden');
 }
 function hideAddPatientForm(){
@@ -846,6 +880,7 @@ function savePatient(){
 function showActivePatients(){
     hideAddPatientForm(); 
     hideSmartAssistant();
+    hideDentalPharma();
     document.getElementById('activePatientsSection').classList.remove('hidden');
     loadActivePatients();
 }
@@ -891,6 +926,7 @@ function scrollEmergency(direction){
 function showSmartAssistant(){
     hideAddPatientForm(); 
     hideActivePatients();
+    hideDentalPharma();
     document.getElementById('smartAssistantSection').classList.remove('hidden');
     document.getElementById('emergencyResult').classList.add('hidden');
 }
@@ -904,6 +940,67 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
+
+// ===== 🔹 إدارة الصيدلية والحاسبة السريرية (جديد) 🔹 =====
+function showDentalPharma(){
+    hideAddPatientForm(); 
+    hideActivePatients();
+    hideSmartAssistant();
+    document.getElementById('dentalPharmaSection').classList.remove('hidden');
+}
+function hideDentalPharma(){
+    document.getElementById('dentalPharmaSection').classList.add('hidden');
+    document.getElementById('pharmaResult').classList.add('hidden');
+}
+function switchPharmaTab(tab){
+    document.getElementById('anesthesiaCalc').classList.add('hidden');
+    document.getElementById('medicationCalc').classList.add('hidden');
+    document.getElementById('pharmaTabAnesthesia').classList.remove('active');
+    document.getElementById('pharmaTabMedication').classList.remove('active');
+    
+    if(tab === 'anesthesia'){
+        document.getElementById('anesthesiaCalc').classList.remove('hidden');
+        document.getElementById('pharmaTabAnesthesia').classList.add('active');
+    } else {
+        document.getElementById('medicationCalc').classList.remove('hidden');
+        document.getElementById('pharmaTabMedication').classList.add('active');
+    }
+}
+function calculateAnesthesia(){
+    const weight = parseFloat(document.getElementById('calcWeight').value);
+    const limitPerKg = parseFloat(document.getElementById('calcAnesthesiaType').value);
+    const resultBox = document.getElementById('pharmaResult');
+    
+    if(!weight || weight <= 0){ alert("يرجى إدخال وزن صحيح"); return; }
+    
+    // حساب الميغليغرامات الكلية
+    const totalMg = weight * limitPerKg;
+    // كربولة الليدوكائين 2% تحتوي على 36mg ليدوكائين (1.8ml * 20mg/ml)
+    const cartridges = (totalMg / 36).toFixed(1);
+    
+    resultBox.innerHTML = `<strong>النتيجة:</strong><br>
+        الحد الأقصى للمخدر: ${totalMg.toFixed(1)} mg<br>
+        ما يعادل تقريباً: <span style="color:red; font-size:16px;">${cartridges} كربولة</span><br>
+        <small>* الحساب مبني على كربولة 1.8 مل، تركيز 2%.</small>`;
+    resultBox.classList.remove('hidden');
+}
+function showMedInfo(){
+    const med = document.getElementById('medType').value;
+    const resultBox = document.getElementById('pharmaResult');
+    if(!med) { resultBox.classList.add('hidden'); return; }
+    
+    let info = "";
+    switch(med){
+        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات."; break;
+        case "aug": info = "<strong>Augmentin:</strong><br>البالغين: 625mg أو 1g كل 12 ساعة.<br>يؤخذ مع الطعام لتقليل الآثار الجانبية المعوية."; break;
+        case "ibu": info = "<strong>Ibuprofen:</strong><br>البالغين: 400mg كل 6-8 ساعات.<br>الحد الأقصى: 3200mg/day. تجنب لمرضى القرحة."; break;
+        case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day."; break;
+        case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات."; break;
+    }
+    resultBox.innerHTML = info;
+    resultBox.classList.remove('hidden');
+}
+
 // ===== 🔹 قائمة المهام الشخصية (To-Do List) 🔹 =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
