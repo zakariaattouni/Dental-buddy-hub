@@ -4,224 +4,103 @@
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="data:application/manifest+json,{
-  %22name%22: %22%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%20%D8%B7%D8%A7%D9%84%D8%A8%20%D8%A7%D9%84%D8%A3%D8%B3%D9%86%D8%A7%D9%86%22,
-  %22short_name%22: %22%D8%B7%D8%A8%20%D8%A3%D8%B3%D9%86%D8%A7%D9%86%22,
-  %22start_url%22: %22.%22,
-  %22display%22: %22standalone%22,
-  %22theme_color%22: %221e88e5%22,
-  %22background_color%22: %221e88e5%22,
-  %22icons%22: [
-    { %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231e88e5'/%3E%3Ctext x='256' y='380' font-size='320' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E%22, %22sizes%22: %22512x512%22, %22type%22: %22image/svg+xml%22 %7D,
-    { %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5'/%3E%3Ctext x='96' y='142' font-size='120' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E%22, %22sizes%22: %22192x192%22, %22type%22: %22image/svg+xml%22 %7D
-  ]
-}">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%231e88e5'/%3E%3Ctext x='90' y='135' font-size='110' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E">
+<!-- أيقونة ثابتة تعمل على جميع الأجهزة -->
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjw8vYQUAAALRSURBVHgB7ZzBb9pQFIC/EEKW7ZJsk26b9D/pH5hpmtRumtRpWrXNpB6Ytmn/QM/tsJumaX9Ad9umSTftZppIe4AMcUgVhMJrCpRAwMYGvBcJ3rN94Nk+nvm9dwMIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAII5w8s/r6rWnbtmU8G9p8plW16rUfZ55syfOcNBoNMpnM68Xq6rON2WzWY7PZqPNSqdQuFouuYRj7UHVdL5TL5XW/3z88nU4dmUzmYLVa7bfbbVUPClFVVaFpmlIqlRxbW1uOYrHoarValEqlmM/nz+l02gkKQVGUKpVKTHmeK2S73Y5hGAcymUyE2WwWRVEUDApBURQlhUKhpmmatH9V1/XQarX6v9fr9V+KotAgEAThTA2Hw/08z1NE+e1+v98TZ5FlWW/9mM1mQVEUhQFBEHhDoVBUURS5lkqlIh4Oh1t8fMdxnIFpmoPUTjQaDd9wOPRKIiPEdDq9y+VyX8nkeJ7nSKfTgTREDMMY6nXh8/m2OI77Ujqd9nEc9yUR8fn9/rv9fv8Ux3E/Jtls9mQ6nT6W+noYhhFhs9kEVYtEIiE3m82+LpfLETdoisVi2+VySSGH4/l8nsFhf/06Nkoik8kYxWJxLvm8nHk8niiLxVJSyKGcP+LxeJ/juF/yfD6fU1XVYxTyb+5ZLBazxWJxIlFUVT3QdR3XWvP5ckYdw7gvFotdo9HoKJPJhDIMA3Y6na/W6/WLd+qlKMrQNE1htVrfmpC2bW9Zln2maZpQBzOZzFiW5eDxeGi7eDyOC7+vaZp4Ncuy1rsNqURhGIZs2zYbYhiGv8iyLE8mky/ozyzbth233ra9kPdMJhNZlmXkef7P63o+br+UZVmex0X9fX1eNp1OO3me73k8nobf77/m9/svr2u32+3I87wTBEEQBEEQBEEQBEEQBEEQBEEQBEEQBEEQ/mn+AnfqoIgakOx1AAAAAElFTkSuQmCC">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJOSURBVHgB7ZzBahpBEIAPj6J5hHlR/4kQv+JpBm4yGdwMhzyF5xCzWYibwRzCBLmBQTLogEI2E8hoIyKLUZJKNtKaajrbI+4UDq0/PfR8Pd1VUw0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH98H5d3q/db+Ny89fHzpp+vbPqVtzLb2dD5ZqOinGpDlOPY9gGgqVVvzN2dzqrbqSXXFv5sr3Xha4O3dL+sKfYYtm23Mv9HnA2PRoakabqM4/i1aL9xHAdBELyK8lEUhe9xHI+DICjSNC3a7x4EwdD3/Q+O4zyv2RdFUSFJ0qZpmmftBYFAQHaz8wAAAErpYdE0LTHqF4TBpFQzPrIsKzNN81A3zdTzvM9+CWOxWEySJCltxzKmCcBt27YITdM0de6uVqvl8Hw+H9q2PWRVr9drRB2GYVqz/hzWjGnaJkVRfnUYps+ynE6nNQ06mUyeWDWfz/eSJB1dr9cNnud/awPqup7xPJ9rmnYQBEGh+S9Kp9OP+Xw+a2pDKx6Pj8IwrNVIEoVh+Nb3/RfrGiRJWhL++r4/Wa1WGY/Hnw3D2LJaw3L0aLVa+zfFUsdxHtM03c/3fVXTtB2JIEmSdjae5z+pqrpTM45hGGmapjddLRGmaWb4vn9C03QnEAiEwvP8Sc10qTBd14/Z5/33ACzLqjqO0+V5/kAQ+L5/yLKuJEl/CmRmMuE4rrjdbiLBP0VRYtd1S+I3wnXdpSmatp6nCQAAAAAAAAD+Ar8B3hGHtqWzAaMAAAAASUVORK5CYII=">
+<!-- مانيفست (للتثبيت) -->
+<script>
+  (function() {
+    const manifest = {
+      name: "مساعد طالب الأسنان",
+      short_name: "طبيب أسنان",
+      start_url: ".",
+      display: "standalone",
+      theme_color: "#1e88e5",
+      background_color: "#1e88e5",
+      icons: [
+        { src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAJOSURBVHgB7ZzBahpBEIAPj6J5hHlR/4kQv+JpBm4yGdwMhzyF5xCzWYibwRzCBLmBQTLogEI2E8hoIyKLUZJKNtKaajrbI+4UDq0/PfR8Pd1VUw0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH98H5d3q/db+Ny89fHzpp+vbPqVtzLb2dD5ZqOinGpDlOPY9gGgqVVvzN2dzqrbqSXXFv5sr3Xha4O3dL+sKfYYtm23Mv9HnA2PRoakabqM4/i1aL9xHAdBELyK8lEUhe9xHI+DICjSNC3a7x4EwdD3/Q+O4zyv2RdFUSFJ0qZpmmftBYFAQHaz8wAAAErpYdE0LTHqF4TBpFQzPrIsKzNN81A3zdTzvM9+CWOxWEySJCltxzKmCcBt27YITdM0de6uVqvl8Hw+H9q2PWRVr9drRB2GYVqz/hzWjGnaJkVRfnUYps+ynE6nNQ06mUyeWDWfz/eSJB1dr9cNnud/awPqup7xPJ9rmnYQBEGh+S9Kp9OP+Xw+a2pDKx6Pj8IwrNVIEoVh+Nb3/RfrGiRJWhL++r4/Wa1WGY/Hnw3D2LJaw3L0aLVa+zfFUsdxHtM03c/3fVXTtB2JIEmSdjae5z+pqrpTM45hGGmapjddLRGmaWb4vn9C03QnEAiEwvP8Sc10qTBd14/Z5/33ACzLqjqO0+V5/kAQ+L5/yLKuJEl/CmRmMuE4rrjdbiLBP0VRYtd1S+I3wnXdpSmatp6nCQAAAAAAAAD+Ar8B3hGHtqWzAaMAAAAASUVORK5CYII=", sizes: "96x96", type: "image/png" }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type: "application/json"});
+    const link = document.createElement("link");
+    link.rel = "manifest";
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  })();
+</script>
 <style>
-    /* ========== إعدادات عامة ========== */
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-        font-family: Tahoma, Arial, sans-serif;
-        background: linear-gradient(135deg, #1e88e5, #42a5f5);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-    }
-    .app-header {
-        width: 100%;
-        max-width: 420px;
-        background: linear-gradient(135deg, #0d47a1, #1565c0);
-        color: #fff;
-        padding: 12px 20px;
-        border-radius: 15px 15px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .app-title {
-        font-size: 18px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .firebase-status {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        background: rgba(255,255,255,0.15);
-        padding: 5px 10px;
-        border-radius: 20px;
-    }
-    .status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #66bb6a;
-        animation: pulse 2s infinite;
-    }
-    .status-dot.error {
-        background: #ef5350;
-        animation: none;
-    }
-    @keyframes pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(0.9); }
-    }
-    .card {
-        width: 100%;
-        max-width: 420px;
-        background: #fff;
-        padding: 20px 25px;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        animation: fadeIn 0.4s ease;
-        flex: 1;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    h2 { margin: 0 0 10px; text-align: center; color: #1565c0; font-size: 20px; }
-    h3 { color: #1565c0; margin: 15px 0 10px; font-size: 17px; }
-    input, select, textarea {
-        width: 100%;
-        padding: 11px;
-        margin: 6px 0;
-        border-radius: 12px;
-        border: 1px solid #b0bec5;
-        font-size: 14px;
-        box-sizing: border-box;
-    }
-    button {
-        width: 100%;
-        padding: 11px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 12px;
-        font-size: 15px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.2s;
-    }
-    button:hover { opacity: 0.92; transform: translateY(-1px); }
-    .btn-primary { background: #1e88e5; color: #fff; }
-    .btn-secondary { background: #90a4ae; color: #fff; }
-    .btn-danger { background: #e53935; color: #fff; }
-    .btn-success { background: #43a047; color: #fff; }
-    .btn-warning { background: #fb8c00; color: #fff; }
-    .btn-dental { background: #00897b; color: #fff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Tahoma, Arial, sans-serif; background: linear-gradient(135deg, #1e88e5, #42a5f5); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 10px; }
+    .app-header { width: 100%; max-width: 420px; background: linear-gradient(135deg, #0d47a1, #1565c0); color: #fff; padding: 12px 20px; border-radius: 15px 15px 0 0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .app-title { font-size: 18px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+    .firebase-status { display: flex; align-items: center; gap: 6px; font-size: 12px; background: rgba(255,255,255,0.15); padding: 5px 10px; border-radius: 20px; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #66bb6a; animation: pulse 2s infinite; }
+    .status-dot.error { background: #ef5350; animation: none; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+    .card { width: 100%; max-width: 420px; background: #fff; padding: 20px 25px; border-radius: 0 0 20px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: fadeIn 0.4s ease; flex:1; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+    h2 { margin:0 0 10px; text-align:center; color:#1565c0; font-size:20px; }
+    h3 { color:#1565c0; margin:15px 0 10px; font-size:17px; }
+    input, select, textarea { width:100%; padding:11px; margin:6px 0; border-radius:12px; border:1px solid #b0bec5; font-size:14px; }
+    button { width:100%; padding:11px; margin:8px 0; border:none; border-radius:12px; font-size:15px; cursor:pointer; font-weight:bold; transition:0.2s; }
+    button:hover { opacity:0.92; transform:translateY(-1px); }
+    .btn-primary { background:#1e88e5; color:#fff; }
+    .btn-secondary { background:#90a4ae; color:#fff; }
+    .btn-danger { background:#e53935; color:#fff; }
+    .btn-success { background:#43a047; color:#fff; }
+    .btn-warning { background:#fb8c00; color:#fff; }
+    .btn-dental { background:#00897b; color:#fff; }
     .hidden { display: none !important; }
-    .row { background: #f5f5f5; padding: 12px; border-radius: 12px; margin: 8px 0; font-size: 14px; }
-    .tabs { display: flex; gap: 4px; margin: 10px 0; flex-wrap: wrap; }
-    .tab-btn {
-        flex: 1; min-width: 70px; padding: 9px 6px; border: none;
-        border-radius: 10px; background: #bbdefb; font-weight: bold; font-size: 12px;
-    }
-    .tab-btn.active { background: #1e88e5; color: #fff; }
-    .student-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
-    .action-btn {
-        padding: 12px 8px; font-size: 13px; border-radius: 14px;
-        display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 70px;
-        position: relative;
-    }
-    .badge-count {
-        background-color: #e53935;
-        color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 12px;
-        font-weight: bold;
-        margin-right: 5px;
-        display: inline-block;
-    }
-    .form-group { margin: 6px 0; }
-    .form-group label { display: block; font-weight: bold; color: #1565c0; font-size: 13px; margin-bottom: 3px; }
-    .patient-item {
-        background: #fff; border-right: 4px solid #43a047;
-        padding: 10px; border-radius: 8px; margin: 6px 0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .patient-name { font-weight: bold; color: #1565c0; font-size: 14px; }
-    .patient-info { font-size: 12px; color: #555; margin-top: 4px; line-height: 1.5; }
-    .emergency-slider {
-        position: relative; background: #fff3e0; border-radius: 15px;
-        padding: 12px; margin: 10px 0; border: 2px solid #ffb74d; min-height: 180px;
-    }
-    .slider-track {
-        display: flex; overflow-x: auto; gap: 10px;
-        padding: 5px 2px 15px; scroll-behavior: smooth;
-    }
-    .slider-track::-webkit-scrollbar { height: 6px; }
-    .slider-track::-webkit-scrollbar-track { background: #ffe0b2; border-radius: 3px; }
-    .slider-track::-webkit-scrollbar-thumb { background: #fb8c00; border-radius: 3px; }
-    .emergency-card {
-        min-width: 140px; background: #fff; border-radius: 12px; padding: 12px 10px;
-        text-align: center; cursor: pointer; border: 2px solid #ffe0b2;
-    }
-    .emergency-card .icon { font-size: 24px; }
-    .emergency-card .name { font-size: 12px; font-weight: bold; color: #e65100; }
-    .slider-nav { display: flex; justify-content: center; gap: 15px; margin-top: 8px; }
-    .slider-nav button { width: 36px; height: 36px; border-radius: 50%; background: #ffb74d; color: #fff; }
-    .emergency-result {
-        background: #fff; border-radius: 12px; padding: 12px; margin-top: 10px;
-        border-right: 4px solid #fb8c00;
-    }
-    .wtd-section {
-        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-        border-radius: 15px; padding: 14px; margin: 12px 0;
-        border: 2px solid #81c784;
-    }
-    .wtd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .wtd-title { font-weight: bold; color: #1b5e20; }
-    .wtd-add-btn { width: auto; padding: 6px 14px; background: #43a047; color: #fff; border-radius: 20px; margin: 0; }
-    .wtd-form { background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 10px; }
-    .wtd-form-row { display: flex; gap: 6px; flex-wrap: wrap; }
-    .wtd-form-row input, .wtd-form-row select { flex: 1; margin: 4px 0; padding: 8px; }
-    .wtd-form-actions { display: flex; gap: 6px; margin-top: 8px; }
-    .tasks-list { max-height: 200px; overflow-y: auto; }
-    .task-item {
-        background: #fff; border-radius: 10px; padding: 10px; margin: 6px 0;
-        border-right: 4px solid #66bb6a; display: flex; justify-content: space-between;
-    }
-    .task-text { font-size: 14px; }
-    .task-meta { font-size: 11px; color: #666; }
-    .priority.high { background: #ffcdd2; color: #c62828; }
-    .priority.medium { background: #fff9c4; color: #f57f17; }
-    .priority.low { background: #c8e6c9; color: #2e7d32; }
-    .task-done .task-text { text-decoration: line-through; color: #999; }
-    .task-actions button { width: 28px; height: 28px; border-radius: 50%; margin: 2px; }
-    .welcome-box {
-        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-        border-radius: 16px; padding: 18px 15px; margin: 15px 0;
-        text-align: center; font-weight: 600; color: #0d47a1;
-    }
-    .students-slider-wrapper {
-        display: flex; align-items: center; gap: 8px; margin: 15px 0;
-        background: #f0f7ff; border-radius: 20px; padding: 8px 5px;
-    }
-    .slider-nav-btn { width: 36px; height: 36px; border-radius: 50%; background: #1e88e5; color: white; }
-    .students-slider-track { display: flex; overflow-x: auto; gap: 14px; padding: 8px 4px; flex: 1; }
-    .student-card {
-        min-width: 210px; background: white; border-radius: 20px; padding: 14px;
-        border-right: 5px solid #1e88e5;
-    }
-    .app-footer {
-        width: 100%; max-width: 420px; background: #0d47a1;
-        color: #fff; text-align: center; padding: 10px;
-        border-radius: 0 0 15px 15px; font-size: 12px;
-        margin-bottom: 15px;
-    }
-    .scrollable { max-height: 280px; overflow-y: auto; }
-    .empty-msg { text-align: center; color: #666; padding: 15px; background: #f9f9f9; border-radius: 10px; }
+    .row { background:#f5f5f5; padding:12px; border-radius:12px; margin:8px 0; font-size:14px; }
+    .tabs { display:flex; gap:4px; margin:10px 0; flex-wrap:wrap; }
+    .tab-btn { flex:1; min-width:70px; padding:9px 6px; border-radius:10px; background:#bbdefb; font-weight:bold; font-size:12px; }
+    .tab-btn.active { background:#1e88e5; color:#fff; }
+    .student-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+    .action-btn { padding:12px 8px; font-size:13px; border-radius:14px; display:flex; flex-direction:column; align-items:center; gap:4px; min-height:70px; position:relative; }
+    .badge-count { background:#e53935; color:white; border-radius:50%; padding:2px 6px; font-size:12px; margin-right:5px; }
+    .form-group { margin:6px 0; }
+    .form-group label { display:block; font-weight:bold; color:#1565c0; font-size:13px; margin-bottom:3px; }
+    .patient-item { background:#fff; border-right:4px solid #43a047; padding:10px; border-radius:8px; margin:6px 0; box-shadow:0 2px 5px rgba(0,0,0,0.05); }
+    .patient-name { font-weight:bold; color:#1565c0; font-size:14px; }
+    .patient-info { font-size:12px; color:#555; margin-top:4px; line-height:1.5; }
+    .emergency-slider { position:relative; background:#fff3e0; border-radius:15px; padding:12px; margin:10px 0; border:2px solid #ffb74d; min-height:180px; }
+    .slider-track { display:flex; overflow-x:auto; gap:10px; padding:5px 2px 15px; scroll-behavior:smooth; }
+    .slider-track::-webkit-scrollbar { height:6px; }
+    .slider-track::-webkit-scrollbar-track { background:#ffe0b2; }
+    .slider-track::-webkit-scrollbar-thumb { background:#fb8c00; border-radius:3px; }
+    .emergency-card { min-width:140px; background:#fff; border-radius:12px; padding:12px 10px; text-align:center; cursor:pointer; border:2px solid #ffe0b2; }
+    .emergency-card .icon { font-size:24px; }
+    .emergency-card .name { font-size:12px; font-weight:bold; color:#e65100; }
+    .slider-nav { display:flex; justify-content:center; gap:15px; margin-top:8px; }
+    .slider-nav button { width:36px; height:36px; border-radius:50%; background:#ffb74d; color:#fff; margin:0; }
+    .emergency-result { background:#fff; border-radius:12px; padding:12px; margin-top:10px; border-right:4px solid #fb8c00; }
+    .wtd-section { background:linear-gradient(135deg,#e8f5e9,#c8e6c9); border-radius:15px; padding:14px; margin:12px 0; border:2px solid #81c784; }
+    .wtd-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+    .wtd-title { font-weight:bold; color:#1b5e20; }
+    .wtd-add-btn { width:auto; padding:6px 14px; background:#43a047; color:#fff; border-radius:20px; margin:0; }
+    .wtd-form { background:#fff; border-radius:12px; padding:12px; margin-bottom:10px; }
+    .wtd-form-row { display:flex; gap:6px; flex-wrap:wrap; }
+    .wtd-form-row input, .wtd-form-row select { flex:1; margin:4px 0; padding:8px; }
+    .wtd-form-actions { display:flex; gap:6px; margin-top:8px; }
+    .tasks-list { max-height:200px; overflow-y:auto; }
+    .task-item { background:#fff; border-radius:10px; padding:10px; margin:6px 0; border-right:4px solid #66bb6a; display:flex; justify-content:space-between; align-items:center; }
+    .task-content { flex:1; }
+    .task-text { font-size:14px; font-weight:500; }
+    .task-meta { font-size:11px; color:#666; margin-top:4px; }
+    .priority { display:inline-block; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:bold; margin-left:5px; }
+    .priority.high { background:#ffcdd2; color:#c62828; }
+    .priority.medium { background:#fff9c4; color:#f57f17; }
+    .priority.low { background:#c8e6c9; color:#2e7d32; }
+    .task-done .task-text { text-decoration:line-through; color:#999; }
+    .task-actions button { width:28px; height:28px; border-radius:50%; margin:0 2px; }
+    .welcome-box { background:linear-gradient(135deg,#e3f2fd,#bbdefb); border-radius:16px; padding:18px 15px; margin:15px 0; text-align:center; font-weight:600; color:#0d47a1; }
+    .students-slider-wrapper { display:flex; align-items:center; gap:8px; margin:15px 0; background:#f0f7ff; border-radius:20px; padding:8px 5px; }
+    .slider-nav-btn { width:36px; height:36px; border-radius:50%; background:#1e88e5; color:white; font-size:20px; margin:0; }
+    .students-slider-track { display:flex; overflow-x:auto; gap:14px; padding:8px 4px; flex:1; }
+    .student-card { min-width:210px; background:white; border-radius:20px; padding:14px; border-right:5px solid #1e88e5; }
+    .app-footer { width:100%; max-width:420px; background:#0d47a1; color:#fff; text-align:center; padding:10px; border-radius:0 0 15px 15px; font-size:12px; margin-bottom:15px; }
+    .scrollable { max-height:280px; overflow-y:auto; }
+    .empty-msg { text-align:center; color:#666; padding:15px; background:#f9f9f9; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -258,7 +137,7 @@
         <button class="btn-primary action-btn" onclick="showAddPatientForm()"><span>➕</span>أضف مريض</button>
         <button class="btn-success action-btn" onclick="showActivePatients()"><span>📋</span>سجل المرضى</button>
         <button class="btn-warning action-btn" onclick="showSmartAssistant()"><span>🤖</span>طوارئ العيادة</button>
-        <button class="btn-dental action-btn" onclick="focusTodoList()" id="todoButtonMain"><span>📋</span>قائمة المهام <span id="taskBadge" style="display:none; background:#e53935; color:white; border-radius:50%; padding:2px 6px; font-size:12px;">0</span></button>
+        <button class="btn-dental action-btn" onclick="focusTodoList()"><span>📋</span>قائمة المهام <span id="taskBadge" style="display:none; background:#e53935; color:white; border-radius:50%; padding:2px 6px; font-size:12px; margin-right:5px;">0</span></button>
     </div>
     <div id="addPatientSection" class="hidden">
         <h3>➕ إضافة مريض جديد</h3>
@@ -430,7 +309,7 @@ function loadTasks(){
         let tasks=Object.entries(data).map(([id,t])=>({id,...t}));
         tasks.sort((a,b)=>{ if(a.done!==b.done) return a.done?1:-1; return 0; });
         let html="";
-        tasks.forEach(t=>{ html+=`<div class="task-item ${t.done?'task-done':''}"><div><div class="task-text">${t.text}</div><div class="task-meta">${t.date||''} ${t.time||''} <span class="priority ${t.priority}">${t.priority==='high'?'🔴 عالية':t.priority==='medium'?'🟡 متوسطة':'🟢 منخفضة'}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}',${!t.done})">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')">🗑️</button></div></div>`; });
+        tasks.forEach(t=>{ html+=`<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${t.date||''} ${t.time||''} <span class="priority ${t.priority}">${t.priority==='high'?'🔴 عالية':t.priority==='medium'?'🟡 متوسطة':'🟢 منخفضة'}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}',${!t.done})">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')">🗑️</button></div></div>`; });
         list.innerHTML=html; updateAppBadge();
     });
 }
