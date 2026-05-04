@@ -4,22 +4,32 @@
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- ربط المانيفست (الملف الخاص بأيقونات التطبيق) -->
-<link rel="manifest" href="data:application/manifest+json,{
-  %22name%22: %22%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%20%D8%B7%D8%A7%D9%84%D8%A8%20%D8%A7%D9%84%D8%A3%D8%B3%D9%86%D8%A7%D9%86%22,
-  %22short_name%22: %22%D8%B7%D8%A8%20%D8%A3%D8%B3%D9%86%D8%A7%D9%86%22,
-  %22start_url%22: %22.%22,
-  %22display%22: %22standalone%22,
-  %22theme_color%22: %221e88e5%22,
-  %22background_color%22: %221e88e5%22,
-  %22icons%22: [
-    { %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231e88e5'/%3E%3Ctext x='256' y='380' font-size='320' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E%22, %22sizes%22: %22512x512%22, %22type%22: %22image/svg+xml%22, %22purpose%22: %22any%22 %7D,
-    { %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5'/%3E%3Ctext x='96' y='142' font-size='120' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E%22, %22sizes%22: %22192x192%22, %22type%22: %22image/svg+xml%22 %7D,
-    { %22src%22: %22data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 144 144'%3E%3Crect width='144' height='144' fill='%231e88e5'/%3E%3Ctext x='72' y='108' font-size='90' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E%22, %22sizes%22: %22144x144%22, %22type%22: %22image/svg+xml%22 %7D
-  ]
-}">
-<!-- أيقونة تقليدية للشاشة الرئيسية (fallback) -->
+<!-- أيقونات قياسية للشاشة الرئيسية (تعمل في جميع المتصفحات) -->
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%231e88e5'/%3E%3Ctext x='90' y='135' font-size='110' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%231e88e5'/%3E%3Ctext x='48' y='72' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E">
+<!-- مانيفست ديناميكي عبر Blob (أكثر توافقاً) -->
+<script>
+  (function() {
+    const manifestObj = {
+      name: "مساعد طالب الأسنان",
+      short_name: "طبيب أسنان",
+      start_url: ".",
+      display: "standalone",
+      theme_color: "#1e88e5",
+      background_color: "#1e88e5",
+      icons: [
+        { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5'/%3E%3Ctext x='96' y='142' font-size='120' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml" },
+        { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%231e88e5'/%3E%3Ctext x='256' y='380' font-size='320' text-anchor='middle' fill='white' font-family='Arial'%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifestObj)], {type: "application/json"});
+    const manifestURL = URL.createObjectURL(blob);
+    const link = document.createElement("link");
+    link.rel = "manifest";
+    link.href = manifestURL;
+    document.head.appendChild(link);
+  })();
+</script>
 <style>
     /* ========== إعدادات عامة ========== */
     * {
@@ -748,7 +758,7 @@ function loginStudent(){
         studentArea.classList.remove("hidden");
         initEmergencySlider();
         loadTasks();
-        updateAppBadge(); // تحديث الشارة عند تسجيل الدخول
+        updateAppBadge(); // تحديث الشارة
     });
 }
 function studentLogout(){
@@ -758,7 +768,7 @@ function studentLogout(){
     hideActivePatients(); 
     hideSmartAssistant();
     currentStudentName = "";
-    updateAppBadge(); // إعادة تعيين الشارة عند الخروج
+    updateAppBadge(); // إعادة تعيين الشارة
 }
 // وظيفة التركيز على قائمة المهام (To-Do List)
 function focusTodoList(){
@@ -776,15 +786,11 @@ function focusTodoList(){
 // ========== الأيقونة الديناميكية (تحديث عدد المهام غير المنجزة) ==========
 function updateAppBadge() {
     if (!currentStudentName) {
-        // لا يوجد طالب مسجل: إزالة الشارة إن كانت موجودة
-        if (navigator.setAppBadge) {
-            navigator.setAppBadge(0).catch(e=>console.log("لا يمكن إزالة الشارة", e));
-        } else if (navigator.clearAppBadge) {
-            navigator.clearAppBadge();
+        if (navigator.clearAppBadge) {
+            navigator.clearAppBadge().catch(e=>console.log("لا يمكن مسح الشارة", e));
         }
         return;
     }
-    // جلب عدد المهام غير المنجزة لهذا الطالب
     db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value", snap => {
         let data = snap.val();
         let pendingCount = 0;
@@ -945,7 +951,7 @@ function loadTasks(){
             html += `<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}<span class="priority ${t.priority}">${priorityLabel}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button></div></div>`;
         });
         list.innerHTML = html;
-        updateAppBadge(); // تحديث الشارة بعد تحميل المهام
+        updateAppBadge();
     });
 }
 function toggleTaskDone(taskId, newStatus){ db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>{ loadTasks(); updateAppBadge(); }); }
