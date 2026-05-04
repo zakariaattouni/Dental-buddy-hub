@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <title>مساعد طالب الأسنان</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ========== إضافات PWA والأيقونة ========== -->
+<link rel="manifest" id="pwaManifest">
+<meta name="theme-color" content="#1e88e5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مساعد طالب">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='120' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E">
 <style>
     /* ========== إعدادات عامة ========== */
     * {
@@ -41,8 +47,7 @@
         gap: 8px;
     }
     .app-title span.icon { font-size: 22px; }
-    /* مؤشر فايربيس */
-    .firebase-status {
+    /* مؤشر فايربيس */    .firebase-status {
         display: flex;
         align-items: center;
         gap: 6px;        font-size: 12px;
@@ -91,8 +96,7 @@
         font-size: 14px;
         box-sizing: border-box;
     }
-    button {        width: 100%;
-        padding: 11px;
+    button {        width: 100%;        padding: 11px;
         margin: 8px 0;
         border: none;
         border-radius: 12px;
@@ -141,8 +145,7 @@
     .emergency-slider {
         position: relative; background: #fff3e0; border-radius: 15px;
         padding: 12px; margin: 10px 0; border: 2px solid #ffb74d; min-height: 180px;
-    }
-    .slider-track {
+    }    .slider-track {
         display: flex; overflow-x: auto; gap: 10px;
         padding: 5px 2px 15px; scroll-behavior: smooth;
         scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
@@ -191,8 +194,7 @@
     .wtd-form {
         background: #fff; border-radius: 12px; padding: 12px;
         margin-bottom: 10px; border: 1px solid #a5d6a7;
-    }
-    .wtd-form-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    }    .wtd-form-row { display: flex; gap: 6px; flex-wrap: wrap; }
     .wtd-form-row input, .wtd-form-row select {
         flex: 1; min-width: 100px; margin: 4px 0; padding: 8px; font-size: 13px;
     }
@@ -241,8 +243,7 @@
         font-size: 18px;
         font-weight: 800;
         display: block;
-        margin-bottom: 8px;
-    }
+        margin-bottom: 8px;    }
     .welcome-box .emoji-row {
         font-size: 14px;
         margin-top: 8px;
@@ -291,8 +292,7 @@
     .students-slider-track {
         display: flex;
         overflow-x: auto;
-        gap: 14px;
-        padding: 8px 4px 12px;
+        gap: 14px;        padding: 8px 4px 12px;
         scroll-behavior: smooth;
         flex: 1;
         scrollbar-width: thin;
@@ -341,8 +341,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
-    }
-    .student-badge {
+    }    .student-badge {
         font-size: 11px;
         padding: 3px 8px;
         border-radius: 30px;
@@ -391,8 +390,7 @@
         color: #fff; text-align: center; padding: 10px 15px;
         border-radius: 0 0 15px 15px; font-size: 12px;
         margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
-    }
-    .app-footer strong { color: #ffcc80; }
+    }    .app-footer strong { color: #ffcc80; }
 </style>
 </head>
 <body>
@@ -441,8 +439,7 @@
     <hr style="margin:12px 0;">
     
     <div class="student-actions">
-        <button class="btn-primary action-btn" onclick="showAddPatientForm()">
-            <span class="icon">➕</span>أضف مريض
+        <button class="btn-primary action-btn" onclick="showAddPatientForm()">            <span class="icon">➕</span>أضف مريض
         </button>
         <button class="btn-success action-btn" onclick="showActivePatients()">
             <span class="icon">📋</span>سجل المرضى
@@ -491,8 +488,7 @@
         <button class="btn-primary" onclick="loadActivePatients()">🔄 تحديث</button>
         <div id="patientsList" class="scrollable"></div>
         <button class="btn-secondary" onclick="hideActivePatients()">إغلاق</button>
-    </div>
-    
+    </div>    
     <!-- المساعد الذكي - طوارئ العيادة -->
     <div id="smartAssistantSection" class="hidden">
         <h3>🚨 طوارئ عيادة الأسنان</h3>
@@ -541,8 +537,7 @@
             <div class="empty-msg">📭 لا توجد مهام حالياً، أضف مهمة جديدة لتبدأ 🚀</div>
         </div>
     </div>
-</div>
-<!-- دخول المدير -->
+</div><!-- دخول المدير -->
 <div class="card hidden" id="adminLoginCard">
     <h2>دخول المدير</h2>
     <input id="adminPass" type="password" placeholder="كلمة السر">
@@ -591,8 +586,7 @@
         <h3 style="color:#1565c0;">معلومات النظام</h3>
         <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
         <p>🔐 دخول إدارة: <b>salem1959</b></p>
-        <p>💾 Firebase Realtime Database</p>
-        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
+        <p>💾 Firebase Realtime Database</p>        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
     </div>
 </div>
 <!-- الفوتر -->
@@ -634,6 +628,64 @@ try {
 }
 const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
+
+// ========== 🎓 إضافات أيقونة التخرج وشارة المهام (PWA & Badging) ==========
+function createPWAManifest() {
+    const graduationCapIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
+    const manifest = {
+        name: "مساعد طالب الأسنان",
+        short_name: "مساعد طالب",
+        start_url: ".",        display: "standalone",
+        background_color: "#1e88e5",
+        theme_color: "#1e88e5",
+        orientation: "portrait",
+        icons: [
+            { src: graduationCapIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+            { src: graduationCapIcon, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+        ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
+    const manifestURL = URL.createObjectURL(blob);
+    const manifestLink = document.getElementById('pwaManifest');
+    if(manifestLink) manifestLink.href = manifestURL;
+}
+
+async function updateAppBadge() {
+    if (!currentStudentName || !db) return;
+    if ('setAppBadge' in navigator) {
+        try {
+            const snap = await db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value");
+            const data = snap.val();
+            const tasks = data ? Object.values(data).filter(t => !t.done) : [];
+            const pendingCount = tasks.length;
+            if (pendingCount > 0) {
+                await navigator.setAppBadge(pendingCount);
+            } else {
+                await navigator.clearAppBadge();
+            }
+        } catch (e) { console.log('Badge API error:', e); }
+    }
+}
+
+function registerMinimalServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        const swContent = `
+            self.addEventListener('install', (event) => { self.skipWaiting(); });
+            self.addEventListener('activate', (event) => { self.clients.claim(); });
+            self.addEventListener('fetch', (event) => {});
+        `;
+        const blob = new Blob([swContent], {type: 'application/javascript'});
+        const swURL = URL.createObjectURL(blob);
+        navigator.serviceWorker.register(swURL).catch(err => console.log('Service Worker registration failed:', err));
+    }
+}
+
+// تهيئة ميزات PWA بعد تحميل فايربيس
+setTimeout(() => {
+    createPWAManifest();
+    registerMinimalServiceWorker();
+}, 1500);// ========== نهاية إضافات الأيقونة والشارة ==========
+
 // ===== 50 حالة طوارئ خاصة بطب الأسنان (كاملة) =====
 const dentalEmergencies = [
     {id:1,title:"نزيف بعد خلع",icon:"🩸",action:"🔹 اضغط بقطعة شاش معقمة على مكان الخلع لمدة 20-30 دقيقة متواصلة\n🔹 اطلب من المريض عدم المضمضة أو البصق أو استخدام الشفاطة\n🔹 تجنب المشروبات الساخنة والطعام الصلب أول 24 ساعة"},
@@ -681,8 +733,7 @@ const dentalEmergencies = [
     {id:43,title:"ألم عصبي ثلاثي التوائم",icon:"⚡",action:"🔹 ألم كهربائي مفاجئ: أحل لطبيب أعصاب"},
     {id:44,title:"قرحة فموية مؤلمة",icon:"🔴",action:"🔹 جل مخدر موضعي، غسول ملحي، إذا >أسبوعين: فحص"},
     {id:45,title:"فطريات فموية",icon:"🦠",action:"🔹 بقع بيضاء قابلة للإزالة: مضاد فطري موضعي"},
-    {id:46,title:"جفاف فم",icon:"💧",action:"🔹 شرب ماء متكرر، علكة خالية من سكر، بدائل لعاب"},
-    {id:47,title:"رائحة فم كريهة",icon:"👃",action:"🔹 تحقق من أسباب فموية أولاً: تسوس، أمراض لثة"},
+    {id:46,title:"جفاف فم",icon:"💧",action:"🔹 شرب ماء متكرر، علكة خالية من سكر، بدائل لعاب"},    {id:47,title:"رائحة فم كريهة",icon:"👃",action:"🔹 تحقق من أسباب فموية أولاً: تسوس، أمراض لثة"},
     {id:48,title:"صرير أسنان",icon:"😬",action:"🔹 تآكل أسطح الأسنان: واقي ليلي، إدارة توتر"},
     {id:49,title:"خلع مفصل الفك",icon:"🔓",action:"🔹 فم مفتوح ولا يغلق: ثبّت الفك، أحل لجراح فم"},
     {id:50,title:"ألم غير سني المنشأ",icon:"❓",action:"🔹 إذا الفحوصات سلبية: فكّر في أسباب: جيوب، أذن، قلب"}
@@ -731,7 +782,8 @@ function loginStudent(){
         studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
         initEmergencySlider();
-        loadTasks();
+        loadTasks();        // تحديث شارة التطبيق بعد تسجيل الدخول
+        updateAppBadge();
     });
 }
 function studentLogout(){
@@ -741,6 +793,8 @@ function studentLogout(){
     hideActivePatients(); 
     hideSmartAssistant();
     currentStudentName = "";
+    // مسح الشارة عند الخروج
+    if ('clearAppBadge' in navigator) navigator.clearAppBadge();
 }
 // وظيفة التركيز على قائمة المهام (To-Do List)
 function focusTodoList(){
@@ -777,8 +831,7 @@ function savePatient(){
     const diagnosis = document.getElementById('patientDiagnosis').value.trim();
     const phone = document.getElementById('patientPhone').value.trim();
     
-    if(!name || !age || !gender || !diagnosis){ 
-        alert("أكمل الحقول المطلوبة (*)"); 
+    if(!name || !age || !gender || !diagnosis){         alert("أكمل الحقول المطلوبة (*)"); 
         return; 
     }
     db.ref("patients").push({
@@ -827,8 +880,7 @@ function initEmergencySlider(){
     dentalEmergencies.forEach(e=>{
         const card = document.createElement('div');
         card.className = 'emergency-card';
-        card.innerHTML = `<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;
-        card.onclick = ()=> showDentalEmergency(e, card);
+        card.innerHTML = `<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;        card.onclick = ()=> showDentalEmergency(e, card);
         track.appendChild(card);
     });
 }
@@ -877,11 +929,10 @@ function saveTask(){
     const time = document.getElementById('taskTime').value;
     const priority = document.getElementById('taskPriority').value;
     if(!text){ alert("⚠️ اكتب وصف المهمة"); return; }
-    const taskData = { text, date, time, priority, student: currentStudentName, done: false, createdAt: new Date().toISOString() };
-    if(taskId){
-        db.ref(`tasks/${taskId}`).update(taskData).then(()=>{ alert("✅ تم تحديث المهمة"); toggleTaskForm(); loadTasks(); });
+    const taskData = { text, date, time, priority, student: currentStudentName, done: false, createdAt: new Date().toISOString() };    if(taskId){
+        db.ref(`tasks/${taskId}`).update(taskData).then(()=>{ alert("✅ تم تحديث المهمة"); toggleTaskForm(); loadTasks(); updateAppBadge(); });
     } else {
-        db.ref("tasks").push(taskData).then(()=>{ alert("✅ تمت إضافة المهمة"); toggleTaskForm(); loadTasks(); });
+        db.ref("tasks").push(taskData).then(()=>{ alert("✅ تمت إضافة المهمة"); toggleTaskForm(); loadTasks(); updateAppBadge(); });
     }
 }
 function loadTasks(){
@@ -901,9 +952,11 @@ function loadTasks(){
             html += `<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}<span class="priority ${t.priority}">${priorityLabel}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button></div></div>`;
         });
         list.innerHTML = html;
+        // تحديث الشارة بعد تحميل المهام
+        updateAppBadge();
     });
 }
-function toggleTaskDone(taskId, newStatus){ db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>loadTasks()); }
+function toggleTaskDone(taskId, newStatus){ db.ref(`tasks/${taskId}`).update({done: newStatus}).then(()=>{loadTasks(); updateAppBadge();}); }
 function editTask(taskId){
     db.ref(`tasks/${taskId}`).once("value", snap=>{
         const t = snap.val();
@@ -916,7 +969,7 @@ function editTask(taskId){
         toggleTaskForm(taskId);
     });
 }
-function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>loadTasks()); } }
+function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>{loadTasks(); updateAppBadge();}); } }
 // ===== إدارة المدير =====
 function loginAdmin(){
     if(adminPass.value === ADMIN_PASSWORD){
@@ -925,8 +978,7 @@ function loginAdmin(){
         showAdminSection('studentsAdmin'); 
         loadStudents();
     } else alert("كلمة السر غير صحيحة");
-}
-function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
+}function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
 function showAdminSection(id){
     ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>document.getElementById(sid).classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');    
@@ -975,14 +1027,13 @@ function loadAllPatients(){
     const list = document.getElementById('allPatientsList');
     list.innerHTML = "<p style='color:#666'>جاري التحميل...</p>";    
     db.ref("patients").once("value", snap=>{
-        let data = snap.val();
-        if(!data){ list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; return; }
+        let data = snap.val();        if(!data){ list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; return; }
         let html = "";
         Object.values(data).forEach(p=>{ html += `<div class="row"><div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div><div style="font-size:13px;color:#555;margin-top:5px">${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>📱 ${p.phone||'-'} | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div></div>`; });
         list.innerHTML = html;
     });
 }
-function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&'; if(m === '<') return '<'; if(m === '>') return '>'; return m; }); }
 </script>
 </body>
 </html>
