@@ -17,7 +17,7 @@
         padding: 0;
     }
     body {
-        font-family: Tahoma, Arial, sans-serif;
+        font-family: 'Segoe UI', 'Tahoma', 'Cairo', Arial, sans-serif;
         background: linear-gradient(135deg, #1e88e5, #42a5f5);
         min-height: 100vh;
         display: flex;
@@ -170,7 +170,7 @@
         border-right: 4px solid #fb8c00; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .emergency-result strong { color: #e65100; font-size: 14px; }
-    /* ========== قسم الصيدلية والحاسبة (جديد) ========== */
+    /* ========== قسم الصيدلية والحاسبة (مدققة علمياً) ========== */
     .pharma-section {
         background: #f1f8e9; border: 2px solid #81c784;
         border-radius: 15px; padding: 15px; margin: 12px 0;
@@ -178,6 +178,16 @@
     .pharma-result-box {
         background: #fff; border-radius: 10px; padding: 12px;
         margin-top: 10px; border: 1px dashed #4caf50; font-size: 13px;
+        line-height: 1.6;
+    }
+    .pharma-warning {
+        background: #fff8e1;
+        border-right: 4px solid #ffa000;
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        color: #bf360c;
     }
     /* ========== قسم ما يجب فعله - قائمة مهام شخصية ========== */
     .wtd-section {
@@ -499,6 +509,9 @@
     </div>
     <div id="dentalPharmaSection" class="pharma-section hidden">
         <h3>💊 حاسبة الصيدلية السريرية</h3>
+        <div class="pharma-warning">
+            ⚠️ ملاحظة: هذه المعلومات للأغراض التعليمية فقط. يجب التحقق من الجرعات والتفاعلات الدوائية لدى المصادر الرسمية ومراعاة الحالة الفردية لكل مريض.
+        </div>
         <div class="tabs">
             <button class="tab-btn active" id="pharmaTabAnesthesia" onclick="switchPharmaTab('anesthesia')">التخدير</button>
             <button class="tab-btn" id="pharmaTabMedication" onclick="switchPharmaTab('medication')">الأدوية</button>
@@ -507,21 +520,21 @@
         <div id="anesthesiaCalc">
             <div class="form-group">
                 <label>وزن المريض (كجم):</label>
-                <input type="number" id="calcWeight" placeholder="أدخل الوزن">
+                <input type="number" id="calcWeight" placeholder="أدخل الوزن بالكيلوجرام">
             </div>
             <div class="form-group">
-                <label>نوع المخدر (Lidocaine 2%):</label>
+                <label>نوع المخدر (مع الحد الأقصى mg/kg):</label>
                 <select id="calcAnesthesiaType">
-                    <option value="4.4">ليدوكائين (مع/بدون فازو) - 4.4 mg/kg</option>
-                    <option value="7">أرتيكائين (مع فازو) - 7.0 mg/kg</option>
-                    <option value="6.6">مبيفاكائين - 6.6 mg/kg</option>
+                    <option value="lidocaine4.4">ليدوكائين 2% (مع أو بدون إبينفرين) - 4.4 mg/kg</option>
+                    <option value="articaine7">أرتيكائين 4% (مع إبينفرين) - 7.0 mg/kg</option>
+                    <option value="mepivacaine6.6">مبيفاكائين 3% (بدون إبينفرين) - 6.6 mg/kg</option>
                 </select>
             </div>
             <button class="btn-primary" onclick="calculateAnesthesia()">احسب الجرعة القصوى</button>
         </div>
         <div id="medicationCalc" class="hidden">
             <div class="form-group">
-                <label>اختر الدواء:</label>
+                <label>اختر الدواء (جرعة مرجعية للبالغين):</label>
                 <select id="medType" onchange="showMedInfo()">
                     <option value="">-- اختر دواء --</option>
                     <option value="amox">Amoxicillin (أموكسيسيلين)</option>
@@ -638,6 +651,7 @@
         <h3 style="color:#1565c0;">معلومات النظام</h3>        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
         <p>🔐 دخول إدارة: <b>salem1959</b></p>
         <p>💾 Firebase Realtime Database</p>        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
+        <p>📚 مراجع الجرعات: ADA, BDJ, Sanford Guide</p>
     </div>
 </div>
 <div class="app-footer">
@@ -677,7 +691,7 @@ try {
 }
 const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
-// ========== 🎓 إضافات أيقونة التخرج وشارة المهام (PWA & Badging) ==========
+// ========== PWA Manifest ==========
 function createPWAManifest() {
     const graduationCapIcon = "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
     const manifest = {
@@ -724,12 +738,11 @@ function registerMinimalServiceWorker() {
         navigator.serviceWorker.register(swURL).catch(err => console.log('Service Worker registration failed:', err));
     }
 }
-// تهيئة ميزات PWA بعد تحميل فايربيس
 setTimeout(() => {
     createPWAManifest();
     registerMinimalServiceWorker();
-}, 1500);// ========== نهاية إضافات الأيقونة والشارة ==========
-// ===== 50 حالة طوارئ خاصة بطب الأسنان (كاملة) =====
+}, 1500);
+// ===== 50 حالة طوارئ خاصة بطب الأسنان =====
 const dentalEmergencies = [
     {id:1,title:"نزيف بعد خلع",icon:"🩸",action:"🔹 اضغط بقطعة شاش معقمة على مكان الخلع لمدة 20-30 دقيقة متواصلة\n🔹 اطلب من المريض عدم المضمضة أو البصق أو استخدام الشفاطة\n🔹 تجنب المشروبات الساخنة والطعام الصلب أول 24 ساعة"},
     {id:2,title:"تورم بعد علاج",icon:"😮",action:"🔹 كمادة باردة على الخد 15 دقيقة كل ساعة أول 24 ساعة\n🔹 ارفع رأس المريض أثناء النوم لتقليل التورم"},
@@ -823,7 +836,7 @@ function loginStudent(){
         studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
         initEmergencySlider();
-        loadTasks();        // تحديث شارة التطبيق بعد تسجيل الدخول
+        loadTasks();
         updateAppBadge();
     });
 }
@@ -834,22 +847,7 @@ function studentLogout(){
     hideActivePatients();     hideSmartAssistant();
     hideDentalPharma();
     currentStudentName = "";
-    // مسح الشارة عند الخروج
     if ('clearAppBadge' in navigator) navigator.clearAppBadge();
-}
-// وظيفة التركيز على قائمة المهام (To-Do List)
-function focusTodoList(){
-    // إخفاء الأقسام الأخرى وإظهار قسم المهام فقط إن أردت، لكن الأفضل التمرير إليه
-    hideAddPatientForm();
-    hideActivePatients();
-    hideSmartAssistant();
-    const todoSection = document.getElementById('todoListSection');
-    if(todoSection){
-        todoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        todoSection.style.transition = '0.3s';
-        todoSection.style.boxShadow = '0 0 0 3px #43a047';
-        setTimeout(() => { todoSection.style.boxShadow = ''; }, 1500);
-    }
 }
 // ===== إدارة المرضى =====
 function showAddPatientForm(){
@@ -894,7 +892,6 @@ function showActivePatients(){
 function hideActivePatients(){
     document.getElementById('activePatientsSection').classList.add('hidden');
 }
-// 🔹 الدالة المُعدَّلة: عرض مرضى الطالب الحالي فقط 🔹
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
@@ -906,7 +903,6 @@ function loadActivePatients(){
         }
         let html = "";
         Object.values(data).forEach(p=>{
-            // 🔹 التصفية: عرض المريض فقط إذا كان الطالب الحالي هو من أضافه
             if(p.addedBy === currentStudentName){
                 html += `<div class="patient-item">
                     <div class="patient-name">👤 ${p.name}</div>
@@ -917,7 +913,6 @@ function loadActivePatients(){
                 </div>`;
             }
         });
-        // 🔹 عرض رسالة عند عدم وجود مرضى للطالب الحالي
         if(html === ""){
             list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين لك</p>";
         } else {
@@ -956,7 +951,7 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
-// ===== 🔹 إدارة الصيدلية والحاسبة السريرية (جديد) 🔹 =====
+// ===== حاسبة الصيدلية المدققة علمياً =====
 function showDentalPharma(){
     hideAddPatientForm(); 
     hideActivePatients();
@@ -982,20 +977,46 @@ function switchPharmaTab(tab){
 }
 function calculateAnesthesia(){
     const weight = parseFloat(document.getElementById('calcWeight').value);
-    const limitPerKg = parseFloat(document.getElementById('calcAnesthesiaType').value);
+    const selectedValue = document.getElementById('calcAnesthesiaType').value;
     const resultBox = document.getElementById('pharmaResult');
     
-    if(!weight || weight <= 0){ alert("يرجى إدخال وزن صحيح"); return; }
+    if(!weight || weight <= 0){ alert("يرجى إدخال وزن صحيح (كجم)"); return; }
     
-    // حساب الميغليغرامات الكلية
+    let limitPerKg = 0, mgPerCartridge = 0, anesthesiaName = "";
+    // تحديد المعطيات بدقة حسب نوع المخدر
+    if(selectedValue === "lidocaine4.4"){
+        limitPerKg = 4.4;
+        mgPerCartridge = 36;   // 1.8 ml × 20 mg/ml = 36 mg
+        anesthesiaName = "ليدوكائين 2%";
+    } else if(selectedValue === "articaine7"){
+        limitPerKg = 7.0;
+        mgPerCartridge = 72;   // 1.8 ml × 40 mg/ml (Articaine 4%) = 72 mg
+        anesthesiaName = "أرتيكائين 4% مع إبينفرين";
+    } else if(selectedValue === "mepivacaine6.6"){
+        limitPerKg = 6.6;
+        mgPerCartridge = 54;   // 1.8 ml × 30 mg/ml (Mepivacaine 3%) = 54 mg
+        anesthesiaName = "مبيفاكائين 3%";
+    } else {
+        alert("نوع المخدر غير معروف");
+        return;
+    }
+    
     const totalMg = weight * limitPerKg;
-    // كربولة الليدوكائين 2% تحتوي على 36mg ليدوكائين (1.8ml * 20mg/ml)
-    const cartridges = (totalMg / 36).toFixed(1);
+    const cartridges = (totalMg / mgPerCartridge).toFixed(1);
+    const maxAbsoluteMg = (selectedValue === "lidocaine4.4") ? 500 : (selectedValue === "articaine7" ? 500 : 400); // حدود آمنة مطلقة
+    let warningMsg = "";
+    if(totalMg > maxAbsoluteMg){
+        warningMsg = `<br><span style="color:#d32f2f;">⚠️ تحذير: الجرعة المحسوبة (${totalMg.toFixed(0)} mg) تتجاوز الحد الآمن المطلق (${maxAbsoluteMg} mg) للبالغين الأصحاء. يجب عدم تجاوز الحد المطلق.</span>`;
+    }
     
-    resultBox.innerHTML = `<strong>النتيجة:</strong><br>
-        الحد الأقصى للمخدر: ${totalMg.toFixed(1)} mg<br>
-        ما يعادل تقريباً: <span style="color:red; font-size:16px;">${cartridges} كربولة</span><br>
-        <small>* الحساب مبني على كربولة 1.8 مل، تركيز 2%.</small>`;
+    resultBox.innerHTML = `<strong>🔬 نتيجة جرعة المخدر:</strong><br>
+        🧪 نوع المخدر: ${anesthesiaName}<br>
+        ⚖️ وزن المريض: ${weight} كجم<br>
+        📈 الحد الأقصى للجرعة: ${totalMg.toFixed(1)} mg<br>
+        💉 ما يعادلها تقريباً: <span style="color:#1565c0; font-weight:bold;">${cartridges} كربولة</span> (كل كربولة = ${mgPerCartridge} mg)<br>
+        <small style="color:#555;">📌 المرجع: الجرعة القصوى حسب الوزن ${limitPerKg} mg/kg. يجب مراعاة الحالة الصحية العامة والأدوية المتزامنة.</small>
+        ${warningMsg}
+        <hr><small>تنبيه: هذه الحسابات لأغراض تعليمية، والمسؤولية السريرية تقع على الطبيب المعالج.</small>`;
     resultBox.classList.remove('hidden');
 }
 function showMedInfo(){
@@ -1005,11 +1026,11 @@ function showMedInfo(){
     
     let info = "";
     switch(med){
-        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات."; break;
+        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات.<br>⚠️ تحقق من حساسية البنسلين."; break;
         case "aug": info = "<strong>Augmentin:</strong><br>البالغين: 625mg أو 1g كل 12 ساعة.<br>يؤخذ مع الطعام لتقليل الآثار الجانبية المعوية."; break;
         case "ibu": info = "<strong>Ibuprofen:</strong><br>البالغين: 400mg كل 6-8 ساعات.<br>الحد الأقصى: 3200mg/day. تجنب لمرضى القرحة."; break;
-        case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day."; break;
-        case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات."; break;
+        case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day. خطر سمية كبدية."; break;
+        case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات. خطر التهاب القولون الغشائي."; break;
         case "metro": info = "<strong>Metronidazole:</strong><br>عدوى لاهوائية. الجرعة: 500mg كل 8 ساعات.<br>تجنب الكحول تماماً أثناء العلاج."; break;
         case "doxy": info = "<strong>Doxycycline:</strong><br>عدوى دواعم السن. 100mg كل 12 ساعة أول يوم ثم 100mg/day.<br>تجنب التعرض للشمس."; break;
         case "azithro": info = "<strong>Azithromycin:</strong><br>بديل للحساسية. 500mg يومياً لمدة 3 أيام.<br>يؤخذ قبل الأكل بساعة."; break;
@@ -1027,7 +1048,7 @@ function showMedInfo(){
         case "dexa": info = "<strong>Dexamethasone:</strong><br>لتقليل وذمة ما بعد الجراحة. 4-8mg حقناً أو فموياً."; break;
         case "keto": info = "<strong>Ketorolac:</strong><br>مسكن قوي. 10mg كل 6 ساعات لمدة لا تزيد عن 5 أيام."; break;
         case "naprox": info = "<strong>Naproxen:</strong><br>مسكن ومضاد التهاب. 250-500mg كل 12 ساعة."; break;
-        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة."; break;
+        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة. خطر الإدمان."; break;
         case "tramadol": info = "<strong>Tramadol:</strong><br>ألم متوسط إلى شديد. 50-100mg كل 6 ساعات.<br>خطر الإدمان والتشنجات."; break;
         case "pregaba": info = "<strong>Pregabalin:</strong><br>ألم عصبي (حرق الفم). 75-150mg يومياً."; break;
         case "gabapen": info = "<strong>Gabapentin:</strong><br>ألم عصب ثلاثي التوائم. 300-900mg يومياً."; break;
@@ -1041,10 +1062,10 @@ function showMedInfo(){
         case "beta": info = "<strong>Betamethasone:</strong><br>قرحات فموية رضحية. كريم موضعي للمنطقة المخاطية."; break;
         default: info = "<strong>معلومات الدواء</strong><br>يرجى استشارة الطبيب قبل الاستخدام.";
     }
-    resultBox.innerHTML = info;
+    resultBox.innerHTML = info + "<br><hr><small>⚠️ التعليمي فقط: راجع الجرعات الدقيقة في النشرة الرسمية واحسب حسب وزن المريض وعمره.</small>";
     resultBox.classList.remove('hidden');
 }
-// ===== 🔹 قائمة المهام الشخصية (To-Do List) 🔹 =====
+// ===== قائمة المهام الشخصية (To-Do List) =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
     const isHidden = form.classList.contains('hidden');
@@ -1091,7 +1112,6 @@ function loadTasks(){
             html += `<div class="task-item ${t.done?'task-done':''}"><div class="task-content"><div class="task-text">${t.text}</div><div class="task-meta">${dateStr?'📅 '+dateStr:''} ${timeStr?'⏰ '+timeStr:''}<span class="priority ${t.priority}">${priorityLabel}</span></div></div><div class="task-actions"><button class="btn-success" onclick="toggleTaskDone('${t.id}', ${!t.done})" title="${t.done?'أعد المهمة':'أنجز المهمة'}">${t.done?'↩️':'✅'}</button><button class="btn-warning" onclick="editTask('${t.id}')" title="تعديل">✏️</button><button class="btn-danger" onclick="deleteTask('${t.id}')" title="حذف">🗑️</button></div></div>`;
         });
         list.innerHTML = html;
-        // تحديث الشارة بعد تحميل المهام
         updateAppBadge();
     });
 }
