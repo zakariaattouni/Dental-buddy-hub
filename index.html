@@ -17,7 +17,7 @@
         padding: 0;
     }
     body {
-        font-family: 'Segoe UI', 'Tahoma', 'Cairo', Arial, sans-serif;
+        font-family: Tahoma, Arial, sans-serif;
         background: linear-gradient(135deg, #1e88e5, #42a5f5);
         min-height: 100vh;
         display: flex;
@@ -47,7 +47,8 @@
     }
     .app-title span.icon { font-size: 22px; }
     /* مؤشر فايربيس */    .firebase-status {
-        display: flex;        align-items: center;
+        display: flex;
+        align-items: center;
         gap: 6px;        font-size: 12px;
         background: rgba(255,255,255,0.15);
         padding: 5px 10px;
@@ -96,7 +97,8 @@
     }
     button {        width: 100%;        padding: 11px;
         margin: 8px 0;
-        border: none;        border-radius: 12px;
+        border: none;
+        border-radius: 12px;
         font-size: 15px;
         cursor: pointer;
         font-weight: bold;
@@ -145,7 +147,8 @@
     }    .slider-track {
         display: flex; overflow-x: auto; gap: 10px;
         padding: 5px 2px 15px; scroll-behavior: smooth;
-        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;    }
+        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
+    }
     .slider-track::-webkit-scrollbar { height: 6px; }
     .slider-track::-webkit-scrollbar-track { background: #ffe0b2; border-radius: 3px; }
     .slider-track::-webkit-scrollbar-thumb { background: #fb8c00; border-radius: 3px; }
@@ -170,7 +173,7 @@
         border-right: 4px solid #fb8c00; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .emergency-result strong { color: #e65100; font-size: 14px; }
-    /* ========== قسم الصيدلية والحاسبة (مدققة علمياً) ========== */
+    /* ========== قسم الصيدلية والحاسبة (جديد) ========== */
     .pharma-section {
         background: #f1f8e9; border: 2px solid #81c784;
         border-radius: 15px; padding: 15px; margin: 12px 0;
@@ -178,16 +181,6 @@
     .pharma-result-box {
         background: #fff; border-radius: 10px; padding: 12px;
         margin-top: 10px; border: 1px dashed #4caf50; font-size: 13px;
-        line-height: 1.6;
-    }
-    .pharma-warning {
-        background: #fff8e1;
-        border-right: 4px solid #ffa000;
-        padding: 8px 12px;
-        font-size: 12px;
-        border-radius: 10px;
-        margin-bottom: 12px;
-        color: #bf360c;
     }
     /* ========== قسم ما يجب فعله - قائمة مهام شخصية ========== */
     .wtd-section {
@@ -204,7 +197,8 @@
     }
     .wtd-add-btn {
         width: auto; padding: 6px 14px; font-size: 13px;
-        background: #43a047; color: #fff; border-radius: 20px; margin: 0;    }
+        background: #43a047; color: #fff; border-radius: 20px; margin: 0;
+    }
     .wtd-form {
         background: #fff; border-radius: 12px; padding: 12px;
         margin-bottom: 10px; border: 1px solid #a5d6a7;
@@ -253,7 +247,8 @@
         animation: fadeInUp 0.6s ease;
     }
     .welcome-box .highlight {
-        color: #1e88e5;        font-size: 18px;
+        color: #1e88e5;
+        font-size: 18px;
         font-weight: 800;
         display: block;
         margin-bottom: 8px;    }
@@ -302,7 +297,8 @@
         background: #0d47a1;
         transform: scale(1.02);
     }
-    .students-slider-track {        display: flex;
+    .students-slider-track {
+        display: flex;
         overflow-x: auto;
         gap: 14px;        padding: 8px 4px 12px;
         scroll-behavior: smooth;
@@ -351,7 +347,8 @@
         font-size: 16px;
         color: #0d47a1;
         display: flex;
-        align-items: center;        gap: 5px;
+        align-items: center;
+        gap: 5px;
     }    .student-badge {
         font-size: 11px;
         padding: 3px 8px;
@@ -395,12 +392,37 @@
         justify-content: center;
         gap: 5px;
     }
+    /* ========== محاكي الحالة السريرية (جديد) ========== */
+    .simulator-section {
+        background: #ede7f6; border: 2px solid #7e57c2;
+        border-radius: 15px; padding: 15px; margin: 12px 0;
+    }
+    .case-card {
+        background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 12px;
+        border-right: 4px solid #7e57c2; cursor: pointer; transition: 0.2s;
+    }
+    .case-card:hover { background: #f3e5f5; transform: translateX(-2px); }
+    .case-title { font-weight: bold; color: #4a148c; font-size: 14px; }
+    .simulation-question { background: #fff; border-radius: 12px; padding: 12px; margin-top: 12px; }
+    .simulation-answer { background: #e8eaf6; border-radius: 12px; padding: 12px; margin-top: 10px; border-right: 4px solid #5e35b1; }
+    /* ========== دليل الإجراءات السريرية (الميزة السادسة) ========== */
+    .procedures-section {
+        background: #fff3e0; border: 2px solid #ffa726;
+        border-radius: 15px; padding: 15px; margin: 12px 0;
+    }
+    .proc-card {
+        background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 12px;
+        border-right: 4px solid #ff9800; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .proc-title { font-weight: bold; color: #e65100; font-size: 15px; margin-bottom: 6px; }
+    .proc-desc { font-size: 13px; color: #555; line-height: 1.6; }
     /* ========== الفوتر ========== */
     .app-footer {
         width: 100%; max-width: 420px; background: #0d47a1;
         color: #fff; text-align: center; padding: 10px 15px;
         border-radius: 0 0 15px 15px; font-size: 12px;
-        margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);    }    .app-footer strong { color: #ffcc80; }
+        margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+    }    .app-footer strong { color: #ffcc80; }
 </style>
 </head>
 <body>
@@ -449,10 +471,17 @@
         <button class="btn-success action-btn" onclick="showActivePatients()">
             <span class="icon">📋</span>سجل المرضى
         </button>
-        <button class="btn-warning action-btn" onclick="showSmartAssistant()">            <span class="icon">🚨</span>طوارئ العيادة
+        <button class="btn-warning action-btn" onclick="showSmartAssistant()">
+            <span class="icon">🚨</span>طوارئ العيادة
         </button>
         <button class="btn-dental action-btn" onclick="showDentalPharma()">
             <span class="icon">💊</span>حاسبة الصيدلية
+        </button>
+        <button class="btn-primary action-btn" onclick="showClinicalSimulator()" style="background:#7e57c2;">
+            <span class="icon">🧠</span>محاكي الحالات
+        </button>
+        <button class="btn-primary action-btn" onclick="showProceduresGuide()" style="background:#ef6c00;">
+            <span class="icon">📘</span>دليل الإجراءات
         </button>
     </div>
     
@@ -498,7 +527,8 @@
         <div class="emergency-slider">
             <div class="slider-track" id="emergencyTrack"></div>
             <div class="slider-nav">
-                <button onclick="scrollEmergency(-1)">◀</button>                <button onclick="scrollEmergency(1)">▶</button>
+                <button onclick="scrollEmergency(-1)">◀</button>
+                <button onclick="scrollEmergency(1)">▶</button>
             </div>
         </div>
         <div id="emergencyResult" class="emergency-result hidden">
@@ -509,9 +539,6 @@
     </div>
     <div id="dentalPharmaSection" class="pharma-section hidden">
         <h3>💊 حاسبة الصيدلية السريرية</h3>
-        <div class="pharma-warning">
-            ⚠️ ملاحظة: هذه المعلومات للأغراض التعليمية فقط. يجب التحقق من الجرعات والتفاعلات الدوائية لدى المصادر الرسمية ومراعاة الحالة الفردية لكل مريض.
-        </div>
         <div class="tabs">
             <button class="tab-btn active" id="pharmaTabAnesthesia" onclick="switchPharmaTab('anesthesia')">التخدير</button>
             <button class="tab-btn" id="pharmaTabMedication" onclick="switchPharmaTab('medication')">الأدوية</button>
@@ -520,21 +547,21 @@
         <div id="anesthesiaCalc">
             <div class="form-group">
                 <label>وزن المريض (كجم):</label>
-                <input type="number" id="calcWeight" placeholder="أدخل الوزن بالكيلوجرام">
+                <input type="number" id="calcWeight" placeholder="أدخل الوزن">
             </div>
             <div class="form-group">
-                <label>نوع المخدر (مع الحد الأقصى mg/kg):</label>
+                <label>نوع المخدر (Lidocaine 2%):</label>
                 <select id="calcAnesthesiaType">
-                    <option value="lidocaine4.4">ليدوكائين 2% (مع أو بدون إبينفرين) - 4.4 mg/kg</option>
-                    <option value="articaine7">أرتيكائين 4% (مع إبينفرين) - 7.0 mg/kg</option>
-                    <option value="mepivacaine6.6">مبيفاكائين 3% (بدون إبينفرين) - 6.6 mg/kg</option>
+                    <option value="4.4">ليدوكائين (مع/بدون فازو) - 4.4 mg/kg</option>
+                    <option value="7">أرتيكائين (مع فازو) - 7.0 mg/kg</option>
+                    <option value="6.6">مبيفاكائين - 6.6 mg/kg</option>
                 </select>
             </div>
             <button class="btn-primary" onclick="calculateAnesthesia()">احسب الجرعة القصوى</button>
         </div>
         <div id="medicationCalc" class="hidden">
             <div class="form-group">
-                <label>اختر الدواء (جرعة مرجعية للبالغين):</label>
+                <label>اختر الدواء:</label>
                 <select id="medType" onchange="showMedInfo()">
                     <option value="">-- اختر دواء --</option>
                     <option value="amox">Amoxicillin (أموكسيسيلين)</option>
@@ -550,7 +577,8 @@
                     <option value="clotri">Clotrimazole (كلوتريمازول)</option>
                     <option value="nystatin">Nystatin (نايستاتين)</option>
                     <option value="flucon">Fluconazole (فلوكونازول)</option>
-                    <option value="micon">Miconazole (ميكونازول)</option>                    <option value="chlorhex">Chlorhexidine (كلورهيكسيدين)</option>
+                    <option value="micon">Miconazole (ميكونازول)</option>
+                    <option value="chlorhex">Chlorhexidine (كلورهيكسيدين)</option>
                     <option value="peroxide">Hydrogen Peroxide (بيروكسيد الهيدروجين)</option>
                     <option value="fluoride">Sodium Fluoride (فلورايد الصوديوم)</option>
                     <option value="potnit">Potassium Nitrate (نترات البوتاسيوم)</option>
@@ -578,6 +606,63 @@
         <button class="btn-secondary" onclick="hideDentalPharma()">إغلاق</button>
     </div>
     
+    <div id="clinicalSimulatorSection" class="simulator-section hidden">
+        <h3>🧠 محاكي الحالة السريرية - تحدِّ تشخيصك</h3>
+        <p style="font-size:12px;color:#555;">اختر حالة من القائمة، حاول وضع تشخيصك وخطة العلاج قبل الضغط على "عرض الإجابة النموذجية".</p>
+        <div id="casesListSimulator" class="scrollable" style="max-height:200px;"></div>
+        <div id="simulationDetail" class="hidden">
+            <div class="simulation-question">
+                <strong>📌 تفاصيل الحالة:</strong>
+                <div id="simCaseDetails" style="margin:8px 0; background:#f9f9f9; padding:8px; border-radius:8px;"></div>
+                <textarea id="studentDiagnosisInput" rows="2" placeholder="اكتب تشخيصك المقترح والخطة العلاجية..." style="width:100%;"></textarea>
+                <button class="btn-primary" onclick="revealModelAnswer()" style="margin-top:5px;">عرض الإجابة النموذجية</button>
+            </div>
+            <div id="modelAnswerDiv" class="simulation-answer hidden">
+                <strong>✅ الإجابة النموذجية:</strong>
+                <div id="modelAnswerText"></div>
+            </div>
+            <button class="btn-secondary" onclick="closeSimulationDetail()">إغلاق الحالة</button>
+        </div>
+        <button class="btn-secondary" onclick="hideClinicalSimulator()">إغلاق المحاكي</button>
+    </div>
+
+    <div id="proceduresGuideSection" class="procedures-section hidden">
+        <h3>📘 دليل الإجراءات السريرية (أكثر من 25 إجراءً)</h3>
+        <p style="font-size:12px;color:#555;">مرجع عملي سريع لخطوات أهم الإجراءات في عيادة الأسنان.</p>
+        <div class="scrollable" style="max-height: 350px;">
+            <!--  الإجراءات الجديدة والمتنوعة  -->
+            <div class="proc-card"><div class="proc-title">🦷 1. خلع سن بسيط (قلع غير جراحي)</div><div class="proc-desc">تخدير موضعي كافٍ. فصل اللثة حول السن بمشرط (periosteal elevator). تطبيق كماشة خلع مناسبة (forceps). خلع بحركات بطيئة ومنضبطة. تنظيف الحويصلات ووضع شاش معقم. تعليمات ما بعد الخلع: ضغط 30 دقيقة، عدم مضمضة أو بصق لمدة 24 ساعة، مسكن عند الحاجة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 2. قلع جراحي (ضرس عقل مطمور)</div><div class="proc-desc">شق سديلة مخاطية سمحاقية. كشف العظم. إزالة العظم باستخدام bur مع تبريد. تقسيم السن إن لزم. خلع الأجزاء. كحت الحويصلة. خياطة السديلة. مضاد حيوي ومسكن بعد الجراحة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 3. حشو تجميلي (مركب Resin Composite)</div><div class="proc-desc">تحضير التجويف بإزالة التسوس. حفر (إيتش) بحمض الفوسفوريك 37% لمدة 15-20 ثانية. شطف وتجفيف. وضع الرابطة (bond). معالجة بالضوء. وضع المركب على طبقات مع معالجة كل طبقة. تشكيل وصقل وتلميع.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 4. حشو أملغم (للمناطق الخلفية)</div><div class="proc-desc">تحضير تجويف ذي احتفاظ مناسب. عزل مائي. وضع الورنيش أو العازل. حشو الأملغم بالضغط اليدوي (condensation). تشكيل وتفريغ خلال 3-5 دقائق. صقل بعد 24 ساعة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 5. معالجة لب (فتح تصريف Pulpectomy)</div><div class="desc">تخدير. فتح مدخل الحجرة اللبية. إزالة اللب المصاب باستخدام ملفات الأسنان. قياس القناة (إشعاعياً أو إلكترونياً). تنظيف وتوسيع القنوات. تجفيف وحشو مؤقت بمادة هيدروكسيد الكالسيوم. إغلاق بحشوة مؤقتة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 6. معالجة عصب كاملة (Root Canal Treatment)</div><div class="proc-desc">بعد الفتح والتنظيف المذكور، تطهير بمحلول هيبوكلوريت صوديوم. تعقيم وتجفيف. حشو القنوات بطريقة الضغط الجانبي (gutta-percha & sealer). فحص إشعاعي للتأكد. وصف حشوة دائمة للسن.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 7. كحت الجذور وتخطيطها (Scaling & Root Planing)</div><div class="proc-desc">تخدير موضعي. استخدام أجهزة فوق صوتية (ultrasonic) لإزالة القلح الكبير. ثم كحت يدوي بالكيوريت (curettes). شطف بالكلورهيكسيدين. تعليمات نظافة فموية. إعادة تقييم بعد 4-6 أسابيع.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 8. تركيب تاج كامل (Crown Preparation)</div><div class="proc-desc">تخدير. تحضير السن (تخفيض إطباقي وحولي). تشكيل الكتف (shoulder). أخذ طبعة (impression). حشوة مؤقتة. تجربة التاج المعدني أو الخزفي. تثبيت نهائي باستخدام سمنت مناسب.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 9. تركيب جسر (Bridge)</div><div class="proc-desc">تحضير الأسنان الداعمة (الدعامات). أخذ طبعة مع الجسر المؤقت. تجربة الإطار المعدني. إضافة الخزف (porcelain). ضبط الإطباق. التثبيت النهائي.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 10. أطقم كاملة (Complete Denture)</div><div class="proc-desc">أخذ طبعة أولية. صنع طبق خاص. طبعة ثانوية. تسجيل العلاقة الفكية (الإطباق). تركيب الأسنان الاصطناعية. تجربة القاعدة الشمعية. معالجة المطاط. تسليم الطقم. جلسات ضبط لاحقة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 11. غسيل دواعم تحت اللثة بالليزر</div><div class="proc-desc">تخدير موضعي. توجيه طرف الليزر إلى عمق الجيب. إزالة النسيج الحبيبي الملتهب. كحت الجذور بعد الليزر. تعقيم الجيب. تقييم بعد شهر.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 12. خزعة الفم (Incisional Biopsy)</div><div class="proc-desc">تخدير موضعي. تطهير الآفة. جني عينة ممثلة بحجم 5-8 مم باستخدام مشرط. وضع العينة في فورمالين. خياطة بسيطة. تعليمات ما بعد الخزعة. إرسال العينة للمختبر مع البيانات.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 13. رفع الجيب الفكي (Sinus Lift)</div><div class="proc-desc">شق سديلة لثوية. إنشاء نافذة عظمية على الجدار الجانبي للجيب. رفع الغشاء المخاطي للجيب. حشو العظم المطعّم (xenograft). وضع الغرسة غالباً في مرحلة ثانية. خياطة. مضاد حيوي ومضاد للاحتقان.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 14. تطعيم عظمي (Bone Grafting)</div><div class="proc-desc">كشف العيب العظمي. كحت النسيج الحبيبي. وضع الطعم العظمي (خيفي أو اصطناعي). تغطية بغشاء (ممتص أو غير ممتص). خياطة السديلة. متابعة التئام العظم 6-9 أشهر.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 15. رقعة لثوية حرة (Free Gingival Graft)</div><div class="proc-desc">تخدير. استقبال مكان الضمور (site preparation). أخذ الطعم من الحنك (epithelialized). تثبيت الطعم بخيوط جراحية. ضمادة لثوية. مضاد حيوي. تجنب المنطقة لمدة أسبوعين.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 16. تركيب تقويم أسنان ثابت (Fixed Ortho)</div><div class="proc-desc">تنظيف الأسنان. وضع القطع المعدنية (brackets) مع مادة لاصقة. إدخال الأقواس (arches). أزرار وربطات مطاطية أو معدنية. جدولة الزيارات كل 4-6 أسابيع لشد التقويم. توجيه المريض بتنظيف الأسنان بعد كل وجبة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 17. شد التقويم (Wire Change)</div><div class="proc-desc">فحص تقدم الأسنان. إزالة الأربطة المطاطية. إخراج القوس القديم. إدخال قوس جديد أكثر سماكة أو أكثر قوة. تثبيت الأربطة. اختبار الانزعاج. إعطاء شمع تقويمي لحماية الشفتين.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 18. علاج التسنين عند الرضع (Teething)</div><div class="proc-desc">تدليك اللثة بإصبع نظيف. عضاضة مبردة. جل مخدر موضعي خفيف (ليدوكائين بتركيز منخفض). مسكن (باراسيتامول شراب) عند الألم الشديد. تجنب الأطعمة القاسية.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 19. بتر اللب (Pulpotomy) للأسنان اللبنية</div><div class="proc-desc">تخدير. إزالة التسوس. فتح الحجرة اللبية. إزالة اللب التاجي. وقف النزيف بقطنة مبللة. وضع فورموكيزول أو MTA فوق جذوع اللب. حشو مؤقت. متابعة بعد 6 أشهر.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 20. جهاز حافظ مساحة (Space Maintainer)</div><div class="proc-desc">تنظيف السن. أخذ طبعة. صنع الجهاز (حلقة أو سلك). تجربة وتثبيت الأسمنت السني. تأكيد عدم وجود إزعاج. فحص دوري كل 6 أشهر.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 21. تبييض الأسنان الداخلي (Non-vital bleaching)</div><div class="proc-desc">معالجة عصب كاملة. حبس المادة المبيضة (بيربورات الصوديوم) داخل الحجرة اللبية. إغلاق مؤقت. إعادة التبييض كل 3-5 أيام. الحشوة النهائية بعد أسبوعين.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 22. تبييض خارجي (Home whitening)</div><div class="proc-desc">صنع قالب شفاف للفكين. وضع هلام البيروكسيد (10-16%) في القالب. لبس القالب ليلاً أو لمدة 4 ساعات يومياً. المدة: 2-3 أسابيع. تجنب المشروبات الملونة أثناء العلاج.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 23. معالجة القلاع الفموي (Oral Candidiasis)</div><div class="proc-desc">تعليمات نظافة. شطف بمضاد فطري (نيستاتين 100,000 وحدة) 4 مرات يومياً. أو أقراص كلوتريمازول تذاب بالفم. تصحيح عوامل الاختطار (سكري، استنشاق كورتيكوستيرويد).</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 24. تطبيق الفلورايد المهني (Fluoride varnish)</div><div class="proc-desc">تنظيف الأسنان. تجفيفها. وضع طبقة رقيقة من ورنيش الفلورايد (5% NaF) بفرشاة صغيرة. تصلب لمدة دقيقة. توجيه المريض بعدم الأكل أو الشرب لمدة 30 دقيقة، وتجنب غسل الأسنان 4 ساعات.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 25. معالجة القرحة القلاعية (Aphthous ulcer)</div><div class="proc-desc">غسول بنزيدامين مخدر وملطف. جل تريامسينولون 0.1% يوضع على الآفة مرتين يومياً. تجنب الأطعمة الحارة أو الحامضة. في الحالات المتكررة، تحليل نقص الفيتامينات (B12، حمض الفوليك، حديد).</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 26. حشوة عظمية (Glass Ionomer Cement)</div><div class="proc-desc">تحضير التجويف دون حفر حمضي. وضع المزيج المائي من حمض البولي أكريليك والزجاج. تشكيل اليدوي. حماية بطبقة من الورنيش لمنع فقدان الماء. صقل بعد 24 ساعة. إطلاق الفلورايد المستمر.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 27. الأخاديد الوقائية (Pit & Fissure Sealant)</div><div class="proc-desc">تنظيف الأخاديد بحبيبات الأكسيد. حفر لمدة 30 ثانية. شطف وتجفيف هواء. وضع المادة السائلة. معالجة بالضوء. فحص التصاق المادة وعدم وجود فراغات.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 28. إسعاف إغماء (Syncope) في العيادة</div><div class="proc-desc">وضع المريض مستلقياً ورفع القدمين. فك الملابس الضيقة. تهوية الغرفة. مراقبة النبض والتنفس. إذا لم يتحسن خلال دقيقتين، إسعاف. تجنب التسبب بالإغماء بتقليل القلق والتأكد من الجوع الخفيف قبل الجلسة.</div></div>
+        </div>
+        <button class="btn-secondary" onclick="hideProceduresGuide()">إغلاق الدليل</button>
+    </div>
+    
     <div class="wtd-section" id="todoListSection">
         <div class="wtd-header">
             <div class="wtd-title">📝 ما يجب فعله (قائمة مهامي)</div>
@@ -599,7 +684,8 @@
                     <option value="high">🔴 أولوية عالية</option>
                 </select>
             </div>
-            <div class="wtd-form-actions">                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
+            <div class="wtd-form-actions">
+                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
                 <button class="btn-secondary" onclick="toggleTaskForm()">إلغاء</button>            </div>
         </div>
         <div id="tasksList" class="tasks-list">
@@ -648,10 +734,12 @@
         <button class="btn-primary" onclick="loadAllPatients()">تحديث</button>        <div id="allPatientsList"></div>
     </div>
     <div id="infoAdmin" class="hidden">
-        <h3 style="color:#1565c0;">معلومات النظام</h3>        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
+        <h3 style="color:#1565c0;">معلومات النظام</h3>
+        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
         <p>🔐 دخول إدارة: <b>salem1959</b></p>
         <p>💾 Firebase Realtime Database</p>        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
-        <p>📚 مراجع الجرعات: ADA, BDJ, Sanford Guide</p>
+        <p>🧠 محاكي الحالات السريرية: 15 حالة متنوعة مع الإجابات النموذجية</p>
+        <p>📘 دليل الإجراءات السريرية: أكثر من 28 إجراءً مفصلاً (خلع، حشوات، عصب، دواعم، زراعة، تقويم، جراحة، تعويضات، أطفال، تبييض، طوارئ)</p>
     </div>
 </div>
 <div class="app-footer">
@@ -691,14 +779,15 @@ try {
 }
 const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
-// ========== PWA Manifest ==========
+// ========== 🎓 إضافات أيقونة التخرج وشارة المهام (PWA & Badging) ==========
 function createPWAManifest() {
     const graduationCapIcon = "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
     const manifest = {
         name: "مساعد طالب الأسنان",
         short_name: "مساعد طالب",
         start_url: ".",        display: "standalone",
-        background_color: "#1e88e5",        theme_color: "#1e88e5",
+        background_color: "#1e88e5",
+        theme_color: "#1e88e5",
         orientation: "portrait",
         icons: [
             { src: graduationCapIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
@@ -742,11 +831,12 @@ setTimeout(() => {
     createPWAManifest();
     registerMinimalServiceWorker();
 }, 1500);
-// ===== 50 حالة طوارئ خاصة بطب الأسنان =====
+// ===== 50 حالة طوارئ خاصة بطب الأسنان (كاملة) =====
 const dentalEmergencies = [
     {id:1,title:"نزيف بعد خلع",icon:"🩸",action:"🔹 اضغط بقطعة شاش معقمة على مكان الخلع لمدة 20-30 دقيقة متواصلة\n🔹 اطلب من المريض عدم المضمضة أو البصق أو استخدام الشفاطة\n🔹 تجنب المشروبات الساخنة والطعام الصلب أول 24 ساعة"},
     {id:2,title:"تورم بعد علاج",icon:"😮",action:"🔹 كمادة باردة على الخد 15 دقيقة كل ساعة أول 24 ساعة\n🔹 ارفع رأس المريض أثناء النوم لتقليل التورم"},
-    {id:3,title:"ألم بعد حشو عصب",icon:"😣",action:"🔹 مسكنات خفيفة حسب الوصفة، تجنب المضغ على السن المعالج 24-48 ساعة"},    {id:4,title:"كسر أداة في القناة",icon:"🔧",action:"🔹 لا تحاول إخراج الأداة بنفسك، أبلغ المشرف فوراً، صور أشعة"},
+    {id:3,title:"ألم بعد حشو عصب",icon:"😣",action:"🔹 مسكنات خفيفة حسب الوصفة، تجنب المضغ على السن المعالج 24-48 ساعة"},
+    {id:4,title:"كسر أداة في القناة",icon:"🔧",action:"🔹 لا تحاول إخراج الأداة بنفسك، أبلغ المشرف فوراً، صور أشعة"},
     {id:5,title:"حقن مخدر في وعاء",icon:"💉",action:"🔹 توقف عن الحقن فوراً عند سحب دم، راقب المريض لأعراض الدوخة"},
     {id:6,title:"حساسية للمخدر",icon:"⚠️",action:"🔹 توقف فوراً عند ظهور طفح أو تورم، إبينيفرين للحالات الشديدة + إسعاف"},
     {id:7,title:"ابتلاع جسم غريب",icon:"😰",action:"🔹 شجّع على السعال، مناورة هيمليخ إذا لم يتنفس، أشعة صدر لتأكيد الموقع"},
@@ -795,7 +885,8 @@ const dentalEmergencies = [
 ];
 // ===== دوال التنقل بين الشاشات =====
 function showStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
-function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
+function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }
+function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
 function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
 function backToStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
 function hideAll(){
@@ -844,16 +935,33 @@ function studentLogout(){
     hideAll(); 
     roleCard.classList.remove("hidden");
     hideAddPatientForm(); 
-    hideActivePatients();     hideSmartAssistant();
+    hideActivePatients(); 
+    hideSmartAssistant();
     hideDentalPharma();
+    hideClinicalSimulator();
+    hideProceduresGuide();
     currentStudentName = "";
     if ('clearAppBadge' in navigator) navigator.clearAppBadge();
+}
+function focusTodoList(){
+    hideAddPatientForm();
+    hideActivePatients();
+    hideSmartAssistant();
+    const todoSection = document.getElementById('todoListSection');
+    if(todoSection){
+        todoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        todoSection.style.transition = '0.3s';
+        todoSection.style.boxShadow = '0 0 0 3px #43a047';
+        setTimeout(() => { todoSection.style.boxShadow = ''; }, 1500);
+    }
 }
 // ===== إدارة المرضى =====
 function showAddPatientForm(){
     hideActivePatients(); 
     hideSmartAssistant();
     hideDentalPharma();
+    hideClinicalSimulator();
+    hideProceduresGuide();
     document.getElementById('addPatientSection').classList.remove('hidden');
 }
 function hideAddPatientForm(){
@@ -878,7 +986,8 @@ function savePatient(){
         name, age, gender, diagnosis, phone,
         addedBy: currentStudentName,
         date: new Date().toLocaleDateString('ar-SA'),
-        active: true    });
+        active: true
+    });
     alert("✅ تم الحفظ"); 
     hideAddPatientForm();
 }
@@ -886,6 +995,8 @@ function showActivePatients(){
     hideAddPatientForm(); 
     hideSmartAssistant();
     hideDentalPharma();
+    hideClinicalSimulator();
+    hideProceduresGuide();
     document.getElementById('activePatientsSection').classList.remove('hidden');
     loadActivePatients();
 }
@@ -895,36 +1006,30 @@ function hideActivePatients(){
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{
-        let data = snap.val();
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{        let data = snap.val();
         if(!data){ 
             list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>"; 
             return; 
         }
         let html = "";
         Object.values(data).forEach(p=>{
-            if(p.addedBy === currentStudentName){
-                html += `<div class="patient-item">
-                    <div class="patient-name">👤 ${p.name}</div>
-                    <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
-                    🦷 ${p.diagnosis}<br>
-                    📱 ${p.phone || 'غير متاح'}<br>
-                    📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div>
-                </div>`;
-            }
+            html += `<div class="patient-item">
+                <div class="patient-name">👤 ${p.name}</div>
+                <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
+                🦷 ${p.diagnosis}<br>
+                📱 ${p.phone || 'غير متاح'}<br>
+                📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div>
+            </div>`;
         });
-        if(html === ""){
-            list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين لك</p>";
-        } else {
-            list.innerHTML = html;
-        }
+        list.innerHTML = html;
     });
 }
 // ===== شريط تمرير طوارئ الأسنان =====
 function initEmergencySlider(){
     const track = document.getElementById('emergencyTrack');
     track.innerHTML = '';
-    dentalEmergencies.forEach(e=>{        const card = document.createElement('div');
+    dentalEmergencies.forEach(e=>{
+        const card = document.createElement('div');
         card.className = 'emergency-card';
         card.innerHTML = `<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;        card.onclick = ()=> showDentalEmergency(e, card);
         track.appendChild(card);
@@ -938,6 +1043,8 @@ function showSmartAssistant(){
     hideAddPatientForm(); 
     hideActivePatients();
     hideDentalPharma();
+    hideClinicalSimulator();
+    hideProceduresGuide();
     document.getElementById('smartAssistantSection').classList.remove('hidden');
     document.getElementById('emergencyResult').classList.add('hidden');
 }
@@ -951,11 +1058,13 @@ function showDentalEmergency(emergency, cardEl){
     document.getElementById('emergencyAction').innerHTML = emergency.action.replace(/\n/g,'<br>');
     document.getElementById('emergencyResult').classList.remove('hidden');
 }
-// ===== حاسبة الصيدلية المدققة علمياً =====
+// ===== 🔹 إدارة الصيدلية والحاسبة السريرية =====
 function showDentalPharma(){
     hideAddPatientForm(); 
     hideActivePatients();
     hideSmartAssistant();
+    hideClinicalSimulator();
+    hideProceduresGuide();
     document.getElementById('dentalPharmaSection').classList.remove('hidden');
 }
 function hideDentalPharma(){
@@ -973,50 +1082,22 @@ function switchPharmaTab(tab){
         document.getElementById('pharmaTabAnesthesia').classList.add('active');
     } else {
         document.getElementById('medicationCalc').classList.remove('hidden');
-        document.getElementById('pharmaTabMedication').classList.add('active');    }
+        document.getElementById('pharmaTabMedication').classList.add('active');
+    }
 }
 function calculateAnesthesia(){
     const weight = parseFloat(document.getElementById('calcWeight').value);
-    const selectedValue = document.getElementById('calcAnesthesiaType').value;
+    const limitPerKg = parseFloat(document.getElementById('calcAnesthesiaType').value);
     const resultBox = document.getElementById('pharmaResult');
     
-    if(!weight || weight <= 0){ alert("يرجى إدخال وزن صحيح (كجم)"); return; }
-    
-    let limitPerKg = 0, mgPerCartridge = 0, anesthesiaName = "";
-    // تحديد المعطيات بدقة حسب نوع المخدر
-    if(selectedValue === "lidocaine4.4"){
-        limitPerKg = 4.4;
-        mgPerCartridge = 36;   // 1.8 ml × 20 mg/ml = 36 mg
-        anesthesiaName = "ليدوكائين 2%";
-    } else if(selectedValue === "articaine7"){
-        limitPerKg = 7.0;
-        mgPerCartridge = 72;   // 1.8 ml × 40 mg/ml (Articaine 4%) = 72 mg
-        anesthesiaName = "أرتيكائين 4% مع إبينفرين";
-    } else if(selectedValue === "mepivacaine6.6"){
-        limitPerKg = 6.6;
-        mgPerCartridge = 54;   // 1.8 ml × 30 mg/ml (Mepivacaine 3%) = 54 mg
-        anesthesiaName = "مبيفاكائين 3%";
-    } else {
-        alert("نوع المخدر غير معروف");
-        return;
-    }
-    
+    if(!weight || weight <= 0){ alert("يرجى إدخال وزن صحيح"); return; }
     const totalMg = weight * limitPerKg;
-    const cartridges = (totalMg / mgPerCartridge).toFixed(1);
-    const maxAbsoluteMg = (selectedValue === "lidocaine4.4") ? 500 : (selectedValue === "articaine7" ? 500 : 400); // حدود آمنة مطلقة
-    let warningMsg = "";
-    if(totalMg > maxAbsoluteMg){
-        warningMsg = `<br><span style="color:#d32f2f;">⚠️ تحذير: الجرعة المحسوبة (${totalMg.toFixed(0)} mg) تتجاوز الحد الآمن المطلق (${maxAbsoluteMg} mg) للبالغين الأصحاء. يجب عدم تجاوز الحد المطلق.</span>`;
-    }
+    const cartridges = (totalMg / 36).toFixed(1);
     
-    resultBox.innerHTML = `<strong>🔬 نتيجة جرعة المخدر:</strong><br>
-        🧪 نوع المخدر: ${anesthesiaName}<br>
-        ⚖️ وزن المريض: ${weight} كجم<br>
-        📈 الحد الأقصى للجرعة: ${totalMg.toFixed(1)} mg<br>
-        💉 ما يعادلها تقريباً: <span style="color:#1565c0; font-weight:bold;">${cartridges} كربولة</span> (كل كربولة = ${mgPerCartridge} mg)<br>
-        <small style="color:#555;">📌 المرجع: الجرعة القصوى حسب الوزن ${limitPerKg} mg/kg. يجب مراعاة الحالة الصحية العامة والأدوية المتزامنة.</small>
-        ${warningMsg}
-        <hr><small>تنبيه: هذه الحسابات لأغراض تعليمية، والمسؤولية السريرية تقع على الطبيب المعالج.</small>`;
+    resultBox.innerHTML = `<strong>النتيجة:</strong><br>
+        الحد الأقصى للمخدر: ${totalMg.toFixed(1)} mg<br>
+        ما يعادل تقريباً: <span style="color:red; font-size:16px;">${cartridges} كربولة</span><br>
+        <small>* الحساب مبني على كربولة 1.8 مل، تركيز 2%.</small>`;
     resultBox.classList.remove('hidden');
 }
 function showMedInfo(){
@@ -1026,11 +1107,11 @@ function showMedInfo(){
     
     let info = "";
     switch(med){
-        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات.<br>⚠️ تحقق من حساسية البنسلين."; break;
+        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات."; break;
         case "aug": info = "<strong>Augmentin:</strong><br>البالغين: 625mg أو 1g كل 12 ساعة.<br>يؤخذ مع الطعام لتقليل الآثار الجانبية المعوية."; break;
         case "ibu": info = "<strong>Ibuprofen:</strong><br>البالغين: 400mg كل 6-8 ساعات.<br>الحد الأقصى: 3200mg/day. تجنب لمرضى القرحة."; break;
-        case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day. خطر سمية كبدية."; break;
-        case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات. خطر التهاب القولون الغشائي."; break;
+        case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day."; break;
+        case "clinda": info = "<strong>Clindamycin:</strong><br>بديل في حال حساسية البنسلين.<br>الجرعة: 150-450mg كل 6 ساعات."; break;
         case "metro": info = "<strong>Metronidazole:</strong><br>عدوى لاهوائية. الجرعة: 500mg كل 8 ساعات.<br>تجنب الكحول تماماً أثناء العلاج."; break;
         case "doxy": info = "<strong>Doxycycline:</strong><br>عدوى دواعم السن. 100mg كل 12 ساعة أول يوم ثم 100mg/day.<br>تجنب التعرض للشمس."; break;
         case "azithro": info = "<strong>Azithromycin:</strong><br>بديل للحساسية. 500mg يومياً لمدة 3 أيام.<br>يؤخذ قبل الأكل بساعة."; break;
@@ -1048,7 +1129,8 @@ function showMedInfo(){
         case "dexa": info = "<strong>Dexamethasone:</strong><br>لتقليل وذمة ما بعد الجراحة. 4-8mg حقناً أو فموياً."; break;
         case "keto": info = "<strong>Ketorolac:</strong><br>مسكن قوي. 10mg كل 6 ساعات لمدة لا تزيد عن 5 أيام."; break;
         case "naprox": info = "<strong>Naproxen:</strong><br>مسكن ومضاد التهاب. 250-500mg كل 12 ساعة."; break;
-        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة. خطر الإدمان."; break;
+        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;
+        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة."; break;
         case "tramadol": info = "<strong>Tramadol:</strong><br>ألم متوسط إلى شديد. 50-100mg كل 6 ساعات.<br>خطر الإدمان والتشنجات."; break;
         case "pregaba": info = "<strong>Pregabalin:</strong><br>ألم عصبي (حرق الفم). 75-150mg يومياً."; break;
         case "gabapen": info = "<strong>Gabapentin:</strong><br>ألم عصب ثلاثي التوائم. 300-900mg يومياً."; break;
@@ -1062,10 +1144,10 @@ function showMedInfo(){
         case "beta": info = "<strong>Betamethasone:</strong><br>قرحات فموية رضحية. كريم موضعي للمنطقة المخاطية."; break;
         default: info = "<strong>معلومات الدواء</strong><br>يرجى استشارة الطبيب قبل الاستخدام.";
     }
-    resultBox.innerHTML = info + "<br><hr><small>⚠️ التعليمي فقط: راجع الجرعات الدقيقة في النشرة الرسمية واحسب حسب وزن المريض وعمره.</small>";
+    resultBox.innerHTML = info;
     resultBox.classList.remove('hidden');
 }
-// ===== قائمة المهام الشخصية (To-Do List) =====
+// ===== 🔹 قائمة المهام الشخصية (To-Do List) =====
 function toggleTaskForm(taskId = null){
     const form = document.getElementById('taskForm');
     const isHidden = form.classList.contains('hidden');
@@ -1097,7 +1179,8 @@ function saveTask(){
     }
 }
 function loadTasks(){
-    if(!currentStudentName) return;    const list = document.getElementById('tasksList');
+    if(!currentStudentName) return;
+    const list = document.getElementById('tasksList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
     db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value", snap=>{
         let data = snap.val();
@@ -1129,6 +1212,83 @@ function editTask(taskId){
     });
 }
 function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>{loadTasks(); updateAppBadge();}); } }
+// ===== 🔹 محاكي الحالة السريرية (15 حالة متنوعة) =====
+const clinicalCases = [
+    { id:1, title:"خراج سني حاد", details:"مريض عمر 28 سنة، ألم حاد ومستمر في الفك السفلي الأيمن لليومين الماضيين، تورم بالوجه، حرارة 38.5، وألم عند المضغ. الفحص: تسوس عميق في الضرس الأول السفلي الأيمن، نقر مؤلم، تورم في الدهليز.", modelAnswer:"التشخيص: خراج حول الذروي حاد. الإجراء: صورة أشعة لتقييم الحجم، فتح تصريف، وصف مضاد حيوي (أموكسيسيلين 500mg كل 8 ساعات لمدة 7 أيام) مع مسكن (إيبوبروفين). ثم معالجة العصب أو الخلع لاحقاً." },
+    { id:2, title:"نزيف بعد خلع", details:"مريض عمر 55 سنة، خضع لخلع ضرس قبل 12 ساعة، وما زال ينزف بشكل خفيف مستمر، ليس على أدوية مميعة للدم.", modelAnswer:"الفحص: غالباً نزيف من الأنسجة الرخوة. العلاج: ضغط بشاش معقم مبلل لمدة 30 دقيقة، إذا استمر نستخدم إسفنجة جيلاتين أو خياطة ضاغطة. تعليمات: عدم مضمضة ولا بصق ليوم." },
+    { id:3, title:"تورم في الحنك الصلب", details:"مريض عمر 45 سنة، شكوى من تورم مؤلم في الحنك الصلب منذ أسبوع، الفم نظيف عام، الأسنان المجاورة سليمة.", modelAnswer:"احتمال: خراج حنكي من أصل سني نادر، أو ورم غدي. التشخيص: صورة أشعة بانورامية وCT إذا لزم. الخزعة ضرورية. إحالة لجراح فم." },
+    { id:4, title:"حساسية بعد التبييض", details:"شابة 24 سنة، بعد أسبوع من تبييض الأسنان في المنزل، تعاني من حساسية شديدة للماء البارد والهواء.", modelAnswer:"تشخيص: حساسية عاجية مؤقتة. العلاج: استخدام معجون أسنان مزيل للحساسية يحتوي على نترات البوتاسيوم، وتطبيق هلام الفلورايد في العيادة. تجنب التبييض لمدة شهر." },
+    { id:5, title:"كسر سن أمامي", details:"طفل 10 سنوات، سقط على وجهه وكسر السن المركزي العلوي الأيمن (كسر في المينا والعاج دون تعرض اللب).", modelAnswer:"تشخيص: كسر غير معقد (Elis Class II). العلاج: تغطية العاج المكشوف بطبقة عازلة، ثم ترميم تجميلي براتنج مركب. متابعة حيوية اللب." },
+    { id:6, title:"ألم مستمر بعد حشو عصب", details:"مريض 38 سنة، حشو عصب للضرس الأول السفلي الأيسر منذ شهر، لا يزال يشكو بألم عند المضغ، والأشعة تظهر حشو زائد عند القمة.", modelAnswer:"تشخيص: فرط حشو القناة (overextension). العلاج: إعادة المعالجة اللبية، أو استئصال القمة جراحياً. مضاد حيوي ومسكنات." },
+    { id:7, title:"تقرحات فموية متكررة", details:"طالب 22 سنة، يعاني من تقرحات مؤلمة على الشفة المخاطية واللسان كل 2-3 أشهر، تلتئم خلال 10 أيام.", modelAnswer:"تشخيص: قرحات فموية متكررة (Aphthous ulcers). العلاج الموضعي: جل تريامسينولون أو بنزيدامين، تجنب المهيجات. إذا شديدة: كولشيسين أو بريدنيزولون جرعة منخفضة." },
+    { id:8, title:"تخلخل أسنان معمم", details:"سيدة 48 سنة، مدخنة، تعاني من نزيف لثة وتخلخل أسنان أمامية سفلى، جيوب دواعم عمقها 6-7 مم.", modelAnswer:"تشخيص: التهاب دواعم السن الشديد (Periodontitis). العلاج: تنظيف عميق (كحت وتخطيط جذور)، مضاد حيوي (ميترونيدازول + أموكسيسيلين) لمدة 7 أيام، إرشادات نظافة فموية." },
+    { id:9, title:"تقيح بعد زراعة", details:"مريض 52 سنة، بعد زراعة سن في الفك السفلي بثلاثة أشهر، ظهر تورم وصديد حول الزرعة، والزرعة متحركة.", modelAnswer:"تشخيص: فشل الاندماج العظمي مع عدوى حول الزرعة (peri-implantitis). العلاج: إزالة الزرعة، كحت العظم المصاب، مضاد حيوي، يزرع مرة أخرى بعد 4-6 أشهر." },
+    { id:10, title:"صدمة حساسية أثناء العيادة", details:"مريض أثناء حقن مخدر موضعي (ليدوكائين) ظهر فجأة بطفح جلدي، ضيق تنفس، وهبوط ضغط.", modelAnswer:"تشخيص: صدمة تأقية (Anaphylaxis). العلاج الفوري: إبينفرين 0.3-0.5mg عضلي، أكسجين، مضاد هيستامين، كورتيكوستيرويد، اتصال بالإسعاف." },
+    { id:11, title:"مرض السكري غير المنضبط", details:"مريض سكري النوع الثاني، يحتاج خلع سن، سكر الدم صائم 280 ملغ/دل، لا يتناول الأنسولين.", modelAnswer:"تأجيل الإجراء الغازي حتى يتحكم بالسكر (أقل من 200). قبل الخلع: فحص السكر، تعديل الدواء، مضاد حيوي وقائي، ومتابعة للشفاء." },
+    { id:12, title:"ألم بالجيوب الأنفية", details:"مريض 35 سنة، يشكو من ألم في الأسنان العلوية الخلفية، صداع أمامي، وإفرازات أنفية خضراء، وأعراض تزيد عند الانحناء.", modelAnswer:"تشخيص: التهاب الجيوب الأنفية الفكي العلوي (Maxillary sinusitis). العلاج: مضاد حيوي (أموكسيسيلين/كلافولانيت)، مزيل احتقان، وغسل الأنف بالمحلول الملحي. الأسنان سليمة." },
+    { id:13, title:"متلازمة حرق الفم", details:"سيدة 62 سنة، حرقان مستمر في كامل الفم، لا توجد آفات فموية، تتناول أدوية لضغط الدم.", modelAnswer:"تشخيص: متلازمة حرق الفم، قد تكون مرتبطة بنقص الفيتامينات أو الأدوية الخافضة للضغط. العلاج: تغيير الدواء بالتنسيق مع طبيب الباطنة، مكملات فيتامين B، حمض اللبنيك الموضعي." },
+    { id:14, title:"ورم في الشفة", details:"مريض 68 سنة، آفة متقرحة غير مؤلمة في الشفة السفلية منذ 3 أشهر، وحوافها صلبة، مدخن شره.", modelAnswer:"شك: سرطان الخلايا الحرشفية. التشخيص: خزعة فورية. العلاج الجراحي واسع الاستئصال، وإحالة لأورام الرأس والرقبة." },
+    { id:15, title:"قلع ضرس العقل المطمور", details:"مريض 26 سنة، أشعة بانورامية تظهر ضرس عقل سفلي مائل أفقيًا مع جيب حوله، لا أعراض.", modelAnswer:"تشخيص: ضرس عقل مطمور بدون أعراض. القرار: إما مراقبة أو خلع وقائي حسب موضع الجذر وقربه من العصب السنخي السفلي. الأشعة المقطعية لتقييم المخاطر." }
+];
+let selectedCase = null;
+function showClinicalSimulator(){
+    hideAddPatientForm(); 
+    hideActivePatients();
+    hideSmartAssistant();
+    hideDentalPharma();
+    hideProceduresGuide();
+    const simulatorDiv = document.getElementById('clinicalSimulatorSection');
+    simulatorDiv.classList.remove('hidden');
+    const casesContainer = document.getElementById('casesListSimulator');
+    casesContainer.innerHTML = '';
+    clinicalCases.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'case-card';
+        card.innerHTML = `<div class="case-title">🔍 ${c.title}</div><div style="font-size:12px; color:#5e35b1;">اضغط لاختيار الحالة</div>`;
+        card.onclick = () => selectCase(c.id);
+        casesContainer.appendChild(card);
+    });
+    document.getElementById('simulationDetail').classList.add('hidden');
+    document.getElementById('modelAnswerDiv').classList.add('hidden');
+    document.getElementById('studentDiagnosisInput').value = '';
+}
+function selectCase(caseId){
+    selectedCase = clinicalCases.find(c => c.id === caseId);
+    if(selectedCase){
+        document.getElementById('simulationDetail').classList.remove('hidden');
+        document.getElementById('modelAnswerDiv').classList.add('hidden');
+        document.getElementById('simCaseDetails').innerHTML = `<strong>📝 التفاصيل:</strong><br>${selectedCase.details}`;
+        document.getElementById('studentDiagnosisInput').value = '';
+    }
+}
+function revealModelAnswer(){
+    if(selectedCase){
+        document.getElementById('modelAnswerText').innerHTML = selectedCase.modelAnswer;
+        document.getElementById('modelAnswerDiv').classList.remove('hidden');
+    } else {
+        alert("الرجاء اختيار حالة أولاً.");
+    }
+}
+function closeSimulationDetail(){
+    document.getElementById('simulationDetail').classList.add('hidden');
+    selectedCase = null;
+}
+function hideClinicalSimulator(){
+    document.getElementById('clinicalSimulatorSection').classList.add('hidden');
+    closeSimulationDetail();
+}
+// ===== 🔹 دليل الإجراءات السريرية (الميزة السادسة) =====
+function showProceduresGuide(){
+    hideAddPatientForm(); 
+    hideActivePatients();
+    hideSmartAssistant();
+    hideDentalPharma();
+    hideClinicalSimulator();
+    document.getElementById('proceduresGuideSection').classList.remove('hidden');
+}
+function hideProceduresGuide(){
+    document.getElementById('proceduresGuideSection').classList.add('hidden');
+}
 // ===== إدارة المدير =====
 function loginAdmin(){
     if(adminPass.value === ADMIN_PASSWORD){
@@ -1137,7 +1297,8 @@ function loginAdmin(){
         showAdminSection('studentsAdmin'); 
         loadStudents();
     } else alert("كلمة السر غير صحيحة");
-}function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
+}
+function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
 function showAdminSection(id){
     ['studentsAdmin','casesAdmin','patientsAdmin','infoAdmin'].forEach(sid=>document.getElementById(sid).classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');    
@@ -1145,7 +1306,8 @@ function showAdminSection(id){
     document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
     if(id==='patientsAdmin') loadAllPatients();
 }
-function loadStudents(){    const container = document.getElementById('studentsList');
+function loadStudents(){
+    const container = document.getElementById('studentsList');
     container.innerHTML = "<div style='padding:10px; color:#666;'>جاري التحميل...</div>";
     db.ref("students").once("value", snap=>{
         let data = snap.val() || {};
