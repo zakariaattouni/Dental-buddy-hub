@@ -47,8 +47,7 @@
     }
     .app-title span.icon { font-size: 22px; }
     /* مؤشر فايربيس */    .firebase-status {
-        display: flex;
-        align-items: center;
+        display: flex;        align-items: center;
         gap: 6px;        font-size: 12px;
         background: rgba(255,255,255,0.15);
         padding: 5px 10px;
@@ -97,8 +96,7 @@
     }
     button {        width: 100%;        padding: 11px;
         margin: 8px 0;
-        border: none;
-        border-radius: 12px;
+        border: none;        border-radius: 12px;
         font-size: 15px;
         cursor: pointer;
         font-weight: bold;
@@ -147,8 +145,7 @@
     }    .slider-track {
         display: flex; overflow-x: auto; gap: 10px;
         padding: 5px 2px 15px; scroll-behavior: smooth;
-        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
-    }
+        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;    }
     .slider-track::-webkit-scrollbar { height: 6px; }
     .slider-track::-webkit-scrollbar-track { background: #ffe0b2; border-radius: 3px; }
     .slider-track::-webkit-scrollbar-thumb { background: #fb8c00; border-radius: 3px; }
@@ -197,8 +194,7 @@
     }
     .wtd-add-btn {
         width: auto; padding: 6px 14px; font-size: 13px;
-        background: #43a047; color: #fff; border-radius: 20px; margin: 0;
-    }
+        background: #43a047; color: #fff; border-radius: 20px; margin: 0;    }
     .wtd-form {
         background: #fff; border-radius: 12px; padding: 12px;
         margin-bottom: 10px; border: 1px solid #a5d6a7;
@@ -247,8 +243,7 @@
         animation: fadeInUp 0.6s ease;
     }
     .welcome-box .highlight {
-        color: #1e88e5;
-        font-size: 18px;
+        color: #1e88e5;        font-size: 18px;
         font-weight: 800;
         display: block;
         margin-bottom: 8px;    }
@@ -297,8 +292,7 @@
         background: #0d47a1;
         transform: scale(1.02);
     }
-    .students-slider-track {
-        display: flex;
+    .students-slider-track {        display: flex;
         overflow-x: auto;
         gap: 14px;        padding: 8px 4px 12px;
         scroll-behavior: smooth;
@@ -347,8 +341,7 @@
         font-size: 16px;
         color: #0d47a1;
         display: flex;
-        align-items: center;
-        gap: 5px;
+        align-items: center;        gap: 5px;
     }    .student-badge {
         font-size: 11px;
         padding: 3px 8px;
@@ -397,8 +390,7 @@
         width: 100%; max-width: 420px; background: #0d47a1;
         color: #fff; text-align: center; padding: 10px 15px;
         border-radius: 0 0 15px 15px; font-size: 12px;
-        margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
-    }    .app-footer strong { color: #ffcc80; }
+        margin-bottom: 15px; box-shadow: 0 -4px 12px rgba(0,0,0,0.15);    }    .app-footer strong { color: #ffcc80; }
 </style>
 </head>
 <body>
@@ -447,8 +439,7 @@
         <button class="btn-success action-btn" onclick="showActivePatients()">
             <span class="icon">📋</span>سجل المرضى
         </button>
-        <button class="btn-warning action-btn" onclick="showSmartAssistant()">
-            <span class="icon">🚨</span>طوارئ العيادة
+        <button class="btn-warning action-btn" onclick="showSmartAssistant()">            <span class="icon">🚨</span>طوارئ العيادة
         </button>
         <button class="btn-dental action-btn" onclick="showDentalPharma()">
             <span class="icon">💊</span>حاسبة الصيدلية
@@ -497,8 +488,7 @@
         <div class="emergency-slider">
             <div class="slider-track" id="emergencyTrack"></div>
             <div class="slider-nav">
-                <button onclick="scrollEmergency(-1)">◀</button>
-                <button onclick="scrollEmergency(1)">▶</button>
+                <button onclick="scrollEmergency(-1)">◀</button>                <button onclick="scrollEmergency(1)">▶</button>
             </div>
         </div>
         <div id="emergencyResult" class="emergency-result hidden">
@@ -547,8 +537,7 @@
                     <option value="clotri">Clotrimazole (كلوتريمازول)</option>
                     <option value="nystatin">Nystatin (نايستاتين)</option>
                     <option value="flucon">Fluconazole (فلوكونازول)</option>
-                    <option value="micon">Miconazole (ميكونازول)</option>
-                    <option value="chlorhex">Chlorhexidine (كلورهيكسيدين)</option>
+                    <option value="micon">Miconazole (ميكونازول)</option>                    <option value="chlorhex">Chlorhexidine (كلورهيكسيدين)</option>
                     <option value="peroxide">Hydrogen Peroxide (بيروكسيد الهيدروجين)</option>
                     <option value="fluoride">Sodium Fluoride (فلورايد الصوديوم)</option>
                     <option value="potnit">Potassium Nitrate (نترات البوتاسيوم)</option>
@@ -597,8 +586,7 @@
                     <option value="high">🔴 أولوية عالية</option>
                 </select>
             </div>
-            <div class="wtd-form-actions">
-                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
+            <div class="wtd-form-actions">                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
                 <button class="btn-secondary" onclick="toggleTaskForm()">إلغاء</button>            </div>
         </div>
         <div id="tasksList" class="tasks-list">
@@ -647,8 +635,7 @@
         <button class="btn-primary" onclick="loadAllPatients()">تحديث</button>        <div id="allPatientsList"></div>
     </div>
     <div id="infoAdmin" class="hidden">
-        <h3 style="color:#1565c0;">معلومات النظام</h3>
-        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
+        <h3 style="color:#1565c0;">معلومات النظام</h3>        <p>✅ نسخة مخصصة لطلاب طب الأسنان</p>
         <p>🔐 دخول إدارة: <b>salem1959</b></p>
         <p>💾 Firebase Realtime Database</p>        <p>🦷 50 حالة طوارئ سريرية خاصة بالعيادة</p>
     </div>
@@ -697,8 +684,7 @@ function createPWAManifest() {
         name: "مساعد طالب الأسنان",
         short_name: "مساعد طالب",
         start_url: ".",        display: "standalone",
-        background_color: "#1e88e5",
-        theme_color: "#1e88e5",
+        background_color: "#1e88e5",        theme_color: "#1e88e5",
         orientation: "portrait",
         icons: [
             { src: graduationCapIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
@@ -747,8 +733,7 @@ setTimeout(() => {
 const dentalEmergencies = [
     {id:1,title:"نزيف بعد خلع",icon:"🩸",action:"🔹 اضغط بقطعة شاش معقمة على مكان الخلع لمدة 20-30 دقيقة متواصلة\n🔹 اطلب من المريض عدم المضمضة أو البصق أو استخدام الشفاطة\n🔹 تجنب المشروبات الساخنة والطعام الصلب أول 24 ساعة"},
     {id:2,title:"تورم بعد علاج",icon:"😮",action:"🔹 كمادة باردة على الخد 15 دقيقة كل ساعة أول 24 ساعة\n🔹 ارفع رأس المريض أثناء النوم لتقليل التورم"},
-    {id:3,title:"ألم بعد حشو عصب",icon:"😣",action:"🔹 مسكنات خفيفة حسب الوصفة، تجنب المضغ على السن المعالج 24-48 ساعة"},
-    {id:4,title:"كسر أداة في القناة",icon:"🔧",action:"🔹 لا تحاول إخراج الأداة بنفسك، أبلغ المشرف فوراً، صور أشعة"},
+    {id:3,title:"ألم بعد حشو عصب",icon:"😣",action:"🔹 مسكنات خفيفة حسب الوصفة، تجنب المضغ على السن المعالج 24-48 ساعة"},    {id:4,title:"كسر أداة في القناة",icon:"🔧",action:"🔹 لا تحاول إخراج الأداة بنفسك، أبلغ المشرف فوراً، صور أشعة"},
     {id:5,title:"حقن مخدر في وعاء",icon:"💉",action:"🔹 توقف عن الحقن فوراً عند سحب دم، راقب المريض لأعراض الدوخة"},
     {id:6,title:"حساسية للمخدر",icon:"⚠️",action:"🔹 توقف فوراً عند ظهور طفح أو تورم، إبينيفرين للحالات الشديدة + إسعاف"},
     {id:7,title:"ابتلاع جسم غريب",icon:"😰",action:"🔹 شجّع على السعال، مناورة هيمليخ إذا لم يتنفس، أشعة صدر لتأكيد الموقع"},
@@ -797,8 +782,7 @@ const dentalEmergencies = [
 ];
 // ===== دوال التنقل بين الشاشات =====
 function showStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
-function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }
-function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
+function showStudentRegister(){ hideAll(); studentRegisterCard.classList.remove("hidden"); }function showAdminLogin(){ hideAll(); adminLoginCard.classList.remove("hidden"); }
 function backToRole(){ hideAll(); roleCard.classList.remove("hidden"); }
 function backToStudentLogin(){ hideAll(); studentLoginCard.classList.remove("hidden"); }
 function hideAll(){
@@ -847,8 +831,7 @@ function studentLogout(){
     hideAll(); 
     roleCard.classList.remove("hidden");
     hideAddPatientForm(); 
-    hideActivePatients(); 
-    hideSmartAssistant();
+    hideActivePatients();     hideSmartAssistant();
     hideDentalPharma();
     currentStudentName = "";
     // مسح الشارة عند الخروج
@@ -897,8 +880,7 @@ function savePatient(){
         name, age, gender, diagnosis, phone,
         addedBy: currentStudentName,
         date: new Date().toLocaleDateString('ar-SA'),
-        active: true
-    });
+        active: true    });
     alert("✅ تم الحفظ"); 
     hideAddPatientForm();
 }
@@ -912,33 +894,42 @@ function showActivePatients(){
 function hideActivePatients(){
     document.getElementById('activePatientsSection').classList.add('hidden');
 }
+// 🔹 الدالة المُعدَّلة: عرض مرضى الطالب الحالي فقط 🔹
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{        let data = snap.val();
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{
+        let data = snap.val();
         if(!data){ 
             list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>"; 
             return; 
         }
         let html = "";
         Object.values(data).forEach(p=>{
-            html += `<div class="patient-item">
-                <div class="patient-name">👤 ${p.name}</div>
-                <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
-                🦷 ${p.diagnosis}<br>
-                📱 ${p.phone || 'غير متاح'}<br>
-                📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div>
-            </div>`;
+            // 🔹 التصفية: عرض المريض فقط إذا كان الطالب الحالي هو من أضافه
+            if(p.addedBy === currentStudentName){
+                html += `<div class="patient-item">
+                    <div class="patient-name">👤 ${p.name}</div>
+                    <div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>
+                    🦷 ${p.diagnosis}<br>
+                    📱 ${p.phone || 'غير متاح'}<br>
+                    📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div>
+                </div>`;
+            }
         });
-        list.innerHTML = html;
+        // 🔹 عرض رسالة عند عدم وجود مرضى للطالب الحالي
+        if(html === ""){
+            list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين لك</p>";
+        } else {
+            list.innerHTML = html;
+        }
     });
 }
 // ===== شريط تمرير طوارئ الأسنان =====
 function initEmergencySlider(){
     const track = document.getElementById('emergencyTrack');
     track.innerHTML = '';
-    dentalEmergencies.forEach(e=>{
-        const card = document.createElement('div');
+    dentalEmergencies.forEach(e=>{        const card = document.createElement('div');
         card.className = 'emergency-card';
         card.innerHTML = `<div class="icon">${e.icon}</div><div class="name">${e.title}</div>`;        card.onclick = ()=> showDentalEmergency(e, card);
         track.appendChild(card);
@@ -987,8 +978,7 @@ function switchPharmaTab(tab){
         document.getElementById('pharmaTabAnesthesia').classList.add('active');
     } else {
         document.getElementById('medicationCalc').classList.remove('hidden');
-        document.getElementById('pharmaTabMedication').classList.add('active');
-    }
+        document.getElementById('pharmaTabMedication').classList.add('active');    }
 }
 function calculateAnesthesia(){
     const weight = parseFloat(document.getElementById('calcWeight').value);
@@ -1037,8 +1027,7 @@ function showMedInfo(){
         case "dexa": info = "<strong>Dexamethasone:</strong><br>لتقليل وذمة ما بعد الجراحة. 4-8mg حقناً أو فموياً."; break;
         case "keto": info = "<strong>Ketorolac:</strong><br>مسكن قوي. 10mg كل 6 ساعات لمدة لا تزيد عن 5 أيام."; break;
         case "naprox": info = "<strong>Naproxen:</strong><br>مسكن ومضاد التهاب. 250-500mg كل 12 ساعة."; break;
-        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;
-        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة."; break;
+        case "diclof": info = "<strong>Diclofenac:</strong><br>لآلام الأسنان والتهاب المفصل الفكي. 50mg كل 8 ساعات."; break;        case "codeine": info = "<strong>⚠️ Codeine:</strong><br>مسكن أفيوني. 15-60mg كل 6 ساعات. استخدم بحذر ولفترات قصيرة."; break;
         case "tramadol": info = "<strong>Tramadol:</strong><br>ألم متوسط إلى شديد. 50-100mg كل 6 ساعات.<br>خطر الإدمان والتشنجات."; break;
         case "pregaba": info = "<strong>Pregabalin:</strong><br>ألم عصبي (حرق الفم). 75-150mg يومياً."; break;
         case "gabapen": info = "<strong>Gabapentin:</strong><br>ألم عصب ثلاثي التوائم. 300-900mg يومياً."; break;
@@ -1087,8 +1076,7 @@ function saveTask(){
     }
 }
 function loadTasks(){
-    if(!currentStudentName) return;
-    const list = document.getElementById('tasksList');
+    if(!currentStudentName) return;    const list = document.getElementById('tasksList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
     db.ref("tasks").orderByChild("student").equalTo(currentStudentName).once("value", snap=>{
         let data = snap.val();
@@ -1137,8 +1125,7 @@ function showAdminSection(id){
     document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
     if(id==='patientsAdmin') loadAllPatients();
 }
-function loadStudents(){
-    const container = document.getElementById('studentsList');
+function loadStudents(){    const container = document.getElementById('studentsList');
     container.innerHTML = "<div style='padding:10px; color:#666;'>جاري التحميل...</div>";
     db.ref("students").once("value", snap=>{
         let data = snap.val() || {};
