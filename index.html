@@ -8,7 +8,8 @@
 <meta name="theme-color" content="#1e88e5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="مساعد طالب">
-<link rel="apple-touch-icon" href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='120' font-family='Arial'%3E🎓%3C/text%3E%3C/svg%3E">
+<!-- ✅ تم تحديث أيقونة قبعة التخرج هنا -->
+<link rel="apple-touch-icon" href="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e88e5'/%3E%3Cstop offset='100%25' stop-color='%2342a5f5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='url(%23g)' rx='64'/%3E%3Cg transform='translate(256,256)'%3E%3Cpath d='M-180,-40 L0,-120 L180,-40 L0,40 Z' fill='%23fdd835' stroke='%23f9a825' stroke-width='4'/%3E%3Ccircle cx='0' cy='-120' r='12' fill='%23f9a825'/%3E%3Cpath d='M-10,120 Q0,180 10,120' stroke='%23f9a825' stroke-width='6' fill='none'/%3E%3Crect x='-80' y='-10' width='160' height='20' rx='10' fill='%231565c0'/%3E%3C/g%3E%3C/svg%3E">
 <style>
     /* ========== إعدادات عامة ========== */
     * {
@@ -46,8 +47,7 @@
         gap: 8px;
     }
     .app-title span.icon { font-size: 22px; }
-    /* مؤشر فايربيس */    .firebase-status {
-        display: flex;
+    /* مؤشر فايربيس */    .firebase-status {        display: flex;
         align-items: center;
         gap: 6px;        font-size: 12px;
         background: rgba(255,255,255,0.15);
@@ -96,8 +96,7 @@
         box-sizing: border-box;
     }
     button {        width: 100%;        padding: 11px;
-        margin: 8px 0;
-        border: none;
+        margin: 8px 0;        border: none;
         border-radius: 12px;
         font-size: 15px;
         cursor: pointer;
@@ -146,8 +145,7 @@
         padding: 12px; margin: 10px 0; border: 2px solid #ffb74d; min-height: 180px;
     }    .slider-track {
         display: flex; overflow-x: auto; gap: 10px;
-        padding: 5px 2px 15px; scroll-behavior: smooth;
-        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
+        padding: 5px 2px 15px; scroll-behavior: smooth;        scrollbar-width: thin; scrollbar-color: #fb8c00 #ffe0b2;
     }
     .slider-track::-webkit-scrollbar { height: 6px; }
     .slider-track::-webkit-scrollbar-track { background: #ffe0b2; border-radius: 3px; }
@@ -196,8 +194,7 @@
         display: flex; align-items: center; gap: 6px;
     }
     .wtd-add-btn {
-        width: auto; padding: 6px 14px; font-size: 13px;
-        background: #43a047; color: #fff; border-radius: 20px; margin: 0;
+        width: auto; padding: 6px 14px; font-size: 13px;        background: #43a047; color: #fff; border-radius: 20px; margin: 0;
     }
     .wtd-form {
         background: #fff; border-radius: 12px; padding: 12px;
@@ -246,8 +243,7 @@
         box-shadow: 0 4px 10px rgba(30,136,229,0.15);
         animation: fadeInUp 0.6s ease;
     }
-    .welcome-box .highlight {
-        color: #1e88e5;
+    .welcome-box .highlight {        color: #1e88e5;
         font-size: 18px;
         font-weight: 800;
         display: block;
@@ -296,8 +292,7 @@
     .slider-nav-btn:hover {
         background: #0d47a1;
         transform: scale(1.02);
-    }
-    .students-slider-track {
+    }    .students-slider-track {
         display: flex;
         overflow-x: auto;
         gap: 14px;        padding: 8px 4px 12px;
@@ -346,8 +341,7 @@
         font-weight: bold;
         font-size: 16px;
         color: #0d47a1;
-        display: flex;
-        align-items: center;
+        display: flex;        align-items: center;
         gap: 5px;
     }    .student-badge {
         font-size: 11px;
@@ -396,8 +390,7 @@
     .simulator-section {
         background: #ede7f6; border: 2px solid #7e57c2;
         border-radius: 15px; padding: 15px; margin: 12px 0;
-    }
-    .case-card {
+    }    .case-card {
         background: #fff; border-radius: 12px; padding: 12px; margin-bottom: 12px;
         border-right: 4px solid #7e57c2; cursor: pointer; transition: 0.2s;
     }
@@ -446,8 +439,7 @@
         <span id="firebaseText">جاري الاتصال...</span>
     </div>
 </div>
-<div class="card" id="roleCard">
-    <h2>🩺 DS Assistant</h2>
+<div class="card" id="roleCard">    <h2>🩺 DS Assistant</h2>
     <div class="welcome-box">
         <span class="highlight">🌟 رفيقك السريري الذكي</span>
         دليلك المتكامل لإدارة مرضاك، التعامل الآمن مع طوارئ العيادة، وتنظيم يومك الدراسي بذكاء وسهولة.
@@ -496,8 +488,7 @@
         </button>
         <button class="btn-primary action-btn" onclick="showProceduresGuide()" style="background:#ef6c00;">
             <span class="icon">📘</span>دليل الإجراءات
-        </button>
-    </div>
+        </button>    </div>
     
     <div id="addPatientSection" class="hidden">
         <h3>➕ إضافة مريض جديد</h3>
@@ -546,8 +537,7 @@
             </div>
         </div>
         <div id="emergencyResult" class="emergency-result hidden">
-            <strong id="emergencyTitle"></strong>
-            <p id="emergencyAction" style="margin:6px 0 0;"></p>
+            <strong id="emergencyTitle"></strong>            <p id="emergencyAction" style="margin:6px 0 0;"></p>
         </div>
         <button class="btn-secondary" onclick="hideSmartAssistant()">إغلاق</button>
     </div>
@@ -596,8 +586,7 @@
                     <option value="peroxide">Hydrogen Peroxide (بيروكسيد الهيدروجين)</option>
                     <option value="fluoride">Sodium Fluoride (فلورايد الصوديوم)</option>
                     <option value="potnit">Potassium Nitrate (نترات البوتاسيوم)</option>
-                    <option value="predni">Prednisolone (بريدنيزولون)</option>
-                    <option value="dexa">Dexamethasone (ديكساميثازون)</option>
+                    <option value="predni">Prednisolone (بريدنيزولون)</option>                    <option value="dexa">Dexamethasone (ديكساميثازون)</option>
                     <option value="keto">Ketorolac (كيتورولاك)</option>
                     <option value="naprox">Naproxen (نابروكسين)</option>
                     <option value="diclof">Diclofenac (ديكلوفيناك)</option>
@@ -639,7 +628,6 @@
         </div>
         <button class="btn-secondary" onclick="hideClinicalSimulator()">إغلاق المحاكي</button>
     </div>
-
     <div id="proceduresGuideSection" class="procedures-section hidden">
         <h3>📘 دليل الإجراءات السريرية (أكثر من 25 إجراءً)</h3>
         <p style="font-size:12px;color:#555;">مرجع عملي سريع لخطوات أهم الإجراءات في عيادة الأسنان.</p>
@@ -647,8 +635,7 @@
             <div class="proc-card"><div class="proc-title">🦷 1. خلع سن بسيط (قلع غير جراحي)</div><div class="proc-desc">تخدير موضعي كافٍ. فصل اللثة حول السن بمشرط (periosteal elevator). تطبيق كماشة خلع مناسبة (forceps). خلع بحركات بطيئة ومنضبطة. تنظيف الحويصلات ووضع شاش معقم. تعليمات ما بعد الخلع: ضغط 30 دقيقة، عدم مضمضة أو بصق لمدة 24 ساعة، مسكن عند الحاجة.</div></div>
             <div class="proc-card"><div class="proc-title">🦷 2. قلع جراحي (ضرس عقل مطمور)</div><div class="proc-desc">شق سديلة مخاطية سمحاقية. كشف العظم. إزالة العظم باستخدام bur مع تبريد. تقسيم السن إن لزم. خلع الأجزاء. كحت الحويصلة. خياطة السديلة. مضاد حيوي ومسكن بعد الجراحة.</div></div>
             <div class="proc-card"><div class="proc-title">🦷 3. حشو تجميلي (مركب Resin Composite)</div><div class="proc-desc">تحضير التجويف بإزالة التسوس. حفر (إيتش) بحمض الفوسفوريك 37% لمدة 15-20 ثانية. شطف وتجفيف. وضع الرابطة (bond). معالجة بالضوء. وضع المركب على طبقات مع معالجة كل طبقة. تشكيل وصقل وتلميع.</div></div>
-            <div class="proc-card"><div class="proc-title">🦷 4. حشو أملغم (للمناطق الخلفية)</div><div class="proc-desc">تحضير تجويف ذي احتفاظ مناسب. عزل مائي. وضع الورنيش أو العازل. حشو الأملغم بالضغط اليدوي (condensation). تشكيل وتفريغ خلال 3-5 دقائق. صقل بعد 24 ساعة.</div></div>
-            <div class="proc-card"><div class="proc-title">🦷 5. معالجة لب (فتح تصريف Pulpectomy)</div><div class="proc-desc">تخدير. فتح مدخل الحجرة اللبية. إزالة اللب المصاب باستخدام ملفات الأسنان. قياس القناة (إشعاعياً أو إلكترونياً). تنظيف وتوسيع القنوات. تجفيف وحشو مؤقت بمادة هيدروكسيد الكالسيوم. إغلاق بحشوة مؤقتة.</div></div>
+            <div class="proc-card"><div class="proc-title">🦷 4. حشو أملغم (للمناطق الخلفية)</div><div class="proc-desc">تحضير تجويف ذي احتفاظ مناسب. عزل مائي. وضع الورنيش أو العازل. حشو الأملغم بالضغط اليدوي (condensation). تشكيل وتفريغ خلال 3-5 دقائق. صقل بعد 24 ساعة.</div></div>            <div class="proc-card"><div class="proc-title">🦷 5. معالجة لب (فتح تصريف Pulpectomy)</div><div class="proc-desc">تخدير. فتح مدخل الحجرة اللبية. إزالة اللب المصاب باستخدام ملفات الأسنان. قياس القناة (إشعاعياً أو إلكترونياً). تنظيف وتوسيع القنوات. تجفيف وحشو مؤقت بمادة هيدروكسيد الكالسيوم. إغلاق بحشوة مؤقتة.</div></div>
             <div class="proc-card"><div class="proc-title">🦷 6. معالجة عصب كاملة (Root Canal Treatment)</div><div class="proc-desc">بعد الفتح والتنظيف المذكور، تطهير بمحلول هيبوكلوريت صوديوم. تعقيم وتجفيف. حشو القنوات بطريقة الضغط الجانبي (gutta-percha & sealer). فحص إشعاعي للتأكد. وصف حشوة دائمة للسن.</div></div>
             <div class="proc-card"><div class="proc-title">🦷 7. كحت الجذور وتخطيطها (Scaling & Root Planing)</div><div class="proc-desc">تخدير موضعي. استخدام أجهزة فوق صوتية (ultrasonic) لإزالة القلح الكبير. ثم كحت يدوي بالكيوريت (curettes). شطف بالكلورهيكسيدين. تعليمات نظافة فموية. إعادة تقييم بعد 4-6 أسابيع.</div></div>
             <div class="proc-card"><div class="proc-title">🦷 8. تركيب تاج كامل (Crown Preparation)</div><div class="proc-desc">تخدير. تحضير السن (تخفيض إطباقي وحولي). تشكيل الكتف (shoulder). أخذ طبعة (impression). حشوة مؤقتة. تجربة التاج المعدني أو الخزفي. تثبيت نهائي باستخدام سمنت مناسب.</div></div>
@@ -697,8 +684,7 @@
                     <option value="high">🔴 أولوية عالية</option>
                 </select>
             </div>
-            <div class="wtd-form-actions">
-                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
+            <div class="wtd-form-actions">                <button class="btn-success" onclick="saveTask()">💾 حفظ</button>
                 <button class="btn-secondary" onclick="toggleTaskForm()">إلغاء</button>            </div>
         </div>
         <div id="tasksList" class="tasks-list">
@@ -747,9 +733,7 @@
     <div id="patientsAdmin" class="hidden">
         <h3 style="color:#1565c0;">سجل جميع المرضى</h3>
         <button class="btn-primary" onclick="loadAllPatients()">تحديث</button>        <div id="allPatientsList"></div>
-    </div>
-
-    <div id="posterAdmin" class="hidden">
+    </div>    <div id="posterAdmin" class="hidden">
         <h3 style="color:#1565c0;">📢 إدارة البوستر الإعلاني</h3>
         <p style="font-size:13px;">رابط الصورة التي ستظهر لجميع الطلاب (يمكنك استخدام رابط من Imgur أو أي موقع استضافة صور).</p>
         <input type="text" id="posterUrlInput" placeholder="https://example.com/poster.jpg" style="margin-bottom:8px;">
@@ -798,8 +782,7 @@ try {
             firebaseDot.className = 'status-dot error';
             firebaseText.textContent = 'غير متصل';
         }
-    });
-} catch (e) {    firebaseDot.className = 'status-dot error';
+    });} catch (e) {    firebaseDot.className = 'status-dot error';
     firebaseText.textContent = 'خطأ في الاتصال';
     console.error('Firebase Error:', e);
 }
@@ -807,7 +790,8 @@ const ADMIN_PASSWORD = "salem1959";
 let currentStudentName = "";
 // ========== 🎓 إضافات أيقونة التخرج وشارة المهام (PWA & Badging) ==========
 function createPWAManifest() {
-    const graduationCapIcon = "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%231e88e5' rx='24'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' font-size='110'%3E🎓%3C/text%3E%3C/svg%3E";
+    // ✅ تم تحديث أيقونة قبعة التخرج هنا أيضاً
+    const graduationCapIcon = "image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%231e88e5'/%3E%3Cstop offset='100%25' stop-color='%2342a5f5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' fill='url(%23g)' rx='64'/%3E%3Cg transform='translate(256,256)'%3E%3Cpath d='M-180,-40 L0,-120 L180,-40 L0,40 Z' fill='%23fdd835' stroke='%23f9a825' stroke-width='4'/%3E%3Ccircle cx='0' cy='-120' r='12' fill='%23f9a825'/%3E%3Cpath d='M-10,120 Q0,180 10,120' stroke='%23f9a825' stroke-width='6' fill='none'/%3E%3Crect x='-80' y='-10' width='160' height='20' rx='10' fill='%231565c0'/%3E%3C/g%3E%3C/svg%3E";
     const manifest = {
         name: "مساعد طالب الأسنان",
         short_name: "مساعد طالب",
@@ -847,8 +831,7 @@ function registerMinimalServiceWorker() {
             self.addEventListener('install', (event) => { self.skipWaiting(); });
             self.addEventListener('activate', (event) => { self.clients.claim(); });
             self.addEventListener('fetch', (event) => {});
-        `;
-        const blob = new Blob([swContent], {type: 'application/javascript'});
+        `;        const blob = new Blob([swContent], {type: 'application/javascript'});
         const swURL = URL.createObjectURL(blob);
         navigator.serviceWorker.register(swURL).catch(err => console.log('Service Worker registration failed:', err));
     }
@@ -897,8 +880,7 @@ function loadStudentPoster() {
         const url = data ? data.url : null;
         const container = document.getElementById('studentPosterContainer');
         if (url && url.trim() !== "") {
-            container.innerHTML = `<img src="${url}" class="poster-img" alt="بوستر إعلاني" style="max-width:100%;">`;
-            container.classList.remove('hidden');
+            container.innerHTML = `<img src="${url}" class="poster-img" alt="بوستر إعلاني" style="max-width:100%;">`;            container.classList.remove('hidden');
         } else {
             container.classList.add('hidden');
             container.innerHTML = '';
@@ -947,8 +929,7 @@ const dentalEmergencies = [
     {id:38,title:"كسر حشو كبير",icon:"🧩",action:"🔹 قيّم ما تبقى من السن، صور أشعة"},
     {id:39,title:"خلع جزئي مبكر",icon:"🔄",action:"🔹 حافظ على المسافة بجهاز حافظ مساحة"},
     {id:40,title:"ألم بعد زراعة",icon:"🌱",action:"🔹 ألم وتورم طبيعي 2-3 أيام: كمادة باردة، مسكنات"},
-    {id:41,title:"فشل اندماج زراعة",icon:"❌",action:"🔹 حركة في الزرعة، صديد: أحل لجراح فم فوراً"},
-    {id:42,title:"نزيف بعد جراحة لثة",icon:"🩹",action:"🔹 ضغط بشاش معقم، تجنب المضمضة أول 24 ساعة"},
+    {id:41,title:"فشل اندماج زراعة",icon:"❌",action:"🔹 حركة في الزرعة، صديد: أحل لجراح فم فوراً"},    {id:42,title:"نزيف بعد جراحة لثة",icon:"🩹",action:"🔹 ضغط بشاش معقم، تجنب المضمضة أول 24 ساعة"},
     {id:43,title:"ألم عصبي ثلاثي التوائم",icon:"⚡",action:"🔹 ألم كهربائي مفاجئ: أحل لطبيب أعصاب"},
     {id:44,title:"قرحة فموية مؤلمة",icon:"🔴",action:"🔹 جل مخدر موضعي، غسول ملحي، إذا >أسبوعين: فحص"},
     {id:45,title:"فطريات فموية",icon:"🦠",action:"🔹 بقع بيضاء قابلة للإزالة: مضاد فطري موضعي"},
@@ -997,8 +978,7 @@ function loginStudent(){
             alert("⚠️ حسابك قيد المراجعة أو غير مفعّل من قبل المدير. يرجى الانتظار حتى يتم التفعيل."); 
             return; 
         }
-        hideAll();
-        studentNameLabel.textContent = currentStudentName;
+        hideAll();        studentNameLabel.textContent = currentStudentName;
         studentArea.classList.remove("hidden");
         initEmergencySlider();
         loadTasks();
@@ -1047,8 +1027,7 @@ function hideActivePatients(){ document.getElementById('activePatientsSection').
 function loadActivePatients(){
     const list = document.getElementById('patientsList');
     list.innerHTML = "<p style='color:#666;text-align:center'>جاري التحميل...</p>";
-    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{
-        let data = snap.val();
+    db.ref("patients").orderByChild("active").equalTo(true).once("value", snap=>{        let data = snap.val();
         if(!data){ list.innerHTML = "<p style='color:#666;text-align:center'>لا يوجد مرضى مفعلين</p>"; return; }
         let html = "";
         Object.values(data).forEach(p=>{ html += `<div class="patient-item"><div class="patient-name">👤 ${p.name}</div><div class="patient-info">🎂 ${p.age} سنة | ${p.gender}<br>🦷 ${p.diagnosis}<br>📱 ${p.phone || 'غير متاح'}<br>📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div></div>`; });
@@ -1097,8 +1076,7 @@ function showMedInfo(){
     const med = document.getElementById('medType').value; const resultBox = document.getElementById('pharmaResult');
     if(!med) { resultBox.classList.add('hidden'); return; }
     let info = "";
-    switch(med){
-        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات."; break;
+    switch(med){        case "amox": info = "<strong>Amoxicillin:</strong><br>البالغين: 500mg كل 8 ساعات.<br>الأطفال: 20-40 mg/kg/day مقسمة على 3 جرعات."; break;
         case "aug": info = "<strong>Augmentin:</strong><br>البالغين: 625mg أو 1g كل 12 ساعة.<br>يؤخذ مع الطعام لتقليل الآثار الجانبية المعوية."; break;
         case "ibu": info = "<strong>Ibuprofen:</strong><br>البالغين: 400mg كل 6-8 ساعات.<br>الحد الأقصى: 3200mg/day. تجنب لمرضى القرحة."; break;
         case "para": info = "<strong>Paracetamol:</strong><br>البالغين: 500mg-1g كل 4-6 ساعات.<br>الحد الأقصى: 4g/day."; break;
@@ -1147,8 +1125,7 @@ function toggleTaskForm(taskId = null){
             document.getElementById('taskId').value = '';
             document.getElementById('taskText').value = '';
             document.getElementById('taskDate').value = '';
-            document.getElementById('taskTime').value = '';
-            document.getElementById('taskPriority').value = 'medium';
+            document.getElementById('taskTime').value = '';            document.getElementById('taskPriority').value = 'medium';
         }
         document.getElementById('taskText').focus();
     } else { form.classList.add('hidden'); }
@@ -1197,8 +1174,7 @@ function editTask(taskId){
         toggleTaskForm(taskId);
     });
 }
-function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>{loadTasks(); updateAppBadge();}); } }
-// ===== محاكي الحالة السريرية (15 حالة متنوعة) =====
+function deleteTask(taskId){ if(confirm("⚠️ حذف هذه المهمة؟")){ db.ref(`tasks/${taskId}`).remove().then(()=>{loadTasks(); updateAppBadge();}); } }// ===== محاكي الحالة السريرية (15 حالة متنوعة) =====
 const clinicalCases = [
     { id:1, title:"خراج سني حاد", details:"مريض عمر 28 سنة، ألم حاد ومستمر في الفك السفلي الأيمن لليومين الماضيين، تورم بالوجه، حرارة 38.5، وألم عند المضغ. الفحص: تسوس عميق في الضرس الأول السفلي الأيمن، نقر مؤلم، تورم في الدهليز.", modelAnswer:"التشخيص: خراج حول الذروي حاد. الإجراء: صورة أشعة لتقييم الحجم، فتح تصريف، وصف مضاد حيوي (أموكسيسيلين 500mg كل 8 ساعات لمدة 7 أيام) مع مسكن (إيبوبروفين). ثم معالجة العصب أو الخلع لاحقاً." },
     { id:2, title:"نزيف بعد خلع", details:"مريض عمر 55 سنة، خضع لخلع ضرس قبل 12 ساعة، وما زال ينزف بشكل خفيف مستمر، ليس على أدوية مميعة للدم.", modelAnswer:"الفحص: غالباً نزيف من الأنسجة الرخوة. العلاج: ضغط بشاش معقم مبلل لمدة 30 دقيقة، إذا استمر نستخدم إسفنجة جيلاتين أو خياطة ضاغطة. تعليمات: عدم مضمضة ولا بصق ليوم." },
@@ -1247,8 +1223,7 @@ function loginAdmin(){
 function logoutAdmin(){ hideAll(); roleCard.classList.remove("hidden"); }
 function showAdminSection(id){
     ['studentsAdmin','casesAdmin','patientsAdmin','posterAdmin','infoAdmin'].forEach(sid=>document.getElementById(sid).classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');    
-    ['tabStudents','tabCases','tabPatients','tabPoster','tabInfo'].forEach(tid=>document.getElementById(tid).classList.remove('active'));
+    document.getElementById(id).classList.remove('hidden');        ['tabStudents','tabCases','tabPatients','tabPoster','tabInfo'].forEach(tid=>document.getElementById(tid).classList.remove('active'));
     document.getElementById('tab'+id.replace('Admin','')).classList.add('active');
     if(id==='patientsAdmin') loadAllPatients();
     if(id==='posterAdmin') loadPosterPreview();
@@ -1297,8 +1272,7 @@ function loadAllPatients(){
         let data = snap.val();        if(!data){ list.innerHTML = "<p style='color:#666'>لا يوجد مرضى</p>"; return; }
         let html = "";
         Object.values(data).forEach(p=>{ html += `<div class="row"><div class="title">👤 ${p.name} ${p.active?'<span style="color:#43a047;font-size:12px">● مفعل</span>':'<span style="color:#e53935;font-size:12px">● غير مفعل</span>'}</div><div style="font-size:13px;color:#555;margin-top:5px">${p.age} سنة | ${p.gender} | ${p.diagnosis}<br>📱 ${p.phone||'-'} | 📅 ${p.date} | 👨‍⚕️ ${p.addedBy}</div></div>`; });
-        list.innerHTML = html;
-    });
+        list.innerHTML = html;    });
 }
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&'; if(m === '<') return '<'; if(m === '>') return '>'; return m; }); }
 </script>
